@@ -243,7 +243,7 @@ const SettingsTab = () => {
                         {t("Administrators of the coproduction process")}
                     </Typography>
                     <Alert severity="error" sx={{ my: 3 }}>{t("Administrators of a co-production process can edit the co-production tree, assign new permissions to teams and even delete the co-production process. Be careful who you assign as an administrator.")}</Alert>
-                    <UsersList size="small" onSearchResultClick={handleAdministratorAdd} users={process.administrators} getActions={user => (
+                    <UsersList size="small" onSearchResultClick={isAdministrator && handleAdministratorAdd} users={process.administrators} getActions={user => isAdministrator && (
                         [
                             {
                                 id: `${user.id}-remove-action`,

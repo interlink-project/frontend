@@ -45,11 +45,14 @@ export default function TeamsTab() {
                             subheader={team.description}
                             action={<Button onClick={() => setSelectedTeam(team.id)}>{t("See profile")}</Button>}
                         />
+                        <Typography variant="h6">
+                            {t("This team has permissions on:")}
+                        </Typography>
                         <List>
                             {permissions_grouped[team.id].map(permission => {
                                 const treeitem = treeitems.find(el => el.id === permission.treeitem_id)
                                 return <ListItem>
-                                    <Button variant="text" fullWidth onClick={() => {
+                                    <Button variant="outlined" fullWidth onClick={() => {
                                         dispatch(setSelectedTreeItem(treeitem, () =>  navigate(`/dashboard/coproductionprocesses/${process.id}/guide`)))
                                     
                                     }}>
