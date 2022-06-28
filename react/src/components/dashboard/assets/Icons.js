@@ -72,7 +72,7 @@ export const StatusChip = ({ status }) => {
             label = i18n.t("Finished")
             color = "primary"
             break;
-        
+
         default:
             label = status
             color = "default"
@@ -123,22 +123,46 @@ export const NatureChip = ({ interlinker, language = null }) => {
     const t = useCustomTranslation(language)
     let label = ""
     let color = ""
-    if (interlinker.nature === 'softwareinterlinker') {
+    if (treeitem.type === 'softwareinterlinker') {
         label = t("Internal software")
         color = "primary"
 
-    } else if (interlinker.nature === 'knowledgeinterlinker') {
+    } else if (treeitem.type === 'knowledgeinterlinker') {
         label = t("Internal knowledge")
         color = "secondary"
     }
-    else if (interlinker.nature === 'externalsoftwareinterlinker') {
+    else if (treeitem.type === 'externalsoftwareinterlinker') {
         label = t("External software")
         color = "success"
     }
-    else if (interlinker.nature === 'externalknowledgeinterlinker') {
+    else if (treeitem.type === 'externalknowledgeinterlinker') {
         label = t("External knowledge")
         color = "warning"
     }
 
     return <Chip label={label} color={color} size="small" />
+}
+
+
+export const TreeItemTypeChip = ({ treeitem, sx, language = null }) => {
+    const t = useCustomTranslation(language)
+    let label = ""
+    let color = ""
+    if (treeitem.type === 'phase') {
+        label = t("Phase")
+        color = "primary"
+
+    } else if (treeitem.type === 'objective') {
+        label = t("Objective")
+        color = "secondary"
+    }
+    else if (treeitem.type === 'task') {
+        label = t("Task")
+        color = "default"
+    }
+    else {
+        label = t("Unknown")
+        color = "default"
+    }
+    return <Chip label={label} sx={sx} color={color} size="small" />
 }

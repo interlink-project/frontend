@@ -10,7 +10,7 @@ import useDependantTranslation from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTree } from 'slices/process';
+import { getProcess, getTree } from 'slices/process';
 import { information_about_translations } from 'utils/someCommonTranslations';
 import * as Yup from 'yup';
 import { assetsApi, permissionsApi } from '__api__';
@@ -249,18 +249,18 @@ const RightSide = ({ softwareInterlinkers }) => {
                         centered
                     >
                         <Tab wrapped value="data" label={information_translations[selectedTreeItem.type]} />
-                        <Tab value="assets" disabled={!isTask} label={t("Resources") + (isTask ? " (" + assets.length + ")" : "")} />
+                        <Tab value="assets" disabled={!isTask} label={t("Resources") + (isTask ? " (" + (loadingAssets ? "..." : assets.length) + ")" : "")} />
                         <Tab value="permissions" label={t("Permissions") + " (" + selectedTreeItem.permissions.length + ")"} />
                     </Tabs>
                 </Paper>
 
 
                 {tabValue === "data" && <TreeItemData language={process.language} processId={process.id} element={selectedTreeItem} />}
-                {tabValue === "permissions" && <PermissionsTable your_permissions={permissions && permissions.your_permissions} your_roles={permissions && permissions.your_roles} onChanges={() => dispatch(getTree(process.id, selectedTreeItem.id))} language={process.language} processId={process.id} element={selectedTreeItem} isAdministrator={isAdministrator} />}
+                {tabValue === "permissions" && <PermissionsTable your_permissions={permissions && permissions.your_permissions} your_roles={permissions && permissions.your_roles} onChanges={() => dispatch(getProcess(process.id, false, selectedTreeItem.id))} language={process.language} processId={process.id} element={selectedTreeItem} isAdministrator={isAdministrator} />}
                 {tabValue === "assets" && <>
                     <Box>
                         <Box sx={{ mt: 2 }}>
-                            {can.view ? <AssetsTable language={process.language} loading={loadingAssets} assets={assets} getActions={getAssetsActions} /> : <Alert severity="error">{t("You do not have access to the resources of this task")}</Alert>}
+                            {permissions && <>{can.view ? <AssetsTable language={process.language} loading={loadingAssets} assets={assets} getActions={getAssetsActions} /> : <Alert severity="error">{t("You do not have access to the resources of this task")}</Alert>}</>}
                             <Box sx={{ textAlign: "center", width: "100%" }}>
                                 <Stack spacing={2} >
                                     <Button
