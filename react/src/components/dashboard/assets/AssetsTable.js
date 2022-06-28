@@ -61,7 +61,9 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
 
   }, [asset, mounted])
 
-  const handleOpen = () => {
+  const handleOpen = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
     if (isInternal) {
       window.open(data.link + "/view", "_blank")
     } else {
@@ -110,6 +112,10 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
+          onClick={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+          }}
           MenuListProps={{
             'aria-labelledby': 'basic-button',
           }}

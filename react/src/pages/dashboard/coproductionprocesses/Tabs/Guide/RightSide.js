@@ -150,7 +150,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                     icon: <Edit fontSize="small" />
                 })
             }
-            if (capabilities.clone) {
+            if (capabilities.clone && can.create) {
                 actions.push({
                     id: `${id}-clone-action`,
                     loading: loading === "clone",
@@ -165,7 +165,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                     icon: <CopyAll fontSize="small" />
                 })
             }
-            if (capabilities.delete) {
+            if (capabilities.delete && can.delete) {
                 actions.push({
                     id: `${id}-delete-action`,
                     loading: loading === "delete",
