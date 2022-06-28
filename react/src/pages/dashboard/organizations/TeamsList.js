@@ -29,7 +29,7 @@ const TeamsList = ({ organization, teams, loadingTeams, onTeamClick = null }) =>
                             </Stack>
                         </TableCell>
                         <TableCell align="center" component="th" scope="row">
-                            <OrganizationChip type={team.type} />
+                            <OrganizationChip type={team.type} t={t} />
                         </TableCell>
                         <TableCell align="center">{moment(team.created_at).fromNow()}</TableCell>
                         <TableCell align="center">

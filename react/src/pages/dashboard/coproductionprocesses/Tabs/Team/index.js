@@ -1,16 +1,15 @@
-import { Alert, AppBar, Avatar, Box, Button, Card, CardActions, CardHeader, Grid, List, ListItem, Stack, Typography } from '@material-ui/core';
+import { Alert, Avatar, Box, Button, Card, CardActionArea, CardHeader, Grid, List, ListItem, Paper, Stack, Typography } from '@material-ui/core';
 import { green, red } from '@material-ui/core/colors';
 import { CheckOutlined, Close } from '@material-ui/icons';
-import { LoadingButton } from '@material-ui/lab';
-import { TreeItemTypeChip } from 'components/dashboard/assets/Icons';
+import { OrganizationChip, TreeItemTypeChip } from 'components/dashboard/assets/Icons';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import TeamProfile from 'pages/dashboard/organizations/TeamProfile';
+import UsersList from 'pages/dashboard/organizations/UsersList';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { getProcess, setSelectedTreeItem, setSelectedTreeItemById } from 'slices/process';
-import { groupListBy } from 'utils/groupListBy';
+import { getProcess, setSelectedTreeItem } from 'slices/process';
 import PermissionCreate from './PermissionCreate';
 
 export default function TeamsTab() {
@@ -34,14 +33,21 @@ export default function TeamsTab() {
 
                 {process.teams.map(team => <Grid item key={team.id} xs={12} md={6} lg={6} xl={4} sx={{ textAlign: "center" }}>
                     <Card sx={{ p: 1 }}>
-                        <CardHeader
-                            avatar={
-                                <Avatar src={team.logotype_link} />
-                            }
-                            title={team.name}
-                            subheader={team.description}
-                            action={<Button onClick={() => setSelectedTeam(team.id)}>{t("See profile")}</Button>}
-                        />
+                        <Paper>
+                        <CardActionArea sx={{p: 1 }} onClick={() => setSelectedTeam(team.id)}>
+                            <CardHeader
+                                avatar={
+                                    <Avatar src={team.logotype_link} />
+                                }
+                                title={team.name}
+                                subheader={<OrganizationChip t={t} type={team.type} />}
+                            />
+                            </CardActionArea>
+                        </Paper>
+                            
+                            
+
+                        {false && <UsersList users={team.users} size="small" showEmail={false} />}
                         <Typography variant="h6">
                             {t("This team has permissions on:")}
                         </Typography>
@@ -56,7 +62,7 @@ export default function TeamsTab() {
 
                                             }}>
                                                 <Box sx={{ m: 1 }}>
-                                                    <TreeItemTypeChip treeitem={treeitem} language={process.language} />
+                                                    <TreeItemTypeChip treeitem={treeitem} t={t} />
 
                                                 </Box>
 

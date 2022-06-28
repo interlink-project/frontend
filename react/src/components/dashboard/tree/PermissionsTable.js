@@ -46,7 +46,7 @@ const PermissionRow = ({ permission, showOnlyMine, setSelectedTeam, isAdministra
       <Button size="small" startIcon={<Avatar src={permission.team.logotype_link} />} onClick={() => setSelectedTeam(permission.team_id)} variant="text">{permission.team && permission.team.name} {t("team")}</Button>
     </TableCell>
     <TableCell align="center">
-      {permission.team && <OrganizationChip type={permission.team.type} />}
+      {permission.team && <OrganizationChip type={permission.team.type} t={t} />}
     </TableCell>
     <TableCell align="center">
       <CheckOutlined style={{ color: green[500] }} />
@@ -172,7 +172,7 @@ const PermissionsTable = ({ your_permissions, your_roles, language, processId, o
               <TableCell align="center">
               </TableCell>
               <TableCell align="center">
-                {your_roles && your_roles.map(role => <Box key={role} sx={{ m: 1 }}><OrganizationChip type={role} /></Box>)}
+                {your_roles && your_roles.map(role => <Box key={role} sx={{ m: 1 }}><OrganizationChip type={role} t={t} /></Box>)}
               </TableCell>
               <TableCell align="center">
                 {your_permissions && your_permissions.access_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}

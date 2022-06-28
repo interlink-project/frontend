@@ -87,7 +87,7 @@ const ProcessSidebar = (props) => {
 
           {!loading && !updating ? <Avatar variant="rounded" sx={{ width: "80px", height: "80px" }} src={process && process.logotype_link}>{(!process || !process.logotype_link) && <Folder />}  </Avatar> : <Skeleton variant="rounded" sx={{ m: 1, width: "80px", height: "80px" }} />}
           <Typography sx={{ textAlign: "center", width: "100%" }} variant="h6">{!loading && !updating && process ? process.name : <Skeleton />}</Typography>
-          {!loading && !updating && process ? <StatusChip status={"in_progress"} /> : <Skeleton sx={{ width: 80, height: 45, m: 0, p: 0 }} />}
+          {!loading && !updating && process ? <StatusChip t={t} status={"in_progress"} /> : <Skeleton sx={{ width: 80, height: 45, m: 0, p: 0 }} />}
           {!loading && !updating && process ? <Chip size="small" color="default" label={LANGUAGES.find(el => el.value === process.language).label} /> : <Skeleton sx={{ width: 80, height: 45, m: 0, p: 0 }} />}
 
         </Stack>

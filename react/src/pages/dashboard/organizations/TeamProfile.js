@@ -228,7 +228,7 @@ const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
                 rows={4}
                 variant="standard"
               />}
-              <OrganizationChip type={team.type} />
+              <OrganizationChip type={team.type} t={t} />
               {isAdmin && <>
                 {!editMode ? <Button disabled={!isAdmin} startIcon={<Edit />} variant="contained" color="primary" onClick={() => setEditMode(true)}>{t("Edit")}</Button>
                   : <Stack direction="row" justifyContent="center" sx={{ mt: 2 }}>

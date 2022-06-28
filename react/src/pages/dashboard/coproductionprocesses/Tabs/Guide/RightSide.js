@@ -123,7 +123,6 @@ const RightSide = ({ softwareInterlinkers }) => {
 
     const getAssetsActions = (asset) => {
         const actions = []
-        console.log(asset)
         if (asset.type === "internalasset" && asset.capabilities) {
             const { id, capabilities } = asset
 

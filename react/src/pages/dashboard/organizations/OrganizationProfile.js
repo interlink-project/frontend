@@ -246,7 +246,7 @@ const OrganizationProfile = ({ organizationId, onChanges = null, onTeamClick = n
                     </FormControl>}
                     {!editMode ? <>
                         <Typography variant="overline">{t("Default team type")}</Typography>
-                        <OrganizationChip type={organization.default_team_type} />
+                        <OrganizationChip type={organization.default_team_type} t={t} />
                     </> : <FormControl variant="standard" fullWidth sx={{ mt: 3 }}>
                         <InputLabel id="select-type">{t("Default team type")}</InputLabel>
                         <Select
@@ -319,7 +319,7 @@ const OrganizationProfile = ({ organizationId, onChanges = null, onTeamClick = n
                                         </Stack>
                                     </TableCell>
                                     <TableCell align="center" component="th" scope="row">
-                                        <OrganizationChip type={team.type} />
+                                        <OrganizationChip type={team.type} t={t} />
                                     </TableCell>
                                     <TableCell align="center">{moment(team.created_at).fromNow()}</TableCell>
                                     <TableCell align="center">

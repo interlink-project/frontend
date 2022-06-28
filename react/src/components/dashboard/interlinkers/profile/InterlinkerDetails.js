@@ -94,14 +94,14 @@ const InterlinkerDetails = ({ language, interlinker }) => {
                     >
                       {t("Nature")}
                     </Typography>
-                    <NatureChip interlinker={interlinker} />
+                    <NatureChip interlinker={interlinker} t={t} />
                     <Typography
                       color='textSecondary'
                       variant='overline'
                     >
                       {t("Creator")}
                     </Typography>
-                    <OfficialityChip />
+                    <OfficialityChip t={t} />
 
                     <Typography
                       color='textSecondary'

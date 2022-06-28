@@ -34,7 +34,7 @@ function ProcessRow({ process, t }) {
         <b>{process.name}</b>
       </TableCell>
       <TableCell align="center">{moment(process.created_at).fromNow()}</TableCell>
-      <TableCell align="center"><StatusChip status={"in_progress"} /></TableCell>
+      <TableCell align="center"><StatusChip t={t} status={"in_progress"} /></TableCell>
       <TableCell align="center">
         <AvatarGroup max={5} variant="rounded">
           {process.teams.length > 0 ? process.teams.map(team => <TeamAvatar sx={{height: 25, width: 25}} key={team.id} team={team} />) : <Stack direction="row" alignItems="center"><WarningIcon /><Typography sx={{ml: 2}}>{t("No teams")}</Typography></Stack>}

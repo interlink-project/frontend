@@ -3,8 +3,6 @@ import {
     IconButton
 } from '@material-ui/core';
 import { AccessTime, Check, Done, Loop, Warning } from '@material-ui/icons';
-import { useCustomTranslation } from 'hooks/useDependantTranslation';
-import i18n from 'translations/i18n';
 
 export const InProgressIcon = () => <Loop fontSize="small" sx={{ color: statusColor("in_progress") }} />
 
@@ -25,27 +23,27 @@ export const FinishedIconButton = ({ onClick }) => <IconButton size="small" onCl
 </IconButton>
 
 
-export const StatusText = ({ status, language = null }) => {
-    const t = useCustomTranslation(language)
+export const StatusText = ({ status, t }) => {
     return <>{status === "finished" ? t("Finished") : status === "in_progress" ? t("In progress") : t("Awaiting")}</>
 }
 
-export const statusIcon = (status) => status === "finished" ? <FinishedIcon /> : status === "in_progress" ? <InProgressIcon /> : <AwaitingIcon />
+export const statusIcon = (status) => status === "finished" ? <FinishedIcon /> : status === "in_progress" ? <InProgressIcon /> : null
 
 export const statusColor = (status) => status === "finished" ? "#22bb33" : status === "in_progress" ? "#f0ad4e" : "#Oda2ff"
 
 
-export const OfficialityChip = ({ officiality = "official" }) => {
+export const OfficialityChip = ({ officiality = "official", t }) => {
     let label = ""
     let color = ""
+
     switch (officiality) {
         case 'official':
-            label = i18n.t("Official")
+            label = t("Official")
             color = "success"
             break;
 
         case 'community':
-            label = i18n.t("Community")
+            label = t("Community")
             color = "warning"
             break;
     }
@@ -54,22 +52,22 @@ export const OfficialityChip = ({ officiality = "official" }) => {
 }
 
 
-export const StatusChip = ({ status }) => {
-    let label = i18n.t("Awaiting")
+export const StatusChip = ({ status, t }) => {
+    let label = t("Awaiting")
     let color = "primary"
     switch (status) {
         case 'awaiting':
-            label = i18n.t("Awaiting")
+            label = t("Awaiting")
             color = "default"
             break;
 
         case 'in_progress':
-            label = i18n.t("In progress")
+            label = t("In progress")
             color = "warning"
             break;
 
         case 'finished':
-            label = i18n.t("Finished")
+            label = t("Finished")
             color = "primary"
             break;
 
@@ -82,36 +80,36 @@ export const StatusChip = ({ status }) => {
 }
 
 
-export const OrganizationChip = ({ type }) => {
+export const OrganizationChip = ({ type, t }) => {
     let label = ""
     let color = ""
     switch (type) {
         case 'citizen':
-            label = i18n.t("Citizens")
+            label = t("Citizens")
             color = "success"
             break;
 
         case 'public_administration':
-            label = i18n.t("Public administration")
+            label = t("Public administration")
             color = "warning"
             break;
 
         case 'nonprofit_organization':
-            label = i18n.t("Non profit organization")
+            label = t("Non profit organization")
             color = "primary"
             break;
 
         case 'forprofit_organization':
-            label = i18n.t("For profit organization")
+            label = t("For profit organization")
             color = "secondary"
             break;
 
         case 'administrator':
-            label = i18n.t("Administrator")
+            label = t("Administrator")
             color = "primary"
             break;
         default:
-            label = i18n.t("Unknown")
+            label = t("Unknown")
             color = "secondary"
             break;
     }
@@ -119,23 +117,22 @@ export const OrganizationChip = ({ type }) => {
     return <Chip label={label} color={color} size="small" />
 }
 
-export const NatureChip = ({ interlinker, language = null }) => {
-    const t = useCustomTranslation(language)
+export const NatureChip = ({ interlinker, t }) => {
     let label = ""
     let color = ""
-    if (treeitem.type === 'softwareinterlinker') {
+    if (interlinker.nature === 'softwareinterlinker') {
         label = t("Internal software")
         color = "primary"
 
-    } else if (treeitem.type === 'knowledgeinterlinker') {
+    } else if (interlinker.nature === 'knowledgeinterlinker') {
         label = t("Internal knowledge")
         color = "secondary"
     }
-    else if (treeitem.type === 'externalsoftwareinterlinker') {
+    else if (interlinker.nature === 'externalsoftwareinterlinker') {
         label = t("External software")
         color = "success"
     }
-    else if (treeitem.type === 'externalknowledgeinterlinker') {
+    else if (interlinker.nature === 'externalknowledgeinterlinker') {
         label = t("External knowledge")
         color = "warning"
     }
@@ -144,8 +141,7 @@ export const NatureChip = ({ interlinker, language = null }) => {
 }
 
 
-export const TreeItemTypeChip = ({ treeitem, sx, language = null }) => {
-    const t = useCustomTranslation(language)
+export const TreeItemTypeChip = ({ treeitem, sx, t }) => {
     let label = ""
     let color = ""
     if (treeitem.type === 'phase') {

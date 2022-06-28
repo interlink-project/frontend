@@ -1,6 +1,6 @@
 import {
   Avatar,
-  Box, Card, CardActionArea, CardHeader, Chip, Grid, Grow, Link,
+  Box, Card, CardHeader, Chip, Grid, Link,
   Rating, Typography
 } from '@material-ui/core';
 import { NatureChip } from 'components/dashboard/assets/Icons';
@@ -142,7 +142,7 @@ const GridMode = ({ interlinker, t, linkProps }) => <>
         color='textPrimary'
         variant='subtitle2'
       >
-        <OfficialityChip />
+        <OfficialityChip t={t} />
       </Typography>
 </Grid>*/}
       <Grid item>
@@ -157,7 +157,7 @@ const GridMode = ({ interlinker, t, linkProps }) => <>
           color='textPrimary'
           variant='subtitle2'
         >
-          <NatureChip interlinker={interlinker} />
+          <NatureChip t={t} interlinker={interlinker} />
         </Typography>
       </Grid>
       <Grid item>
@@ -302,7 +302,7 @@ const ListMode = ({ interlinker, t, linkProps }) => <>
         color='textPrimary'
         variant='subtitle2'
       >
-        <NatureChip interlinker={interlinker} />
+        <NatureChip interlinker={interlinker} t={t} />
       </Typography>
     </Grid>
     <Grid item xs={6} md={6} lg={3} xl={3}>

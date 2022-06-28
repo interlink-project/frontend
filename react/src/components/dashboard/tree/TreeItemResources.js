@@ -154,7 +154,7 @@ const TreeItemData = ({ language, processId, element }) => {
       : <Stack alignItems="center" direction="row" spacing={1}>
         {statusIcon(status)}
         <div>
-          <StatusText status={status} language={language} />
+          <StatusText status={status} t={t} />
         </div>
       </Stack>
     }
