@@ -28,16 +28,11 @@ export default function TeamsTab() {
     }
     const permitted_treeitems = treeitems.filter(el => process.permissions.findIndex(perm => perm.treeitem_id === el.id) >= 0)
     return <>
-        <AppBar sx={{ position: 'relative' }}>
-            <Typography variant="h6" sx={{ p: 2 }}>
-                {t("Coproduction process team")}
-            </Typography>
-        </AppBar>
         {selectedTeam && <TeamProfile teamId={selectedTeam} open={selectedTeam ? true : false} setOpen={setSelectedTeam} onChanges={() => console.log("refresh")} />}
         {process.teams.length > 0 ? <>
             <Grid container spacing={3} sx={{ p: 3 }}>
 
-                {process.teams.map(team => <Grid item key={team.id} xs={12} md={12} lg={6} xl={6} sx={{ textAlign: "center" }}>
+                {process.teams.map(team => <Grid item key={team.id} xs={12} md={6} lg={6} xl={4} sx={{ textAlign: "center" }}>
                     <Card sx={{ p: 1 }}>
                         <CardHeader
                             avatar={
@@ -55,7 +50,7 @@ export default function TeamsTab() {
                                 const treeitem = permitted_treeitems.find(el => el.id === permission.treeitem_id)
                                 return treeitem && <ListItem key={permission.id}>
                                     <Grid container spacing={3} alignItems="center">
-                                        <Grid item xs={6}>
+                                        <Grid item xs={7}>
                                             <Button variant="outlined" fullWidth color={treeitem.type === "phase" ? "primary" : treeitem.type === "objective" ? "secondary" : "inherit"} onClick={() => {
                                                 dispatch(setSelectedTreeItem(treeitem, () => navigate(`/dashboard/coproductionprocesses/${process.id}/guide`)))
 
@@ -68,7 +63,7 @@ export default function TeamsTab() {
                                                 {treeitem.name}
                                             </Button>
                                         </Grid>
-                                        <Grid item xs={6}>
+                                        <Grid item xs={5}>
                                             <Stack alignItems="center" direction="row">
                                                 {t("Access resources")}: <CheckOutlined style={{ color: green[500] }} />
                                             </Stack>
@@ -106,10 +101,5 @@ export default function TeamsTab() {
             setLoading={setCreatingPermission}
             coproductionprocess={process}
         />
-        <div className={"flex-grow"} />
-        <CardActions>
-            {false && <LoadingButton loading={creatingPermission} variant="contained" fullWidth onClick={() => setOpenPermissionCreator(true)}>{t("Create new permission")}</LoadingButton>}
-
-        </CardActions>
     </>
 }

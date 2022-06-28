@@ -158,9 +158,7 @@ const CoproductionProcessProfile = () => {
                   </Card>
                 </TabPanel>
                 <TabPanel value={tab} index="team">
-                  <Card sx={{ ...style, mb: 3 }}>
-                    <TeamTab />
-                  </Card>
+                <TeamTab />
                 </TabPanel>
                 <TabPanel value={tab} index="settings">
                   <Card >
