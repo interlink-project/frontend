@@ -49,7 +49,7 @@ const PermissionRow = ({ permission, showOnlyMine, setSelectedTeam, isAdministra
       {permission.team && <OrganizationChip type={permission.team.type} t={t} />}
     </TableCell>
     <TableCell align="center">
-      <CheckOutlined style={{ color: green[500] }} />
+      {permission.access_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
     </TableCell>
     <TableCell align="center">
       {permission.create_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}

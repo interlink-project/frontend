@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { organizationsApi, permissionsApi } from '__api__';
 
 const initial = {
-  access_assets_permission: true,
+  access_assets_permission: false,
   create_assets_permission: false,
   delete_assets_permission: false,
 }
@@ -58,6 +58,7 @@ const PermissionCreate = ({ open, setOpen, loading, setLoading, onCreate, treeit
     if (coproductionprocess) {
       dataToSend["coproductionprocess_id"] = coproductionprocess.id
     }
+    console.log(dataToSend)
     permissionsApi.create(dataToSend).then(res => {
       setLoading(false)
       handleClose()
@@ -155,8 +156,7 @@ const PermissionCreate = ({ open, setOpen, loading, setLoading, onCreate, treeit
             {!repeated ? Object.keys(permissions).map(key => <Stack key={key} sx={{ mt: 3 }} spacing={1} direction="row" alignItems="center">
               <Switch checked={permissions[key]} onChange={(event) => setPermissions({
                 ...permissions,
-                [key]: event.target.checked,
-                access_assets_permission: true
+                [key]: event.target.checked
               })
               } />
               <Typography variant="body2">{another(key)}</Typography>
