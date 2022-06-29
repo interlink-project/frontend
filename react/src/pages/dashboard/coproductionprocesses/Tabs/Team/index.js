@@ -52,9 +52,9 @@ export default function TeamsTab() {
                             {t("This team has permissions on:")}
                         </Typography>
                         <List>
-                            {process.permissions.filter(el => el.team_id === team.id).map(permission => {
-                                const treeitem = permitted_treeitems.find(el => el.id === permission.treeitem_id)
-                                return treeitem && <ListItem key={permission.id}>
+                            {permitted_treeitems.map(treeitem => {
+                                const permission = process.permissions.filter(el => el.treeitem_id === treeitem.id && el.team_id === team.id)
+                                return treeitem.id && <ListItem key={permission.id}>
                                     <Grid container spacing={3} alignItems="center">
                                         <Grid item xs={7}>
                                             <Button variant="outlined" fullWidth color={treeitem.type === "phase" ? "primary" : treeitem.type === "objective" ? "secondary" : "inherit"} onClick={() => {
