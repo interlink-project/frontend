@@ -1,9 +1,16 @@
-VERSION: v1.1.5
+VERSION: v1.2.0
 
 NEW
-* Docs nginx docker image created on push (to be able to version them)
+* Workspace page => list and create coproduction processes
+* Organizations page => list, create, modify and create teams
+* CoproductionProcess/Team section shows all the teams related to the process
+* CoproductionProcess/Overview section changes on user type => normal, shows resources, admin => shows timeline of actions
 
 IMPROVED
+* Sidebar of dashboard switched to different workspace and organizations pages
+* Guide section tabs for resources, permissions and information
+* Chips in Guide section to show the treeitem types
+* Help button to redirect to the support and feedback forms
 
 FIXED
-* Call to coproduction "/me" endpoint
+* Translations
