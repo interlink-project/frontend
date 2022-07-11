@@ -94,7 +94,7 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
         <Box sx={{ mt: 2, mb: 1 }}>
           <TreeItemTypeChip sx={{ mr: 1 }} treeitem={parent} t={t} />
           {parent.name}
-          {parent.teams && <AvatarGroup spacing="medium" sx={{ mt: 1, justifyContent: "left" }} variant="rounded" max={5}>{parent.teams.map(team => <Avat key={phase.id + "-" + team.id} team={team} />)}</AvatarGroup>}
+          {parent.teams && <AvatarGroup spacing="medium" sx={{ mt: 1, justifyContent: "left" }} variant="rounded" max={5}>{parent.teams.map(team => <Avat key={parent.id + "-" + team.id} team={team} />)}</AvatarGroup>}
         </Box>} >
 
         {parent.children.map(objective => !objective.is_disabled &&
