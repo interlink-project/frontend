@@ -37,7 +37,7 @@ function ProcessRow({ process, t }) {
       <TableCell align="center"><StatusChip t={t} status={"in_progress"} /></TableCell>
       <TableCell align="center">
         <AvatarGroup max={5} variant="rounded">
-          {process.teams.length > 0 ? process.teams.map(team => <TeamAvatar sx={{height: 25, width: 25}} key={team.id} team={team} />) : <Stack direction="row" alignItems="center"><WarningIcon /><Typography sx={{ml: 2}}>{t("No teams")}</Typography></Stack>}
+          {process.enabled_teams.length > 0 ? process.enabled_teams.map(team => <TeamAvatar sx={{height: 25, width: 25}} key={team.id} team={team} />) : <Stack direction="row" alignItems="center"><WarningIcon /><Typography sx={{ml: 2}}>{t("No teams")}</Typography></Stack>}
         </AvatarGroup>
       </TableCell>
       <TableCell align="center">

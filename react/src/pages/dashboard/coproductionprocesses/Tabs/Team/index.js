@@ -2,7 +2,7 @@ import { Alert, Avatar, Box, Button, Card, CardActionArea, CardHeader, Grid, Lis
 import { green, red } from '@material-ui/core/colors';
 import { CheckOutlined, Close } from '@material-ui/icons';
 import { OrganizationChip, TreeItemTypeChip } from 'components/dashboard/assets/Icons';
-import useDependantTranslation from 'hooks/useDependantTranslation';
+import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import TeamProfile from 'pages/dashboard/organizations/TeamProfile';
 import UsersList from 'pages/dashboard/organizations/UsersList';
@@ -16,7 +16,7 @@ export default function TeamsTab() {
     const { process, treeitems } = useSelector((state) => state.process);
     const dispatch = useDispatch();
     const mounted = useMounted();
-    const { t } = useDependantTranslation()
+    const t = useCustomTranslation(process.language)
     const [selectedTeam, setSelectedTeam] = React.useState(null)
     const [permissionCreatorOpen, setOpenPermissionCreator] = React.useState(false);
     const [creatingPermission, setCreatingPermission] = React.useState(false);
@@ -25,14 +25,14 @@ export default function TeamsTab() {
     const update = () => {
         dispatch(getProcess(process.id, false));
     }
-    const permitted_treeitems = treeitems.filter(el => process.permissions.findIndex(perm => perm.treeitem_id === el.id) >= 0)
+    const permitted_treeitems = treeitems.filter(el => process.enabled_permissions.findIndex(perm => perm.treeitem_id === el.id) >= 0)
     return <>
         {selectedTeam && <TeamProfile teamId={selectedTeam} open={selectedTeam ? true : false} setOpen={setSelectedTeam} onChanges={() => console.log("refresh")} />}
-        {process.teams.length > 0 ? <>
+        {process.enabled_teams.length > 0 ? <>
             <Grid container spacing={3} sx={{ p: 3 }}>
 
-                {process.teams.map(team => <Grid item key={team.id} xs={12} md={6} lg={6} xl={4} sx={{ textAlign: "center" }}>
-                    <Card sx={{ p: 1 }}>
+                {process.enabled_teams.map(team => <Grid item key={team.id} xs={12} md={6} lg={6} xl={4} sx={{ textAlign: "center" }}>
+                    <Card sx={{ p: 1 }} key={team.id}>
                         <Paper>
                         <CardActionArea sx={{p: 1 }} onClick={() => setSelectedTeam(team.id)}>
                             <CardHeader
@@ -53,7 +53,7 @@ export default function TeamsTab() {
                         </Typography>
                         <List>
                             {permitted_treeitems.map(treeitem => {
-                                const permission = process.permissions.filter(el => el.treeitem_id === treeitem.id && el.team_id === team.id)
+                                const permission = process.enabled_permissions.filter(el => el.treeitem_id === treeitem.id && el.team_id === team.id)
                                 return treeitem.id && <ListItem key={permission.id}>
                                     <Grid container spacing={3} alignItems="center">
                                         <Grid item xs={7}>
@@ -71,13 +71,13 @@ export default function TeamsTab() {
                                         </Grid>
                                         <Grid item xs={5}>
                                             <Stack alignItems="center" direction="row">
-                                                {t("Access resources")}: <CheckOutlined style={{ color: green[500] }} />
+                                                {t("access_assets_permission")}: {permission.access_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
                                             </Stack>
                                             <Stack alignItems="center" direction="row">
-                                                {t("Create resources")}: {permission.create_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
+                                                {t("create_assets_permission")}: {permission.create_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
                                             </Stack>
                                             <Stack alignItems="center" direction="row">
-                                                {t("Delete resources")}: {permission.delete_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
+                                                {t("delete_assets_permission")}: {permission.delete_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
                                             </Stack>
                                         </Grid>
                                     </Grid>

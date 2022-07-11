@@ -141,16 +141,16 @@ export const NatureChip = ({ interlinker, t }) => {
 }
 
 
-export const TreeItemTypeChip = ({ treeitem, sx, t }) => {
+export const TreeItemTypeChip = ({ treeitem, sx = null, t }) => {
     let label = ""
     let color = ""
     if (treeitem.type === 'phase') {
         label = t("Phase")
-        color = "primary"
+        color = "secondary"
 
     } else if (treeitem.type === 'objective') {
         label = t("Objective")
-        color = "secondary"
+        color = "primary"
     }
     else if (treeitem.type === 'task') {
         label = t("Task")

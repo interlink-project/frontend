@@ -105,7 +105,7 @@ const UserSearch = ({ exclude = [], onClick, organization_id = null }) => {
                         </MenuItem>
                         : open && searchResults.slice(0, 4).map(user => {
                             const alreadySelected = exclude.includes(user.id)
-                            return <MenuItem disabled={alreadySelected} onClick={(event) => {
+                            return <MenuItem key={user.id} disabled={alreadySelected} onClick={(event) => {
                                 onClick(user)
                                 setInputValue("");
                                 handleClose()

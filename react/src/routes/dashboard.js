@@ -1,3 +1,4 @@
+import AuthGuard from 'components/guards/AuthGuard';
 import { lazy } from 'react';
 import DashboardLayout from '../components/layouts/DashboardLayout';
 import Loadable from './Loadable';
@@ -34,11 +35,12 @@ export const routes = [
         children: [
           {
             path: '',
-            element: <CoproductionProcessProfile />,
+            element: <AuthGuard><CoproductionProcessProfile /></AuthGuard>
+            ,
           },
           {
             path: ':tab',
-            element: <CoproductionProcessProfile />,
+            element: <AuthGuard><CoproductionProcessProfile /></AuthGuard>
           },
         ]
       },

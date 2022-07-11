@@ -11,7 +11,7 @@ import useMounted from 'hooks/useMounted';
 import { truncate } from 'lodash';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { cloneOrdered, getProcess } from 'slices/process';
+import { cloneOrdered, getAllChildren, getProcess } from 'slices/process';
 import { getLocalizedDate } from 'utils/moment';
 import { topologicalSort } from 'utils/topologicalSort';
 import { coproductionProcessesApi, coproductionSchemasApi } from '__api__';
@@ -21,6 +21,8 @@ const CreateSchema = () => {
     const [loadingFirst, setLoadingFirst] = React.useState(true)
     const [loading, setLoading] = React.useState(true)
     const [selectedSchema, _setSelectedSchema] = React.useState(null)
+    const [tree, setTree] = React.useState(null)
+    const [treeitems, setTreeItems] = React.useState(null)
     const [rows, setRows] = React.useState([])
     const { process } = useSelector((state) => state.process);
     const dispatch = useDispatch()
@@ -86,8 +88,16 @@ const CreateSchema = () => {
                 action: 'schema-preview',
                 name: schema.id
             })
+            _setSelectedSchema(schema)
+            const topologi = topologicalSort(schema.children)
+            setTree(topologi)
+            setTreeItems(getAllChildren(topologi))
+        }else{
+            _setSelectedSchema(null)
+            setTree(null)
+            setTreeItems(null)
         }
-        _setSelectedSchema(schema)
+       
     }
 
     return loadingFirst ? <Box><CentricCircularProgress /></Box> : <TableContainer sx={{ height: "100%" }}>
@@ -159,9 +169,10 @@ const CreateSchema = () => {
                     <CentricCircularProgress language={process.language} />
                     :
                     <>
-                        <PhaseTabs treeitems={topologicalSort(selectedSchema.children)} selectedId={selectedParent && selectedParent.id} onSelect={(value) => {
-                            setSelectedParent(value)
-                            setSelectedTreeItem(value)
+                        <PhaseTabs t={t} phases={tree} selectedId={selectedParent && selectedParent.id} onSelect={(value) => {
+                            const treeitem = treeitems.find(el => el.id === value)
+                            setSelectedParent(treeitem)
+                            setSelectedTreeItem(treeitem)
                         }} />
                         <Grid container>
                             <Grid item xl={4} lg={4} md={6} xs={12}>

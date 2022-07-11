@@ -21,7 +21,7 @@ export default function TimeLine({ }) {
 
     const dataFulfilled = process.aim || process.idea || process.challenges
     const administratorsFulfilled = process.administrators_ids.length > 1
-    const permissionsFullfilled = process.permissions.length >= 1
+    const permissionsFullfilled = process.enabled_permissions.length >= 1
 
     return <Box sx={{ p: 3, justifyContent: "center" }}>
         <Stepper nonLinear activeStep={0} orientation="vertical" sx={{ mx: 2, mt: 2 }}>

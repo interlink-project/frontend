@@ -108,7 +108,7 @@ const PermissionCreate = ({ open, setOpen, loading, setLoading, onCreate, treeit
 
   const repeated = selectedTeam && (selectedTreeItem ? selectedTreeItem.permissions.find(el => {
     return el.team_id === selectedTeam.id && el.treeitem_id === selectedTreeItem.id
-  }) !== undefined : coproductionprocess.permissions.find(el => {
+  }) !== undefined : coproductionprocess.enabled_permissions.find(el => {
     return el.team_id === selectedTeam.id && el.coproductionprocess_id === coproductionprocess.id && !el.treeitem_id
   }) !== undefined)
 

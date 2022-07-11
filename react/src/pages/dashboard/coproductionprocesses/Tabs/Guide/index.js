@@ -1,16 +1,20 @@
 import { Box, Grid } from '@material-ui/core';
+import { Settings } from '@material-ui/icons';
 import { PhaseTabs, StyledTree } from 'components/dashboard/tree';
+import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { softwareInterlinkersApi } from '__api__';
+import SettingsTab from '../Settings';
 import RightSide from './RightSide';
 
 const Guide = ({ setSelectedTreeItem }) => {
-  const dispatch = useDispatch();
   const mounted = useMounted();
   const [softwareInterlinkers, setSoftwareInterlinkers] = useState([])
-  const { process, tree, selectedPhaseTab, selectedTreeItem, updatingTree } = useSelector((state) => state.process);
+  const { process, tree, treeitems, selectedPhaseTab, selectedTreeItem, updatingTree } = useSelector((state) => state.process);
+  const t = useCustomTranslation(process.language)
+  const [showCoprod, setShowCoprod] = useState(false)
 
   useEffect(() => {
     softwareInterlinkersApi.getMulti({}, process.language).then(res => {
@@ -20,23 +24,35 @@ const Guide = ({ setSelectedTreeItem }) => {
     })
   }, [])
 
-  const setNewPhaseTab = useCallback((phase) => {
+  const setNewPhaseTab = (value) => {
     if (mounted.current) {
-      dispatch(setSelectedTreeItem(phase))
+      console.log(value)
+      if (value !== "coproductionprocess") {
+        const treeitem = treeitems.find(el => el.id === value)
+        setShowCoprod(false)
+        setSelectedTreeItem(treeitem)
+      } else {
+        setShowCoprod(true)
+      }
     }
-  }, [mounted]);
+  }
 
   return (
     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
       <Grid container>
         <Grid item xl={12} lg={12} md={12} xs={12}>
-          <PhaseTabs loading={updatingTree} selectedId={selectedPhaseTab.id} treeitems={tree} onSelect={setNewPhaseTab} />
+          <PhaseTabs t={t} loading={updatingTree} selectedId={showCoprod ? "coproductionprocess" : selectedPhaseTab.id} phases={tree} onSelect={setNewPhaseTab} />
         </Grid>
-        <Grid item xl={4} lg={4} md={6} xs={12}>
-          <StyledTree language={process.language} parent={selectedPhaseTab} selectedTreeItem={selectedTreeItem} setSelectedTreeItem={setSelectedTreeItem} showIcon />
-        </Grid>
-        <RightSide softwareInterlinkers={softwareInterlinkers} />
+        {showCoprod ? <>
+          <SettingsTab />
+        </> : <>
+          <Grid item xl={4} lg={4} md={6} xs={12}>
+            <StyledTree language={process.language} parent={selectedPhaseTab} selectedTreeItem={selectedTreeItem} setSelectedTreeItem={setSelectedTreeItem} showIcon />
+          </Grid>
+          <RightSide softwareInterlinkers={softwareInterlinkers} />
+        </>}
       </Grid>
+
     </Box>
   );
 };

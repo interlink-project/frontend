@@ -1,25 +1,27 @@
-import { AppBar, LinearProgress, Tab, Tabs as MuiTabs } from "@material-ui/core";
+import { AppBar, LinearProgress, Stack, Tab, Tabs as MuiTabs } from "@material-ui/core";
 import React from "react";
+import { TreeItemTypeChip } from "../assets/Icons";
 
-const PhaseTabs = ({ loading = false, selectedId, treeitems, onSelect }) => {
+const PhaseTabs = ({ t, loading = false, selectedId, phases, onSelect }) => {
     return (
         <AppBar position="static" sx={{ color: "white" }}>
             <MuiTabs
                 indicatorColor="secondary"
-                onChange={(event, value) => onSelect(treeitems.find(el => el.id === value))}
-                value={selectedId || treeitems[0].id}
+                onChange={(event, value) => onSelect(value)}
+                value={selectedId || phases[0].id}
                 centered
 
                 textColor="inherit"
-                aria-label="Coproduction treeitems tabs"
+                aria-label="Coproduction phases tabs"
             >
-
-                {treeitems.map((phase) => !phase.is_disabled &&(
+                {phases.map((phase) => !phase.is_disabled && (
                     <Tab
                         key={phase.id}
-                        label={<>
-                            <p>{phase.name}</p>
-                            {/* <CircularProgressWithLabel value={phase.progress} size={40} sx={{ mb: 2 }} />*/}</>}
+                        label={<Stack sx={{my: 1}}>
+                        {phase.name}
+                        {false && <TreeItemTypeChip treeitem={phase} t={t} sx={{mt: 1}} />}
+                        
+                            {/* <CircularProgressWithLabel value={phase.progress} size={40} sx={{ mb: 2 }} />*/}</Stack>}
                         value={phase.id}
                     />
                 ))}

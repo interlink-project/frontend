@@ -59,10 +59,7 @@ const Workplan = ({ setSelectedTreeItem }) => {
 
   const { t } = useDependantTranslation()
 
-  const view_modes = {"Day": t("Day"), "Week": t("Week"), "Month": t("Month"), "Year": t("Year")}
-
-  const dispatch = useDispatch();
-  const mounted = useMounted();
+  const view_modes = { "Day": t("Day"), "Week": t("Week"), "Month": t("Month"), "Year": t("Year") }
 
   const getClasses = (element) => {
     let classes = ""
@@ -178,7 +175,10 @@ const Workplan = ({ setSelectedTreeItem }) => {
   return (
     <Grid container style={{ overflow: "hidden" }}>
       <Grid item xs={12}>
-        <PhaseTabs selectedId={selectedPhaseTab.id} treeitems={tree} onSelect={setSelectedTreeItem} />
+        <PhaseTabs t={t} selectedId={selectedPhaseTab.id} phases={tree} onSelect={(value) => {
+          const treeitem = treeitems.find(el => el.id === value)
+          setSelectedTreeItem(treeitem)
+        }} />
         <ToggleButtonGroup
           color="primary"
           value={viewMode}

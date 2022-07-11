@@ -3,7 +3,7 @@ import { Delete, Edit, Save } from '@material-ui/icons';
 import ConfirmationButton from "components/ConfirmationButton";
 import MainSkeleton from "components/MainSkeleton";
 import { Form, Formik } from 'formik';
-import useDependantTranslation from "hooks/useDependantTranslation";
+import useDependantTranslation, { useCustomTranslation } from "hooks/useDependantTranslation";
 import useMounted from "hooks/useMounted";
 import $ from 'jquery';
 import moment from "moment";
@@ -21,7 +21,7 @@ const SettingsTab = () => {
     const { process, hasSchema, isAdministrator } = useSelector((state) => state.process);
     const [logotype, setLogotype] = useState(null);
     const mounted = useMounted()
-    const { t } = useDependantTranslation()
+    const t = useCustomTranslation(process.language)
 
     const navigate = useNavigate()
     const dispatch = useDispatch();
