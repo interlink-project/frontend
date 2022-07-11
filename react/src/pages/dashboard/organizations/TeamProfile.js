@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, Input, Paper, Stack, Tab, Tabs, TextField, Typography } from '@material-ui/core';
+import { Alert, Avatar, Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, Input, Paper, Stack, Tab, Tabs, TextField, Typography } from '@material-ui/core';
 import { Close, Delete, Edit, Save } from '@material-ui/icons';
 import ConfirmationButton from 'components/ConfirmationButton';
 import { OrganizationChip } from 'components/dashboard/assets/Icons';
@@ -262,23 +262,28 @@ const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
               {
                 id: `${user.id}-remove-action`,
                 onClick: removeUserFromTeam,
-                text: t("Remove {{what}}"),
+                text: t("Remove member"),
+                sx: {color: "red"},
                 icon: <Delete />
               }
             ]
           )} />}
 
-          {tabValue === "administrators" && <UsersList size="small" users={team.administrators} searchOnOrganization={isAdmin && team.organization_id} disableHeader={false} onSearchResultClick={isAdmin && handleAdministratorAdd} getActions={(user) => isAdmin && (
+          {tabValue === "administrators" && <>
+          <Alert sx={{mb:2}} severity='info'>{t("Administrators of the team can add/remove users and edit the information of the team")}</Alert>
+          <UsersList size="small" users={team.administrators} searchOnOrganization={isAdmin && team.organization_id} disableHeader={false} onSearchResultClick={isAdmin && handleAdministratorAdd} getActions={(user) => isAdmin && (
             [
               {
                 id: `${user.id}-remove-admin-action`,
                 onClick: handleAdministratorRemove,
-                text: t("Remove {{what}}"),
+                text: t("Remove administrator"),
                 icon: <Delete />,
+                sx: {color: "red"},
                 disabled: team.administrators_ids.length === 1
               }
             ]
-          )} />}
+          )} />
+          </> }
 
 
 

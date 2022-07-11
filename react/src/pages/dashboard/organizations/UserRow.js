@@ -78,7 +78,7 @@ const UserRow = ({ t, user, actions, showLastLogin, showEmail, size=30 }) => {
                         'aria-labelledby': 'basic-button',
                     }}
                 >
-                    {actions.map(({ id, onClick, icon, disabled, text }) => <MyMenuItem key={id} id={id} disabled={disabled} onClick={() => {onClick(user); handleActionsClose()}} text={text} icon={icon} />)}
+                    {actions.map(({ id, onClick, icon, disabled, text, sx }) => <MyMenuItem key={id} id={id} disabled={disabled} sx={sx} onClick={() => {onClick(user); handleActionsClose()}} text={text} icon={icon} />)}
                 </Menu>
             </TableCell>}
         </>}
