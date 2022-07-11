@@ -2,6 +2,7 @@ import { Alert, Avatar, Box, Button, Card, CardActionArea, CardHeader, Grid, Lis
 import { green, red } from '@material-ui/core/colors';
 import { CheckOutlined, Close } from '@material-ui/icons';
 import { OrganizationChip, TreeItemTypeChip } from 'components/dashboard/assets/Icons';
+import TeamAvatar from 'components/TeamAvatar';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import TeamProfile from 'pages/dashboard/organizations/TeamProfile';
@@ -37,7 +38,7 @@ export default function TeamsTab() {
                         <CardActionArea sx={{p: 1 }} onClick={() => setSelectedTeam(team.id)}>
                             <CardHeader
                                 avatar={
-                                    <Avatar src={team.logotype_link} />
+                                    <TeamAvatar team={team} />
                                 }
                                 title={team.name}
                                 subheader={<OrganizationChip t={t} type={team.type} />}
@@ -53,8 +54,8 @@ export default function TeamsTab() {
                         </Typography>
                         <List>
                             {permitted_treeitems.map(treeitem => {
-                                const permission = process.enabled_permissions.filter(el => el.treeitem_id === treeitem.id && el.team_id === team.id)
-                                return treeitem.id && <ListItem key={permission.id}>
+                                const permission = process.enabled_permissions.find(el => el.treeitem_id === treeitem.id && el.team_id === team.id)
+                                return permission && <ListItem key={permission.id}>
                                     <Grid container spacing={3} alignItems="center">
                                         <Grid item xs={7}>
                                             <Button variant="outlined" fullWidth color={treeitem.type === "phase" ? "primary" : treeitem.type === "objective" ? "secondary" : "inherit"} onClick={() => {

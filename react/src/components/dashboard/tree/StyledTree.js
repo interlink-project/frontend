@@ -1,10 +1,13 @@
 import { Avatar, AvatarGroup, Box, SvgIcon } from '@material-ui/core';
+import { People } from '@material-ui/icons';
 import { TreeView } from '@material-ui/lab';
 import { statusIcon, TreeItemTypeChip } from 'components/dashboard/assets/Icons';
 import { StyledTreeItem } from 'components/dashboard/tree';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import { useEffect, useState } from 'react';
 import { getAllChildren } from 'slices/process';
+
+const Avat = ({team}) => <Avatar title={team.name} src={team.logotype_link} sx={{ height: 20, width: 20 }}>{!team.logotype_link && <People />}</Avatar>
 
 function arrayUnique(array) {
   const ids = []
@@ -91,7 +94,7 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
         <Box sx={{ mt: 2, mb: 1 }}>
           <TreeItemTypeChip sx={{ mr: 1 }} treeitem={parent} t={t} />
           {parent.name}
-          {parent.teams && <AvatarGroup spacing="medium" sx={{ mt: 1, justifyContent: "left" }} variant="rounded" max={5}>{parent.teams.map(team => <Avatar key={parent.id + "-" + team.id} title={team.name} src={team.logotype_link} sx={{ height: 20, width: 20, bgcolor: "background.paper" }} />)}</AvatarGroup>}
+          {parent.teams && <AvatarGroup spacing="medium" sx={{ mt: 1, justifyContent: "left" }} variant="rounded" max={5}>{parent.teams.map(team => <Avat key={phase.id + "-" + team.id} team={team} />)}</AvatarGroup>}
         </Box>} >
 
         {parent.children.map(objective => !objective.is_disabled &&
@@ -99,7 +102,7 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
             <Box sx={{ mt: 2, mb: 1 }}>
               <TreeItemTypeChip sx={{ mr: 1 }} treeitem={objective} t={t} />
               {objective.name}
-              {objective.teams && <AvatarGroup spacing="medium" sx={{ mt: 1, justifyContent: "left" }} variant="rounded" max={5}>{arrayUnique(objective.teams.concat(parent.teams)).map(team => <Avatar key={objective.id + "-" + team.id} title={team.name} src={team.logotype_link} sx={{ height: 20, width: 20, bgcolor: "background.paper" }} />)}</AvatarGroup>}
+              {objective.teams && <AvatarGroup spacing="medium" sx={{ mt: 1, justifyContent: "left" }} variant="rounded" max={5}>{arrayUnique(objective.teams.concat(parent.teams)).map(team => <Avat key={objective.id + "-" + team.id} team={team} />)}</AvatarGroup>}
             </Box>
           } >
             {objective.children.map(task => !task.is_disabled && (
@@ -107,7 +110,7 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
                 <Box sx={{ mt: 2, mb: 1 }}>
                   <TreeItemTypeChip sx={{ mr: 1 }} treeitem={task} t={t} />
                   {task.name}
-                  {task.teams && <AvatarGroup spacing="medium" sx={{ mt: 1, justifyContent: "left" }} variant="rounded" max={5}>{arrayUnique(task.teams.concat(objective.teams).concat(parent.teams)).map(team => <Avatar key={task.id + "-" + team.id} title={team.name} src={team.logotype_link} sx={{ height: 20, width: 20, bgcolor: "background.paper" }} />)}</AvatarGroup>}
+                  {task.teams && <AvatarGroup spacing="medium" sx={{ mt: 1, justifyContent: "left" }} variant="rounded" max={5}>{arrayUnique(task.teams.concat(objective.teams).concat(parent.teams)).map(team => <Avat key={task.id + "-" + team.id} team={team} />)}</AvatarGroup>}
                 </Box>} />
             ))}
           </StyledTreeItem>)}

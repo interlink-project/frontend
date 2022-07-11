@@ -43,7 +43,7 @@ const PermissionRow = ({ permission, showOnlyMine, setSelectedTeam, isAdministra
       {permission.user_id == user_id || user.teams_ids.includes(permission.team_id) ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
     </TableCell>}
     <TableCell align="center">
-      <Button size="small" startIcon={<Avatar src={permission.team.logotype_link} />} onClick={() => setSelectedTeam(permission.team_id)} variant="text">{permission.team && permission.team.name} {t("team")}</Button>
+      <Button size="small" startIcon={<Avatar src={permission.team.logotype_link} />} onClick={() => setSelectedTeam(permission.team_id)} variant="text">{permission.team && permission.team.name}</Button>
     </TableCell>
     <TableCell align="center">
       {permission.team && <OrganizationChip type={permission.team.type} t={t} />}

@@ -1,6 +1,7 @@
 import {
     Avatar
 } from '@material-ui/core';
+import { People } from '@material-ui/icons';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useState } from 'react';
 import { teamsApi } from "__api__";
@@ -23,6 +24,6 @@ const TeamAvatar = ({ id = null, team = null, sx = {} }) => {
 
     }, [id, team])
 
-    return <Avatar title={data ? data.name : "..."} src={data ? data.logotype_link : ""} sx={sx} />
+    return data ? data.logotype_link ? <Avatar title={data.name} src={data.logotype_link} sx={sx} /> : <People title={data.name} sx={sx} /> : <></>
 }
 export default TeamAvatar;
