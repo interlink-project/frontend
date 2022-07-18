@@ -14,7 +14,7 @@ const MyMenuItem = ({ onClick, text, icon, id, disabled = false, loading = false
         <ListItemText>{text}</ListItemText>
     </MenuItem>
 }
-const UserRow = ({ t, user, actions, showLastLogin, showEmail, size=30 }) => {
+const UserRow = ({ t, user, actions, showLastLogin, size=30 }) => {
     const { user: auth_user } = useAuth();
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(null)
@@ -58,7 +58,6 @@ const UserRow = ({ t, user, actions, showLastLogin, showEmail, size=30 }) => {
                 <Avatar sx={{height: size, width: size}} src={data.picture} />
             </TableCell>
             <TableCell>{data.full_name}{you && <> ({t("you")})</>}</TableCell>
-            {showEmail && <TableCell>{data.email}</TableCell>}
             {showLastLogin && <TableCell>{moment(data.last_login).fromNow()}</TableCell>}
             {actions && <TableCell align="center">
                 <IconButton aria-label="settings" id="basic-button"

@@ -200,7 +200,6 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
                   </ListItemAvatar>
                   <ListItemText
                     primary={name}
-                    secondary={user.email}
                   />
                   <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="delete" onClick={() => deleteUserFromList(user.sub)}>

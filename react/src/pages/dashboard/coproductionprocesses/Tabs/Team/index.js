@@ -48,7 +48,7 @@ export default function TeamsTab() {
                             
                             
 
-                        {false && <UsersList users={team.users} size="small" showEmail={false} />}
+                        {false && <UsersList users={team.users} size="small" />}
                         <Typography variant="h6">
                             {t("This team has permissions on:")}
                         </Typography>

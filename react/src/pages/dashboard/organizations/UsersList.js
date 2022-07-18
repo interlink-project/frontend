@@ -4,20 +4,19 @@ import UserSearch from '../coproductionprocesses/Tabs/Team/UserSearch';
 import UserRow from './UserRow';
 
 
-const UsersList = ({ users, size = "medium", searchOnOrganization = null, onSearchResultClick = null, getActions = null, disableContainer = true, disableHeader = true, showEmail = true, showLastLogin = true }) => {
+const UsersList = ({ users, size = "medium", searchOnOrganization = null, onSearchResultClick = null, getActions = null, disableContainer = true, disableHeader = true, showLastLogin = true }) => {
     const { t } = useTranslation()
     const table = <Table size={size}>
         {!disableHeader && <TableHead>
             <TableRow>
                 <TableCell align="center"></TableCell>
                 <TableCell align="center">{t("Name")}</TableCell>
-                {showEmail && <TableCell align="center">{t("Email")}</TableCell>}
                 {showLastLogin && <TableCell align="center">{t("Last login")}</TableCell>}
                 {getActions && <TableCell align="center"></TableCell>}
             </TableRow>
         </TableHead>}
         <TableBody>
-            {users.length > 0 && users.map((user) => <UserRow size={size === "small" ? 30 : 50} key={user.id} user={user} t={t} actions={getActions && getActions(user)} showEmail={showEmail} showLastLogin={showLastLogin} />)}
+            {users.length > 0 && users.map((user) => <UserRow size={size === "small" ? 30 : 50} key={user.id} user={user} t={t} actions={getActions && getActions(user)} showLastLogin={showLastLogin} />)}
         </TableBody>
     </Table>
 

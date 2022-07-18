@@ -76,12 +76,6 @@ const AccountPopover = () => {
           >
             {user.full_name}
           </Typography>
-          <Typography
-            color='textSecondary'
-            variant='subtitle2'
-          >
-            {user.email}
-          </Typography>
         </Box>
         <Divider />
         {/* <Box sx={{ mt: 2 }}>
