@@ -75,7 +75,7 @@ export default class GeneralApi {
 
   async addAdministrator(object_id, user_id) {
     if (user_id) {
-      const res = await axiosInstance.post(`/${this.url}/${object_id}/administrators`, {user_id});
+      const res = await axiosInstance.post(`/${this.url}/${object_id}/administrators`, { user_id });
       console.log('add administrator call', res.data);
       return res.data;
     }

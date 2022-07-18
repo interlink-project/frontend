@@ -1,13 +1,12 @@
 import { Alert, Avatar, Box, Button, Card, CardHeader, Grid, IconButton, Input, Stack, TextField as MuiTextField, Typography } from "@material-ui/core";
 import { Delete, Edit, Save } from '@material-ui/icons';
 import ConfirmationButton from "components/ConfirmationButton";
-import MainSkeleton from "components/MainSkeleton";
+import UsersList from "components/dashboard/organizations/UsersList";
 import { Form, Formik } from 'formik';
-import useDependantTranslation, { useCustomTranslation } from "hooks/useDependantTranslation";
+import { useCustomTranslation } from "hooks/useDependantTranslation";
 import useMounted from "hooks/useMounted";
 import $ from 'jquery';
 import moment from "moment";
-import UsersList from "pages/dashboard/organizations/UsersList";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
@@ -285,7 +284,7 @@ const SettingsTab = () => {
                         severity="error"
                         sx={{ mt: 3 }}
                         action={<ConfirmationButton
-                            
+
                             Actionator={({ onClick }) => <Button variant="contained" disabled={!isAdministrator} color="error" onClick={onClick} startIcon={<Delete />}>{t("Remove coproduction process")}</Button>}
                             ButtonComponent={({ onClick }) => <Button sx={{ mt: 1 }} fullWidth variant='contained' color="error" onClick={onClick}>{t("Confirm deletion")}</Button>}
                             onClick={onRemove}

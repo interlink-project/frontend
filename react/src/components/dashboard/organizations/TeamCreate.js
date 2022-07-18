@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import { Close, Delete, KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 import { LoadingButton } from '@material-ui/lab';
-import { TEAM_TYPES } from 'constants';
+import { TEAM_TYPES } from '../../../constants';
 import { user_id } from 'contexts/CookieContext';
 import useAuth from 'hooks/useAuth';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import { getLanguage } from 'translations/i18n';
 import { teamsApi } from '__api__';
-import UserSearch from '../coproductionprocesses/Tabs/Team/UserSearch';
+import UserSearch from 'components/dashboard/coproductionprocesses/UserSearch';
 
 const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOpen, onCreate, organization }) => {
   const auth = useAuth();

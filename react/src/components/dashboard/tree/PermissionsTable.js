@@ -8,14 +8,14 @@ import ConfirmationButton from 'components/ConfirmationButton';
 import { user_id } from 'contexts/CookieContext';
 import useAuth from 'hooks/useAuth';
 import useDependantTranslation, { useCustomTranslation } from 'hooks/useDependantTranslation';
-import PermissionCreate from 'pages/dashboard/coproductionprocesses/Tabs/Team/PermissionCreate';
-import TeamProfile from 'pages/dashboard/organizations/TeamProfile';
+import PermissionCreate from 'components/dashboard/coproductionprocesses/PermissionCreate';
+import TeamProfile from 'components/dashboard/organizations/TeamProfile';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getProcess, getTree } from 'slices/process';
 import { tree_items_translations } from 'utils/someCommonTranslations';
 import { permissionsApi } from '__api__';
-import { OrganizationChip } from '../assets/Icons';
+import { OrganizationChip } from '../../Icons';
 
 const PermissionRow = ({ permission, showOnlyMine, setSelectedTeam, isAdministrator = false, onChanges }) => {
   const { user } = useAuth()

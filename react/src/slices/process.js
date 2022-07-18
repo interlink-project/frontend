@@ -20,26 +20,24 @@ const initialState = {
 
 export const getAllChildren = (children) => {
   if (!children) {
-    return []
+    return [];
   }
   return children.reduce((prev, cur) => {
     if (cur) {
-      if (cur.hasOwnProperty("children")) {
-        return [...prev, cur, ...getAllChildren(cur.children)]
-      } else {
-        return [...prev, cur]
+      if (cur.hasOwnProperty('children')) {
+        return [...prev, cur, ...getAllChildren(cur.children)];
       }
+      return [...prev, cur];
     }
-    return prev
-
+    return prev;
   }, []);
-}
+};
 
 export function cloneOrdered(obj, replaceId = null, replaceData = null) {
-  var copy;
+  let copy;
 
   // Handle the 3 simple types, and null or undefined
-  if (null == obj || "object" != typeof obj) return obj;
+  if (obj == null || typeof obj !== 'object') return obj;
 
   // Handle Date
   if (obj instanceof Date) {
@@ -51,7 +49,7 @@ export function cloneOrdered(obj, replaceId = null, replaceData = null) {
   // Handle Array
   if (obj instanceof Array) {
     copy = [];
-    for (var i = 0, len = obj.length; i < len; i++) {
+    for (let i = 0, len = obj.length; i < len; i++) {
       copy[i] = cloneOrdered(obj[i]);
     }
     return copy;
@@ -60,20 +58,17 @@ export function cloneOrdered(obj, replaceId = null, replaceData = null) {
   // Handle Object
   if (obj instanceof Object) {
     // if replacement of object needed
-    if (replaceId && obj.hasOwnProperty("id") && obj.id === replaceId) {
-      console.log("returning with replacedata", replaceData)
-      return cloneOrdered(replaceData)
-    } else {
-      copy = {};
-      for (var attr in obj) {
-        if (attr === "children") {
-          copy[attr] = cloneOrdered(topologicalSort(obj.children))
-        }
-        else if (obj.hasOwnProperty(attr)) copy[attr] = cloneOrdered(obj[attr]);
-      }
-      return copy;
+    if (replaceId && obj.hasOwnProperty('id') && obj.id === replaceId) {
+      console.log('returning with replacedata', replaceData);
+      return cloneOrdered(replaceData);
     }
-
+    copy = {};
+    for (const attr in obj) {
+      if (attr === 'children') {
+        copy[attr] = cloneOrdered(topologicalSort(obj.children));
+      } else if (obj.hasOwnProperty(attr)) copy[attr] = cloneOrdered(obj[attr]);
+    }
+    return copy;
   }
 
   throw new Error("Unable to copy obj! Its type isn't supported.");
@@ -86,10 +81,10 @@ const slice = createSlice({
     setProcessTree(state, action) {
       state.hasSchema = action.payload.length > 0;
       if (action.payload) {
-        state.tree = topologicalSort(cloneOrdered(action.payload))
+        state.tree = topologicalSort(cloneOrdered(action.payload));
         state.treeitems = getAllChildren(state.tree);
         if (action.payload.setFirstPhaseAsSelectedTreeItem) {
-          const firstPhase = state.treeitems.find(el => el.type === "phase" && !el.is_disabled)
+          const firstPhase = state.treeitems.find((el) => el.type === 'phase' && !el.is_disabled);
           state.selectedPhaseTab = firstPhase;
           state.selectedTreeItem = firstPhase;
         }
@@ -97,16 +92,16 @@ const slice = createSlice({
     },
     setSelectedTreeItem(state, action) {
       state.selectedTreeItem = action.payload;
-      state.selectedPhaseTab = action.payload.type === "phase" ? action.payload : state.treeitems.find(el => el.id === action.payload.phase_id);
+      state.selectedPhaseTab = action.payload.type === 'phase' ? action.payload : state.treeitems.find((el) => el.id === action.payload.phase_id);
     },
     setSelectedTreeItemById(state, action) {
-      state.selectedTreeItem = state.treeitems.find(el => el.id === action.payload);
-      state.selectedPhaseTab = state.selectedTreeItem.type === "phase" ? state.selectedTreeItem : state.treeitems.find(el => el.id === state.selectedTreeItem.phase_id);
+      state.selectedTreeItem = state.treeitems.find((el) => el.id === action.payload);
+      state.selectedPhaseTab = state.selectedTreeItem.type === 'phase' ? state.selectedTreeItem : state.treeitems.find((el) => el.id === state.selectedTreeItem.phase_id);
     },
     setProcess(state, action) {
       state.process = action.payload;
       if (action.payload) {
-        state.isAdministrator = action.payload.administrators_ids.includes(user_id)
+        state.isAdministrator = action.payload.administrators_ids.includes(user_id);
       } else {
         // TODO: set tab depending on progress
         state.selectedPhaseTab = null;
@@ -115,7 +110,7 @@ const slice = createSlice({
     },
     updateTreeItem(state, action) {
       // separate tree into groups
-      state.tree = topologicalSort(cloneOrdered(state.tree, action.payload.id, action.payload))
+      state.tree = topologicalSort(cloneOrdered(state.tree, action.payload.id, action.payload));
       state.treeitems = getAllChildren(state.tree);
       if (state.selectedTreeItem && state.selectedTreeItem.id === action.payload.id) {
         state.selectedTreeItem = action.payload;
@@ -135,38 +130,36 @@ const slice = createSlice({
 
 export const { reducer } = slice;
 
-
 export const cleanProcess = () => async (dispatch) => {
   dispatch(slice.actions.setProcess(null));
 };
 
 export const getProcess = (processId, setLoading = true, selectedTreeItemId = null) => async (dispatch) => {
-  if(setLoading) {dispatch(slice.actions.setLoading(true))}
+  if (setLoading) { dispatch(slice.actions.setLoading(true)); }
   try {
     const data = await coproductionProcessesApi.get(processId);
     dispatch(slice.actions.setProcess(data));
     const treeData = await coproductionProcessesApi.getTree(processId) || [];
-    treeData.setFirstPhaseAsSelectedTreeItem = true
+    treeData.setFirstPhaseAsSelectedTreeItem = true;
     dispatch(slice.actions.setProcessTree(treeData));
-    selectedTreeItemId && dispatch(slice.actions.setSelectedTreeItemById(selectedTreeItemId))
+    selectedTreeItemId && dispatch(slice.actions.setSelectedTreeItemById(selectedTreeItemId));
   } catch (err) {
     // https://edupala.com/react-router-navigate-outside-component/
-    console.error(err)
+    console.error(err);
     // window.location.replace("/dashboard");
   }
-  if(setLoading) {dispatch(slice.actions.setLoading(false))}
-
+  if (setLoading) { dispatch(slice.actions.setLoading(false)); }
 };
 
 export const setUpdatingTree = (val) => async (dispatch) => {
   dispatch(slice.actions.setUpdatingTree(val));
-}
+};
 
 export const getTree = (processId, selectedTreeItemId = null) => async (dispatch) => {
   dispatch(slice.actions.setUpdatingTree(true));
   const treeData = await coproductionProcessesApi.getTree(processId) || [];
   dispatch(slice.actions.setProcessTree(treeData));
-  selectedTreeItemId && dispatch(slice.actions.setSelectedTreeItemById(selectedTreeItemId))
+  selectedTreeItemId && dispatch(slice.actions.setSelectedTreeItemById(selectedTreeItemId));
   dispatch(slice.actions.setUpdatingTree(false));
 };
 

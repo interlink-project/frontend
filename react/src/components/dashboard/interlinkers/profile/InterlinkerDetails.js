@@ -1,5 +1,5 @@
 import { Alert, Box, Button, Card, CardContent, Chip, Divider, Grid, Link, Paper, Stack, Tab, Tabs, Typography } from '@material-ui/core';
-import { NatureChip, OfficialityChip } from 'components/dashboard/assets/Icons';
+import { NatureChip, OfficialityChip } from 'components/Icons';
 import {
   InterlinkerReference,
   InterlinkerReviews

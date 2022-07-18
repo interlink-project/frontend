@@ -1,6 +1,6 @@
 import { AppBar, LinearProgress, Stack, Tab, Tabs as MuiTabs } from "@material-ui/core";
 import React from "react";
-import { TreeItemTypeChip } from "../assets/Icons";
+import { TreeItemTypeChip } from "../../Icons";
 
 const PhaseTabs = ({ t, loading = false, selectedId, phases, onSelect }) => {
     return (

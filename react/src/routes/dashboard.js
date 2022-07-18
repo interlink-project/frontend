@@ -1,6 +1,6 @@
 import AuthGuard from 'components/guards/AuthGuard';
 import { lazy } from 'react';
-import DashboardLayout from '../components/layouts/DashboardLayout';
+import DashboardLayout from 'components/layouts/DashboardLayout';
 import Loadable from './Loadable';
 
 const CoproductionProcessProfile = Loadable(

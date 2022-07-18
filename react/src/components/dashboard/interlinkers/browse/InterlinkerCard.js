@@ -3,7 +3,7 @@ import {
   Box, Card, CardHeader, Chip, Grid, Link,
   Rating, Typography
 } from '@material-ui/core';
-import { NatureChip } from 'components/dashboard/assets/Icons';
+import { NatureChip } from 'components/Icons';
 import SwipeableTextMobileStepper from 'components/SwipeableTextMobileStepper';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';

@@ -1,13 +1,12 @@
 import { Box, Grid } from '@material-ui/core';
-import { Settings } from '@material-ui/icons';
+import RightSide from 'components/dashboard/coproductionprocesses/RightSide';
 import { PhaseTabs, StyledTree } from 'components/dashboard/tree';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
-import { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { softwareInterlinkersApi } from '__api__';
 import SettingsTab from '../Settings';
-import RightSide from './RightSide';
 
 const Guide = ({ setSelectedTreeItem }) => {
   const mounted = useMounted();

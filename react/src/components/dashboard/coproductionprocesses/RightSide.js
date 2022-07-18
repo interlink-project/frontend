@@ -14,7 +14,7 @@ import { getProcess, getTree } from 'slices/process';
 import { information_about_translations } from 'utils/someCommonTranslations';
 import * as Yup from 'yup';
 import { assetsApi, permissionsApi } from '__api__';
-import NewAssetModal from './NewAssetModal';
+import NewAssetModal from 'components/dashboard/coproductionprocesses/NewAssetModal';
 
 const RightSide = ({ softwareInterlinkers }) => {
     const { process, isAdministrator, selectedTreeItem } = useSelector((state) => state.process);

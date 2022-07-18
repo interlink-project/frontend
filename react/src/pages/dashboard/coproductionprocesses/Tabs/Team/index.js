@@ -1,17 +1,17 @@
 import { Alert, Avatar, Box, Button, Card, CardActionArea, CardHeader, Grid, List, ListItem, Paper, Stack, Typography } from '@material-ui/core';
 import { green, red } from '@material-ui/core/colors';
 import { CheckOutlined, Close } from '@material-ui/icons';
-import { OrganizationChip, TreeItemTypeChip } from 'components/dashboard/assets/Icons';
+import { OrganizationChip, TreeItemTypeChip } from 'components/Icons';
 import TeamAvatar from 'components/TeamAvatar';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
-import TeamProfile from 'pages/dashboard/organizations/TeamProfile';
-import UsersList from 'pages/dashboard/organizations/UsersList';
+import TeamProfile from 'components/dashboard/organizations/TeamProfile';
+import UsersList from 'components/dashboard/organizations/UsersList';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { getProcess, setSelectedTreeItem } from 'slices/process';
-import PermissionCreate from './PermissionCreate';
+import PermissionCreate from 'components/dashboard/coproductionprocesses/PermissionCreate';
 
 export default function TeamsTab() {
     const { process, treeitems } = useSelector((state) => state.process);

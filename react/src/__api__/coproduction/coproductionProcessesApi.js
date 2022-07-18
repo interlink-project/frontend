@@ -6,6 +6,7 @@ class CoproductionProcessesApi extends GeneralApi {
   constructor() {
     super('coproduction/api/v1/coproductionprocesses');
   }
+
   async getAssets(id) {
     if (id) {
       const res = await axiosInstance.get(`/${this.url}/${id}/assets`);
@@ -13,6 +14,7 @@ class CoproductionProcessesApi extends GeneralApi {
       return res.data;
     }
   }
+
   async addTeam(id, team_id) {
     if (id) {
       const res = await axiosInstance.post(`/${this.url}/${id}/add_team`, { team_id });
@@ -54,8 +56,6 @@ class CoproductionProcessesApi extends GeneralApi {
       return res.data;
     }
   }
-
-  
 }
 
 export const coproductionProcessesApi = new CoproductionProcessesApi();

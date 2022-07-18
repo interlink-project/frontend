@@ -8,10 +8,10 @@ import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrganizations } from 'slices/general';
-import OrganizationCreate from './OrganizationCreate';
-import OrganizationProfile from './OrganizationProfile';
-import OrganizationsList from './OrganizationsList';
-import TeamProfile from './TeamProfile';
+import OrganizationCreate from 'components/dashboard/organizations/OrganizationCreate';
+import OrganizationProfile from 'components/dashboard/organizations/OrganizationProfile';
+import OrganizationsList from 'components/dashboard/organizations/OrganizationsList';
+import TeamProfile from 'components/dashboard/organizations/TeamProfile';
 
 const Organizations = () => {
   const { t } = useTranslation()

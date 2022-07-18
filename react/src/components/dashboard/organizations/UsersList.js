@@ -1,6 +1,6 @@
 import { Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import UserSearch from '../coproductionprocesses/Tabs/Team/UserSearch';
+import UserSearch from 'components/dashboard/coproductionprocesses/UserSearch';
 import UserRow from './UserRow';
 
 

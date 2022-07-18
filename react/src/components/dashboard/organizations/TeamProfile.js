@@ -1,7 +1,7 @@
 import { Alert, Avatar, Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, Input, Paper, Stack, Tab, Tabs, TextField, Typography } from '@material-ui/core';
 import { Close, Delete, Edit, Save } from '@material-ui/icons';
 import ConfirmationButton from 'components/ConfirmationButton';
-import { OrganizationChip } from 'components/dashboard/assets/Icons';
+import { OrganizationChip } from 'components/Icons';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useState } from 'react';

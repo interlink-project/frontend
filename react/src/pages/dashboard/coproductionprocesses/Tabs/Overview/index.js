@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { setSelectedTreeItemById } from 'slices/process';
 import { coproductionProcessesApi } from '__api__';
-import TimeLine from './TimeLine';
+import TimeLine from 'components/dashboard/coproductionprocesses/TimeLine';
 
 
 export default function Overview({ }) {

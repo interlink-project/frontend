@@ -1,6 +1,6 @@
-import moment from "moment";
+import moment from 'moment';
 
 export const getLocalizedDate = (language, date) => {
-    moment.locale(language === "en" ? "en-gb" : language);
-    return moment(date)
-}
+  moment.locale(language === 'en' ? 'en-gb' : language);
+  return moment(date);
+};

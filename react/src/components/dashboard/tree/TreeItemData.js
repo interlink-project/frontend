@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router';
 import { getTree, setUpdatingTree } from 'slices/process';
 import { tree_items_translations } from 'utils/someCommonTranslations';
 import { objectivesApi, phasesApi, tasksApi } from '__api__';
-import { AwaitingIcon, statusIcon, StatusText } from '../assets/Icons';
+import { AwaitingIcon, statusIcon, StatusText } from '../../Icons';
 
 const apis = {
   task: tasksApi,

@@ -2,10 +2,10 @@ import { Alert, Avatar, Box, Button, Card, CardHeader, Dialog, DialogActions, Di
 import { Add, Close, KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 import { LoadingButton } from '@material-ui/lab';
 import useMounted from 'hooks/useMounted';
-import OrganizationsList from 'pages/dashboard/organizations/OrganizationsList';
-import TeamCreate from 'pages/dashboard/organizations/TeamCreate';
-import TeamsList from 'pages/dashboard/organizations/TeamsList';
-import UsersList from 'pages/dashboard/organizations/UsersList';
+import OrganizationsList from 'components/dashboard/organizations/OrganizationsList';
+import TeamCreate from 'components/dashboard/organizations/TeamCreate';
+import TeamsList from 'components/dashboard/organizations/TeamsList';
+import UsersList from 'components/dashboard/organizations/UsersList';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { organizationsApi, permissionsApi } from '__api__';

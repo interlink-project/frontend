@@ -14,7 +14,7 @@ import useAuth from '../../../hooks/useAuth';
 import CoproductionprocessCreate from './CoproductionProcessCreate';
 import { Folder } from '@material-ui/icons';
 import CentricCircularProgress from 'components/CentricCircularProgress';
-import { StatusChip, WarningIcon } from 'components/dashboard/assets/Icons';
+import { StatusChip, WarningIcon } from 'components/Icons';
 import HelpAlert from 'components/HelpAlert';
 import SearchBox from 'components/SearchBox';
 import moment from 'moment';

@@ -3,7 +3,7 @@ import { Add, Delete, Edit, People, Save } from '@material-ui/icons';
 import { LoadingButton } from '@material-ui/lab';
 import CentricCircularProgress from 'components/CentricCircularProgress';
 import ConfirmationButton from 'components/ConfirmationButton';
-import { OrganizationChip } from 'components/dashboard/assets/Icons';
+import { OrganizationChip } from 'components/Icons';
 import { TEAM_TYPES, WHO_CAN_CREATE_OPTIONS } from 'constants';
 import { user_id } from 'contexts/CookieContext';
 import useDependantTranslation from 'hooks/useDependantTranslation';
