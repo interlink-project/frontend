@@ -36,25 +36,23 @@ export const landingPages = [
   },
 ];
 
-export const UserAreaButton = () => {
-  return (
-    <Link
-      color='primary'
-      component={RouterLink}
-      to={'/dashboard'}
-      underline='none'
-      variant='contained'
-    >
-      Dashboard
-    </Link>
-  );
-};
+export const UserAreaButton = () => (
+  <Link
+    color='primary'
+    component={RouterLink}
+    to='/dashboard'
+    underline='none'
+    variant='contained'
+  >
+    Dashboard
+  </Link>
+);
 
 const MainNavbar = (props) => {
   const { onSidebarMobileOpen } = props;
   const navigate = useNavigate();
 
-  let location = useLocation();
+  const location = useLocation();
   return (
     <AppBar
       elevation={0}
@@ -99,13 +97,15 @@ const MainNavbar = (props) => {
               >
                 {el.name}
               </Link>
-              {true && <Divider
+              {true && (
+              <Divider
                 orientation='vertical'
                 sx={{
                   height: 32,
                   mx: 2,
                 }}
-              />}
+              />
+              )}
 
             </React.Fragment>
           ))}

@@ -21,67 +21,66 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
   const auth = useAuth();
   const [_loading, _setLoading] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([auth.user]);
-  const [name, setName] = useState("");
-  const [type, setType] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState('');
+  const [type, setType] = useState('');
+  const [description, setDescription] = useState('');
   const [logotype, setLogotype] = useState(null);
 
-  const t = useCustomTranslation(language)
+  const t = useCustomTranslation(language);
   const theme = useTheme();
   const [activeStep, setActiveStep] = useState(0);
 
-  const ORG_OPTIONS = TEAM_TYPES(t)
+  const ORG_OPTIONS = TEAM_TYPES(t);
 
-  const final_loading = loading || _loading
-  const final_set_loading = setLoading || _setLoading
+  const final_loading = loading || _loading;
+  const final_set_loading = setLoading || _setLoading;
 
   useEffect(() => {
-    setType(organization.default_team_type)
-  }, [organization])
+    setType(organization.default_team_type);
+  }, [organization]);
 
   const clean = () => {
-    setName("")
-    setDescription("")
-    setLogotype(null)
-    setSelectedUsers([auth.user])
-    setActiveStep(0)
-  }
+    setName('');
+    setDescription('');
+    setLogotype(null);
+    setSelectedUsers([auth.user]);
+    setActiveStep(0);
+  };
   const handleNext = async () => {
-
     const sendOnCreate = (data) => {
       if (onCreate) {
-        onCreate(data)
+        onCreate(data);
       }
-      handleClose()
-    }
+      handleClose();
+    };
 
     if (activeStep < 1) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     } else {
-      final_set_loading(true)
+      final_set_loading(true);
       teamsApi.create({
         name,
         description,
         type,
-        user_ids: selectedUsers.map(user => user.id),
+        user_ids: selectedUsers.map((user) => user.id),
         organization_id: organization ? organization.id : null
-      }).then(res => {
+      }).then((res) => {
         if (!logotype) {
-          sendOnCreate(res.data)
-          final_set_loading(false)
+          sendOnCreate(res.data);
+          final_set_loading(false);
         } else {
-          teamsApi.setFile(res.data.id, "logotype", logotype).then(res2 => {
-            sendOnCreate(res2.data)
+          teamsApi.setFile(res.data.id, 'logotype', logotype).then((res2) => {
+            sendOnCreate(res2.data);
           }).catch(() => {
-            sendOnCreate(res.data)
+            sendOnCreate(res.data);
           }).finally(() => {
-            final_set_loading(false)
-          })
+            final_set_loading(false);
+          });
         }
-      }).catch(err => {
-        console.log(err)
-        final_set_loading(false)
-      })
+      }).catch((err) => {
+        console.log(err);
+        final_set_loading(false);
+      });
     }
   };
 
@@ -89,153 +88,205 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
   const handleFileSelected = (e) => {
-    const files = e.target.files
+    const { files } = e.target;
     if (files.length > 0) {
-      const file = files[0]
+      const file = files[0];
       if (file) {
-        file.path = URL.createObjectURL(file)
-        setLogotype(file)
+        file.path = URL.createObjectURL(file);
+        setLogotype(file);
       }
-
     }
-  }
+  };
 
   const handleClose = () => {
     setOpen(false);
     // avoid seeing how data is cleared
     setTimeout(() => {
-      clean()
+      clean();
     }, 1000);
   };
 
   const deleteUserFromList = (sub) => {
-    setSelectedUsers(selectedUsers.filter(user => user.sub !== sub))
-  }
+    setSelectedUsers(selectedUsers.filter((user) => user.sub !== sub));
+  };
 
   const isDisabled = () => {
     if (activeStep === 0 && (!name || !description || !type)) {
-      return true
+      return true;
     }
-  }
+  };
 
   return (
     <>
-      <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
-        <DialogTitle>{t("team-create-title")}</DialogTitle>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        maxWidth='xs'
+        fullWidth
+      >
+        <DialogTitle>{t('team-create-title')}</DialogTitle>
         <DialogContent>
-          {activeStep === 0 && <><Box sx={{ textAlign: "center" }}>
-            <label htmlFor="contained-button-file">
-              <Input inputProps={{ accept: 'image/*' }} id="contained-button-file" type="file" sx={{ display: "none" }} onChange={handleFileSelected} />
-              <IconButton component="span" >
-                <Avatar
-                  src={logotype && logotype.path}
-                  style={{
-                    margin: "10px",
-                    width: "60px",
-                    height: "60px",
-                  }}
+          {activeStep === 0 && (
+          <>
+            <Box sx={{ textAlign: 'center' }}>
+              <label htmlFor='contained-button-file'>
+                <Input
+                  inputProps={{ accept: 'image/*' }}
+                  id='contained-button-file'
+                  type='file'
+                  sx={{ display: 'none' }}
+                  onChange={handleFileSelected}
                 />
-                {!logotype && <Typography variant="body1">
-                  {t("Click here to add a logo")}
-                </Typography>}
+                <IconButton component='span'>
+                  <Avatar
+                    src={logotype && logotype.path}
+                    style={{
+                      margin: '10px',
+                      width: '60px',
+                      height: '60px',
+                    }}
+                  />
+                  {!logotype && (
+                  <Typography variant='body1'>
+                    {t('Click here to add a logo')}
+                  </Typography>
+                  )}
+                </IconButton>
+              </label>
+              {logotype && (
+              <IconButton onClick={(event) => {
+                setLogotype(null);
+              }}
+              >
+                <Close />
               </IconButton>
-            </label>
-            {logotype && <IconButton onClick={(event) => {
-              setLogotype(null)
-            }}><Close /></IconButton>}
-          </Box>
+              )}
+            </Box>
             <TextField
               autoFocus
-              margin="dense"
-              id="name"
-              label={t("Name")}
+              margin='dense'
+              id='name'
+              label={t('Name')}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              type="text"
+              type='text'
               fullWidth
-              variant="standard"
+              variant='standard'
             />
             <TextField
-              margin="dense"
-              id="description"
-              label={t("Description")}
-              type="text"
+              margin='dense'
+              id='description'
+              label={t('Description')}
+              type='text'
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               fullWidth
               multiline
               rows={4}
-              variant="standard"
+              variant='standard'
             />
-            <FormControl variant="standard" fullWidth sx={{ mt: 2 }}>
-              <InputLabel id="select-type">{t("Type")}</InputLabel>
+            <FormControl
+              variant='standard'
+              fullWidth
+              sx={{ mt: 2 }}
+            >
+              <InputLabel id='select-type'>{t('Type')}</InputLabel>
               <Select
                 fullWidth
-                labelId="select-type-label"
-                id="select-type"
+                labelId='select-type-label'
+                id='select-type'
                 value={type}
                 onChange={(event) => {
                   setType(event.target.value);
                 }}
-                label={t("Organization type")}
+                label={t('Organization type')}
               >
-                {ORG_OPTIONS.map(lan => <MenuItem key={lan.value} value={lan.value}>{lan.label}</MenuItem>)}
+                {ORG_OPTIONS.map((lan) => (
+                  <MenuItem
+                    key={lan.value}
+                    value={lan.value}
+                  >
+                    {lan.label}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
-          </>}
+          </>
+          )}
 
-          {activeStep === 1 && <><List dense>
-            <TransitionGroup>
-              {selectedUsers.map(user => {
+          {activeStep === 1 && (
+          <>
+            <List dense>
+              <TransitionGroup>
+                {selectedUsers.map((user) => {
+                  let name = user.full_name;
+                  const you = user.id === user_id;
+                  if (you) {
+                    name += ` (${t('you')})`;
+                  }
+                  return (
+                    <Collapse key={user.id}>
+                      <ListItem>
+                        <ListItemAvatar>
+                          <Avatar src={user.picture} />
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={name}
+                        />
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            edge='end'
+                            aria-label='delete'
+                            onClick={() => deleteUserFromList(user.sub)}
+                          >
+                            <Delete />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    </Collapse>
+                  );
+                })}
+              </TransitionGroup>
 
-                var name = user.full_name
-                const you = user.id === user_id
-                if (you) {
-                  name += ` (${t("you")})`
-                }
-                return <Collapse key={user.id}><ListItem
-                >
-                  <ListItemAvatar>
-                    <Avatar src={user.picture} />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={name}
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete" onClick={() => deleteUserFromList(user.sub)}>
-                      <Delete />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem></Collapse>
-              })}
-            </TransitionGroup>
-
-          </List>
-          <Divider sx={{my: 3}} />
-            <UserSearch exclude={selectedUsers.map(user => user.id)} organization_id={organization.id} onClick={(user) => setSelectedUsers([...selectedUsers, user])} />
-          </>}
-
+            </List>
+            <Divider sx={{ my: 3 }} />
+            <UserSearch
+              exclude={selectedUsers.map((user) => user.id)}
+              organization_id={organization.id}
+              onClick={(user) => setSelectedUsers([...selectedUsers, user])}
+            />
+          </>
+          )}
 
         </DialogContent>
         <DialogActions>
           <MobileStepper
-            variant="dots"
+            variant='dots'
             steps={2}
-            position="static"
+            position='static'
             activeStep={activeStep}
             sx={{ flexGrow: 1 }}
-            nextButton={
-              <LoadingButton size="small" onClick={handleNext} disabled={isDisabled()} loading={final_loading}>
-                {activeStep === 1 ? t("Create") : t("Next")}
+            nextButton={(
+              <LoadingButton
+                size='small'
+                onClick={handleNext}
+                disabled={isDisabled()}
+                loading={final_loading}
+              >
+                {activeStep === 1 ? t('Create') : t('Next')}
                 <KeyboardArrowRight />
               </LoadingButton>
-            }
-            backButton={
-              <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+            )}
+            backButton={(
+              <Button
+                size='small'
+                onClick={handleBack}
+                disabled={activeStep === 0}
+              >
                 <KeyboardArrowLeft />
-                {t("Back")}
+                {t('Back')}
               </Button>
-            }
+            )}
           />
 
         </DialogActions>

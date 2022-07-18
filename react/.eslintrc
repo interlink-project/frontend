@@ -6,7 +6,10 @@
   },
   "parser": "@babel/eslint-parser",
   "parserOptions": {
-    "requireConfigFile": false
+    "requireConfigFile": false,
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
+   }
   },
   "extends": [
     "airbnb"
@@ -14,6 +17,14 @@
   "plugins": [
     "only-warn"
   ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }, 
   "rules": {
     "jsx-quotes": [2, "prefer-single"],
     "class-methods-use-this": "off",

@@ -16,10 +16,10 @@ import { SettingsProvider } from './contexts/SettingsContext';
 import store from './store';
 
 const instance = createInstance({
-  urlBase: REACT_APP_COMPLETE_DOMAIN + '/matomo/',
+  urlBase: `${REACT_APP_COMPLETE_DOMAIN}/matomo/`,
   siteId: REACT_APP_MATOMO_ID,
   linkTracking: false
-})
+});
 
 ReactDOM.render(
   <StrictMode>
@@ -40,7 +40,6 @@ ReactDOM.render(
         </ReduxProvider>
       </HelmetProvider>
     </MatomoProvider>
-  </StrictMode>
-  ,
+  </StrictMode>,
   document.getElementById('root')
 );

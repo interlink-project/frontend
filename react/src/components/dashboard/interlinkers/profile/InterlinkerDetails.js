@@ -14,7 +14,7 @@ const InterlinkerDetails = ({ language, interlinker }) => {
   const [currentTab, setCurrentTab] = useState('overview');
 
   const { link, description, tags, name, problemprofiles, softwareinterlinker, snapshots_links } = interlinker;
-  const t = useCustomTranslation(language)
+  const t = useCustomTranslation(language);
 
   const handleTabsChange = (event, value) => {
     setCurrentTab(value);
@@ -24,21 +24,21 @@ const InterlinkerDetails = ({ language, interlinker }) => {
     return null;
   }
 
-  const isKnowledge = interlinker.nature === "knowledgeinterlinker"
-  const isExternal = interlinker.nature === "externalknowledgeinterlinker" || interlinker.nature === "externalsoftwareinterlinker"
+  const isKnowledge = interlinker.nature === 'knowledgeinterlinker';
+  const isExternal = interlinker.nature === 'externalknowledgeinterlinker' || interlinker.nature === 'externalsoftwareinterlinker';
 
   const common = [
     { label: t('Overview'), value: 'overview' },
     { label: t('Instructions'), value: 'instructions' },
     { label: t('Reviews'), value: 'reviews' },
     { label: t('Related interlinkers'), value: 'related' },
-  ]
+  ];
   const tabs = isKnowledge ? [
     ...common,
     { label: t('Preview-noun'), value: 'preview' },
   ] : [
     ...common
-  ]
+  ];
 
   return (
     <>
@@ -60,27 +60,47 @@ const InterlinkerDetails = ({ language, interlinker }) => {
       </Tabs>
       <Divider />
 
-      <Box sx={{ mt: 3 }} >
+      <Box sx={{ mt: 3 }}>
         {currentTab === 'overview' && (
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={5} lg={5} xl={5}
+          <Grid
+            container
+            spacing={3}
+          >
+            <Grid
+              item
+              xs={12}
+              md={5}
+              lg={5}
+              xl={5}
             >
               <Paper>
-                <SwipeableTextMobileStepper height="50vh" images={snapshots_links} objectFit="contain" />
+                <SwipeableTextMobileStepper
+                  height='50vh'
+                  images={snapshots_links}
+                  objectFit='contain'
+                />
 
               </Paper>
             </Grid>
 
-            <Grid item xs={12} md={7} lg={7} xl={7}
+            <Grid
+              item
+              xs={12}
+              md={7}
+              lg={7}
+              xl={7}
             >
-              <Card >
-                <CardContent sx={{ minHeight: "55vh", overflowY: "scroll" }}>
-                  <Stack direction="column" spacing={1}>
+              <Card>
+                <CardContent sx={{ minHeight: '55vh', overflowY: 'scroll' }}>
+                  <Stack
+                    direction='column'
+                    spacing={1}
+                  >
                     <Typography
                       color='textSecondary'
                       variant='overline'
                     >
-                      {t("Name")}
+                      {t('Name')}
                     </Typography>
                     <Typography
                       color='textPrimary'
@@ -92,14 +112,17 @@ const InterlinkerDetails = ({ language, interlinker }) => {
                       color='textSecondary'
                       variant='overline'
                     >
-                      {t("Nature")}
+                      {t('Nature')}
                     </Typography>
-                    <NatureChip interlinker={interlinker} t={t} />
+                    <NatureChip
+                      interlinker={interlinker}
+                      t={t}
+                    />
                     <Typography
                       color='textSecondary'
                       variant='overline'
                     >
-                      {t("Creator")}
+                      {t('Creator')}
                     </Typography>
                     <OfficialityChip t={t} />
 
@@ -107,14 +130,14 @@ const InterlinkerDetails = ({ language, interlinker }) => {
                       color='textSecondary'
                       variant='overline'
                     >
-                      {t("Tags")}
+                      {t('Tags')}
                     </Typography>
                     <Box>
                       {tags.map((tag) => (
                         <Chip
                           key={tag}
                           label={tag}
-                          sx={{ mt: 1, ml: 1}}
+                          sx={{ mt: 1, ml: 1 }}
                           variant='outlined'
                         />
                       ))}
@@ -123,13 +146,13 @@ const InterlinkerDetails = ({ language, interlinker }) => {
                       color='textSecondary'
                       variant='overline'
                     >
-                      {t("Problem profiles")}
+                      {t('Problem profiles')}
                     </Typography>
                     <Box>
                       {problemprofiles.map((problem) => (
                         <Chip
                           key={problem.id}
-                          label={problem.id + " - " + problem.name}
+                          label={`${problem.id} - ${problem.name}`}
                           title={problem.id}
                           variant='outlined'
                           sx={{ mt: 1, mr: 1 }}
@@ -137,31 +160,35 @@ const InterlinkerDetails = ({ language, interlinker }) => {
                       ))}
                     </Box>
 
-                    {softwareinterlinker && <>
+                    {softwareinterlinker && (
+                    <>
                       <Typography
                         color='textSecondary'
                         variant='overline'
                       >
-                        {t("Based on")}
+                        {t('Based on')}
                       </Typography>
                       <Box sx={{ mt: 1 }}>
                         <InterlinkerReference interlinker_id={softwareinterlinker.id} />
                       </Box>
-                    </>}
+                    </>
+                    )}
 
-                    {isExternal && <>
+                    {isExternal && (
+                    <>
                       <Typography
                         color='textSecondary'
                         variant='overline'
                       >
-                        {t("URI")}
+                        {t('URI')}
                       </Typography>
                       <Box sx={{ mt: 1 }}>
                         <Link onClick={() => window.open(interlinker.uri)}>
-                          {interlinker.uri || <Alert severity='warning'>{t("Not available")}</Alert>}
+                          {interlinker.uri || <Alert severity='warning'>{t('Not available')}</Alert>}
                         </Link>
                       </Box>
-                    </>}
+                    </>
+                    )}
                   </Stack>
                 </CardContent>
               </Card>
@@ -169,20 +196,20 @@ const InterlinkerDetails = ({ language, interlinker }) => {
           </Grid>
         )}
         {currentTab === 'instructions' && (
-          <Card sx={{ p: 3, height: "100%" }}>
+          <Card sx={{ p: 3, height: '100%' }}>
 
             <Typography
               color='textSecondary'
               variant='overline'
             >
-              {t("Description")}
+              {t('Description')}
             </Typography>
             <SafeHTMLElement data={description} />
             <Typography
               color='textSecondary'
               variant='overline'
             >
-              {t("Instructions")}
+              {t('Instructions')}
             </Typography>
             <SafeHTMLElement data={interlinker.instructions} />
           </Card>
@@ -191,7 +218,9 @@ const InterlinkerDetails = ({ language, interlinker }) => {
 
           <Box
             style={{
-              position: 'absolute', left: '50%', top: '50%',
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
               transform: 'translate(-50%, -50%)'
             }}
           >
@@ -201,17 +230,18 @@ const InterlinkerDetails = ({ language, interlinker }) => {
                 color='textPrimary'
                 variant='h5'
               >
-                {t("This resource cannot be displayed here. Instead...")}
+                {t('This resource cannot be displayed here. Instead...')}
               </Typography>
             </Box>
-            {softwareinterlinker.preview && <>
+            {softwareinterlinker.preview && (
+            <>
               <Box sx={{ mt: 2 }}>
                 <Typography
                   align='center'
                   color='textSecondary'
                   variant='subtitle1'
                 >
-                  {t("you can preview the resource externally")}
+                  {t('you can preview the resource externally')}
                 </Typography>
               </Box>
               <Box
@@ -224,21 +254,23 @@ const InterlinkerDetails = ({ language, interlinker }) => {
                 <Button
                   color='primary'
                   variant='contained'
-                  onClick={() => window.open(interlinker.link + "/preview", "_blank")}
+                  onClick={() => window.open(`${interlinker.link}/preview`, '_blank')}
                 >
-                  {softwareinterlinker.preview_text || t("Preview resource externally")}
+                  {softwareinterlinker.preview_text || t('Preview resource externally')}
                 </Button>
               </Box>
-            </>}
+            </>
+            )}
 
-            {softwareinterlinker && !softwareinterlinker.preview && softwareinterlinker.download && <>
+            {softwareinterlinker && !softwareinterlinker.preview && softwareinterlinker.download && (
+            <>
               <Box sx={{ mt: 2 }}>
                 <Typography
                   align='center'
                   color='textSecondary'
                   variant='subtitle1'
                 >
-                  {t("you can download a copy of it to preview it on your machine")}
+                  {t('you can download a copy of it to preview it on your machine')}
                 </Typography>
               </Box>
               <Box
@@ -251,16 +283,21 @@ const InterlinkerDetails = ({ language, interlinker }) => {
                 <Button
                   color='primary'
                   variant='contained'
-                  onClick={() => window.open(interlinker.link + "/download", "_blank")}
+                  onClick={() => window.open(`${interlinker.link}/download`, '_blank')}
                 >
-                  {softwareinterlinker.download_text || t("Download resource")}
+                  {softwareinterlinker.download_text || t('Download resource')}
                 </Button>
               </Box>
-            </>}
+            </>
+            )}
           </Box>
         )}
         {currentTab === 'related' && (
-          <InterlinkerResults language={language} filters={{ problemprofiles: interlinker.problemprofiles.map(el => el.id) }} onInterlinkerClick={(interlinker) => { console.log(interlinker) }} />
+          <InterlinkerResults
+            language={language}
+            filters={{ problemprofiles: interlinker.problemprofiles.map((el) => el.id) }}
+            onInterlinkerClick={(interlinker) => { console.log(interlinker); }}
+          />
         )}
         {currentTab === 'reviews' && (
           <InterlinkerReviews interlinker={interlinker} />

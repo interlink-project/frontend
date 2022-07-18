@@ -31,21 +31,21 @@ const DashboardNavbarRoot = experimentalStyled(AppBar)(({ theme }) => ({
 const pages = [
   {
     sx: { ml: 2 },
-    label: i18n.t("Workspace"),
+    label: i18n.t('Workspace'),
     path: '/dashboard',
   },
   {
-    label: i18n.t("Organizations"),
+    label: i18n.t('Organizations'),
     path: '/dashboard/organizations',
   },
   {
-    label: i18n.t("Catalogue"),
+    label: i18n.t('Catalogue'),
     path: '/dashboard/interlinkers',
   },
-]
+];
 const DashboardNavbar = (props) => {
   const { onSidebarMobileOpen, showOpenMenuButton, ...other } = props;
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const theme = useTheme();
   const onMobile = !useMediaQuery(theme.breakpoints.up('sm'));
@@ -54,7 +54,8 @@ const DashboardNavbar = (props) => {
   return (
     <DashboardNavbarRoot {...other}>
       <Toolbar sx={{ minHeight: 64 }}>
-        {!onMobile && showOpenMenuButton && <IconButton
+        {!onMobile && showOpenMenuButton && (
+        <IconButton
           color='inherit'
           onClick={onSidebarMobileOpen}
           sx={{
@@ -64,14 +65,32 @@ const DashboardNavbar = (props) => {
           }}
         >
           <MenuIcon fontSize='small' />
-        </IconButton>}
+        </IconButton>
+        )}
 
-        {!onReduced && <RouterLink to='/'>
+        {!onReduced && (
+        <RouterLink to='/'>
           <DashboardNavbarLogo />
-        </RouterLink>}
-        {pages.map(page => <Button key={page.path} sx={{ ml: 2, ...page.sx }} component={RouterLink} to={page.path} color="inherit" variant={window.location.pathname === page.path ? "outlined" : "text"} disabled={page.disabled}>
-          <Typography textAlign="center" variant="button">{page.label}</Typography>
-        </Button>)}
+        </RouterLink>
+        )}
+        {pages.map((page) => (
+          <Button
+            key={page.path}
+            sx={{ ml: 2, ...page.sx }}
+            component={RouterLink}
+            to={page.path}
+            color='inherit'
+            variant={window.location.pathname === page.path ? 'outlined' : 'text'}
+            disabled={page.disabled}
+          >
+            <Typography
+              textAlign='center'
+              variant='button'
+            >
+              {page.label}
+            </Typography>
+          </Button>
+        ))}
         <Box
           sx={{
             flexGrow: 1,
@@ -85,9 +104,10 @@ const DashboardNavbar = (props) => {
           <SettingsPopover />
         </Box>
         <Box sx={{ ml: 1 }}>
-          {onReduced ? <IconButton sx={{color: "primary.contrastText"}}><Search /></IconButton>: <SearchAppBar />}
+          {onReduced ? <IconButton sx={{ color: 'primary.contrastText' }}><Search /></IconButton> : <SearchAppBar />}
         </Box>
-        {!onMobile &&
+        {!onMobile
+          && (
           <>
             {/*
             <Box sx={{ ml: 1 }}>
@@ -98,7 +118,7 @@ const DashboardNavbar = (props) => {
               <AccountPopover />
             </Box>
           </>
-        }
+          )}
         {/*
           <Box sx={{ ml: 1 }}>
             <ContactsPopover />

@@ -12,14 +12,14 @@ import { TransitionGroup } from 'react-transition-group';
 
 const InterlinkerResults = ({ loading: propLoading = null, setLoading: propSetLoading = null, language = getLanguage(), filters = {}, onInterlinkerClick, defaultMode = 'list', defaultSize = 9 }) => {
   const mounted = useMounted();
-  const t = useCustomTranslation(language)
-  const { trackSiteSearch } = useMatomo()
+  const t = useCustomTranslation(language);
+  const { trackSiteSearch } = useMatomo();
 
   const [mode, setMode] = useState(defaultMode);
   const [_loading, _setLoading] = useState(false);
 
-  const loading = propLoading || _loading
-  const setLoading = propSetLoading || _setLoading
+  const loading = propLoading || _loading;
+  const setLoading = propSetLoading || _setLoading;
 
   const handleModeChange = (event, value) => {
     if (value) {
@@ -32,44 +32,43 @@ const InterlinkerResults = ({ loading: propLoading = null, setLoading: propSetLo
   const [size, setSize] = useState(defaultSize);
   const [loadedRows, setLoadedRows] = useState([]);
 
-  const hasNextPage = loadedRows.length < total
+  const hasNextPage = loadedRows.length < total;
 
   const loadServerRows = async (page, loadedRows) => {
     setLoading(true);
     try {
-      interlinkersApi.getMulti({ page: page + 1, size, ...filters }, language).then(res => {
+      interlinkersApi.getMulti({ page: page + 1, size, ...filters }, language).then((res) => {
         if (mounted.current) {
           setLoading(false);
-          setPage(page + 1)
-          setTotal(res.total)
-          setLoadedRows([...loadedRows, ...res.items].filter((element, index, self) => self.indexOf(el => el.id === element.id) !== index))
+          setPage(page + 1);
+          setTotal(res.total);
+          setLoadedRows([...loadedRows, ...res.items].filter((element, index, self) => self.indexOf((el) => el.id === element.id) !== index));
           if (filters.search) {
             trackSiteSearch({
-              keyword: filters.hasOwnProperty("search") ? filters.search : "",
-              category: "interlinkers",
+              keyword: filters.hasOwnProperty('search') ? filters.search : '',
+              category: 'interlinkers',
               count: res.total
-            })
+            });
           }
         }
-      })
-
+      });
     } catch (err) {
-      console.error("Failed to load data: ", err);
+      console.error('Failed to load data: ', err);
     }
   };
 
   const handleLoadMore = async () => {
-    console.log(hasNextPage, loadedRows.length, "/", total)
+    console.log(hasNextPage, loadedRows.length, '/', total);
     if (hasNextPage) {
-      loadServerRows(page, loadedRows)
+      loadServerRows(page, loadedRows);
     }
   };
 
   useEffect(() => {
-    setPage(0)
-    setLoadedRows([])
-    loadServerRows(0, [])
-  }, [filters])
+    setPage(0);
+    setLoadedRows([]);
+    loadServerRows(0, []);
+  }, [filters]);
 
   return (
     <>
@@ -98,7 +97,7 @@ const InterlinkerResults = ({ loading: propLoading = null, setLoading: propSetLo
           }}
           variant='h6'
         >
-          {t("interlinkers-catalogue-total", { total })}
+          {t('interlinkers-catalogue-total', { total })}
         </Typography>
         <Box
           sx={{
@@ -126,8 +125,9 @@ const InterlinkerResults = ({ loading: propLoading = null, setLoading: propSetLo
         container
         spacing={3}
       >
-        {mode === 'grid' ? <>
-        {loadedRows.map((interlinker, i) => (
+        {mode === 'grid' ? (
+          <>
+            {loadedRows.map((interlinker, i) => (
               <Grid
                 item
                 key={interlinker.id}
@@ -135,20 +135,45 @@ const InterlinkerResults = ({ loading: propLoading = null, setLoading: propSetLo
                 sm={6}
                 xs={12}
               >
-                <InterlinkerCard language={language} interlinker={interlinker} onInterlinkerClick={onInterlinkerClick} mode={mode} />
+                <InterlinkerCard
+                  language={language}
+                  interlinker={interlinker}
+                  onInterlinkerClick={onInterlinkerClick}
+                  mode={mode}
+                />
               </Grid>
-          ))}
-          </> : <TransitionGroup>
-          {loadedRows.map((interlinker, i) => (
-            <Collapse sx={{mt: 4, ml: 3}}>
-                <InterlinkerCard language={language} interlinker={interlinker} onInterlinkerClick={onInterlinkerClick} mode={mode} />
-            </Collapse>
-          ))}
+            ))}
+          </>
+        ) : (
+          <TransitionGroup>
+            {loadedRows.map((interlinker, i) => (
+              <Collapse sx={{ mt: 4, ml: 3 }}>
+                <InterlinkerCard
+                  language={language}
+                  interlinker={interlinker}
+                  onInterlinkerClick={onInterlinkerClick}
+                  mode={mode}
+                />
+              </Collapse>
+            ))}
 
-        </TransitionGroup>}
+          </TransitionGroup>
+        )}
 
-        <Grid item xs={12} sx={{ justifyContent: "center", textAlign: "center" }}>
-          {hasNextPage && <LoadingButton loading={loading} variant="contained" onClick={handleLoadMore}>{t("Load more")}</LoadingButton>}
+        <Grid
+          item
+          xs={12}
+          sx={{ justifyContent: 'center', textAlign: 'center' }}
+        >
+          {hasNextPage && (
+          <LoadingButton
+            loading={loading}
+            variant='contained'
+            onClick={handleLoadMore}
+          >
+            {t('Load more')}
+          </LoadingButton>
+          )}
         </Grid>
       </Grid>
     </>

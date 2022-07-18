@@ -13,73 +13,73 @@ const initialSettings = {
     direction: 'ltr',
     theme: THEMES.LIGHT.key,
     paletteCustomData: {
-      "light": {
-        "action": {
-          "active": "#6b778c"
+      light: {
+        action: {
+          active: '#6b778c'
         },
-        "background": {
-          "default": "#f4f5f7",
-          "paper": "#ffffff"
+        background: {
+          default: '#f4f5f7',
+          paper: '#ffffff'
         },
-        "error": {
-          "contrastText": "#ffffff",
-          "main": "#f44336"
+        error: {
+          contrastText: '#ffffff',
+          main: '#f44336'
         },
-        "primary": {
-          "contrastText": "#ffffff",
-          "main": "#0f97c7"
+        primary: {
+          contrastText: '#ffffff',
+          main: '#0f97c7'
         },
-        "secondary": {
-          "contrastText": "#000000",
-          "main": "#aa00de"
+        secondary: {
+          contrastText: '#000000',
+          main: '#aa00de'
         },
-        "success": {
-          "contrastText": "#ffffff",
-          "main": "#44c949",
-          "secondary": "#0ca811"
+        success: {
+          contrastText: '#ffffff',
+          main: '#44c949',
+          secondary: '#0ca811'
         },
-        "text": {
-          "primary": "#172b4d",
-          "secondary": "#6b778c"
+        text: {
+          primary: '#172b4d',
+          secondary: '#6b778c'
         },
-        "warning": {
-          "contrastText": "#ffffff",
-          "main": "#ff9800"
+        warning: {
+          contrastText: '#ffffff',
+          main: '#ff9800'
         },
-        "progressBarColor": "#d822a3"
+        progressBarColor: '#d822a3'
       },
-      "dark": {
-        "background": {
-          "default": "#1c2531",
-          "paper": "#293142"
+      dark: {
+        background: {
+          default: '#1c2531',
+          paper: '#293142'
         },
-        "divider": "rgba(145, 158, 171, 0.24)",
-        "error": {
-          "contrastText": "#ffffff",
-          "main": "#f44336"
+        divider: 'rgba(145, 158, 171, 0.24)',
+        error: {
+          contrastText: '#ffffff',
+          main: '#f44336'
         },
-        "primary": {
-          "contrastText": "#ffffff",
-          "main": "#0f97c7"
+        primary: {
+          contrastText: '#ffffff',
+          main: '#0f97c7'
         },
-        "secondary": {
-          "contrastText": "#000000",
-          "main": "#aa00de"
+        secondary: {
+          contrastText: '#000000',
+          main: '#aa00de'
         },
-        "success": {
-          "contrastText": "#ffffff",
-          "main": "#4caf50",
-          "secondary": "#1ac420"
+        success: {
+          contrastText: '#ffffff',
+          main: '#4caf50',
+          secondary: '#1ac420'
         },
-        "text": {
-          "primary": "#ffffff",
-          "secondary": "#919eab"
+        text: {
+          primary: '#ffffff',
+          secondary: '#919eab'
         },
-        "warning": {
-          "contrastText": "#ffffff",
-          "main": "#ff9800"
+        warning: {
+          contrastText: '#ffffff',
+          main: '#ff9800'
         },
-        "progressBarColor": "#d822a3"
+        progressBarColor: '#d822a3'
       }
     }
   }),
@@ -127,46 +127,44 @@ export const SettingsProvider = (props) => {
 
   useEffect(() => {
     const newSettings = restoreSettings() || initialSettings;
-    fetch("/static/customization/settings.json")
-      .then(r => r.json())
-      .then(json => {
-        console.log("GOT CUSTOMIZATION INFO", json)
+    fetch('/static/customization/settings.json')
+      .then((r) => r.json())
+      .then((json) => {
+        console.log('GOT CUSTOMIZATION INFO', json);
         newSettings.themeData = createCustomTheme({
           direction: newSettings.direction,
           theme: newSettings.theme,
           paletteCustomData: json.palette
-        })
-        newSettings.logos = json.logos
-        newSettings.loaded = true
+        });
+        newSettings.logos = json.logos;
+        newSettings.loaded = true;
         setSettings(newSettings);
-      })
+      });
   }, []);
 
   const saveSettings = (updatedSettings) => {
-    const newSettings = { ...settings }
-    if ("theme" in updatedSettings && settings.theme !== updatedSettings.theme) {
-      newSettings.theme = updatedSettings.theme
+    const newSettings = { ...settings };
+    if ('theme' in updatedSettings && settings.theme !== updatedSettings.theme) {
+      newSettings.theme = updatedSettings.theme;
       newSettings.themeData = createCustomTheme({
         direction: settings.direction,
         theme: updatedSettings.theme,
         paletteCustomData: settings.themeData.paletteCustomData
-      })
-      newSettings.loaded = true
+      });
+      newSettings.loaded = true;
       setSettings(newSettings);
       storeSettings(newSettings);
     }
 
-    if ("showHelp" in updatedSettings && settings.showHelp !== updatedSettings.showHelp) {
-      newSettings.showHelp = updatedSettings.showHelp
+    if ('showHelp' in updatedSettings && settings.showHelp !== updatedSettings.showHelp) {
+      newSettings.showHelp = updatedSettings.showHelp;
       setSettings(newSettings);
       storeSettings(newSettings);
     }
 
-    if ("language" in updatedSettings && getLanguage() !== updatedSettings.language) {
+    if ('language' in updatedSettings && getLanguage() !== updatedSettings.language) {
       setLanguage(updatedSettings.language);
     }
-
-    
   };
 
   return (

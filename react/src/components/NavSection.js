@@ -80,7 +80,7 @@ const NavSection = (props) => {
           disableGutters
           disableSticky
           sx={{
-            color: "main.workspaceText",
+            color: 'main.workspaceText',
             fontSize: '0.75rem',
             lineHeight: 2.5,
             fontWeight: 700,

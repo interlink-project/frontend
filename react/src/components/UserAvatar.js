@@ -1,28 +1,33 @@
 import {
-    Avatar
+  Avatar
 } from '@material-ui/core';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useState } from 'react';
-import { usersApi } from "__api__";
+import { usersApi } from '__api__';
 
 const UserAvatar = ({ id = null, user = null, sx = {} }) => {
-    const mounted = useMounted();
-    const [data, setData] = useState(null)
+  const mounted = useMounted();
+  const [data, setData] = useState(null);
 
-    useEffect(() => {
-        if (id && !user) {
-            usersApi.get(id).then(res => {
-                if (mounted.current) {
-                    setData(res.data)
-                }
-            })
+  useEffect(() => {
+    if (id && !user) {
+      usersApi.get(id).then((res) => {
+        if (mounted.current) {
+          setData(res.data);
         }
-        if (user) {
-            setData(user)
-        }
+      });
+    }
+    if (user) {
+      setData(user);
+    }
+  }, [id, user]);
 
-    }, [id, user])
-
-    return <Avatar title={data ? data.full_name : "..."} src={data ? data.picture : ""} sx={sx} />
-}
+  return (
+    <Avatar
+      title={data ? data.full_name : '...'}
+      src={data ? data.picture : ''}
+      sx={sx}
+    />
+  );
+};
 export default UserAvatar;

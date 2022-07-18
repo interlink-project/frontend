@@ -13,19 +13,18 @@ import InterlinkerDetails from './InterlinkerDetails';
 import InterlinkerHeader from './InterlinkerHeader';
 
 const InterlinkerProfile = () => {
-  let { interlinkerId } = useParams();
-  const [interlinker, setInterlinker] = useState(null)
-  const mounted = useMounted()
-  const language = getLanguage()
-  const { t } = useTranslation()
+  const { interlinkerId } = useParams();
+  const [interlinker, setInterlinker] = useState(null);
+  const mounted = useMounted();
+  const language = getLanguage();
+  const { t } = useTranslation();
 
   const getInterlinker = useCallback(async () => {
     try {
-
       if (mounted.current) {
-        interlinkersApi.get(interlinkerId).then(res => {
-          setInterlinker(res)
-        })
+        interlinkersApi.get(interlinkerId).then((res) => {
+          setInterlinker(res);
+        });
       }
     } catch (err) {
       console.error(err);
@@ -39,14 +38,24 @@ const InterlinkerProfile = () => {
   return (
     <>
       <Helmet>
-        <title>{t("Dashboard: Interlinker Details")}</title>
+        <title>{t('Dashboard: Interlinker Details')}</title>
       </Helmet>
-      <Container maxWidth="lg">
+      <Container maxWidth='lg'>
         <Box sx={{ my: 3 }}>
-          {interlinker && <InterlinkerHeader language={language} interlinker={interlinker} />}
+          {interlinker && (
+          <InterlinkerHeader
+            language={language}
+            interlinker={interlinker}
+          />
+          )}
 
         </Box>
-        {interlinker && <InterlinkerDetails language={language} interlinker={interlinker} />}
+        {interlinker && (
+        <InterlinkerDetails
+          language={language}
+          interlinker={interlinker}
+        />
+        )}
       </Container>
     </>
   );

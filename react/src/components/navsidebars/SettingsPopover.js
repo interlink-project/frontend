@@ -22,9 +22,9 @@ const SettingsPopover = () => {
   const [openDialog, setOpenDialog] = useState(null);
   const [values, setValues] = useState(getValues(settings));
 
-  const ENVIRONMENT = window.location
+  const ENVIRONMENT = window.location;
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   useEffect(() => {
     setValues(getValues(settings));
@@ -51,17 +51,22 @@ const SettingsPopover = () => {
   };
 
   const onLoad = function () {
-    console.log("Iframe refreshed", openDialog, this)
-  }
+    console.log('Iframe refreshed', openDialog, this);
+  };
 
   return (
     <>
       {' '}
       <Tooltip title={t('Settings')}>
-        <IconButton color='inherit' ref={anchorRef} onClick={handleOpen}>
+        <IconButton
+          color='inherit'
+          ref={anchorRef}
+          onClick={handleOpen}
+        >
           <Settings fontSize='small' />
         </IconButton>
-      </Tooltip>{' '}
+      </Tooltip>
+      {' '}
       <Popover
         anchorEl={anchorRef.current}
         anchorOrigin={{
@@ -83,7 +88,7 @@ const SettingsPopover = () => {
         >
           <TextField
             fullWidth
-            label={t("Theme")}
+            label={t('Theme')}
             name='theme'
             onChange={(event) => handleChange('theme', event.target.value)}
             select
@@ -94,18 +99,22 @@ const SettingsPopover = () => {
             variant='outlined'
           >
             {Object.keys(THEMES).map((key) => (
-              <option key={key} value={key}>
-                {THEMES[key].label()[0] +
-                  THEMES[key].label().substr(1).toLowerCase()}
+              <option
+                key={key}
+                value={key}
+              >
+                {THEMES[key].label()[0]
+                  + THEMES[key].label().substr(1).toLowerCase()}
               </option>
             ))}
           </TextField>
-        </Box>{' '}
+        </Box>
+        {' '}
         <Box sx={{ p: 2 }}>
           {' '}
           <TextField
             fullWidth
-            label={t("Language")}
+            label={t('Language')}
             name='language'
             onChange={(event) => handleChange('language', event.target.value)}
             select
@@ -116,11 +125,15 @@ const SettingsPopover = () => {
             variant='outlined'
           >
             {LANGUAGES.map((lang) => (
-              <option key={lang.value} value={lang.value}>
+              <option
+                key={lang.value}
+                value={lang.value}
+              >
                 {lang.label}
               </option>
             ))}
-          </TextField>{' '}
+          </TextField>
+          {' '}
         </Box>
         <Box
           sx={{
@@ -133,9 +146,10 @@ const SettingsPopover = () => {
             onClick={handleSave}
             variant='contained'
           >
-            {t("Save")}
+            {t('Save')}
           </Button>
-        </Box>{' '}
+        </Box>
+        {' '}
       </Popover>
     </>
   );

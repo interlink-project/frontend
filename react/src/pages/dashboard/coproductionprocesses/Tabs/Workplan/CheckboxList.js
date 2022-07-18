@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Checkbox, FormHelperText, FormControlLabel, FormGroup, FormControl, FormLabel} from "@material-ui/core";
+import { Box, Checkbox, FormHelperText, FormControlLabel, FormGroup, FormControl, FormLabel } from '@material-ui/core';
 
 export default function CheckboxesGroup() {
   const [state, setState] = React.useState({
@@ -23,29 +23,41 @@ export default function CheckboxesGroup() {
       <FormControl
         required
         error={error}
-        component="fieldset"
+        component='fieldset'
         sx={{ m: 3 }}
-        variant="standard"
+        variant='standard'
       >
-        <FormLabel component="legend">Evaluation checklist</FormLabel>
+        <FormLabel component='legend'>Evaluation checklist</FormLabel>
         <FormGroup>
           <FormControlLabel
-            control={
-              <Checkbox checked={gilad} onChange={handleChange} name="gilad" />
-            }
-            label="Gilad Gray"
+            control={(
+              <Checkbox
+                checked={gilad}
+                onChange={handleChange}
+                name='gilad'
+              />
+            )}
+            label='Gilad Gray'
           />
           <FormControlLabel
-            control={
-              <Checkbox checked={jason} onChange={handleChange} name="jason" />
-            }
-            label="Jason Killian"
+            control={(
+              <Checkbox
+                checked={jason}
+                onChange={handleChange}
+                name='jason'
+              />
+            )}
+            label='Jason Killian'
           />
           <FormControlLabel
-            control={
-              <Checkbox checked={antoine} onChange={handleChange} name="antoine" />
-            }
-            label="Antoine Llorca"
+            control={(
+              <Checkbox
+                checked={antoine}
+                onChange={handleChange}
+                name='antoine'
+              />
+            )}
+            label='Antoine Llorca'
           />
         </FormGroup>
         <FormHelperText>All must be checked</FormHelperText>

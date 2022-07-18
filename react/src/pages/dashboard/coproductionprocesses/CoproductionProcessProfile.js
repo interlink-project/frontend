@@ -26,7 +26,7 @@ function TabPanel(props) {
 
   return (
     <div
-      role="tabpanel"
+      role='tabpanel'
       hidden={value !== index}
       id={`coproduction-process-tab-${index}`}
       aria-labelledby={`coproduction-process-tab-${index}`}
@@ -39,35 +39,40 @@ function TabPanel(props) {
 
 const style = {
   minHeight: '90vh',
-  display: "flex",
-  flexDirection: "column",
-}
-
+  display: 'flex',
+  flexDirection: 'column',
+};
 
 const TabsMobile = ({ tabs, tab, process }) => {
-  const logoExists = process && process.logotype
+  const logoExists = process && process.logotype;
   const navigate = useNavigate();
 
-  return process && <Card sx={{ mb: 1 }}>
+  return process && (
+  <Card sx={{ mb: 1 }}>
     <CardHeader
-      avatar={
-        <Avatar variant="rounded" sx={logoExists ? {} : { bgcolor: red[500] }} aria-label="recipe" src={logoExists && process.logotype_link}>
+      avatar={(
+        <Avatar
+          variant='rounded'
+          sx={logoExists ? {} : { bgcolor: red[500] }}
+          aria-label='recipe'
+          src={logoExists && process.logotype_link}
+        >
           {process && !logoExists && process.name[0]}
         </Avatar>
-      }
-      action={
-        <IconButton aria-label="settings">
+      )}
+      action={(
+        <IconButton aria-label='settings'>
           <MoreVert />
         </IconButton>
-      }
+      )}
       title={process && process.name}
       subheader={process && process.artefact_type}
     />
     <Tabs
-      indicatorColor="secondary"
+      indicatorColor='secondary'
       onChange={(event, value) => navigate(`/dashboard/coproductionprocesses/${process.id}/${value}`)}
       value={tab}
-      aria-label="Coproduction tabs"
+      aria-label='Coproduction tabs'
       centered
     >
       {tabs.map((tab) => (
@@ -79,13 +84,14 @@ const TabsMobile = ({ tabs, tab, process }) => {
       ))}
     </Tabs>
   </Card>
-}
+  );
+};
 
 const CoproductionProcessProfile = () => {
-  let { processId, tab = "overview" } = useParams();
+  const { processId, tab = 'overview' } = useParams();
   const dispatch = useDispatch();
   const mounted = useMounted();
-  const { trackEvent } = useMatomo()
+  const { trackEvent } = useMatomo();
 
   const { process, loading } = useSelector((state) => state.process);
 
@@ -97,15 +103,14 @@ const CoproductionProcessProfile = () => {
       category: process.id,
       action: 'tree-item-selected',
       name: item.id
-    })
-    dispatch(setSelectedTreeItem(item, callback))
-  }
+    });
+    dispatch(setSelectedTreeItem(item, callback));
+  };
 
   const getCoproductionProcess = useCallback(async () => {
     try {
-
       if (mounted.current) {
-        dispatch(getProcess(processId))
+        dispatch(getProcess(processId));
       }
     } catch (err) {
       console.error(err);
@@ -116,7 +121,7 @@ const CoproductionProcessProfile = () => {
     getCoproductionProcess();
   }, [getCoproductionProcess]);
 
-  const t = useCustomTranslation(process && process.language)
+  const t = useCustomTranslation(process && process.language);
 
   const tabs = [
     { label: t('Overview'), value: 'overview' },
@@ -129,7 +134,7 @@ const CoproductionProcessProfile = () => {
   return (
     <>
       <Helmet>
-        <title>{t("dashboard-title")}</title>
+        <title>{t('dashboard-title')}</title>
       </Helmet>
 
       <Box
@@ -139,34 +144,56 @@ const CoproductionProcessProfile = () => {
       >
         <Box sx={{ mt: 3 }}>
           <Container maxWidth='xl'>
-            {showMobileTabs && <TabsMobile tabs={tabs} tab={tab} process={process} />}
-            {loading || !process ? <MainSkeleton /> :
-              <>
-                <TabPanel value={tab} index="overview">
-                  <Card sx={style}>
-                    <Overview />
-                  </Card>
-                </TabPanel>
-                <TabPanel value={tab} index="workplan">
-                  <Card sx={{ ...style, mb: 3 }}>
-                    <Workplan setSelectedTreeItem={_setSelectedTreeItem} />
-                  </Card>
-                </TabPanel>
-                <TabPanel value={tab} index="guide">
-                  <Card sx={{ ...style, mb: 3 }}>
-                    <Guide setSelectedTreeItem={_setSelectedTreeItem} />
-                  </Card>
-                </TabPanel>
-                <TabPanel value={tab} index="team">
-                <TeamTab />
-                </TabPanel>
-                <TabPanel value={tab} index="settings">
-                  <Card >
-                    <SettingsTab />
-                  </Card>
-                </TabPanel>
-              </>
-            }
+            {showMobileTabs && (
+            <TabsMobile
+              tabs={tabs}
+              tab={tab}
+              process={process}
+            />
+            )}
+            {loading || !process ? <MainSkeleton />
+              : (
+                <>
+                  <TabPanel
+                    value={tab}
+                    index='overview'
+                  >
+                    <Card sx={style}>
+                      <Overview />
+                    </Card>
+                  </TabPanel>
+                  <TabPanel
+                    value={tab}
+                    index='workplan'
+                  >
+                    <Card sx={{ ...style, mb: 3 }}>
+                      <Workplan setSelectedTreeItem={_setSelectedTreeItem} />
+                    </Card>
+                  </TabPanel>
+                  <TabPanel
+                    value={tab}
+                    index='guide'
+                  >
+                    <Card sx={{ ...style, mb: 3 }}>
+                      <Guide setSelectedTreeItem={_setSelectedTreeItem} />
+                    </Card>
+                  </TabPanel>
+                  <TabPanel
+                    value={tab}
+                    index='team'
+                  >
+                    <TeamTab />
+                  </TabPanel>
+                  <TabPanel
+                    value={tab}
+                    index='settings'
+                  >
+                    <Card>
+                      <SettingsTab />
+                    </Card>
+                  </TabPanel>
+                </>
+              )}
           </Container>
         </Box>
       </Box>

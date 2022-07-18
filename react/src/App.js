@@ -14,16 +14,22 @@ import routes from './routes/index';
 import './translations/i18n';
 
 export const RemoveTrailingSlash = ({ ...rest }) => {
-  const location = useLocation()
+  const location = useLocation();
 
   // If the last character of the url is '/'
   if (location.pathname.match('/.*/$')) {
-    return <Navigate replace {...rest} to={{
-      pathname: location.pathname.replace(/\/+$/, ""),
-      search: location.search
-    }} />
-  } else return null
-}
+    return (
+      <Navigate
+        replace
+        {...rest}
+        to={{
+          pathname: location.pathname.replace(/\/+$/, ''),
+          search: location.search
+        }}
+      />
+    );
+  } return null;
+};
 
 const App = () => {
   const content = useRoutes(routes);
@@ -33,11 +39,11 @@ const App = () => {
   useScrollReset();
 
   // ANALYTICS
-  const { enableLinkTracking, trackPageView} = useMatomo()
-  enableLinkTracking()
+  const { enableLinkTracking, trackPageView } = useMatomo();
+  enableLinkTracking();
   useEffect(() => {
-    trackPageView()
-  }, [window.location.href])
+    trackPageView();
+  }, [window.location.href]);
 
   return settings.loaded ? (
     <ThemeProvider theme={settings.themeData}>
@@ -45,7 +51,12 @@ const App = () => {
         <CssBaseline />
         <Toaster position='top-center' />
         <Helmet>
-          {PRODUCTION_MODE && <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"></meta>}
+          {PRODUCTION_MODE && (
+          <meta
+            httpEquiv='Content-Security-Policy'
+            content='upgrade-insecure-requests'
+          />
+          )}
         </Helmet>
         <RemoveTrailingSlash />
         {auth.isInitialized ? content : <SplashScreen />}

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { usersApi } from '__api__';
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 
-export let user_id = ""
+export let user_id = '';
 
 const initialState = {
   isInitialized: false,
@@ -33,8 +33,7 @@ const handlers = {
   }),
 };
 
-const reducer = (state, action) =>
-  handlers[action.type] ? handlers[action.type](state, action) : state;
+const reducer = (state, action) => (handlers[action.type] ? handlers[action.type](state, action) : state);
 
 const AuthContext = createContext({
   ...initialState,
@@ -49,12 +48,12 @@ export const AuthProvider = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
   const { pushInstruction } = useMatomo();
-  
+
   useEffect(() => {
-    console.log("executing setUser")
+    console.log('executing setUser');
     usersApi.me().then((data) => {
       console.log('RESPONSE FOR ME', data);
-      user_id = data.sub
+      user_id = data.sub;
       dispatch({
         type: 'SET_USER',
         payload: {
@@ -63,19 +62,18 @@ export const AuthProvider = (props) => {
       });
       pushInstruction('setUserId', data.sub);
     }).catch((e) => {
-      console.error(e)
-    }
-    ).finally(() => dispatch({
+      console.error(e);
+    }).finally(() => dispatch({
       type: 'INITIALIZE',
     }));
   }, []);
 
   const signinRedirect = () => {
     window.location.replace(`/auth/login?redirect_on_callback=${window.location.pathname}`);
-  }
-  
+  };
+
   const logout = () => {
-    window.location.replace(`/auth/logout?redirect_on_callback=${window.location.protocol + "//" + window.location.hostname}`);
+    window.location.replace(`/auth/logout?redirect_on_callback=${`${window.location.protocol}//${window.location.hostname}`}`);
   };
 
   return (

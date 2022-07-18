@@ -14,9 +14,9 @@ import OrganizationsList from 'components/dashboard/organizations/OrganizationsL
 import TeamProfile from 'components/dashboard/organizations/TeamProfile';
 
 const Organizations = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const [searchValue, setSearchValue] = React.useState("");
+  const [searchValue, setSearchValue] = React.useState('');
   const { organizations, loadingOrganizations } = useSelector((state) => state.general);
   const [organizationCreatorOpen, setOrganizationCreatorOpen] = React.useState(false);
   const [organizationLoading, setOrganizationLoading] = React.useState(false);
@@ -25,37 +25,35 @@ const Organizations = () => {
   const dispatch = useDispatch();
   const mounted = useMounted();
 
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated } = useAuth();
 
   const getOrganizationsData = React.useCallback(async (search) => {
-    dispatch(getOrganizations(search))
-
+    dispatch(getOrganizations(search));
   }, [mounted]);
 
   React.useEffect(() => {
-    var delayDebounceFn
+    let delayDebounceFn;
     if (mounted.current) {
       delayDebounceFn = setTimeout(() => {
-        getOrganizationsData(searchValue)
-      }, searchValue ? 800 : 0)
+        getOrganizationsData(searchValue);
+      }, searchValue ? 800 : 0);
     }
     return () => {
       if (delayDebounceFn) {
-        clearTimeout(delayDebounceFn)
+        clearTimeout(delayDebounceFn);
       }
-    }
-  }, [getOrganizationsData, searchValue])
-
+    };
+  }, [getOrganizationsData, searchValue]);
 
   const updateOrganizations = (res) => {
-    setSearchValue("")
-    getOrganizationsData("")
-  }
+    setSearchValue('');
+    getOrganizationsData('');
+  };
 
   return (
     <>
       <Helmet>
-        <title>{t("organizations-title")}</title>
+        <title>{t('organizations-title')}</title>
       </Helmet>
 
       <Box
@@ -74,35 +72,76 @@ const Organizations = () => {
           onCreate={updateOrganizations}
         />
         <Container maxWidth='lg'>
-          <Grid container
-            spacing={3}>
-            <Grid alignItems="center"
+          <Grid
+            container
+            spacing={3}
+          >
+            <Grid
+              alignItems='center'
               container
-              justifyContent="space-between"
+              justifyContent='space-between'
               spacing={3}
               item
-              xs={12}>
+              xs={12}
+            >
               <Grid item>
-                <Typography color='textSecondary' variant='overline'>
-                  {t("Organizations")}
+                <Typography
+                  color='textSecondary'
+                  variant='overline'
+                >
+                  {t('Organizations')}
                 </Typography>
-                <Typography color='textPrimary' variant='h5'>
-                  {t("Organizations and teams present in the platform")}
+                <Typography
+                  color='textPrimary'
+                  variant='h5'
+                >
+                  {t('Organizations and teams present in the platform')}
                 </Typography>
-                <Typography color='textSecondary' variant='subtitle2'>
-                  {t("Here you can find the different organizations that are working on the platform. In each organization teams are created to group the users.")}
+                <Typography
+                  color='textSecondary'
+                  variant='subtitle2'
+                >
+                  {t('Here you can find the different organizations that are working on the platform. In each organization teams are created to group the users.')}
                 </Typography>
               </Grid>
               <Grid item>
-                <LoadingButton onClick={() => setOrganizationCreatorOpen(true)} disabled={!isAuthenticated} loading={loadingOrganizations} fullWidth variant="contained" sx={{ textAlign: "center", mt: 1, mb: 2 }} startIcon={<Add />} size="small">
-                  {t("Create new organization")}
+                <LoadingButton
+                  onClick={() => setOrganizationCreatorOpen(true)}
+                  disabled={!isAuthenticated}
+                  loading={loadingOrganizations}
+                  fullWidth
+                  variant='contained'
+                  sx={{ textAlign: 'center', mt: 1, mb: 2 }}
+                  startIcon={<Add />}
+                  size='small'
+                >
+                  {t('Create new organization')}
                 </LoadingButton>
               </Grid>
             </Grid>
           </Grid>
-          {selectedTeam && <TeamProfile teamId={selectedTeam.id} open={selectedTeam ? true : false} setOpen={setSelectedTeam} onChanges={updateOrganizations} />}
+          {selectedTeam && (
+          <TeamProfile
+            teamId={selectedTeam.id}
+            open={!!selectedTeam}
+            setOpen={setSelectedTeam}
+            onChanges={updateOrganizations}
+          />
+          )}
           <Box sx={{ mt: 4 }}>
-            <OrganizationsList getCollapseElement={(organization) => <OrganizationProfile organizationId={organization.id} onChanges={updateOrganizations} onTeamClick={setSelectedTeam} />} searchValue={searchValue} setSearchValue={setSearchValue} organizations={organizations} loading={loadingOrganizations} />
+            <OrganizationsList
+              getCollapseElement={(organization) => (
+                <OrganizationProfile
+                  organizationId={organization.id}
+                  onChanges={updateOrganizations}
+                  onTeamClick={setSelectedTeam}
+                />
+              )}
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+              organizations={organizations}
+              loading={loadingOrganizations}
+            />
           </Box>
         </Container>
       </Box>

@@ -5,7 +5,7 @@ import TRANSLATIONS_EN from './en';
 import TRANSLATIONS_ES from './es';
 import TRANSLATIONS_LV from './lv';
 import TRANSLATIONS_IT from './it';
-import { ALLOWED_LANGUAGES, DEFAULT_LANGUAGE } from 'configuration';
+import { ALLOWED_LANGUAGES, DEFAULT_LANGUAGE } from '../configuration';
 
 export const LANGUAGES = [
   ...ALLOWED_LANGUAGES.includes('en') ? [

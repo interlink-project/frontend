@@ -61,31 +61,40 @@ const DashboardLayout = () => {
   const theme = useTheme();
   const onMobile = !useMediaQuery(theme.breakpoints.up('sm'));
 
-  const coproductionProcessLocation = location.pathname.indexOf("/dashboard/coproductionprocesses/") > -1
+  const coproductionProcessLocation = location.pathname.indexOf('/dashboard/coproductionprocesses/') > -1;
 
-  const content = <DashboardLayoutContainer>
-    <DashboardLayoutContent>
-      <Outlet />
-    </DashboardLayoutContent>
-  </DashboardLayoutContainer>
+  const content = (
+    <DashboardLayoutContainer>
+      <DashboardLayoutContent>
+        <Outlet />
+      </DashboardLayoutContent>
+    </DashboardLayoutContainer>
+  );
 
   return (
     <DashboardLayoutRoot>
-      {coproductionProcessLocation && <ProcessSidebar
+      {coproductionProcessLocation && (
+      <ProcessSidebar
         onMobileClose={() => setIsSidebarMobileOpen(false)}
         openMobile={!onMobile && isSidebarMobileOpen}
-      />}
-      {onMobile ?
-        <>
-          <MobileLayoutWrapper>{content}</MobileLayoutWrapper>
-          <DashboardMobileAppbar />
-        </>
-        :
-        <>
-          <DashboardNavbar showOpenMenuButton={coproductionProcessLocation} onSidebarMobileOpen={() => setIsSidebarMobileOpen(true)} />
-          {coproductionProcessLocation ? <DashboardLayoutWrapperWithNavbar>{content}</DashboardLayoutWrapperWithNavbar> : <DashboardLayoutWrapper>{content}</DashboardLayoutWrapper>}
-        </>
-      }
+      />
+      )}
+      {onMobile
+        ? (
+          <>
+            <MobileLayoutWrapper>{content}</MobileLayoutWrapper>
+            <DashboardMobileAppbar />
+          </>
+        )
+        : (
+          <>
+            <DashboardNavbar
+              showOpenMenuButton={coproductionProcessLocation}
+              onSidebarMobileOpen={() => setIsSidebarMobileOpen(true)}
+            />
+            {coproductionProcessLocation ? <DashboardLayoutWrapperWithNavbar>{content}</DashboardLayoutWrapperWithNavbar> : <DashboardLayoutWrapper>{content}</DashboardLayoutWrapper>}
+          </>
+        )}
 
     </DashboardLayoutRoot>
   );

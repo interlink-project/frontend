@@ -8,7 +8,7 @@ import { styled } from '@material-ui/styles';
 import clsx from 'clsx';
 import { forwardRef } from 'react';
 
-const CustomContent = forwardRef(function CustomContent(props, ref) {
+const CustomContent = forwardRef((props, ref) => {
   const {
     classes,
     className,
@@ -56,13 +56,16 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
       ref={ref}
     >
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions */}
-      <div onClick={handleExpansionClick} className={classes.iconContainer}>
+      <div
+        onClick={handleExpansionClick}
+        className={classes.iconContainer}
+      >
         {icon}
       </div>
       {iconProp}
       <Typography
         onClick={handleSelectionClick}
-        component="div"
+        component='div'
         className={classes.label}
       >
         {label}
@@ -71,9 +74,11 @@ const CustomContent = forwardRef(function CustomContent(props, ref) {
   );
 });
 
-
 const StyledTreeItem = styled((props) => (
-  <TreeItem ContentComponent={CustomContent} {...props} />
+  <TreeItem
+    ContentComponent={CustomContent}
+    {...props}
+  />
 ))(({ theme }) => ({
   [`& .${treeItemClasses.iconContainer}`]: {
     '& .close': {
@@ -86,6 +91,5 @@ const StyledTreeItem = styled((props) => (
     borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
   },
 }));
-
 
 export default StyledTreeItem;

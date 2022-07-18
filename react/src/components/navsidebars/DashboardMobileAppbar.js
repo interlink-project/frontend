@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { BottomNavigation, BottomNavigationAction, Badge } from '@material-ui/core';
 import { AccountBox, Folder, Dashboard, Notifications } from '@material-ui/icons';
@@ -19,7 +18,7 @@ const sections = [{
   path: '/notifications',
   icon: <Badge
     color='error'
-    variant="dot"
+    variant='dot'
   >
     <Notifications />
   </Badge>,
@@ -42,15 +41,22 @@ const DashboardMobileAppbar = () => {
         setValue(newValue);
       }}
       sx={{
-        borderTop: `1px solid #B7DFEE`,
-        position: "fixed",
-        left: "0",
-        bottom: "0",
-        width: "100%",
-        textAlign: "center"
+        borderTop: '1px solid #B7DFEE',
+        position: 'fixed',
+        left: '0',
+        bottom: '0',
+        width: '100%',
+        textAlign: 'center'
       }}
     >
-      {sections.map(el => <BottomNavigationAction sx={{mt: 1}} key={el.path} label={el.title} icon={el.icon} />)}
+      {sections.map((el) => (
+        <BottomNavigationAction
+          sx={{ mt: 1 }}
+          key={el.path}
+          label={el.title}
+          icon={el.icon}
+        />
+      ))}
     </BottomNavigation>
   );
 };

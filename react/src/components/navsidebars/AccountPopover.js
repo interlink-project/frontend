@@ -17,7 +17,7 @@ const AccountPopover = () => {
   const auth = useAuth();
   const { user, isAuthenticated } = auth;
   const [open, setOpen] = useState(false);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   const handleOpen = () => {
     setOpen(true);
@@ -123,22 +123,29 @@ const AccountPopover = () => {
             onClick={handleLogout}
             variant='outlined'
           >
-            {t("Logout")}
+            {t('Logout')}
           </Button>
         </Box>
       </Popover>
     </>
-  ) : <Box
-    component={ButtonBase}
-    sx={{
-      alignItems: 'center',
-      display: 'flex',
-    }}
-    onClick={() => auth.signinRedirect()}
-  >
-    <Typography sx={{ mr: 1 }} variant="overline">{t("Login")}</Typography>
-    <Login />
-  </Box>;
+  ) : (
+    <Box
+      component={ButtonBase}
+      sx={{
+        alignItems: 'center',
+        display: 'flex',
+      }}
+      onClick={() => auth.signinRedirect()}
+    >
+      <Typography
+        sx={{ mr: 1 }}
+        variant='overline'
+      >
+        {t('Login')}
+      </Typography>
+      <Login />
+    </Box>
+  );
 };
 
 export default AccountPopover;

@@ -1,6 +1,6 @@
 import { Avatar, Box, Card, CardHeader, IconButton, Link, Rating, Typography } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
-import moment from "moment";
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
@@ -10,37 +10,45 @@ const InterlinkerReviewCard = ({ mine, authorAvatar, title, authorName, comment,
 
   return (
     <Card>
-      {mine && false && <IconButton onClick={() => _setEditMode(true)} sx={{
-        position: "relative",
-        right: "10px",
-        top: "10px",
-        float: "right"
-      }}>
+      {mine && false && (
+      <IconButton
+        onClick={() => _setEditMode(true)}
+        sx={{
+          position: 'relative',
+          right: '10px',
+          top: '10px',
+          float: 'right'
+        }}
+      >
         <Edit />
-      </IconButton>}
+      </IconButton>
+      )}
       <CardHeader
         avatar={(
           <Avatar src={authorAvatar} />
         )}
         disableTypography
-        subheader={
+        subheader={(
           <Typography
             color='textSecondary'
             variant='body2'
             sx={{ ml: 1 }}
           >
             {moment(createdAt).fromNow()}
-          </Typography>}
-        title={
-          <><Typography
-            color='textPrimary'
-            sx={{ ml: 1 }}
-            variant='subtitle2'
-          >
-            {authorName}
           </Typography>
+        )}
+        title={(
+          <>
+            <Typography
+              color='textPrimary'
+              sx={{ ml: 1 }}
+              variant='subtitle2'
+            >
+              {authorName}
+            </Typography>
 
-          </>}
+          </>
+        )}
       />
       <Box
         sx={{

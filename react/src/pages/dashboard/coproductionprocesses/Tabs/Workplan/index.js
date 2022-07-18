@@ -1,92 +1,89 @@
-import { Grid, Skeleton, ToggleButton, ToggleButtonGroup } from "@material-ui/core";
-import { PhaseTabs } from "components/dashboard/tree";
-import useDependantTranslation from "hooks/useDependantTranslation";
-import useMounted from "hooks/useMounted";
+import { Grid, Skeleton, ToggleButton, ToggleButtonGroup } from '@material-ui/core';
+import { PhaseTabs } from 'components/dashboard/tree';
+import useDependantTranslation from 'hooks/useDependantTranslation';
+import useMounted from 'hooks/useMounted';
 import useSettings from 'hooks/useSettings';
 import $ from 'jquery';
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from "react-router";
-import Gantt from "./FrappeGantt";
-import "./FrappeGantt.css";
+import { useNavigate } from 'react-router';
+import Gantt from './FrappeGantt';
+import './FrappeGantt.css';
 
 const setNewGantt = (id, props, tasks, darkMode, onClick) => {
-  document.getElementById("gantt").innerHTML = "";
+  document.getElementById('gantt').innerHTML = '';
   if (tasks.length > 0) {
     new Gantt(id, tasks, props);
 
     if (darkMode) {
-      $(".gantt .grid-header").css("fill", "#293142")
-      $(".gantt .grid-row").css("fill", "#1c2531")
-      $(".gantt .grid-row:nth-child(even)").css("fill", "#293142")
-      $(".gantt .tick").css("stroke", "#606060")
-      $(".gantt .upper-text").css("fill", "white")
-      $(".gantt .lower-text").css("fill", "white")
+      $('.gantt .grid-header').css('fill', '#293142');
+      $('.gantt .grid-row').css('fill', '#1c2531');
+      $('.gantt .grid-row:nth-child(even)').css('fill', '#293142');
+      $('.gantt .tick').css('stroke', '#606060');
+      $('.gantt .upper-text').css('fill', 'white');
+      $('.gantt .lower-text').css('fill', 'white');
     }
 
-    $(".gantt-phase").each(function (index1) {
-      const id = $(this).attr("data-id")
-      $(this).on("click", function () {
-        onClick(id, "phase")
+    $('.gantt-phase').each(function (index1) {
+      const id = $(this).attr('data-id');
+      $(this).on('click', () => {
+        onClick(id, 'phase');
       });
-    })
+    });
 
-    $(".gantt-objective").each(function (index1) {
-      const id = $(this).attr("data-id")
-      $(this).on("click", function () {
-        onClick(id, "objective")
+    $('.gantt-objective').each(function (index1) {
+      const id = $(this).attr('data-id');
+      $(this).on('click', () => {
+        onClick(id, 'objective');
       });
-    })
+    });
 
-    $(".gantt-task").each(function (index1) {
-      const id = $(this).attr("data-id")
-      $(this).on("click", function () {
-        onClick(id, "task")
+    $('.gantt-task').each(function (index1) {
+      const id = $(this).attr('data-id');
+      $(this).on('click', () => {
+        onClick(id, 'task');
       });
-    })
+    });
   } else {
-    console.log("NO TASKS")
+    console.log('NO TASKS');
   }
-
-
-}
+};
 
 const Workplan = ({ setSelectedTreeItem }) => {
   const { settings } = useSettings();
-  const [viewMode, setViewMode] = useState("Week")
+  const [viewMode, setViewMode] = useState('Week');
   const { process, tree, treeitems, updating, selectedPhaseTab, selectedTreeItem } = useSelector((state) => state.process);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const { t } = useDependantTranslation()
+  const { t } = useDependantTranslation();
 
-  const view_modes = { "Day": t("Day"), "Week": t("Week"), "Month": t("Month"), "Year": t("Year") }
+  const view_modes = { Day: t('Day'), Week: t('Week'), Month: t('Month'), Year: t('Year') };
 
   const getClasses = (element) => {
-    let classes = ""
-    if (element.status === "in_progress") {
-      classes += " in_progress"
+    let classes = '';
+    if (element.status === 'in_progress') {
+      classes += ' in_progress';
     }
-    if (element.status === "finished") {
-      classes += " finished"
+    if (element.status === 'finished') {
+      classes += ' finished';
     }
-    if (element.status === "awaiting") {
-      classes += " awaiting"
+    if (element.status === 'awaiting') {
+      classes += ' awaiting';
     }
     if (element.start_date) {
-      classes += " timed"
+      classes += ' timed';
     }
     if (element && selectedTreeItem && element.id === selectedTreeItem.id) {
-      classes += " blink"
-      setTimeout(function () {
-        $(`[data-id="${element.id}"]`).removeClass("blink")
+      classes += ' blink';
+      setTimeout(() => {
+        $(`[data-id="${element.id}"]`).removeClass('blink');
       }, 1000);
-
     }
-    return classes
-  }
+    return classes;
+  };
 
   const getTasks = () => {
-    const final = []
+    const final = [];
 
     if (selectedPhaseTab) {
       final.push({
@@ -95,40 +92,40 @@ const Workplan = ({ setSelectedTreeItem }) => {
         start: selectedPhaseTab.start_date,
         end: selectedPhaseTab.end_date,
         // progress: phase.progress,
-        type: "phase",
-        custom_class: 'gantt-phase' + getClasses(selectedPhaseTab),
+        type: 'phase',
+        custom_class: `gantt-phase${getClasses(selectedPhaseTab)}`,
         read_only: true
-      })
-      selectedPhaseTab.children.forEach(objective => {
+      });
+      selectedPhaseTab.children.forEach((objective) => {
         final.push({
           id: objective.id,
           name: objective.name,
           dependencies: objective.prerequisites_ids && objective.prerequisites_ids.length > 0 ? [...objective.prerequisites_ids] : [objective.phase_id],
           start: objective.start_date || selectedPhaseTab.start_date || null,
           end: objective.end_date,
-          type: "objective",
+          type: 'objective',
           // progress: objective.progress,
-          custom_class: 'gantt-objective' + getClasses(objective),
+          custom_class: `gantt-objective${getClasses(objective)}`,
           read_only: true
-        })
-        objective.children.forEach(task => {
+        });
+        objective.children.forEach((task) => {
           final.push({
             id: task.id,
             name: task.name,
             dependencies: task.prerequisites_ids && task.prerequisites_ids.length > 0 ? [...task.prerequisites_ids] : [task.objective_id],
             start: task.start_date || objective.start_date || selectedPhaseTab.start_date || null,
             end: task.end_date,
-            type: "task",
-            custom_class: 'gantt-task' + getClasses(task),
+            type: 'task',
+            custom_class: `gantt-task${getClasses(task)}`,
             // read_only: true
-          })
-        })
-      })
+          });
+        });
+      });
     }
 
-    return final
+    return final;
     // .sort((a, b) => a.start_date < b.start_date)
-  }
+  };
 
   function stopEvent(event) {
     event.preventDefault();
@@ -137,9 +134,9 @@ const Workplan = ({ setSelectedTreeItem }) => {
 
   useEffect(() => {
     if (updating) {
-      return
+      return;
     }
-    const id = "#gantt"
+    const id = '#gantt';
     const props = {
       header_height: 50,
       column_width: 30,
@@ -152,50 +149,81 @@ const Workplan = ({ setSelectedTreeItem }) => {
       view_mode: viewMode,
       date_format: 'YYYY-MM-DD',
       custom_popup_html: null,
-    }
-    const readOnly = true
+    };
+    const readOnly = true;
     if (readOnly) {
       props.on_view_change = function () {
-        var bars = document.querySelectorAll(id + " .bar-group");
+        const bars = document.querySelectorAll(`${id} .bar-group`);
         for (var i = 0; i < bars.length; i++) {
-          bars[i].addEventListener("mousedown", stopEvent, true);
+          bars[i].addEventListener('mousedown', stopEvent, true);
         }
-        var handles = document.querySelectorAll(id + " .handle-group");
+        const handles = document.querySelectorAll(`${id} .handle-group`);
         for (var i = 0; i < handles.length; i++) {
           handles[i].remove();
         }
-      }
+      };
     }
-    setNewGantt(id, props, getTasks(), settings.theme === "DARK", (id, type) => {
-      setSelectedTreeItem(treeitems.find(el => el.id === id), () => navigate(`/dashboard/coproductionprocesses/${process.id}/guide`))
-    })
-
+    setNewGantt(id, props, getTasks(), settings.theme === 'DARK', (id, type) => {
+      setSelectedTreeItem(treeitems.find((el) => el.id === id), () => navigate(`/dashboard/coproductionprocesses/${process.id}/guide`));
+    });
   }, [viewMode, selectedPhaseTab, updating, tree, setNewGantt]);
 
   return (
-    <Grid container style={{ overflow: "hidden" }}>
-      <Grid item xs={12}>
-        <PhaseTabs t={t} selectedId={selectedPhaseTab.id} phases={tree} onSelect={(value) => {
-          const treeitem = treeitems.find(el => el.id === value)
-          setSelectedTreeItem(treeitem)
-        }} />
+    <Grid
+      container
+      style={{ overflow: 'hidden' }}
+    >
+      <Grid
+        item
+        xs={12}
+      >
+        <PhaseTabs
+          t={t}
+          selectedId={selectedPhaseTab.id}
+          phases={tree}
+          onSelect={(value) => {
+            const treeitem = treeitems.find((el) => el.id === value);
+            setSelectedTreeItem(treeitem);
+          }}
+        />
         <ToggleButtonGroup
-          color="primary"
+          color='primary'
           value={viewMode}
           fullWidth
           exclusive
-          sx={{ backgroundColor: "background.paper" }}
+          sx={{ backgroundColor: 'background.paper' }}
           onChange={(event, view_mode) => view_mode && view_mode !== viewMode && setViewMode(view_mode)}
         >
-          {Object.keys(view_modes).map((el, i) => <ToggleButton key={`separatorButton${el}`} value={el}>{view_modes[el]}</ToggleButton>)}
+          {Object.keys(view_modes).map((el, i) => (
+            <ToggleButton
+              key={`separatorButton${el}`}
+              value={el}
+            >
+              {view_modes[el]}
+            </ToggleButton>
+          ))}
 
         </ToggleButtonGroup>
       </Grid>
-      <Grid item xs={12}>
-        {updating ? <Skeleton variant="rectangular" width={"100%"} height={"70vh"} /> : <div style={{ alignItems: "start", height: "100%" }} id="gantt" />}
+      <Grid
+        item
+        xs={12}
+      >
+        {updating ? (
+          <Skeleton
+            variant='rectangular'
+            width='100%'
+            height='70vh'
+          />
+        ) : (
+          <div
+            style={{ alignItems: 'start', height: '100%' }}
+            id='gantt'
+          />
+        )}
       </Grid>
     </Grid>
   );
 };
 
-export default Workplan
+export default Workplan;

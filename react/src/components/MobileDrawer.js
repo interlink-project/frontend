@@ -46,17 +46,18 @@ function MobileDrawer(props) {
       />
       <SwipeableDrawer
         container={container}
-        anchor="bottom"
+        anchor='bottom'
         open={open}
         onClose={onClose}
-        onOpen={() => console.log("open")}
+        onOpen={() => console.log('open')}
         swipeAreaWidth={drawerBleeding}
-        disableSwipeToOpen={true}
+        disableSwipeToOpen
         ModalProps={{
           keepMounted: true,
         }}
       >
-          {open && <StyledBox
+        {open && (
+        <StyledBox
           sx={{
             position: 'absolute',
             top: title ? -drawerBleeding : -32,
@@ -68,9 +69,10 @@ function MobileDrawer(props) {
           }}
         >
           <Puller />
-            <Typography sx={{ p: 2, color: 'text.secondary' }}>{title}</Typography>
-        </StyledBox>}
-        
+          <Typography sx={{ p: 2, color: 'text.secondary' }}>{title}</Typography>
+        </StyledBox>
+        )}
+
         <StyledBox
           sx={{
             px: 2,

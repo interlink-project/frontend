@@ -39,7 +39,7 @@ const MainSidebar = (props) => {
           p: 2,
         }}
       >
-          <LandingNavbarLogo />
+        <LandingNavbarLogo />
         <Box sx={{ mt: 3 }}>
           {landingPages.map((el, i) => (
             <React.Fragment key={`sidebarItem${i}`}>
@@ -60,7 +60,6 @@ const MainSidebar = (props) => {
             </React.Fragment>
           ))}
         </Box>
-
 
         <UserAreaButton />
       </Box>

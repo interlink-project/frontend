@@ -7,22 +7,21 @@ const InterlinkerBrowse = Loadable(
   lazy(() => import('../components/dashboard/interlinkers/browse/InterlinkerBrowse'))
 );
 
-const HomeCatalogue = () => {
-  return (
-    <>
-      <Helmet>
-        <title>Interlink: Catalogue</title>
-      </Helmet>
-      <Box sx={{ backgroundColor: 'background.default',
-          minHeight: '100%',
-          py: 6 }}>
-        <Container maxWidth="lg">
-          <InterlinkerBrowse />
+const HomeCatalogue = () => (
+  <>
+    <Helmet>
+      <title>Interlink: Catalogue</title>
+    </Helmet>
+    <Box sx={{ backgroundColor: 'background.default',
+      minHeight: '100%',
+      py: 6 }}
+    >
+      <Container maxWidth='lg'>
+        <InterlinkerBrowse />
 
-        </Container>
-      </Box>
-    </>
-  );
-};
+      </Container>
+    </Box>
+  </>
+);
 
 export default HomeCatalogue;

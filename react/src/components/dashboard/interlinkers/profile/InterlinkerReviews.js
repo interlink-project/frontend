@@ -9,36 +9,36 @@ import useAuth from 'hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 
 const InterlinkerRatings = ({ interlinker }) => {
-  const [loading, setLoading] = useState(true)
-  const [ratings, setRatings] = useState([])
+  const [loading, setLoading] = useState(true);
+  const [ratings, setRatings] = useState([]);
 
-  const [newCommentDialog, _setNewCommentDialog] = useState(false)
-  const [title, setTitle] = useState("")
-  const [text, setText] = useState("")
-  const [value, setValue] = useState(5)
+  const [newCommentDialog, _setNewCommentDialog] = useState(false);
+  const [title, setTitle] = useState('');
+  const [text, setText] = useState('');
+  const [value, setValue] = useState(5);
   const auth = useAuth();
 
-  const { user, isAuthenticated } = auth
-  const {t} = useTranslation()
+  const { user, isAuthenticated } = auth;
+  const { t } = useTranslation();
 
   const setNewCommentDialog = (bool) => {
-    setTitle("")
-    setText("")
-    setValue("")
-    _setNewCommentDialog(bool)
-  }
+    setTitle('');
+    setText('');
+    setValue('');
+    _setNewCommentDialog(bool);
+  };
 
   const update = () => {
-    setLoading(true)
+    setLoading(true);
     ratingsApi.getMulti(interlinker.id).then((res) => {
       setLoading(false);
-      setRatings(res.items)
-      setNewCommentDialog(false)
-    })
-  }
+      setRatings(res.items);
+      setNewCommentDialog(false);
+    });
+  };
   useEffect(() => {
-    update()
-  }, [])
+    update();
+  }, []);
 
   const rating = ratings.reduce((acc, rating) => acc + rating.value, 0) / ratings.length;
 
@@ -56,7 +56,7 @@ const InterlinkerRatings = ({ interlinker }) => {
                 color='textPrimary'
                 variant='subtitle2'
               >
-                {t("overall-rating")}
+                {t('overall-rating')}
               </Typography>
             </Grid>
             <Grid item>
@@ -66,7 +66,11 @@ const InterlinkerRatings = ({ interlinker }) => {
                   display: 'flex'
                 }}
               >
-                <Rating value={rating} precision={0.5} readOnly />
+                <Rating
+                  value={rating}
+                  precision={0.5}
+                  readOnly
+                />
                 <Typography
                   color='textPrimary'
                   sx={{ ml: 2 }}
@@ -83,13 +87,22 @@ const InterlinkerRatings = ({ interlinker }) => {
               >
                 {ratings.length}
                 {' '}
-                {t("ratings-in-total")}
+                {t('ratings-in-total')}
               </Typography>
             </Grid>
           </Grid>
         </CardContent>
       </Card>
-      {isAuthenticated && <Button variant="text" fullWidth onClick={() => setNewCommentDialog(true)} sx={{ mt: 1 }}>{t("rate-interlinker")}</Button>}
+      {isAuthenticated && (
+      <Button
+        variant='text'
+        fullWidth
+        onClick={() => setNewCommentDialog(true)}
+        sx={{ mt: 1 }}
+      >
+        {t('rate-interlinker')}
+      </Button>
+      )}
 
       {loading ? <CircularProgress /> : ratings.map((rating) => (
         <Box
@@ -107,28 +120,46 @@ const InterlinkerRatings = ({ interlinker }) => {
           />
         </Box>
       ))}
-      <Dialog open={newCommentDialog} onClose={() => setNewCommentDialog(false)} fullWidth >
-        <Stack spacing={3} direction="column" sx={{ p: 3 }}>
+      <Dialog
+        open={newCommentDialog}
+        onClose={() => setNewCommentDialog(false)}
+        fullWidth
+      >
+        <Stack
+          spacing={3}
+          direction='column'
+          sx={{ p: 3 }}
+        >
           <TextField
             fullWidth
-            label={t("title")}
-            variant="standard"
+            label={t('title')}
+            variant='standard'
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <TextField
             fullWidth
-            label={t("body")}
+            label={t('body')}
             multiline
             rows={3}
-            variant="standard"
+            variant='standard'
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
-          <Rating value={value} onChange={(event, newValue) => {
-            setValue(newValue);
-          }} />
-          <LoadingButton loading={loading} variant="contained" size="small" onClick={() => ratingsApi.create(title, text, value, interlinker.id).then(update)}>{t("Send")}</LoadingButton>
+          <Rating
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+          />
+          <LoadingButton
+            loading={loading}
+            variant='contained'
+            size='small'
+            onClick={() => ratingsApi.create(title, text, value, interlinker.id).then(update)}
+          >
+            {t('Send')}
+          </LoadingButton>
         </Stack>
 
       </Dialog>

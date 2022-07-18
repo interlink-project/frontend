@@ -4,7 +4,7 @@ import useAuth from '../../hooks/useAuth';
 const AuthGuard = (props) => {
   const { children } = props;
   const auth = useAuth();
-  
+
   if (!auth.isAuthenticated) {
     auth.signinRedirect();
     return <span>loading</span>;
