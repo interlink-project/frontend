@@ -100,7 +100,7 @@ export default function TimeLine({ }) {
                 {t('Select the coproduction schema')}
               </Typography>
               {hasSchema
-                ? <Alert severity='success'>{t('The schema has been selected. You can delete the resulting coproduction tree in the settings section.')}</Alert>
+                ? <Alert severity='success'>{t('The schema has been selected. Now you can access the Guide and the Workplan sections. Nevertheless, you can undo this action (clear the coproduction tree) in the settings section.')}</Alert>
                 : <Alert severity='info'>{t('The schemas are used to create the initial phases, tasks and objectives of the co-production process. From there, the resulting co-production tree can be freely modified. Click on the button and search for the optimal coproduction schema for your process.')}</Alert>}
               {!hasSchema && (
               <Button
