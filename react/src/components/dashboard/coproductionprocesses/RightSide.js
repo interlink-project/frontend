@@ -41,6 +41,8 @@ const RightSide = ({ softwareInterlinkers }) => {
       setPermissions(res);
       if (isTask && mounted.current && res && res.your_permissions && res.your_permissions.access_assets_permission) {
         getAssets();
+      }else{
+        setAssets([])
       }
     });
   }, [selectedTreeItem]);
