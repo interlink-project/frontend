@@ -8,10 +8,10 @@ You may access the INTERLINK catalogue by clicking on CATALOGUE top menu option.
 Next some examples of the actions that you can currently carry out in the INTERLINKERs catalogue:
 - Enter in the catalogue of INTERLINNKERs by clicking on CATALOGUE top menu
 	![INTERLINKERs catalogue view](images/catalogueview-main.png)
-- Filter by selecting options on Nature filter and select "Internal Knowledge" to see only those INTERLINKERs of type "knowledge" prepared for the project. You may also filter by selecting the PROBLEM PROFILEs INTERLINKERs should address or the Minimum Rating expected from each of them. Notice that a PROBLEM PROFILE is a problem domain which may be addressed by an INTERLINKER (enabler), e.g. ORG_PROBLEM_8 - Partnership Agreement Definiton 
+- Filter by selecting options on Nature filter and select "Internal Knowledge" to see only those INTERLINKERs of type "knowledge" prepared for the project. You may also filter by selecting the PROBLEM PROFILEs INTERLINKERs should address or the Minimum Rating expected from each of them. Notice that a PROBLEM PROFILE is a problem domain which may be addressed by an INTERLINKER (enabler), e.g. ORG_PROBLEM_8 - Partnership Agreement Definition 
 	![Filtered INTERLINKERs](images/catalogueview-filtering.png)
 - Review contents of an INTERLINKER by clicking on the title of one of the displayed INTERLINKERs
-	![Filtered INTERLINKERs](images/catalogueview-browsing.png)
+	![Browsing an INTERLINKER](images/catalogueview-browsing.png)
 - You main review what offers the selected INTERLINKER by visiting Preview tab
-	![Filtered INTERLINKERs](images/catalogueview-download.png)
+	![Downloading an INTERLINKERs](images/catalogueview-download.png)
 	
