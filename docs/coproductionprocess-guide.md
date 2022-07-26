@@ -16,7 +16,7 @@ Some of the actions that you may carry in the GUIDE view are:
    - You may customize such tree to the specific needs of your co-production process. Currently only DELETE task allowed, soon you will be able to add new objectives & tasks. Check below how a task is removed after having clicked on the PENCIL icon which appears on the right hand side of the task visualization panel.
    ![About to remove a task](images/guideview-removetask.png)
    ![View after removal of task](images/guideview-after-taskremoval.png)
-   - Observe that specific co-production trees can be defined and, hence, selected (e.g. [VARAM case](https://github.com/interlink-project/backend-coproduction/tree/master/seed/schemas/servicedescriptionenhancement))
+   - Observe that specific co-production trees can be defined and, hence, selected (e.g. [VARAM case](https://github.com/interlink-project/interlinkers-data/tree/master/schemas/servicedescriptionenhancement))
    - You may also assign durations to tasks
    ![Assigning duration to task](images/guideview-assignduration.png)
    - Then, we can see in [WORKPLAN view](/docs/en/coproductionprocess-workplan.html) the time span defined, by clicking on the "Time planification" link in the [GUIDE view](/docs/en/coproductionprocess-guide.html) or clicking on the left hand side menu option named "Workplan". You may return to the Guide view, to see the task details by clicking on the name of the task in the WORKPLAN view. 
