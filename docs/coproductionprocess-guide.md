@@ -27,11 +27,11 @@ The GUIDE view allows to instantiate INTERLINKERs to, hence, make progress in th
 
 For intance, let's create a new document to collect feedback of collaboration process.
 - Select a task in the GUIDE view, e.g. ENGAGE > Engage Stakeholders > Create awareness and Communication
-- Notice the INTERLINKERs recommended
+- Notice the INTERLINKERs recommended by clicking on button "Instantiate task resource (result) through recommended INTERLINKERs (enablers)"
         ![Click on button Instantiate task resource (result) through recommended INTERLINKERs (enablers)](images/catalogueview-recommendedinterlinkers0.png)
 	![Notice INTERLINKERs recommended](images/catalogueview-recommendedinterlinkers.png)
 - Select a task in the GUIDE view, e.g. ENGAGE > Define legal and ethical framework > Define a non-disclosure agreement (NDA)
-- Click on the blue button at the bottom entitled "Initiate Procedure" to give place to a new Google Docs document
+- Click on the blue button at the bottom entitled "Instantiate task resource (result) through generic INTERLINKERs (enablers)" to give place to a new Google Docs document
 	![Creating a new Google Docs](images/guideview-genericINTERLINKERinstantiation.png)
 - Select the type of document to create with the support of Google Drive INTERLINKER
 	![Select and name the Google Docs](images/googledrive-interlinker-init.png)
