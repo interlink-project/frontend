@@ -36,7 +36,7 @@ The creator of a team may edit the details of team by clicking on top of the nam
 
 When the user clicks on the blue "Edit button" the user may change the name and description of the team, appoint new members to the team, or assign other administrators to the team. 
 
-![View team details](images/organizationview-editteam1.png)
+![View team details](images/organizationview-editteam2.png)
 
 A user that belongs to a team in an organization but is not its administrator can see the details of the team but cannot perform changes to it. See below, what user "Diego Lopez de Ipina Gonzalez de Artaza" sees regarding team "MORElab researchers"
 ![View team details for non administrator](images/organizationview-viewteamnonadmin.png)
