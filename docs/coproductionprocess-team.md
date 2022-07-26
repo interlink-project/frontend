@@ -42,7 +42,7 @@ A user that belongs to a team in an organization but is not its administrator ca
 ![View team details for non administrator](images/organizationview-viewteamnonadmin.png)
 ![View team details for non administrator](images/organizationview-viewteamnonadmin1.png)
 
-Once a team has been created, coproduction process administrators can associate teams to different coproduction tree nodes, i.e. to phases, objectives or tasks. See the coproduction process GUIDE view for more details. Remember that the main purpose of a team in the Collaborative Environment is to take part in a [co-production process](/docs/en/coproductionprocess-overview.html). Consequently, we need to create a co-production process where the activity to co-create will be managed ![Creating a new co-production project](images/dashboard-createnewcoproductionprocess.png)
+Once a team has been created, coproduction process administrators can associate teams to different coproduction tree nodes, i.e. to phases, objectives or tasks. See the coproduction process GUIDE view for more details. Remember that the main purpose of a team in the Collaborative Environment is to take part in a [co-production process](/docs/en/coproductionprocess-overview.html). Consequently, we need to create a co-production process where the activity to co-create will be managed.
 
 In order to **link the created team to the created co-production process**, you must select a phase, objective or task in a co-production process and within its PERMISSION tab, click on blue button "Add new permission to ...". The following snapshots illustrate the proces.
 - Add new permisson to task
