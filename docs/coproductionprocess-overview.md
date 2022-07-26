@@ -1,6 +1,6 @@
 # Overview of a co-production process
 
-The Overview view is one of the three co-production process visualization available, namely [Overview](/docs/en/coproductionprocess-overview.html#), [Guide](/docs/en/coproductionprocess-guide.html) and [Workplan](/docs/en/coproductionprocess-workplan.html) views.  
+The Overview view is one of the five co-production process visualization available, namely [Overview](/docs/en/coproductionprocess-overview.html#), [Guide](/docs/en/coproductionprocess-guide.html), [Workplan](/docs/en/coproductionprocess-workplan.html), [Team](/docs/en/coproductionprocess-team.html) and [Settings](/docs/en/coproductionprocess-settings.html) views.  
 
 The Overview view is in charge of showing the ongoing activity on a given co-production process. It displays the current set of resources instantiated. The following actions can be performed over the resources listed:
 - Visit the INTERLINKER with which such resources are being created, by clicking on the link with the name of the INTERLINKER.
