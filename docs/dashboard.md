@@ -26,8 +26,11 @@ Once logged in, you are given access to the INTERLINK Dashboard view, where the 
 ![INTERLINK Dashboard view](images/dashboard-view.png)
 
 Within "ORGANIZATIONS" section of dashboard, after the user clicks on "ORGANIZATIONS" top menu option, once a user hits "+ Create new organization", s/he is shown a pop-up window where a new organization details (Name, Description, publickly seen or private, who can create teams option and the default team type, namely, Citizens, Public administration, Non profit organization and For project organization) can be input.
+
+<p align="center">
 ![New organization creation in dashboard](images/dashboard-team-creation.png)
 ![New organization creation in dashboard 2](images/dashboard-team-creation2.png)
+</p>
 
 Once a new organization has been created, the user is shown in the dashboard's organization view those public teams or private teams the loged in user is administrator of.  
 
@@ -35,12 +38,16 @@ Once a new organization has been created, the user is shown in the dashboard's o
 
 The user may browse through the already created teams in an organization or create a new team by clicking on button "+ Create new team". An already existing team details can be modified by clicking on the blue "Edit" button. Notice that new members or administrators can be appointed to a team. New team members are suggested when typing part of their name or email address if they have already registered with the environment. Clicking on the button "+Create new team", the user is given the option of adding a logo to the team, its name, description and to select what type of team will be, i.e. representing "Public administration", "Citizens", "Non profit organization" or "For profit organization". After adding the metadata of the team, the user is given the option to add new members to such team.  
 
+<p align="center">
 ![View of details of team in organization](images/dashboard-team-view.png)
 ![New team creation in dashboard](images/dashboard-team-creation.png)
 ![New team creation in dashboard 2](images/dashboard-team-creation2.png)
+</p>
 
 Within "WORKSPACE" section, after the user clicks on "WORKSPACE" top menu option,, once a user hits "+ Create new process", s/he is shown a pop-up window where a new process details (Name, Language, Description) can be input.
 
+<p align="center">
 ![New team creation in dashboard](images/dashboard-createnewcoproductionprocess.png). 
+ </p>
 
 The user is automatically switched to the ["co-production process" view](/docs/en/coproductionprocess-guide.html). The user can always check the coproduction processess s/he is taking part in by clicking on on "WORKSPACE" top menu option.
