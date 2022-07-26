@@ -46,5 +46,5 @@ For intance, let's create a new document to collect feedback of collaboration pr
 	- Open the generated resource in the form of a presentation and add some modifications
 	
 Finally, you can see the progress achieved, so far, in a given co-production process by visiting the [OVERVIEW view](/docs/en/coproductionprocess-overview.html), by clicking on "Overview" menu item on the left hand-side menu option. In the case that you are administrator of the co-created process you will see two tabs, namely, PROGRES and RESOURCES. Users that are simply taking part in a coproduction process as part of team will only see the RESOURCES tab. 
-	![Resources created so far](images/coproductionproces-overview-NDA.png)
+	![Resources created so far](images/coproductionproces-overview-NDA.PNG)
 	
