@@ -80,6 +80,7 @@ const TabsMobile = ({ tabs, tab, process }) => {
           key={tab.value}
           label={tab.label}
           value={tab.value}
+          disabled={tab.disabled}
         />
       ))}
     </Tabs>
@@ -93,7 +94,7 @@ const CoproductionProcessProfile = () => {
   const mounted = useMounted();
   const { trackEvent } = useMatomo();
 
-  const { process, loading } = useSelector((state) => state.process);
+  const { process, hasSchema, loading } = useSelector((state) => state.process);
 
   const theme = useTheme();
   const showMobileTabs = !useMediaQuery(theme.breakpoints.up('lg'));
@@ -125,9 +126,9 @@ const CoproductionProcessProfile = () => {
 
   const tabs = [
     { label: t('Overview'), value: 'overview' },
-    { label: t('Guide'), value: 'guide' },
-    { label: t('Workplan'), value: 'workplan' },
-    { label: t('Team'), value: 'team' },
+    { label: t('Guide'), value: 'guide', disabled: !hasSchema },
+    { label: t('Workplan'), value: 'workplan', disabled: !hasSchema },
+    { label: t('Team'), value: 'team', disabled: !hasSchema },
     { label: t('Settings'), value: 'settings' },
   ];
 

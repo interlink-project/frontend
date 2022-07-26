@@ -14,7 +14,7 @@ import { getProcess, setSelectedTreeItem } from 'slices/process';
 import PermissionCreate from 'components/dashboard/coproductionprocesses/PermissionCreate';
 
 export default function TeamsTab() {
-  const { process, treeitems } = useSelector((state) => state.process);
+  const { process, hasSchema, treeitems } = useSelector((state) => state.process);
   const dispatch = useDispatch();
   const mounted = useMounted();
   const t = useCustomTranslation(process.language);
@@ -22,6 +22,11 @@ export default function TeamsTab() {
   const [permissionCreatorOpen, setOpenPermissionCreator] = React.useState(false);
   const [creatingPermission, setCreatingPermission] = React.useState(false);
   const navigate = useNavigate();
+
+  if(!hasSchema){
+    navigate(`/dashboard/coproductionprocesses/${process.id}`)
+    return null
+  }
 
   const update = () => {
     dispatch(getProcess(process.id, false));

@@ -52,8 +52,13 @@ const setNewGantt = (id, props, tasks, darkMode, onClick) => {
 const Workplan = ({ setSelectedTreeItem }) => {
   const { settings } = useSettings();
   const [viewMode, setViewMode] = useState('Week');
-  const { process, tree, treeitems, updating, selectedPhaseTab, selectedTreeItem } = useSelector((state) => state.process);
+  const { process, tree, hasSchema, treeitems, updating, selectedPhaseTab, selectedTreeItem } = useSelector((state) => state.process);
   const navigate = useNavigate();
+  
+  if(!hasSchema){
+    navigate(`/dashboard/coproductionprocesses/${process.id}`)
+    return null
+  }
 
   const { t } = useDependantTranslation();
 

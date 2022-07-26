@@ -1,6 +1,6 @@
 import { Alert, Box, Button, Dialog, Stack, Step, StepLabel, Stepper, Typography } from '@material-ui/core';
 import CreateSchema from 'components/dashboard/SchemaSelector';
-import { user_id } from 'contexts/CookieContext';
+import useAuth from 'hooks/useAuth';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router';
 
 export default function TimeLine({ }) {
   const { process, hasSchema, tree } = useSelector((state) => state.process);
+  const {user} = useAuth()
   const t = useCustomTranslation(process.language);
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -104,7 +105,7 @@ export default function TimeLine({ }) {
                 : <Alert severity='info'>{t('The schemas are used to create the initial phases, tasks and objectives of the co-production process. From there, the resulting co-production tree can be freely modified. Click on the button and search for the optimal coproduction schema for your process.')}</Alert>}
               {!hasSchema && (
               <Button
-                disabled={process.creator_id !== user_id}
+                disabled={process.creator_id !== user.id}
                 onClick={handleClickOpen}
                 size='small'
                 variant='contained'
@@ -144,7 +145,7 @@ export default function TimeLine({ }) {
         </Step>
       </Stepper>
 
-      {!hasSchema && process.creator_id === user_id && (
+      {!hasSchema && process.creator_id === user.id && (
       <Dialog
         open={open}
         onClose={handleClose}

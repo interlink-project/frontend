@@ -5,7 +5,6 @@ import { green, red } from '@material-ui/core/colors';
 import { CheckOutlined, Close, Delete } from '@material-ui/icons';
 import { LoadingButton } from '@material-ui/lab';
 import ConfirmationButton from 'components/ConfirmationButton';
-import { user_id } from 'contexts/CookieContext';
 import useAuth from 'hooks/useAuth';
 import useDependantTranslation, { useCustomTranslation } from 'hooks/useDependantTranslation';
 import PermissionCreate from 'components/dashboard/coproductionprocesses/PermissionCreate';
@@ -57,7 +56,7 @@ const PermissionRow = ({ permission, showOnlyMine, setSelectedTeam, isAdministra
 
       {!showOnlyMine && !isAdministrator && (
       <TableCell align='center'>
-        {permission.user_id == user_id || user.teams_ids.includes(permission.team_id) ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
+        {permission.user_id == user.id || user.teams_ids.includes(permission.team_id) ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
       </TableCell>
       )}
       <TableCell align='center'>
@@ -126,7 +125,7 @@ const PermissionsTable = ({ your_permissions, your_roles, language, processId, o
   const setShowOnlyMine = (val) => {
     if (val) {
       setPermissions(
-        element.permissions.filter((permission) => permission.user_id == user_id || user.teams_ids.includes(permission.team_id))
+        element.permissions.filter((permission) => permission.user_id == user.id || user.teams_ids.includes(permission.team_id))
       );
     } else {
       setPermissions(

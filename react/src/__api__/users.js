@@ -6,10 +6,6 @@ class UsersApi extends GeneralApi {
     super('auth/api/v1/users', 'users_cache');
   }
 
-  async get(id) {
-    return axiosInstance.get(`/${this.url}/${id}`);
-  }
-
   async search(search, organization_id = null) {
     const ser = `by=${search}`;
     const org = organization_id ? `organization_id=${organization_id}` : '';

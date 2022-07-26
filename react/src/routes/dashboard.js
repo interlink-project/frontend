@@ -6,7 +6,9 @@ import Loadable from './Loadable';
 const CoproductionProcessProfile = Loadable(
   lazy(() => import('../pages/dashboard/coproductionprocesses/CoproductionProcessProfile'))
 );
-
+const Settings = Loadable(
+  lazy(() => import('../pages/dashboard/settings/index'))
+);
 const Catalogue = Loadable(
   lazy(() => import('../pages/dashboard/interlinkers/Catalogue'))
 );
@@ -29,6 +31,11 @@ export const routes = [
         path: '',
         element: <Workspace />,
       },
+      {
+        path: 'settings',
+        element: <Settings />,
+      },
+
 
       {
         path: 'coproductionprocesses/:processId',
