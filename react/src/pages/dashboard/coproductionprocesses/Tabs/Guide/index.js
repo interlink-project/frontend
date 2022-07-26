@@ -5,15 +5,22 @@ import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 import { softwareInterlinkersApi } from '__api__';
 import SettingsTab from '../Settings';
 
 const Guide = ({ setSelectedTreeItem }) => {
   const mounted = useMounted();
   const [softwareInterlinkers, setSoftwareInterlinkers] = useState([]);
-  const { process, tree, treeitems, selectedPhaseTab, selectedTreeItem, updatingTree } = useSelector((state) => state.process);
+  const { process, tree, hasSchema, treeitems, selectedPhaseTab, selectedTreeItem, updatingTree } = useSelector((state) => state.process);
   const t = useCustomTranslation(process.language);
   const [showCoprod, setShowCoprod] = useState(false);
+  const navigate = useNavigate()
+
+  if(!hasSchema){
+    navigate(`/dashboard/coproductionprocesses/${process.id}`)
+    return null
+  }
 
   useEffect(() => {
     softwareInterlinkersApi.getMulti({}, process.language).then((res) => {

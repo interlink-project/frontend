@@ -5,7 +5,7 @@ import CentricCircularProgress from 'components/CentricCircularProgress';
 import ConfirmationButton from 'components/ConfirmationButton';
 import { OrganizationChip } from 'components/Icons';
 import { TEAM_TYPES, WHO_CAN_CREATE_OPTIONS } from 'constants';
-import { user_id } from 'contexts/CookieContext';
+import useAuth from 'hooks/useAuth';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import moment from 'moment';
@@ -30,7 +30,7 @@ const OrganizationProfile = ({ organizationId, onChanges = null, onTeamClick = n
   const [teamCreatorOpen, setOpenTeamCreator] = useState(false);
   const [creatingTeam, setCreatingTeam] = useState(false);
   const [profileLanguage, setProfileLanguage] = useState(getLanguage());
-
+  const {user} = useAuth()
   const mounted = useMounted();
   const { t } = useDependantTranslation();
 
@@ -146,7 +146,7 @@ const OrganizationProfile = ({ organizationId, onChanges = null, onTeamClick = n
   };
 
   const organization_trans = t('organization');
-  const canCreateTeams = organization.team_creation_permission === 'anyone' || (organization.team_creation_permission === 'administrators' && organization.administrators_ids.includes(user_id)) || (organization.team_creation_permission === 'members' && !organization.public);
+  const canCreateTeams = organization.team_creation_permission === 'anyone' || (organization.team_creation_permission === 'administrators' && organization.administrators_ids.includes(user.id)) || (organization.team_creation_permission === 'members' && !organization.public);
   const isAdmin = organization && organization.current_user_participation && organization.current_user_participation.includes('administrator');
 
   const [tabValue, setTabValue] = useState('teams');

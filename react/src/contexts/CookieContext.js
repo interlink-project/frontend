@@ -39,7 +39,7 @@ const AuthContext = createContext({
   ...initialState,
   logout: () => Promise.resolve(),
   signinRedirect: () => Promise.resolve(),
-  getUser: () => Promise.resolve(),
+  setUser: () => Promise.resolve(),
 });
 
 export const AuthProvider = (props) => {
@@ -53,13 +53,7 @@ export const AuthProvider = (props) => {
     console.log('executing setUser');
     usersApi.me().then((data) => {
       console.log('RESPONSE FOR ME', data);
-      user_id = data.sub;
-      dispatch({
-        type: 'SET_USER',
-        payload: {
-          user: data,
-        },
-      });
+      setUser(data)
       pushInstruction('setUserId', data.sub);
     }).catch((e) => {
       console.error(e);
@@ -68,6 +62,15 @@ export const AuthProvider = (props) => {
     }));
   }, []);
 
+  const setUser = (data) => {
+    user_id = data.sub;
+    dispatch({
+      type: 'SET_USER',
+      payload: {
+        user: data,
+      },
+    });
+  }
   const signinRedirect = () => {
     window.location.replace(`/auth/login?redirect_on_callback=${window.location.pathname}`);
   };
@@ -83,6 +86,7 @@ export const AuthProvider = (props) => {
         platform: 'Cookie',
         logout,
         signinRedirect,
+        setUser
       }}
     >
       {children}
