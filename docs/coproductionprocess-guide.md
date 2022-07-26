@@ -4,14 +4,12 @@ The GUIDE view can be considered the main view of a co-production process. It is
 
 The [GUIDE view](/docs/en/coproductionprocess-guide.html) displays a co-production tree, allowing the co-production team members to browse through the phases of a co-production process, its corresponding objectives, the tasks that help accomplishing those objectives and the INTERLINKERs that are recommended to aid team member completing certain tasks of the co-production process. Very importantly, from the GUIDE view, users can instantiate the recommended INTERLINKERs for a task or create new instances from a range of generic INTERLINKERs.
 
-After creating a new co-production process, the user is requested to choose a co-production process guide. Notice that there is flexibility to choose the best fitting schema (you may check available co-production schemas in our [backend-cataloge/seed/schemas](https://github.com/interlink-project/backend-coproduction/tree/master/seed/schemas) repo). The left-hand-side "Guide" menu item does not appear until a schema has been chosen. The following three snapshosts show how the default coproduction schema is chosen and, hence, the Guide left hand side menu option is activitated. 
+After creating a new co-production process, the user is requested to choose a co-production process guide. Notice that there is flexibility to choose the best fitting schema (you may check available co-production schemas in our [backend-cataloge/seed/schemas](https://github.com/interlink-project/backend-coproduction/tree/master/seed/schemas) repo). The left-hand-side "Guide" menu item does not appear until a schema has been chosen. The following three snapshosts show how the ["Default schema"](https://github.com/interlink-project/backend-coproduction/tree/master/seed/schemas/default) of coproduction is chosen and, hence, the Guide left hand side menu option is activated. 
 
    ![View before schema has been selected](images/guideview-defineschema0.png)
    ![Selection of schema](images/guideview-defineschema1.png)
    ![Browsing through schema](images/guideview-defineschema2.png)
    
-Notice that there are several co-production trees available. Let's select, for instance, ["Default schema"](https://github.com/interlink-project/backend-coproduction/tree/master/seed/schemas/default) ![Select default schema](images/guideview-defineschema.png)
-
 As result, notice the emergence of Guide view menu item on left hand side ![Beware of emergence of Guide view menu item on left hand side](images/guideview-menuitememergence.png)
 
 Some of the actions that you may carry in the GUIDE view are: 
