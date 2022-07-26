@@ -2,13 +2,14 @@
 
 When a user accesses one to the INTERLINK collaborative front-end encounters a page informing about:
 - [INTERLINK project](https://demo.interlink-project.eu/) (top menu option "Project")
-- The [Platform](https://demo.interlink-project.eu/platform) ("Platform" top menu option) giving details about the Collaborative Environment made available by the project
+- The [Collaborative Environment](https://demo.interlink-project.eu/platform) ("Collaborative Environment" top menu option) giving details about the Collaborative Environment made available by the project
 - The INTERLINK [co-production methodology](https://demo.interlink-project.eu/coprod) ("Co-production" top menu option)
 - The [INTERLINKERs catalogue](https://demo.interlink-project.eu/catal) ("Catalogue" menu option) where unregistered users can browse, filter and search over available INTERLINKERs
 - The [About](https://demo.interlink-project.eu/about) page ("About" menu option") where users can learn about the INTERLINK project. 
+- The Settings pop up menu which allows users to select the theme, namely "Light" or "Dark" view and the language of the user interface, being able to select among English, Spanish, Latvian or Italian. 
 ![Dashboard landing page](images/dashboard-entry.png)
 
-When a user clicks on button ["Go to dashboard"](https://demo.interlink-project.eu/dashboard) it will be given access to the INTERLINK Collaborative Environment front-end.
+When a user clicks on button ["Access Collaborative Environment"](https://demo.interlink-project.eu/dashboard) it will be given access to the INTERLINK Collaborative Environment front-end.
 
 **IMPORTANT**. You may use INTERLINK's deployment at [Staging Server](https://demo.interlink-project.eu/), or, alternatively, you may access the Collaborative Environment's Dashboard in your pilot server:
 - [MEF pilot's deployment of Collaborative Environment](https://mef.interlink-project.eu/)
