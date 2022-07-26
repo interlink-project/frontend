@@ -1,4 +1,4 @@
-# Team management in co-production process
+# Organization and team management in co-production process
 
 Before using the Collaborative environment, you must first login with your google credentials or create your own credentials at [https://demo.interlink-project.eu/](https://demo.interlink-project.eu/), i.e. the staging server of INTERLINK. Alternatively, you may do this process in your pilot server:
 - [MEF pilot's deployment of Collaborative Environment](https://mef.interlink-project.eu/)
