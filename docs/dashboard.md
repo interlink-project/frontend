@@ -6,7 +6,7 @@ When a user accesses one to the INTERLINK collaborative front-end encounters a p
 - The INTERLINK [co-production methodology](https://demo.interlink-project.eu/coprod) ("Co-production" top menu option)
 - The [INTERLINKERs catalogue](https://demo.interlink-project.eu/catal) ("Catalogue" menu option) where unregistered users can browse, filter and search over available INTERLINKERs
 - The [About](https://demo.interlink-project.eu/about) page ("About" menu option") where users can learn about the INTERLINK project. 
-- The Settings pop up menu which allows users to select the theme, namely "Light" or "Dark" view and the language of the user interface, being able to select among English, Spanish, Latvian or Italian. 
+- Notice the settings icon, at the right hand side of "About", clicking on it will result on settings pop up menu which allows users to select the theme, namely "Light" or "Dark" view and the language of the user interface, being able to select among English, Spanish, Latvian or Italian. 
 ![Dashboard landing page](images/dashboard-entry.png)
 
 When a user clicks on button ["Access Collaborative Environment"](https://demo.interlink-project.eu/dashboard) it will be given access to the INTERLINK Collaborative Environment front-end.
