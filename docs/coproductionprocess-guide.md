@@ -6,6 +6,10 @@ The [GUIDE view](/docs/en/coproductionprocess-guide.html) displays a co-producti
 
 After creating a new co-production process, the user is requested to choose a co-production process guide. Notice that there is flexibility to choose the best fitting schema (you may check available co-production schemas in our [backend-cataloge/seed/schemas](https://github.com/interlink-project/backend-coproduction/tree/master/seed/schemas) repo). The left-hand-side "Guide" menu item does not appear until a schema has been chosen.
 
+   ![View before schema has been selected](images/guideview-defineschema0.png)
+   ![Selection of schema](images/guideview-defineschema1.png)
+   ![Browsing through schema](images/guideview-defineschema1.png)
+   
 Notice that there are several co-production trees available. Let's select, for instance, ["Default schema"](https://github.com/interlink-project/backend-coproduction/tree/master/seed/schemas/default) ![Select default schema](images/guideview-defineschema.png)
 
 As result, notice the emergence of Guide view menu item on left hand side ![Beware of emergence of Guide view menu item on left hand side](images/guideview-menuitememergence.png)
