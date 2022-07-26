@@ -40,4 +40,7 @@ The user may browse through the already created teams in an organization or crea
 ![New team creation in dashboard 2](images/dashboard-team-creation2.png)
 
 Within "WORKSPACE" section, after the user clicks on "WORKSPACE" top menu option,, once a user hits "+ Create new process", s/he is shown a pop-up window where a new process details (Name, Language, Description) can be input.
-![New team creation in dashboard](images/dashboard-createnewcoproductionprocess.png). The user is automatically switched to the ["co-production process" view](/docs/en/coproductionprocess-guide.html). The user can always check the coproduction processess s/he is taking part in by clicking on on "WORKSPACE" top menu option.
+
+![New team creation in dashboard](images/dashboard-createnewcoproductionprocess.png). 
+
+The user is automatically switched to the ["co-production process" view](/docs/en/coproductionprocess-guide.html). The user can always check the coproduction processess s/he is taking part in by clicking on on "WORKSPACE" top menu option.
