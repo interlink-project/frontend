@@ -35,16 +35,16 @@ For intance, let's create a new document to collect feedback of collaboration pr
 	![Creating a new Google Docs](images/guideview-genericINTERLINKERinstantiation.png)
 - Select the type of document to create with the support of Google Drive INTERLINKER
 	![Select and name the Google Docs](images/googledrive-interlinker-init.png)
-- Realize about the new resource that appears at the bottom of the task description panel
+- Realize about the new resource that appears at the top of the task description panel within RESOURCE tab
 	![New resource created](images/guideview-newresource-created.png)
 - Open it in Google Drive by clicking on the newly created resource name
 	![New resource created](images/googledrive-viewdocument.png)
 - You may repeat the process, selecting a recommended INTERLINKER instead:
 	- For instance, select *"Stakeholders Mapping Canvas"* INTERLINKER under task shown when navigating to *Engage > Identify Stakeholders*  
-	- Click on button “Instantiate as resource to use in the project”
-	- Check the newly created resource appears at the bottom of the page under **“Current resources”**
+	- Click on button “Instantiate task resource (result) through recommended INTERLINKERs (enablers)”
+	- Check the newly created resource appears at the top of the task description panel within RESOURCE tab
 	- Open the generated resource in the form of a presentation and add some modifications
 	
-Finally, you can see the progress achieved, so far, in a given co-production process by visiting the [OVERVIEW view](/docs/en/coproductionprocess-overview.html), by clicking on "Overview" menu item on the left hand-side menu option.
+Finally, you can see the progress achieved, so far, in a given co-production process by visiting the [OVERVIEW view](/docs/en/coproductionprocess-overview.html), by clicking on "Overview" menu item on the left hand-side menu option. In the case that you are administrator of the co-created process you will see two tabs, namely, PROGRES and RESOURCES. Users that are simply taking part in a coproduction process as part of team will only see the RESOURCES tab. 
 	![Resources created so far](images/coproductionproces-overview-NDA.png)
 	
