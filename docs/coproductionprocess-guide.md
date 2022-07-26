@@ -8,7 +8,7 @@ After creating a new co-production process, the user is requested to choose a co
 
    ![View before schema has been selected](images/guideview-defineschema0.png)
    ![Selection of schema](images/guideview-defineschema1.png)
-   ![Browsing through schema](images/guideview-defineschema1.png)
+   ![Browsing through schema](images/guideview-defineschema2.png)
    
 Notice that there are several co-production trees available. Let's select, for instance, ["Default schema"](https://github.com/interlink-project/backend-coproduction/tree/master/seed/schemas/default) ![Select default schema](images/guideview-defineschema.png)
 
