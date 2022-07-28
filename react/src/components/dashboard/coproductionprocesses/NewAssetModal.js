@@ -44,7 +44,7 @@ export default function NewAssetModal({ open, handleUserClose, handleFinish, act
   async function onMessage(event) {
     // Check sender origin to be trusted
     console.log(event.origin, REACT_APP_DOMAIN, event.origin.length <= 0 || !event.origin.includes(REACT_APP_DOMAIN), event ? event.data : 'not found');
-    if (event.origin.length <= 0 || !event.origin.includes(REACT_APP_DOMAIN)) return;
+    // if (event.origin.length <= 0 || !event.origin.includes(REACT_APP_DOMAIN)) return;
     const { code, message } = event.data;
     if (code === 'initialized') {
       setLoadingInstantiator(false);
