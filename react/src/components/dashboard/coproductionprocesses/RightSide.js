@@ -189,18 +189,18 @@ const RightSide = ({ softwareInterlinkers }) => {
                 text={t("Are you sure?")} />)
                 */
       }
-      if (capabilities.download) {
-        actions.push({
-          id: `${id}-download-action`,
-          loading: loading === 'download',
-          onClick: (closeMenuItem) => {
-            handleDownload(asset);
-            closeMenuItem();
-          },
-          text: t('Download'),
-          icon: <Download fontSize='small' />
-        });
-      }
+      // if (capabilities.download) {
+      //   actions.push({
+      //     id: `${id}-download-action`,
+      //     loading: loading === 'download',
+      //     onClick: (closeMenuItem) => {
+      //       handleDownload(asset);
+      //       closeMenuItem();
+      //     },
+      //     text: t('Download'),
+      //     icon: <Download fontSize='small' />
+      //   });
+      // }
     }
     if (asset.type === 'externalasset') {
       const { id } = asset;
