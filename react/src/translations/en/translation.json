@@ -282,5 +282,6 @@
   "Information about the task": "Information about the task",
   "Only the administrators of the organization": "Only the administrators of the organization",
   "Members of at least a team of the organization": "Members of at least a team of the organization",
-  "Anyone (the organization must be public)": "Anyone (the organization must be public)"
+  "Anyone (the organization must be public)": "Anyone (the organization must be public)",
+  "treeitem-creation-title": "Create new tree item"
 }
