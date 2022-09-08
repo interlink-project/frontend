@@ -1,4 +1,4 @@
-import { Alert, Avatar, Box, Button, Card, CardHeader, Grid, IconButton, Input, Stack, TextField as MuiTextField, Typography } from '@material-ui/core';
+import { Alert, Avatar, Box, Button, Card, CardHeader, Grid, IconButton, Input, Stack, TextField as MuiTextField,FormControl,InputLabel,Select,MenuItem, Typography } from '@material-ui/core';
 import { Delete, Edit, Save } from '@material-ui/icons';
 import ConfirmationButton from 'components/ConfirmationButton';
 import UsersList from 'components/dashboard/organizations/UsersList';
@@ -43,6 +43,7 @@ const SettingsTab = () => {
       aim: process.aim || '',
       idea: process.idea || '',
       challenges: process.challenges || '',
+      copro_state: process.copro_state || '',
     });
   }, [editMode, process]);
 
@@ -175,7 +176,10 @@ const SettingsTab = () => {
                 {moment(process.updated_at).format('LLL')}
               </Typography>
             )}
+
+            
           </Stack>
+          
                   )}
       />
       <Box sx={{ mx: 4 }}>
@@ -183,6 +187,7 @@ const SettingsTab = () => {
         <Formik
           initialValues={{
             name: process.name || '',
+            copro_state:process.copro_state || '',
             description: process.description || '',
             organization: process.organization || '',
             aim: process.aim || '',
@@ -245,6 +250,40 @@ const SettingsTab = () => {
                 justifyContent='center'
                 spacing={2}
               >
+
+                <Grid
+                  item
+                  xs={12}
+                  container
+                  direction="row"
+                  justifyContent="flex-end"
+                >
+                  <FormControl variant="standard" sx={{ m: 1, minWidth: 240 }}>
+                    <InputLabel id="demo-simple-select-standard-label">{t('STATE OF THE PROYECT')}</InputLabel>
+                    <Select
+                      labelId="copro_state-label"
+                      id="copro_state"
+                      value={values.copro_state}
+                      onChange={handleChange}
+                      label={t('STATE OF THE PROYECT')}
+                      helperText={touched.copro_state && errors.copro_state}
+                      error={Boolean(touched.copro_state && errors.copro_state)}
+                      onBlur={handleBlur}
+                      name='copro_state'
+                      variant={editMode ? 'filled' : 'standard'}
+                      inputProps={{ readOnly: !editMode }}
+                     
+                      
+                    >
+                      <MenuItem value="in_progress">{t('In progress')}</MenuItem>
+                      <MenuItem value="finished">{t('Finished')}</MenuItem>
+                    </Select>
+                  </FormControl>
+
+                 
+
+                </Grid>
+
                 <Grid
                   item
                   xs={12}

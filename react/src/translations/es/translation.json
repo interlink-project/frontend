@@ -197,7 +197,7 @@
   "Progress": "Progreso",
   "See task": "Ver tarea",
   "Required": "Requerido",
-  "NAME OF THE PROJECT": "NOMBRE DEL EQUIPO",
+  "NAME OF THE PROJECT": "NOMBRE DEL PROYECTO",
   "SHORT DESCRIPTION OF THE PROJECT": "DESCRIPCIÓN CORTA DEL PROYECTO",
   "ACTUAL ORGANIZATION OF THE SERVICE": "ORGANIZACIÓN DEL SERVICIO",
   "AIM OF THE PROJECT": "OBJETIVO DEL PROYECTO",
@@ -281,5 +281,6 @@
   "Information about the task": "Información sobre la tarea",
   "Only the administrators of the organization": "Sólo los administradores de la organización",
   "Members of at least a team of the organization": "Miembros de al menos un equipo de la organización",
-  "Anyone (the organization must be public)": "Cualquier persona (la organización debe ser pública)"
+  "Anyone (the organization must be public)": "Cualquier persona (la organización debe ser pública)",
+  "STATE OF THE PROYECT":"ESTADO DEL PROYECTO"
 }

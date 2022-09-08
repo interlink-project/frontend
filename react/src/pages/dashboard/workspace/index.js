@@ -50,7 +50,7 @@ function ProcessRow({ process, t }) {
       <TableCell align='center'>
         <StatusChip
           t={t}
-          status='in_progress'
+          status={process.copro_state}
         />
       </TableCell>
       <TableCell align='center'>
