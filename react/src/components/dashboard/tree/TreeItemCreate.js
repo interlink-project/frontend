@@ -61,16 +61,10 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
 
     const handleNext = async () => {
         setLoading(true)
-        console.log({
-            name,
-            description,
-            "coproductionprocess_id": process.id,
-            "is_part_of_codelivery": true
-        })
         var item = {
             name,
             description,
-            "prerequistes_id": [prerequistes_id]
+            "prerequisites_ids": [prerequistes_id]
         }
 
         if (type === "phase") {
@@ -81,10 +75,10 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
         }else if (type === "task"){
             item["objective_id"] = parentid
         }
+        console.log(item);
         apis[type].create(
             item
         ).then(res => {
-            console.log(res.data)
             sendOnCreate(res.data)
         }).catch(err => {
             console.log(err)
@@ -135,6 +129,7 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
                                 labelId="select-parentid-label"
                                 id="select-parentid"
                                 value={parentid}
+                                disabled={type === "phase"}
                                 onChange={(event) => {
                                     setParentid(event.target.value);
 
@@ -142,10 +137,10 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
                                 label={t("Type")}
                             >
                                 {type === "objective" &&
-                                    treeitems.filter(el => el.type === "phase").map(el => <MenuItem key={el.id} value={el.id}>{el.name}</MenuItem>)
+                                    treeitems.filter(el => el.type === "phase" && !el.is_disabled).map(el => <MenuItem key={el.id} value={el.id}>{el.name}</MenuItem>)
                                 }
                                 {type === "task" &&
-                                    treeitems.filter(el => el.type === "objective").map(el => <MenuItem key={el.id} value={el.id}>{el.name}</MenuItem>)
+                                    treeitems.filter(el => el.type === "objective" && !el.is_disabled).map(el => <MenuItem key={el.id} value={el.id}>{el.name}</MenuItem>)
                                 }
                             </Select>
                         </FormControl>
@@ -162,13 +157,13 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
                                 label={t("Prerequisite item")}
                             >
                                 {type === "phase" &&
-                                    treeitems.filter(el => el.type === type).map(el => <MenuItem key={el.id} value={el.id}>{el.name}</MenuItem>)
+                                    treeitems.filter(el => el.type === type && !el.is_disabled).map(el => <MenuItem key={el.id} value={el.id}>{el.name}</MenuItem>)
                                 }
                                 {type === "objective" &&
-                                    treeitems.filter(el => el.type === type && el.phase_id === parentid).map(el => <MenuItem key={el.id} value={el.id}>{el.name}</MenuItem>)
+                                    treeitems.filter(el => el.type === type && el.phase_id === parentid && !el.is_disabled).map(el => <MenuItem key={el.id} value={el.id}>{el.name}</MenuItem>)
                                 }
                                 {type === "task" &&
-                                    treeitems.filter(el => el.type === type && el.objective_id === parentid).map(el => <MenuItem key={el.id} value={el.id}>{el.name}</MenuItem>)
+                                    treeitems.filter(el => el.type === type && el.objective_id === parentid && !el.is_disabled).map(el => <MenuItem key={el.id} value={el.id}>{el.name}</MenuItem>)
                                 }
                             </Select>
                         </FormControl>

@@ -2,18 +2,23 @@ import { AppBar, Button, LinearProgress, Stack, Tab, Tabs as MuiTabs } from "@ma
 import { Add } from '@material-ui/icons';
 import { TreeItemTypeChip } from "components/Icons";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getTree } from "slices/process";
 import TreeItemCreate from "./TreeItemCreate";
 
 
 const PhaseTabs = ({ t, loading = false, selectedId, phases, onSelect }) => {
     const [treeItemCreatorOpen, setTreeItemCreatorOpen] = React.useState(false);
     const [treeItemLoading, setTreeItemLoading] = React.useState(false);
+    const dispatch = useDispatch();
+    const { selectedTreeItem, process } = useSelector((state) => state.process);
 
     const onItemCreate = (res) => {
-        // TODO: Reload component to show
+        dispatch(getTree(process.id, selectedTreeItem.id));
+
     }
 
-    return (
+    return (    
         <AppBar position="static" sx={{ color: "white" }}>
             <MuiTabs
                 indicatorColor="secondary"
