@@ -251,20 +251,36 @@ const SettingsTab = () => {
                 spacing={2}
               >
 
+                
+
                 <Grid
                   item
-                  xs={12}
+                  xs={6}
+                >
+                  <TextField
+                    label={t('NAME OF THE PROJECT')}
+                    helperText={touched.name && errors.name}
+                    error={Boolean(touched.name && errors.name)}
+                    value={values.name}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    name='name'
+                  />
+                </Grid>
+                <Grid
+                  item
+                  xs={6}
                   container
                   direction="row"
-                  justifyContent="flex-end"
+                  justifyContent="flex-start"
                 >
-                  <FormControl variant="standard" sx={{ m: 1, minWidth: 240 }}>
-                    <InputLabel id="demo-simple-select-standard-label">{t('STATE OF THE PROYECT')}</InputLabel>
+                    <Typography variant="overline" sx={{color: 'primary.main' }}>{t('STATE OF THE PROYECT')}</Typography>
                     <Select
-                      labelId="copro_state-label"
+                      labelId="select-status-label"
                       id="copro_state"
                       value={values.copro_state}
                       onChange={handleChange}
+                      fullWidth
                       label={t('STATE OF THE PROYECT')}
                       helperText={touched.copro_state && errors.copro_state}
                       error={Boolean(touched.copro_state && errors.copro_state)}
@@ -277,26 +293,7 @@ const SettingsTab = () => {
                     >
                       <MenuItem value="in_progress">{t('In progress')}</MenuItem>
                       <MenuItem value="finished">{t('Finished')}</MenuItem>
-                    </Select>
-                  </FormControl>
-
-                 
-
-                </Grid>
-
-                <Grid
-                  item
-                  xs={12}
-                >
-                  <TextField
-                    label={t('NAME OF THE PROJECT')}
-                    helperText={touched.name && errors.name}
-                    error={Boolean(touched.name && errors.name)}
-                    value={values.name}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    name='name'
-                  />
+                    </Select>              
                 </Grid>
 
                 <Grid
