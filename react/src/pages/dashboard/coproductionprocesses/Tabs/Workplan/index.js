@@ -1,11 +1,10 @@
 import { Grid, Skeleton, ToggleButton, ToggleButtonGroup } from '@material-ui/core';
-import { PhaseTabs } from 'components/dashboard/tree';
+import ProcessPhaseTabs from 'components/dashboard/tree/ProcessPhaseTabs';
 import useDependantTranslation from 'hooks/useDependantTranslation';
-import useMounted from 'hooks/useMounted';
 import useSettings from 'hooks/useSettings';
 import $ from 'jquery';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import Gantt from './FrappeGantt';
 import './FrappeGantt.css';
@@ -54,8 +53,8 @@ const Workplan = ({ setSelectedTreeItem }) => {
   const [viewMode, setViewMode] = useState('Week');
   const { process, tree, hasSchema, treeitems, updating, selectedPhaseTab, selectedTreeItem } = useSelector((state) => state.process);
   const navigate = useNavigate();
-  
-  if(!hasSchema){
+
+  if (!hasSchema) {
     navigate(`/dashboard/coproductionprocesses/${process.id}`)
     return null
   }
@@ -182,7 +181,7 @@ const Workplan = ({ setSelectedTreeItem }) => {
         item
         xs={12}
       >
-        <PhaseTabs
+        <ProcessPhaseTabs
           t={t}
           selectedId={selectedPhaseTab.id}
           phases={tree}

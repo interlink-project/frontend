@@ -1,24 +1,9 @@
-import { AppBar, Button, LinearProgress, Stack, Tab, Tabs as MuiTabs } from "@material-ui/core";
-import { Add } from '@material-ui/icons';
+import { AppBar, LinearProgress, Stack, Tab, Tabs as MuiTabs } from "@material-ui/core";
 import { TreeItemTypeChip } from "components/Icons";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getTree } from "slices/process";
-import TreeItemCreate from "./TreeItemCreate";
 
 
-const PhaseTabs = ({ t, loading = false, selectedId, phases, onSelect }) => {
-    const [treeItemCreatorOpen, setTreeItemCreatorOpen] = React.useState(false);
-    const [treeItemLoading, setTreeItemLoading] = React.useState(false);
-    const dispatch = useDispatch();
-    const { selectedTreeItem, process } = useSelector((state) => state.process);
-
-    const onItemCreate = (res) => {
-        dispatch(getTree(process.id, selectedTreeItem.id));
-
-    }
-
-    return (    
+const PhaseTabs = ({ t, loading = false, selectedId, phases, onSelect, extra = null }) => {
+    return (
         <AppBar position="static" sx={{ color: "white" }}>
             <MuiTabs
                 indicatorColor="secondary"
@@ -40,17 +25,9 @@ const PhaseTabs = ({ t, loading = false, selectedId, phases, onSelect }) => {
                         value={phase.id}
                     />
                 ))}
-                {/* <Button onClick={() => setCoproductionProcessCreatorOpen(true)} sx={{ my: 3, width: 400 }} variant="contained" size="small">{t("Create a new co-production process")}</Button> */}
-                <Button onClick={() => setTreeItemCreatorOpen(true)} variant="link" startIcon={<Add />}></Button>
+                {extra}
             </MuiTabs>
             {loading && <LinearProgress />}
-            <TreeItemCreate
-                open={treeItemCreatorOpen}
-                setOpen={setTreeItemCreatorOpen}
-                loading={treeItemLoading}
-                setLoading={setTreeItemLoading}
-                onCreate={onItemCreate}
-            />
         </AppBar>
     );
 };

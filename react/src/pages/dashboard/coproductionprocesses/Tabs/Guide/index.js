@@ -1,6 +1,7 @@
 import { Box, Grid } from '@material-ui/core';
 import RightSide from 'components/dashboard/coproductionprocesses/RightSide';
-import { PhaseTabs, StyledTree } from 'components/dashboard/tree';
+import { StyledTree } from 'components/dashboard/tree';
+import ProcessPhaseTabs from 'components/dashboard/tree/ProcessPhaseTabs';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useState } from 'react';
@@ -53,7 +54,7 @@ const Guide = ({ setSelectedTreeItem }) => {
           md={12}
           xs={12}
         >
-          <PhaseTabs
+          <ProcessPhaseTabs
             t={t}
             loading={updatingTree}
             selectedId={showCoprod ? 'coproductionprocess' : selectedPhaseTab.id}
