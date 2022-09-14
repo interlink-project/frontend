@@ -28,36 +28,36 @@ const PermissionRow = ({ permission, showOnlyMine, setSelectedTeam, isAdministra
   return (
     <TableRow hover>
       {isAdministrator && (
-      <TableCell align='center'>
-        <ConfirmationButton
-          key={`${permission.id}-delete-action`}
-          Actionator={({ onClick }) => (
-            <IconButton onClick={onClick}>
-              <Delete />
-            </IconButton>
-          )}
-          ButtonComponent={({ onClick }) => (
-            <LoadingButton
-              sx={{ mt: 1 }}
-              fullWidth
-              variant='contained'
-              color='error'
-              onClick={onClick}
-            >
-              {t('Confirm deletion')}
-            </LoadingButton>
-          )}
-          onClick={handleDelete}
-          text={t('Are you sure you want to remove this permission?')}
-        />
+        <TableCell align='center'>
+          <ConfirmationButton
+            key={`${permission.id}-delete-action`}
+            Actionator={({ onClick }) => (
+              <IconButton onClick={onClick}>
+                <Delete />
+              </IconButton>
+            )}
+            ButtonComponent={({ onClick }) => (
+              <LoadingButton
+                sx={{ mt: 1 }}
+                fullWidth
+                variant='contained'
+                color='error'
+                onClick={onClick}
+              >
+                {t('Confirm deletion')}
+              </LoadingButton>
+            )}
+            onClick={handleDelete}
+            text={t('Are you sure you want to remove this permission?')}
+          />
 
-      </TableCell>
+        </TableCell>
       )}
 
       {!showOnlyMine && !isAdministrator && (
-      <TableCell align='center'>
-        {permission.user_id == user.id || user.teams_ids.includes(permission.team_id) ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
-      </TableCell>
+        <TableCell align='center'>
+          {permission.user_id == user.id || user.teams_ids.includes(permission.team_id) ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
+        </TableCell>
       )}
       <TableCell align='center'>
         <Button
@@ -71,10 +71,10 @@ const PermissionRow = ({ permission, showOnlyMine, setSelectedTeam, isAdministra
       </TableCell>
       <TableCell align='center'>
         {permission.team && (
-        <OrganizationChip
-          type={permission.team.type}
-          t={t}
-        />
+          <OrganizationChip
+            type={permission.team.type}
+            t={t}
+          />
         )}
       </TableCell>
       <TableCell align='center'>
@@ -117,6 +117,9 @@ const PermissionsTable = ({ your_permissions, your_roles, language, processId, o
   const taskPermissions = permissions.filter((permission) => permission.treeitem_id === element.id);
   const objectivePermissions = permissions.filter((permission) => permission.treeitem_id === (isObjective ? element.id : element.objective_id));
   const phasePermissions = permissions.filter((permission) => permission.treeitem_id === (isPhase ? element.id : element.phase_id));
+  const processPermissions = permissions.filter((permission) => permission.treeitem_id === null);
+
+  const element_type_translation = treeitem_translations[element.type]
 
   useEffect(() => {
     setPermissions(element.permissions);
@@ -140,25 +143,25 @@ const PermissionsTable = ({ your_permissions, your_roles, language, processId, o
   return (
     <>
       {selectedTeam && (
-      <TeamProfile
-        teamId={selectedTeam}
-        open
-        setOpen={setSelectedTeam}
-        onChanges={() => update(element.id)}
-      />
+        <TeamProfile
+          teamId={selectedTeam}
+          open
+          setOpen={setSelectedTeam}
+          onChanges={() => update(element.id)}
+        />
       )}
       {!isAdministrator && (
-      <Alert
-        severity='info'
-        action={(
-          <Switch
-            checked={!showOnlyMine}
-            onChange={(event) => setShowOnlyMine(!event.target.checked)}
-          />
-)}
-      >
-        {t('Show all the permissions for this tree item, including those ones that do not affect you')}
-      </Alert>
+        <Alert
+          severity='info'
+          action={(
+            <Switch
+              checked={!showOnlyMine}
+              onChange={(event) => setShowOnlyMine(!event.target.checked)}
+            />
+          )}
+        >
+          {t('Show all the permissions for this tree item, including those ones that do not affect you')}
+        </Alert>
       )}
       {isAdministrator && <Alert severity='info'>{t('Permissions set at lower levels prevail over others. That is, if you set a permission on a task, it will overwrite the permission, if any, assigned to the same team at higher levels (objectives and phases).')}</Alert>}
       <Box sx={{ overflowX: 'scroll' }}>
@@ -170,12 +173,12 @@ const PermissionsTable = ({ your_permissions, your_roles, language, processId, o
             <TableRow>
               {isAdministrator && <TableCell align='center'><>{t('Actions')}</></TableCell>}
               {!showOnlyMine && !isAdministrator && (
-              <TableCell align='center'>
-                <>
-                  {t('Affects you')}
-                  {' '}
-                </>
-              </TableCell>
+                <TableCell align='center'>
+                  <>
+                    {t('Affects you')}
+                    {' '}
+                  </>
+                </TableCell>
               )}
               <TableCell align='center'><>{t('Team')}</></TableCell>
               <TableCell align='center'><>{t('Team role')}</></TableCell>
@@ -194,6 +197,34 @@ const PermissionsTable = ({ your_permissions, your_roles, language, processId, o
                   variant='subtitle2'
                   sx={{ my: 1, bgcolor: 'background.default' }}
                 >
+                  {t('Permissions for the overall process')}
+                  {' '}
+                  (
+                  {processPermissions.length}
+                  )
+                </Typography>
+              </TableCell>
+            </TableRow>
+
+            {processPermissions.length > 0 && processPermissions.map((permission) => (
+              <PermissionRow
+                showOnlyMine={showOnlyMine}
+                key={permission.id}
+                setSelectedTeam={setSelectedTeam}
+                permission={permission}
+                isAdministrator={isAdministrator}
+                onChanges={onChanges}
+              />
+            ))}
+            <TableRow>
+              <TableCell
+                align='center'
+                colSpan={colSpan}
+              >
+                <Typography
+                  variant='subtitle2'
+                  sx={{ my: 1, bgcolor: 'background.default' }}
+                >
                   {t('Permissions for the phase')}
                   {' '}
                   (
@@ -202,6 +233,7 @@ const PermissionsTable = ({ your_permissions, your_roles, language, processId, o
                 </Typography>
               </TableCell>
             </TableRow>
+
             {phasePermissions.length > 0 && phasePermissions.map((permission) => (
               <PermissionRow
                 showOnlyMine={showOnlyMine}
@@ -213,122 +245,122 @@ const PermissionsTable = ({ your_permissions, your_roles, language, processId, o
               />
             ))}
             {(isObjective || isTask) && (
-            <>
-              <TableRow>
-                <TableCell
-                  align='center'
-                  colSpan={colSpan}
-                >
-                  <Typography
-                    variant='subtitle2'
-                    sx={{ my: 1, bgcolor: 'background.default' }}
+              <>
+                <TableRow>
+                  <TableCell
+                    align='center'
+                    colSpan={colSpan}
                   >
-                    {t('Permissions for the objective')}
-                    {' '}
-                    (
-                    {objectivePermissions.length}
-                    )
-                  </Typography>
-                </TableCell>
-              </TableRow>
-              {objectivePermissions.length > 0 && objectivePermissions.map((permission) => (
-                <PermissionRow
-                  showOnlyMine={showOnlyMine}
-                  key={permission.id}
-                  setSelectedTeam={setSelectedTeam}
-                  permission={permission}
-                  isAdministrator={isAdministrator}
-                  onChanges={onChanges}
-                />
-              ))}
-            </>
+                    <Typography
+                      variant='subtitle2'
+                      sx={{ my: 1, bgcolor: 'background.default' }}
+                    >
+                      {t('Permissions for the objective')}
+                      {' '}
+                      (
+                      {objectivePermissions.length}
+                      )
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+                {objectivePermissions.length > 0 && objectivePermissions.map((permission) => (
+                  <PermissionRow
+                    showOnlyMine={showOnlyMine}
+                    key={permission.id}
+                    setSelectedTeam={setSelectedTeam}
+                    permission={permission}
+                    isAdministrator={isAdministrator}
+                    onChanges={onChanges}
+                  />
+                ))}
+              </>
             )}
             {isTask && (
-            <>
-              <TableRow>
-                <TableCell
-                  align='center'
-                  colSpan={colSpan}
-                >
-                  <Typography
-                    variant='subtitle2'
-                    sx={{ my: 1, bgcolor: 'background.default' }}
+              <>
+                <TableRow>
+                  <TableCell
+                    align='center'
+                    colSpan={colSpan}
                   >
-                    {t('Permissions for the task')}
-                    {' '}
-                    (
-                    {taskPermissions.length}
-                    )
-                  </Typography>
-                </TableCell>
-              </TableRow>
-              {taskPermissions.length > 0 && taskPermissions.map((permission) => (
-                <PermissionRow
-                  showOnlyMine={showOnlyMine}
-                  key={permission.id}
-                  setSelectedTeam={setSelectedTeam}
-                  permission={permission}
-                  isAdministrator={isAdministrator}
-                  onChanges={onChanges}
-                />
-              ))}
-            </>
+                    <Typography
+                      variant='subtitle2'
+                      sx={{ my: 1, bgcolor: 'background.default' }}
+                    >
+                      {t('Permissions for the task')}
+                      {' '}
+                      (
+                      {taskPermissions.length}
+                      )
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+                {taskPermissions.length > 0 && taskPermissions.map((permission) => (
+                  <PermissionRow
+                    showOnlyMine={showOnlyMine}
+                    key={permission.id}
+                    setSelectedTeam={setSelectedTeam}
+                    permission={permission}
+                    isAdministrator={isAdministrator}
+                    onChanges={onChanges}
+                  />
+                ))}
+              </>
             )}
 
             {showOnlyMine && (
-            <>
-              <TableRow>
-                <TableCell
-                  align='center'
-                  colSpan={colSpan}
-                >
-                  <Typography
-                    variant='subtitle2'
-                    sx={{ my: 1, fontWeight: 'bold' }}
+              <>
+                <TableRow>
+                  <TableCell
+                    align='center'
+                    colSpan={colSpan}
                   >
-                    {t('Final permissions for you')}
-                  </Typography>
-                </TableCell>
-              </TableRow>
-              <TableRow hover>
-                <TableCell align='center' />
-                <TableCell align='center'>
-                  {your_roles && your_roles.map((role) => (
-                    <Box
-                      key={role}
-                      sx={{ m: 1 }}
+                    <Typography
+                      variant='subtitle2'
+                      sx={{ my: 1, fontWeight: 'bold' }}
                     >
-                      <OrganizationChip
-                        type={role}
-                        t={t}
-                      />
-                    </Box>
-                  ))}
-                </TableCell>
-                <TableCell align='center'>
-                  {your_permissions && your_permissions.access_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
-                </TableCell>
-                <TableCell align='center'>
-                  {your_permissions && your_permissions.create_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
-                </TableCell>
-                <TableCell align='center'>
-                  {your_permissions && your_permissions.delete_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
-                </TableCell>
-              </TableRow>
-            </>
+                      {t('Final permissions for you')}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+                <TableRow hover>
+                  <TableCell align='center' />
+                  <TableCell align='center'>
+                    {your_roles && your_roles.map((role) => (
+                      <Box
+                        key={role}
+                        sx={{ m: 1 }}
+                      >
+                        <OrganizationChip
+                          type={role}
+                          t={t}
+                        />
+                      </Box>
+                    ))}
+                  </TableCell>
+                  <TableCell align='center'>
+                    {your_permissions && your_permissions.access_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
+                  </TableCell>
+                  <TableCell align='center'>
+                    {your_permissions && your_permissions.create_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
+                  </TableCell>
+                  <TableCell align='center'>
+                    {your_permissions && your_permissions.delete_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
+                  </TableCell>
+                </TableRow>
+              </>
             )}
           </TableBody>
         </Table>
       </Box>
       {isAdministrator && !showOnlyMine && (
-      <Button
-        sx={{ mt: 2 }}
-        onClick={() => setOpenPermissionCreator(true)}
-        fullWidth
-        variant='contained'
-      >
-        {`${t('Add new permission to the')} ${treeitem_translations[element.type]}`}
-      </Button>
+        <Button
+          sx={{ mt: 2 }}
+          onClick={() => setOpenPermissionCreator(true)}
+          fullWidth
+          variant='contained'
+        >
+          {`${t('Add new permission to the')} ${element_type_translation && element_type_translation.toLowerCase()}`}
+        </Button>
       )}
       <PermissionCreate
         open={permissionCreatorOpen}
