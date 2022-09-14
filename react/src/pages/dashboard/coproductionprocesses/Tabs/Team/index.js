@@ -1,6 +1,6 @@
 import { Alert, Avatar, Box, Button, Card, CardActionArea, CardHeader, Grid, List, ListItem, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
 import { green, red } from '@material-ui/core/colors';
-import { Add, CheckOutlined, Close } from '@material-ui/icons';
+import { Add, ArrowForward, CheckOutlined, Close } from '@material-ui/icons';
 import { OrganizationChip, TreeItemTypeChip } from 'components/Icons';
 import TeamAvatar from 'components/TeamAvatar';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
@@ -22,17 +22,17 @@ function TeamRow({ t, team, process, treeitems, setSelectedTeam, setSelectedTree
     const li = []
     process.enabled_permissions.filter(el => el.team_id === team.id).forEach((permission) => {
       const index = treeitems.findIndex((el => el.id === permission.treeitem_id))
-      if(index >= 0){
-        li.splice(index + 1, 0, { permission: permission, treeitem: treeitems[index]})
-      }else{
+      if (index >= 0) {
+        li.splice(index + 1, 0, { permission: permission, treeitem: treeitems[index] })
+      } else {
         // insert at position 0
-        li.splice(0, 0, { permission: permission, treeitem: null})
+        li.splice(0, 0, { permission: permission, treeitem: null })
       }
     })
-    const without_undefined = li.filter(function( element ) {
+    const without_undefined = li.filter(function (element) {
       return element !== undefined;
-   })
-   console.log(li, without_undefined)
+    })
+    console.log(li, without_undefined)
     setTeamItems(without_undefined)
   }, [process])
 
@@ -41,9 +41,6 @@ function TeamRow({ t, team, process, treeitems, setSelectedTeam, setSelectedTree
       item
       key={team.id}
       xs={12}
-      md={12}
-      lg={12}
-      xl={6}
       sx={{ textAlign: 'center' }}
     >
       <Card
@@ -82,10 +79,10 @@ function TeamRow({ t, team, process, treeitems, setSelectedTeam, setSelectedTree
             <Table size="small">
               <TableHead>
                 <TableRow>
-                  <TableCell align="right">{t("For")}</TableCell>
-                  <TableCell align="right">{t('access_assets_permission')}</TableCell>
-                  <TableCell align="right">{t('create_assets_permission')}</TableCell>
-                  <TableCell align="right">{t('delete_assets_permission')}</TableCell>
+                  <TableCell width="55%" align="right">{t("For")}</TableCell>
+                  <TableCell width="15%" align="right">{t('access_assets_permission')}</TableCell>
+                  <TableCell width="15%" align="right">{t('create_assets_permission')}</TableCell>
+                  <TableCell width="15%" align="right">{t('delete_assets_permission')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -97,6 +94,7 @@ function TeamRow({ t, team, process, treeitems, setSelectedTeam, setSelectedTree
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell align="right" component="th" scope="row">
+          
                         {treeitem ? <Button
                           variant='outlined'
                           fullWidth
@@ -104,6 +102,7 @@ function TeamRow({ t, team, process, treeitems, setSelectedTeam, setSelectedTree
                           onClick={() => {
                             dispatch(setSelectedTreeItem(treeitem, () => navigate(`/dashboard/coproductionprocesses/${process.id}/guide`)));
                           }}
+                          endIcon={<ArrowForward />}
                         >
                           <Box sx={{ m: 1 }}>
                             <TreeItemTypeChip
@@ -113,12 +112,12 @@ function TeamRow({ t, team, process, treeitems, setSelectedTeam, setSelectedTree
                           </Box>
                           {treeitem.name}
                         </Button> : <Button
-                          variant='outlined'
-                          fullWidth
-                          color={'inherit'}
-                        >
-                          {t("Overall process")}
-                        </Button>}
+                            variant='outlined'
+                            fullWidth
+                            color={'inherit'}
+                          >
+                            {t("Overall process")}
+                          </Button>}
                       </TableCell>
                       <TableCell align="right">
                         {permission.access_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
@@ -208,7 +207,6 @@ export default function TeamsTab() {
         <>
           <Alert
             severity='warning'
-            sx={{ p: 3, m: 3 }}
           >
             {t('There are no teams working on the coproduction process yet. To add a new team, navigate to the guide section, select a tree item and add a new permission.')}
           </Alert>
