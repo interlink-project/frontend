@@ -116,7 +116,7 @@ function TeamRow({ t, team, process, treeitems, setSelectedTeam, setSelectedTree
                             fullWidth
                             color={'inherit'}
                             onClick={() => {
-                              navigate(`/dashboard/coproductionprocesses/${process.id}/guide`);
+                              dispatch(setSelectedTreeItem(treeitems[0], () => navigate(`/dashboard/coproductionprocesses/${process.id}/guide`)));
                             }}
                           >
                             {t("Overall process")}
