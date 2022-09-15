@@ -43,7 +43,7 @@ const SettingsTab = () => {
       aim: process.aim || '',
       idea: process.idea || '',
       challenges: process.challenges || '',
-      copro_state: process.copro_state || '',
+      status: process.status || '',
     });
   }, [editMode, process]);
 
@@ -187,7 +187,7 @@ const SettingsTab = () => {
         <Formik
           initialValues={{
             name: process.name || '',
-            copro_state:process.copro_state || '',
+            status: process.status || '',
             description: process.description || '',
             organization: process.organization || '',
             aim: process.aim || '',
@@ -277,15 +277,15 @@ const SettingsTab = () => {
                     <Typography variant="overline" sx={{color: 'primary.main' }}>{t('STATE OF THE PROYECT')}</Typography>
                     <Select
                       labelId="select-status-label"
-                      id="copro_state"
-                      value={values.copro_state}
+                      id="status"
+                      value={values.status}
                       onChange={handleChange}
                       fullWidth
                       label={t('STATE OF THE PROYECT')}
-                      helperText={touched.copro_state && errors.copro_state}
-                      error={Boolean(touched.copro_state && errors.copro_state)}
+                      helperText={touched.status && errors.status}
+                      error={Boolean(touched.status && errors.status)}
                       onBlur={handleBlur}
-                      name='copro_state'
+                      name='status'
                       variant={editMode ? 'filled' : 'standard'}
                       inputProps={{ readOnly: !editMode }}
                      

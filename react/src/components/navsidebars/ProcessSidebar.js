@@ -117,7 +117,7 @@ const ProcessSidebar = (props) => {
           {!loading && !updating && process ? (
             <StatusChip
               t={t}
-              status={process.copro_state}
+              status={process.status}
             />
           ) : <Skeleton sx={{ width: 80, height: 45, m: 0, p: 0 }} />}
           {!loading && !updating && process ? (
