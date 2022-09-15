@@ -6,9 +6,9 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
-export default function TimeLine({ }) {
+export default function TimeLine({ assets }) {
   const { process, hasSchema, tree } = useSelector((state) => state.process);
-  const {user} = useAuth()
+  const { user } = useAuth()
   const t = useCustomTranslation(process.language);
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -20,9 +20,12 @@ export default function TimeLine({ }) {
     setOpen(false);
   };
 
+
   const dataFulfilled = process.aim || process.idea || process.challenges;
   const administratorsFulfilled = process.administrators_ids.length > 1;
   const permissionsFullfilled = process.enabled_permissions.length >= 1;
+  const newAssetsFullfilled = assets.length >= 1;
+
 
   return (
     <Box sx={{ p: 3, justifyContent: 'center' }}>
@@ -104,15 +107,15 @@ export default function TimeLine({ }) {
                 ? <Alert severity='success'>{t('The schema has been selected. Now you can access the Guide and the Workplan sections. Nevertheless, you can undo this action (clear the coproduction tree) in the settings section.')}</Alert>
                 : <Alert severity='info'>{t('The schemas are used to create the initial phases, tasks and objectives of the co-production process. From there, the resulting co-production tree can be freely modified. Click on the button and search for the optimal coproduction schema for your process.')}</Alert>}
               {!hasSchema && (
-              <Button
-                disabled={process.creator_id !== user.id}
-                onClick={handleClickOpen}
-                size='small'
-                variant='contained'
-                sx={{ maxWidth: '200px' }}
-              >
-                {t('Select an schema')}
-              </Button>
+                <Button
+                  disabled={process.creator_id !== user.id}
+                  onClick={handleClickOpen}
+                  size='small'
+                  variant='contained'
+                  sx={{ maxWidth: '200px' }}
+                >
+                  {t('Select an schema')}
+                </Button>
               )}
             </Stack>
           </StepLabel>
@@ -128,17 +131,43 @@ export default function TimeLine({ }) {
               </Typography>
               {permissionsFullfilled
                 ? <Alert severity='success'>{t('At least a permission has been created.')}</Alert>
-                : <Alert severity='info'>{t('Now you can permit teams to work on the coproduction process. For that, navigate to the Guide section and add new permission for the tree items.')}</Alert>}
+                : <Alert severity='info'>{t('Now you can allow teams to work on the coproduction process. For that, associate permissions to teams by navigating to the Team view and adding permission for the whole coproduction process or go to Guide view and add new permissions for distinct tree items and teams.')}</Alert>}
               {!permissionsFullfilled && (
-              <Button
-                disabled={!hasSchema}
-                onClick={() => navigate(`/dashboard/coproductionprocesses/${process.id}/guide`)}
-                size='small'
-                variant='contained'
-                sx={{ maxWidth: '400px' }}
-              >
-                {t('Grant permissions to teams in the guide section')}
-              </Button>
+                <Button
+                  disabled={!hasSchema}
+                  onClick={() => navigate(`/dashboard/coproductionprocesses/${process.id}/guide`)}
+                  size='small'
+                  variant='contained'
+                  sx={{ maxWidth: '400px' }}
+                >
+                  {t('Grant permissions to teams in the guide section')}
+                </Button>
+              )}
+            </Stack>
+          </StepLabel>
+        </Step>
+        <Step
+          active
+          completed={newAssetsFullfilled}
+        >
+          <StepLabel>
+            <Stack spacing={1}>
+              <Typography variant='subtitle1'>
+                {t('[OPTIONAL]Add new resources to the coproduction process')}
+              </Typography>
+              {newAssetsFullfilled
+                ? <Alert severity='success'>{t('At least a resource has been created.')}</Alert>
+                : <Alert severity='info'>{t('Now you can add resources to the tasks in the coproduction process. For that, navigate to the Guide section and add new resources in the Resources tab available in each task')}</Alert>}
+              {!newAssetsFullfilled && (
+                <Button
+                  disabled={!hasSchema}
+                  onClick={() => navigate(`/dashboard/coproductionprocesses/${process.id}/guide`)}
+                  size='small'
+                  variant='contained'
+                  sx={{ maxWidth: '400px' }}
+                >
+                  {t('Add an resource in the guide section')}
+                </Button>
               )}
             </Stack>
           </StepLabel>
@@ -146,16 +175,16 @@ export default function TimeLine({ }) {
       </Stepper>
 
       {!hasSchema && process.creator_id === user.id && (
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        fullWidth
-        maxWidth='xl'
-      >
-        <Box sx={{ minHeight: '93vh' }}>
-          <CreateSchema />
-        </Box>
-      </Dialog>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          fullWidth
+          maxWidth='xl'
+        >
+          <Box sx={{ minHeight: '93vh' }}>
+            <CreateSchema />
+          </Box>
+        </Dialog>
       )}
     </Box>
   );

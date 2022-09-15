@@ -8,5 +8,6 @@
   "The schema has been selected. You can delete the resulting coproduction tree in the settings section.": "The schema has been selected. You can delete the resulting coproduction tree in the settings section.",
   "Email": "Email",
   "Download": "Download",
-  "This team has permissions on:": ""
+  "This team has permissions on:": "",
+  "Now you can permit teams to work on the coproduction process. For that, navigate to the Guide section and add new permission for the tree items.": "Now you can permit teams to work on the coproduction process. For that, navigate to the Guide section and add new permission for the tree items."
 }

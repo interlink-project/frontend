@@ -92,7 +92,7 @@ export default function Overview({ }) {
       </Paper>
       )}
       {tab === 'progress'
-        ? <TimeLine />
+        ? <TimeLine assets={assets} />
         : (
           <Box sx={{ p: 3, justifyContent: 'center' }}>
             <AssetsTable

@@ -8,5 +8,6 @@
   "The schema has been selected. You can delete the resulting coproduction tree in the settings section.": "Shēma ir atlasīta. Iegūto koproducēšanas koku var dzēst iestatījumu sadaļā.",
   "Email": "E-pasts",
   "Download": "Lejupielādēt",
-  "This team has permissions on:": ""
+  "This team has permissions on:": "",
+  "Now you can permit teams to work on the coproduction process. For that, navigate to the Guide section and add new permission for the tree items.": "Tagad varat atļaut grupām strādāt ar kopēšanas procesu. Lai to izdarītu, naviģējiet uz sadaļu Ceļvedis un pievienojiet jaunas atļaujas koka elementiem."
 }
