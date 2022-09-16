@@ -1,6 +1,6 @@
-import { Alert, Avatar, Box, Button, Card, CardActionArea, CardHeader, Grid, List, ListItem, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Alert, Avatar, Box, Button, Card, CardActionArea, CardHeader, Grid, IconButton, List, ListItem, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
 import { green, red } from '@material-ui/core/colors';
-import { Add, ArrowForward, CheckOutlined, Close } from '@material-ui/icons';
+import { Add, ArrowForward, CheckOutlined, Close, Delete, Edit } from '@material-ui/icons';
 import { OrganizationChip, TreeItemTypeChip } from 'components/Icons';
 import TeamAvatar from 'components/TeamAvatar';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
@@ -12,14 +12,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { getProcess, setSelectedTreeItem } from 'slices/process';
 import PermissionCreate from 'components/dashboard/coproductionprocesses/PermissionCreate';
+import ConfirmationButton from 'components/ConfirmationButton';
+import { LoadingButton } from '@material-ui/lab';
+import { permissionsApi } from '__api__';
 
 function TeamRow({ t, team, process, treeitems, setSelectedTeam, setSelectedTreeItem }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [teamItems, setTeamItems] = React.useState([])
 
+  const handleDelete = (id) => {
+    permissionsApi.delete(id).then(() => {
+      dispatch(getProcess(process.id))
+    });
+  };
+
   React.useEffect(() => {
-    const li = []
+    const li = process.enabled_permissions.map(el => undefined)
     process.enabled_permissions.filter(el => el.team_id === team.id).forEach((permission) => {
       const index = treeitems.findIndex((el => el.id === permission.treeitem_id))
       if (index >= 0) {
@@ -32,7 +41,6 @@ function TeamRow({ t, team, process, treeitems, setSelectedTeam, setSelectedTree
     const without_undefined = li.filter(function (element) {
       return element !== undefined;
     })
-    console.log(li, without_undefined)
     setTeamItems(without_undefined)
   }, [process])
 
@@ -79,10 +87,11 @@ function TeamRow({ t, team, process, treeitems, setSelectedTeam, setSelectedTree
             <Table size="small">
               <TableHead>
                 <TableRow>
-                  <TableCell width="55%" align="right">{t("For")}</TableCell>
-                  <TableCell width="15%" align="right">{t('access_assets_permission')}</TableCell>
-                  <TableCell width="15%" align="right">{t('create_assets_permission')}</TableCell>
-                  <TableCell width="15%" align="right">{t('delete_assets_permission')}</TableCell>
+                  <TableCell width="45%" align="right">{t("For")}</TableCell>
+                  <TableCell width="15%" align="center">{t('access_assets_permission')}</TableCell>
+                  <TableCell width="15%" align="center">{t('create_assets_permission')}</TableCell>
+                  <TableCell width="15%" align="center">{t('delete_assets_permission')}</TableCell>
+                  <TableCell width="10%" align="center">{t('Actions')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -94,11 +103,11 @@ function TeamRow({ t, team, process, treeitems, setSelectedTeam, setSelectedTree
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell align="right" component="th" scope="row">
-          
+
                         {treeitem ? <Button
-                          variant='outlined'
                           fullWidth
-                          color={treeitem.type === 'phase' ? 'primary' : treeitem.type === 'objective' ? 'secondary' : 'inherit'}
+                          color='inherit'
+                          variant="text"
                           onClick={() => {
                             dispatch(setSelectedTreeItem(treeitem, () => navigate(`/dashboard/coproductionprocesses/${process.id}/guide`)));
                           }}
@@ -112,21 +121,54 @@ function TeamRow({ t, team, process, treeitems, setSelectedTeam, setSelectedTree
                           </Box>
                           {treeitem.name}
                         </Button> : <Button
-                            variant='outlined'
-                            fullWidth
-                            color={'inherit'}
-                          >
-                            {t("Overall process")}
-                          </Button>}
+                          variant='outlined'
+                          fullWidth
+                          onClick={() => {
+                            dispatch(setSelectedTreeItem(treeitems[0], () => navigate(`/dashboard/coproductionprocesses/${process.id}/guide`)));
+                          }}
+                          color={'inherit'}
+                        >
+                          {t("Overall process")}
+                        </Button>}
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         {permission.access_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         {permission.create_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
                       </TableCell>
-                      <TableCell align="right">
+                      <TableCell align="center">
                         {permission.delete_assets_permission ? <CheckOutlined style={{ color: green[500] }} /> : <Close style={{ color: red[500] }} />}
+                      </TableCell>
+                      <TableCell align="center">
+                        <Stack direction="row">
+                          {false && <IconButton>
+                            <Edit />
+                          </IconButton>}
+                          <ConfirmationButton
+                            key={`${permission.id}-delete-action`}
+                            Actionator={({ onClick }) => (
+                              <IconButton onClick={onClick}>
+                                <Delete />
+                              </IconButton>
+                            )}
+                            ButtonComponent={({ onClick }) => (
+                              <LoadingButton
+                                sx={{ mt: 1 }}
+                                fullWidth
+                                variant='contained'
+                                color='error'
+                                onClick={onClick}
+                              >
+                                {t('Confirm deletion')}
+                              </LoadingButton>
+                            )}
+                            onClick={() => handleDelete(permission.id)}
+                            text={t('Are you sure you want to remove this permission?')}
+                          />
+
+                        </Stack>
+
                       </TableCell>
                     </TableRow>
                   );
