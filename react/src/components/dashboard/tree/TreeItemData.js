@@ -14,7 +14,7 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { getTree, setUpdatingTree } from 'slices/process';
+import { getTree, setSelectedTreeItemById, setUpdatingTree } from 'slices/process';
 import { tree_items_translations } from 'utils/someCommonTranslations';
 import { objectivesApi, phasesApi, tasksApi } from '__api__';
 import { AwaitingIcon, statusIcon, StatusText } from '../../Icons';
@@ -56,7 +56,8 @@ const TreeItemData = ({ language, processId, element }) => {
 
   const saveData = () => {
     const data = {};
-    dispatch(setUpdatingTree(true));
+    // Do not update because the message received through sockets triggers the update
+    // dispatch(setUpdatingTree(true));
 
     const start_date = dateRange[0] && dateRange[0].toISOString().slice(0, 10);
     const end_date = dateRange[1] && dateRange[1].toISOString().slice(0, 10);
@@ -86,7 +87,8 @@ const TreeItemData = ({ language, processId, element }) => {
   };
 
   const update = (selectedTreeItemId) => {
-    dispatch(getTree(processId, selectedTreeItemId));
+    // dispatch(getTree(processId, selectedTreeItemId));
+    dispatch(setSelectedTreeItemById(selectedTreeItemId));
   };
 
   const deleteTreeItem = () => {

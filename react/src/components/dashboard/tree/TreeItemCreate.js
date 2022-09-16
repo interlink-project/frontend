@@ -44,10 +44,6 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
 
     ]
 
-    console.log(treeitems)
-
-
-
     const sendOnCreate = (data) => {
         console.log(mounted)
         if (mounted.current) {

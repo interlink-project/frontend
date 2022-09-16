@@ -1,4 +1,4 @@
-import { Alert, Avatar, Box, Button, Card, CardHeader, Grid, IconButton, Input, Stack, TextField as MuiTextField,FormControl,InputLabel,Select,MenuItem, Typography } from '@material-ui/core';
+import { Alert, Avatar, Box, Button, Card, CardHeader, Grid, IconButton, Input, Stack, TextField as MuiTextField, FormControl, InputLabel, Select, MenuItem, Typography } from '@material-ui/core';
 import { Delete, Edit, Save } from '@material-ui/icons';
 import ConfirmationButton from 'components/ConfirmationButton';
 import UsersList from 'components/dashboard/organizations/UsersList';
@@ -16,7 +16,6 @@ import { coproductionProcessesApi } from '__api__';
 
 const SettingsTab = () => {
   const [editMode, setEditMode] = useState(false);
-  const [initialData, setInitialData] = useState({});
   const { process, hasSchema, isAdministrator } = useSelector((state) => state.process);
   const [logotype, setLogotype] = useState(null);
   const mounted = useMounted();
@@ -31,21 +30,6 @@ const SettingsTab = () => {
   const onCoproductionProcessClear = () => {
     coproductionProcessesApi.clearSchema(process.id).then(() => dispatch(getProcess(process.id, false)));
   };
-
-  useEffect(() => {
-    if (!editMode) {
-      $('.ql-toolbar').remove();
-    }
-    setInitialData({
-      name: process.name || '',
-      description: process.description || '',
-      organization: process.organization || '',
-      aim: process.aim || '',
-      idea: process.idea || '',
-      challenges: process.challenges || '',
-      status: process.status || '',
-    });
-  }, [editMode, process]);
 
   const handleAdministratorAdd = (user) => {
     coproductionProcessesApi.addAdministrator(process.id, user.id).then((res) => {
@@ -101,58 +85,58 @@ const SettingsTab = () => {
     <Box style={{ minHeight: '87vh', backgroundColor: 'background.default' }}>
       <CardHeader
         avatar={
-                    editMode ? (
-                      <label htmlFor='contained-button-file'>
-                        <Input
-                          inputProps={{ accept: 'image/*' }}
-                          id='contained-button-file'
-                          type='file'
-                          sx={{ display: 'none' }}
-                          onChange={handleFileSelected}
-                        />
-                        <IconButton
-                          component='span'
-                          color='inherit'
-                        >
-                          <div style={{
-                            width: '100px',
-                            height: '100px',
-                            position: 'relative'
-                          }}
-                          >
-                            <Avatar
-                              src={logotype ? logotype.path : process.logotype_link}
-                              variant='rounded'
-                              style={{
-                                width: '100px',
-                                height: '100px',
-                                position: 'absolute'
-                              }}
-                            />
-                            <Edit style={{
-                              width: '50%',
-                              height: '50%',
-                              position: 'absolute',
-                              top: '50%',
-                              transform: 'translateY(-50%)'
-                            }}
-                            />
-                          </div>
+          editMode ? (
+            <label htmlFor='contained-button-file'>
+              <Input
+                inputProps={{ accept: 'image/*' }}
+                id='contained-button-file'
+                type='file'
+                sx={{ display: 'none' }}
+                onChange={handleFileSelected}
+              />
+              <IconButton
+                component='span'
+                color='inherit'
+              >
+                <div style={{
+                  width: '100px',
+                  height: '100px',
+                  position: 'relative'
+                }}
+                >
+                  <Avatar
+                    src={logotype ? logotype.path : process.logotype_link}
+                    variant='rounded'
+                    style={{
+                      width: '100px',
+                      height: '100px',
+                      position: 'absolute'
+                    }}
+                  />
+                  <Edit style={{
+                    width: '50%',
+                    height: '50%',
+                    position: 'absolute',
+                    top: '50%',
+                    transform: 'translateY(-50%)'
+                  }}
+                  />
+                </div>
 
-                        </IconButton>
-                      </label>
-                    ) : (
-                      <Avatar
-                        src={process.logotype_link}
-                        variant='rounded'
-                        style={{
-                          margin: '10px',
-                          width: '100px',
-                          height: '100px',
-                        }}
-                      />
-                    )
-                }
+              </IconButton>
+            </label>
+          ) : (
+            <Avatar
+              src={process.logotype_link}
+              variant='rounded'
+              style={{
+                margin: '10px',
+                width: '100px',
+                height: '100px',
+              }}
+            />
+          )
+        }
         title={(
           <Stack
             justifyContent='center'
@@ -177,10 +161,10 @@ const SettingsTab = () => {
               </Typography>
             )}
 
-            
+
           </Stack>
-          
-                  )}
+
+        )}
       />
       <Box sx={{ mx: 4 }}>
 
@@ -251,7 +235,7 @@ const SettingsTab = () => {
                 spacing={2}
               >
 
-                
+
 
                 <Grid
                   item
@@ -274,26 +258,26 @@ const SettingsTab = () => {
                   direction="row"
                   justifyContent="flex-start"
                 >
-                    <Typography variant="overline" sx={{color: 'primary.main' }}>{t('STATE OF THE PROYECT')}</Typography>
-                    <Select
-                      labelId="select-status-label"
-                      id="status"
-                      value={values.status}
-                      onChange={handleChange}
-                      fullWidth
-                      label={t('STATE OF THE PROYECT')}
-                      helperText={touched.status && errors.status}
-                      error={Boolean(touched.status && errors.status)}
-                      onBlur={handleBlur}
-                      name='status'
-                      variant={editMode ? 'filled' : 'standard'}
-                      inputProps={{ readOnly: !editMode }}
-                     
-                      
-                    >
-                      <MenuItem value="in_progress">{t('In progress')}</MenuItem>
-                      <MenuItem value="finished">{t('Finished')}</MenuItem>
-                    </Select>              
+                  <Typography variant="overline" sx={{ color: 'primary.main' }}>{t('STATE OF THE PROYECT')}</Typography>
+                  <Select
+                    labelId="select-status-label"
+                    id="status"
+                    value={values.status}
+                    onChange={handleChange}
+                    fullWidth
+                    label={t('STATE OF THE PROYECT')}
+                    helperText={touched.status && errors.status}
+                    error={Boolean(touched.status && errors.status)}
+                    onBlur={handleBlur}
+                    name='status'
+                    variant={editMode ? 'filled' : 'standard'}
+                    inputProps={{ readOnly: !editMode }}
+
+
+                  >
+                    <MenuItem value="in_progress">{t('In progress')}</MenuItem>
+                    <MenuItem value="finished">{t('Finished')}</MenuItem>
+                  </Select>
                 </Grid>
 
                 <Grid
@@ -383,47 +367,47 @@ const SettingsTab = () => {
 
               </Grid>
               {editMode && (
-              <Stack
-                direction='row'
-                spacing={2}
-                sx={{ justifyContent: 'center', mt: 3, mb: 2 }}
-              >
-                <Button
-                  variant='contained'
-                  disabled={isSubmitting}
-                  color='warning'
-                  size='medium'
-                  startIcon={<Delete />}
-                  onClick={() => { setEditMode(false); resetForm(); setLogotype(null); }}
+                <Stack
+                  direction='row'
+                  spacing={2}
+                  sx={{ justifyContent: 'center', mt: 3, mb: 2 }}
                 >
-                  {t('Cancel')}
-                </Button>
-                <Button
-                  variant='contained'
-                  disabled={isSubmitting}
-                  color='success'
-                  size='large'
-                  startIcon={<Save />}
-                  onClick={submitForm}
-                  disabled={!isValid}
-                >
-                  {t('Save')}
-                </Button>
-              </Stack>
+                  <Button
+                    variant='contained'
+                    disabled={isSubmitting}
+                    color='warning'
+                    size='medium'
+                    startIcon={<Delete />}
+                    onClick={() => { setEditMode(false); resetForm(); setLogotype(null); }}
+                  >
+                    {t('Cancel')}
+                  </Button>
+                  <Button
+                    variant='contained'
+                    disabled={isSubmitting}
+                    color='success'
+                    size='large'
+                    startIcon={<Save />}
+                    onClick={submitForm}
+                    disabled={!isValid}
+                  >
+                    {t('Save')}
+                  </Button>
+                </Stack>
               )}
             </Form>
           )}
         </Formik>
         {!editMode && isAdministrator && (
-        <Button
-          sx={{ mt: 3, justifyContent: 'center', textAlign: 'center' }}
-          variant='contained'
-          color='primary'
-          onClick={() => setEditMode(true)}
-          startIcon={<Edit />}
-        >
-          {t('Edit coproduction process')}
-        </Button>
+          <Button
+            sx={{ mt: 3, justifyContent: 'center', textAlign: 'center' }}
+            variant='contained'
+            color='primary'
+            onClick={() => setEditMode(true)}
+            startIcon={<Edit />}
+          >
+            {t('Edit coproduction process')}
+          </Button>
         )}
 
         <Card sx={{ border: '1px solid red', p: 5, my: 4 }}>
@@ -488,7 +472,7 @@ const SettingsTab = () => {
                 onClick={onCoproductionProcessClear}
                 text={t('Are you sure?')}
               />
-)}
+            )}
           >
             {t('The clearing of the co-production tree is irreversible. All resources created in it will disappear. However, the co-production process will not be deleted.')}
           </Alert>
@@ -530,7 +514,7 @@ const SettingsTab = () => {
                 onClick={onRemove}
                 text={t('Are you sure?')}
               />
-)}
+            )}
           >
             {t('The deletion of the co-production process is irreversible. All resources created in it will disappear.')}
           </Alert>

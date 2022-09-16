@@ -14,7 +14,8 @@ const ProcessPhaseTabs = ({ t, loading = false, selectedId, phases, onSelect }) 
     const { selectedTreeItem, process } = useSelector((state) => state.process);
 
     const onItemCreate = (res) => {
-        dispatch(getTree(process.id, selectedTreeItem.id));
+        // Do not update because the message received through sockets triggers the update
+        // dispatch(getTree(process.id, selectedTreeItem.id));
     }
 
     return (

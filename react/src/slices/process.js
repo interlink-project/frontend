@@ -140,7 +140,9 @@ export const getProcess = (processId, setLoading = true, selectedTreeItemId = nu
     const data = await coproductionProcessesApi.get(processId);
     dispatch(slice.actions.setProcess(data));
     const treeData = await coproductionProcessesApi.getTree(processId) || [];
-    treeData.setFirstPhaseAsSelectedTreeItem = true;
+    if(!selectedTreeItemId) {
+      treeData.setFirstPhaseAsSelectedTreeItem = true;
+    }
     dispatch(slice.actions.setProcessTree(treeData));
     selectedTreeItemId && dispatch(slice.actions.setSelectedTreeItemById(selectedTreeItemId));
   } catch (err) {
