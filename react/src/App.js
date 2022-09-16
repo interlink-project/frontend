@@ -76,16 +76,20 @@ const App = () => {
   useEffect(() => {
     if(socket){
       socket.onmessage = (message) => {
-        console.log(message.data)
-        if(message.data.includes("asset") || message.data.includes("phase") || message.data.includes("objective") || message.data.includes("task")){
+        const {event, extra} = JSON.parse(message.data)
+        console.log(event, extra)
+
+        if(event.includes("phase") || event.includes("objective") || event.includes("task")){
           dispatch(getTree(process.id, selectedTreeItem.id ))
-        }else if(message.data.includes("coproductionprocess_removed")){
+        }else if(event.includes("coproductionprocess_removed")){
           navigate('/dashboard')
           // show advertence
-        }else if(message.data.includes("coproductionprocess") || message.data.includes("permission")){
+        }else if(event.includes("coproductionprocess") || event.includes("permission")){
           dispatch(getProcess(process.id, false, selectedTreeItem.id ))
         }
-
+        else if(event.includes("asset") && extra.task_id === selectedTreeItem.id){
+          console.log("UPDATE ASSETS")
+        }
       };
     }
   }, [selectedTreeItem])
