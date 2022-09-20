@@ -76,11 +76,27 @@ const App = () => {
   useEffect(() => {
     if(socket){
       socket.onmessage = (message) => {
-        const {event, extra} = JSON.parse(message.data)
-        console.log(event, extra)
-
+        const {event,name, extra} = JSON.parse(message.data)
+        console.log(event, extra, name)
+        if(event.includes("treeitem")){
+          if(event.includes("removed")){
+            if(selectedTreeItem.name === name){
+              dispatch(getTree(process.id, selectedTreeItem.prerequisites_ids[0] ))
+            }else{
+              dispatch(getTree(process.id, selectedTreeItem.id ))  
+            }
+          }else{
+            dispatch(getTree(process.id, selectedTreeItem.id ))
+          }
+          
+        }else
         if(event.includes("phase") || event.includes("objective") || event.includes("task")){
-          dispatch(getTree(process.id, selectedTreeItem.id ))
+          if(event.includes("removed")){
+            dispatch(getTree(process.id, selectedTreeItem.prerequisites_ids[0] ))
+          }else{
+            dispatch(getTree(process.id, selectedTreeItem.id ))
+          }
+          
         }else if(event.includes("coproductionprocess_removed")){
           navigate('/dashboard')
           // show advertence
