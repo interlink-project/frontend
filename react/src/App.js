@@ -58,7 +58,7 @@ const App = () => {
       
       if(process){
         console.log(REACT_APP_DOMAIN)
-        const new_socket = new WebSocket(`ws://${REACT_APP_DOMAIN}/coproduction/api/v1/coproductionprocesses/${process.id}/ws`);
+        const new_socket = new WebSocket(`wss://${REACT_APP_DOMAIN}/coproduction/api/v1/coproductionprocesses/${process.id}/ws`);
         new_socket.onopen = () => {
           console.log('WebSocket Client Connected');
         };
