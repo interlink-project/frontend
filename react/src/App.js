@@ -51,14 +51,12 @@ const App = () => {
   useEffect(() => {
     const process_changed = !process || process.id !== lastProcessId
     if (process_changed) {
+      if (socket) {
+        console.log('WebSocket Client Closed');
+        socket.close();
+      }
+      
       if(process){
-        
-        if (socket) {
-          console.log('WebSocket Client Closed');
-          socket.close()
-        }
-      
-      
         console.log(REACT_APP_DOMAIN)
         
         let socketProtocol='ws:';
