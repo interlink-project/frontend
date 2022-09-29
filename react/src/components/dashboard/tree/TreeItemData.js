@@ -91,14 +91,14 @@ const TreeItemData = ({ language, processId, element }) => {
     dispatch(setSelectedTreeItemById(selectedTreeItemId));
   };
 
-  const deleteTreeItem = async () => {
+  const deleteTreeItem = () => {
     trackEvent({
       category: processId,
       action: 'delete-treeitem',
       name: element.id,
     });
     dispatch(setUpdatingTree(true));
-    await apis[element.type].delete(element.id).then(() => {
+    apis[element.type].delete(element.id).then(() => {
       let setSelectedTreeItem = null;
       if (element.type === 'task') {
         setSelectedTreeItem = element.objective_id;
