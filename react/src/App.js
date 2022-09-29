@@ -14,6 +14,7 @@ import routes from './routes/index';
 import './translations/i18n';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProcess, getTree } from 'slices/process';
+import getAssets  from './components/dashboard/coproductionprocesses/RightSide'
 
 export const RemoveTrailingSlash = ({ ...rest }) => {
   const location = useLocation();
@@ -73,10 +74,10 @@ const App = () => {
   }, [process])
 
 
-  useEffect(() => {
+   useEffect(() => {
     if(socket){
       socket.onmessage = (message) => {
-        const {event,name, extra} = JSON.parse(message.data)
+        const {event, name, extra} = JSON.parse(message.data)
         console.log(event, extra, name)
         if(event.includes("treeitem")){
           if(event.includes("removed")){
@@ -105,10 +106,12 @@ const App = () => {
         }
         else if(event.includes("asset") && extra.task_id === selectedTreeItem.id){
           console.log("UPDATE ASSETS")
+          //dispatch(getAssets())
+          getAssets();
         }
       };
     }
-  }, [selectedTreeItem])
+  }, [selectedTreeItem]) 
 
   // ANALYTICS
   const { enableLinkTracking, trackPageView } = useMatomo();
