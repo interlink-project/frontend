@@ -137,18 +137,6 @@ const App = () => {
             //dispatch(getAssets())
             getAssets();
           }
-          
-        }else if(event.includes("coproductionprocess_removed")){
-          navigate('/dashboard')
-          // show advertence
-        }else if(event.includes("coproductionprocess") || event.includes("permission")){
-          dispatch(getProcess(process.id, false, selectedTreeItem.id ))
-        }
-        else if(event.includes("asset") && extra.task_id === selectedTreeItem.id){
-          console.log("UPDATE ASSETS")
-          //dispatch(getAssets())
-          //getAssets();
-        }
       };
     }
   }, [selectedTreeItem])
