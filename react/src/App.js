@@ -113,7 +113,7 @@ const App = () => {
         else if(event.includes("asset") && extra.task_id === selectedTreeItem.id){
           console.log("UPDATE ASSETS")
           //dispatch(getAssets())
-          getAssets();
+          //getAssets();
         }
       };
     }
