@@ -14,7 +14,7 @@ import routes from './routes/index';
 import './translations/i18n';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProcess, getTree } from 'slices/process';
-import getAssets  from './components/dashboard/coproductionprocesses/RightSide'
+import getAssets from './components/dashboard/coproductionprocesses/RightSide'
 
 export const RemoveTrailingSlash = ({ ...rest }) => {
   const location = useLocation();
@@ -55,18 +55,18 @@ const App = () => {
         console.log('WebSocket Client Closed');
         socket.close();
       }
-      
-      if(process){
+
+      if (process) {
         console.log(REACT_APP_DOMAIN)
-        
-        let socketProtocol='ws:';
-        if(REACT_APP_DOMAIN !== 'localhost'){
-          socketProtocol='wss:';
+
+        let socketProtocol = 'ws:';
+        if (REACT_APP_DOMAIN !== 'localhost') {
+          socketProtocol = 'wss:';
         }
 
         const new_socket = new WebSocket(`${socketProtocol}//${REACT_APP_DOMAIN}/coproduction/api/v1/coproductionprocesses/${process.id}/ws`);
         new_socket.onopen = () => {
-          console.log('WebSocket Client Connected',new_socket);
+          console.log('WebSocket Client Connected', new_socket);
         };
         new_socket.onmessage = (message) => {
           console.log(message)
@@ -75,33 +75,67 @@ const App = () => {
         setSocket(new_socket)
         setLastProcessId(process.id)
       }
-      
+
     }
   }, [process])
 
+  useEffect(() => {
+    if (!socket && process) {
+      console.log(REACT_APP_DOMAIN)
 
-   useEffect(() => {
-    if(socket){
+      let socketProtocol = 'ws:';
+      if (REACT_APP_DOMAIN !== 'localhost') {
+        socketProtocol = 'wss:';
+      }
+
+      const new_socket = new WebSocket(`${socketProtocol}//${REACT_APP_DOMAIN}/coproduction/api/v1/coproductionprocesses/${process.id}/ws`);
+      new_socket.onopen = () => {
+        console.log('WebSocket Client Connected', new_socket);
+      };
+      new_socket.onmessage = (message) => {
+        console.log(message)
+        // dispatch(getProcess(process.id, false, selectedTreeItem.id ))
+      };
+      setSocket(new_socket)
+      setLastProcessId(process.id)
+    }
+  }, [socket])
+
+
+  useEffect(() => {
+    if (socket) {
       socket.onmessage = (message) => {
-        const {event, name, extra} = JSON.parse(message.data)
+        const { event, name, extra } = JSON.parse(message.data)
         console.log(event, extra, name)
-        if(event.includes("treeitem")){
-          if(event.includes("removed")){
-            if(selectedTreeItem.name === name){
-              dispatch(getTree(process.id, selectedTreeItem.prerequisites_ids[0] ))
-            }else{
-              dispatch(getTree(process.id, selectedTreeItem.id ))  
+        if (event.includes("treeitem")) {
+          if (event.includes("removed")) {
+            if (selectedTreeItem.name === name) {
+              dispatch(getTree(process.id, selectedTreeItem.prerequisites_ids[0]))
+            } else {
+              dispatch(getTree(process.id, selectedTreeItem.id))
             }
-          }else{
-            dispatch(getTree(process.id, selectedTreeItem.id ))
+          } else {
+            dispatch(getTree(process.id, selectedTreeItem.id))
           }
-          
-        }else
-        if(event.includes("phase") || event.includes("objective") || event.includes("task")){
-          if(event.includes("removed")){
-            dispatch(getTree(process.id, selectedTreeItem.prerequisites_ids[0] ))
-          }else{
-            dispatch(getTree(process.id, selectedTreeItem.id ))
+
+        } else
+          if (event.includes("phase") || event.includes("objective") || event.includes("task")) {
+            if (event.includes("removed")) {
+              dispatch(getTree(process.id, selectedTreeItem.prerequisites_ids[0]))
+            } else {
+              dispatch(getTree(process.id, selectedTreeItem.id))
+            }
+
+          } else if (event.includes("coproductionprocess_removed")) {
+            navigate('/dashboard')
+            // show advertence
+          } else if (event.includes("coproductionprocess") || event.includes("permission")) {
+            dispatch(getProcess(process.id, false, selectedTreeItem.id))
+          }
+          else if (event.includes("asset") && extra.task_id === selectedTreeItem.id) {
+            console.log("UPDATE ASSETS")
+            //dispatch(getAssets())
+            getAssets();
           }
           
         }else if(event.includes("coproductionprocess_removed")){
@@ -117,7 +151,7 @@ const App = () => {
         }
       };
     }
-  }, [selectedTreeItem]) 
+  }, [selectedTreeItem])
 
   // ANALYTICS
   const { enableLinkTracking, trackPageView } = useMatomo();
