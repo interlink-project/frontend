@@ -119,24 +119,37 @@ const App = () => {
           }
 
         } else
-          if (event.includes("phase") || event.includes("objective") || event.includes("task")) {
-            if (event.includes("removed")) {
-              dispatch(getTree(process.id, selectedTreeItem.prerequisites_ids[0]))
-            } else {
-              dispatch(getTree(process.id, selectedTreeItem.id))
-            }
+        if (event.includes("phase") || event.includes("objective") || event.includes("task")) {
+          if (event.includes("removed")) {
+            dispatch(getTree(process.id, selectedTreeItem.prerequisites_ids[0]))
+          } else {
+            dispatch(getTree(process.id, selectedTreeItem.id))
+          }
 
-          } else if (event.includes("coproductionprocess_removed")) {
-            navigate('/dashboard')
-            // show advertence
-          } else if (event.includes("coproductionprocess") || event.includes("permission")) {
-            dispatch(getProcess(process.id, false, selectedTreeItem.id))
+        } else if (event.includes("coproductionprocess_removed")) {
+          navigate('/dashboard')
+          // show advertence
+        } else if (event.includes("coproductionprocess") || event.includes("permission")) {
+          dispatch(getProcess(process.id, false, selectedTreeItem.id))
+        }
+        else if (event.includes("asset")) {
+          
+          const datosTemp = JSON.parse(message.data)
+          console.log(datosTemp)
+          console.log("UPDATE ASSETS")
+
+          //Ask if the selected task is the same:
+          if (selectedTreeItem.id === datosTemp.task_id) {
+            dispatch(getTree(process.id, selectedTreeItem.id))
+          }else{
+            
+            if (window.location.pathname.includes("overview")){
+              dispatch(getProcess(process.id, false))
+            }
           }
-          else if (event.includes("asset") && extra.task_id === selectedTreeItem.id) {
-            console.log("UPDATE ASSETS")
-            //dispatch(getAssets())
-            getAssets();
-          }
+
+
+        }
       };
     }
   }, [selectedTreeItem])
