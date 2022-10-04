@@ -139,7 +139,7 @@ const App = () => {
           console.log("UPDATE ASSETS")
 
           //Ask if the selected task is the same:
-          if (selectedTreeItem.id === datosTemp.task_id) {
+          if (selectedTreeItem.id === datosTemp.extra.task_id) {
             dispatch(getTree(process.id, selectedTreeItem.id))
           }else{
             
