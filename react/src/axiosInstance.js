@@ -10,7 +10,7 @@ export const getImageUrl = (micro, path) => path && `/${micro}${path}`;
 const axiosInstance = axios.create({
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
   baseURL: REACT_APP_COMPLETE_DOMAIN,
-  timeout: 20000,
+  timeout: 40000,
   headers: {
     'Content-Type': 'application/json',
     accept: 'application/json',
