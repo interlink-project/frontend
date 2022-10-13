@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Interlink \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-01 14:42+0200\n"
+"POT-Creation-Date: 2022-10-13 15:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,21 +44,21 @@ msgstr ""
 
 #: ../../catalogue-interlinkers.md:6
 msgid ""
-"You may access the INTERLINK catalogue by clicking on INTERLINKERs top "
-"menu option. This will give you access to a new screen where you can "
-"perform browsing, filtering and selection of INTERLINKERs."
+"You may access the INTERLINK catalogue by clicking on CATALOGUE top menu "
+"option. This will give you access to a new screen where you can perform "
+"browsing, filtering and selection of INTERLINKERs."
 msgstr ""
 
 #: ../../catalogue-interlinkers.md:8
 msgid ""
 "Next some examples of the actions that you can currently carry out in the"
-" INTERLINKERs catalogue:"
+" INTERLINKERs' catalogue:"
 msgstr ""
 
 #: ../../catalogue-interlinkers.md:9
 msgid ""
-"Enter in the catalogue of INTERLINNKERs by clicking on INTERLINKERs top "
-"menu   ![INTERLINKERs catalogue view](images/catalogueview-main.png)"
+"Enter in the catalogue of INTERLINNKERs by clicking on CATALOGUE top menu"
+" option:   ![INTERLINKERs catalogue view](images/catalogueview-main.png)"
 msgstr ""
 
 #: ../../catalogue-interlinkers.md:9
@@ -69,26 +69,37 @@ msgstr ""
 msgid ""
 "Filter by selecting options on Nature filter and select \"Internal "
 "Knowledge\" to see only those INTERLINKERs of type \"knowledge\" prepared"
-" for the project.    ![Filtered INTERLINKERs](images/catalogueview-"
-"filtering.png)"
+" for the project (internal). You may also filter by selecting the PROBLEM"
+" PROFILEs that INTERLINKERs should address or the Minimum Rating expected"
+" from each of them. Notice that a PROBLEM PROFILE is a problem domain or "
+"functionality which may be addressed by an INTERLINKER (enabler), e.g. "
+"ORG_PROBLEM_8 - Partnership Agreement Definition    ![Filtered "
+"INTERLINKERs](images/catalogueview-filtering.png)"
 msgstr ""
 
-#: ../../catalogue-interlinkers.md:11 ../../catalogue-interlinkers.md:13
-#: ../../catalogue-interlinkers.md:15
+#: ../../catalogue-interlinkers.md:11
 msgid "Filtered INTERLINKERs"
 msgstr ""
 
 #: ../../catalogue-interlinkers.md:13
 msgid ""
 "Review contents of an INTERLINKER by clicking on the title of one of the "
-"displayed INTERLINKERs   ![Filtered INTERLINKERs](images/catalogueview-"
+"displayed INTERLINKERs   ![Browsing an INTERLINKER](images/catalogueview-"
 "browsing.png)"
+msgstr ""
+
+#: ../../catalogue-interlinkers.md:13
+msgid "Browsing an INTERLINKER"
 msgstr ""
 
 #: ../../catalogue-interlinkers.md:15
 msgid ""
 "You main review what offers the selected INTERLINKER by visiting Preview "
-"tab   ![Filtered INTERLINKERs](images/catalogueview-download.png)"
+"tab   ![Downloading an INTERLINKERs](images/catalogueview-download.png)"
+msgstr ""
+
+#: ../../catalogue-interlinkers.md:15
+msgid "Downloading an INTERLINKERs"
 msgstr ""
 
 #: ../../coproductionprocess-guide.md:1
@@ -99,229 +110,310 @@ msgstr ""
 msgid ""
 "The GUIDE view can be considered the main view of a co-production "
 "process. It is closely linked to the other available views, namely "
-"[OVERVIEW](/docs/en"
-"/coproductionprocess-overview.html) and [WORKPLAN](https://dev.interlink-"
-"project.eu/docs/en/coproductionprocess-workplan.html) views of"
-" a co-production process."
+"[OVERVIEW](/docs/en/coproductionprocess-overview.html) and "
+"[WORKPLAN](/docs/en/coproductionprocess-workplan.html) views of a co-"
+"production process."
 msgstr ""
 
 #: ../../coproductionprocess-guide.md:5
 msgid ""
-"The [GUIDE view](/docs/en"
-"/coproductionprocess-guide.html) displays a co-production tree, allowing "
-"the co-production team members to browse through the phases of a co-"
-"production process, its corresponding objectives, the tasks that help "
-"accomplishing those objectives and the INTERLINKERs that are recommended "
-"to aid team member completing certain tasks of the co-production process."
-" Very importantly, from the GUIDE view, users can instantiate the "
-"recommended INTERLINKERs for a task or create new instances from a range "
-"of generic INTERLINKERs."
+"The [GUIDE view](/docs/en/coproductionprocess-guide.html) displays a co-"
+"production tree, allowing the co-production team members to browse "
+"through the phases of a co-production process, its corresponding "
+"objectives, the tasks that help accomplishing those objectives and the "
+"INTERLINKERs that are recommended to aid team members completing certain "
+"tasks of the co-production process. Very importantly, from the GUIDE "
+"view, users can instantiate the recommended INTERLINKERs for a task or "
+"create new instances from a range of generic INTERLINKERs."
 msgstr ""
 
 #: ../../coproductionprocess-guide.md:7
 msgid ""
-"After creating a new co-production process, the user is requested to "
-"choose a co-production process guide. Notice that there is flexibility to"
-" choose the best fitting schema (you may check available co-production "
-"schemas in our [interlinkers-data/schemas](https://github.com/interlink-"
+"After creating a new co-production process, the creator (which is the "
+"default administrator of the process) is requested to choose a co-"
+"production process guide. Notice that there is flexibility to choose the "
+"best fitting schema (you may check available co-production schemas in our"
+" [interlinkers-data/tree/master/schemas](https://github.com/interlink-"
 "project/interlinkers-data/tree/master/schemas) repo). The left-hand-side "
-"\"Guide\" menu item does not appear until a schema has been chosen."
+"\"Guide\" menu item is not enabled until a schema has been chosen. The "
+"following three snapshosts show how the INTERLINK [\"Default "
+"schema\"](https://github.com/interlink-project/interlinkers-"
+"data/tree/master/schemas/default)) for a coproduction process is chosen "
+"and, hence, the Guide left hand side menu option is activated."
 msgstr ""
 
 #: ../../coproductionprocess-guide.md:9
 msgid ""
-"Notice that there are several co-production trees available. Let's "
-"select, for instance, [\"Default schema\"](https://github.com/interlink-"
-"project/interlinkers-data/tree/master/schemas/default) ![Select default "
-"schema](images/guideview-defineschema.png)"
+"![View before schema has been selected](images/guideview-"
+"defineschema0.png)    ![Selection of schema](images/guideview-"
+"defineschema1.png)    ![Browsing through schema](images/guideview-"
+"defineschema2.png)"
 msgstr ""
 
 #: ../../coproductionprocess-guide.md:9
-msgid "Select default schema"
+msgid "View before schema has been selected"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:11
-msgid ""
-"As result, notice the emergence of Guide view menu item on left hand side"
-" ![Beware of emergence of Guide view menu item on left hand side](images"
-"/guideview-menuitememergence.png)"
+#: ../../coproductionprocess-guide.md:9
+msgid "Selection of schema"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:11
-msgid "Beware of emergence of Guide view menu item on left hand side"
+#: ../../coproductionprocess-guide.md:9
+msgid "Browsing through schema"
 msgstr ""
 
 #: ../../coproductionprocess-guide.md:13
-msgid "Some of the actions that you may carry in the GUIDE view are:"
+msgid ""
+"As result, notice the activation of Guide view menu item on the left hand"
+" side: ![Beware of emergence of Guide view menu item on left hand "
+"side](images/guideview-menuitememergence.png)"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:14
+#: ../../coproductionprocess-guide.md:13
+msgid "Beware of emergence of Guide view menu item on left hand side"
+msgstr ""
+
+#: ../../coproductionprocess-guide.md:15
+msgid "Some of the actions that you may carry out in the GUIDE view are:"
+msgstr ""
+
+#: ../../coproductionprocess-guide.md:16
 msgid ""
 "You may customize such tree to the specific needs of your co-production "
-"process. Currently only DELETE task allowed, soon you will be able to add"
-" new objectives & tasks. Check below how a task is removed after having "
-"clicked on the PENCIL icon which appears on the right hand side of the "
-"task visualization panel. ![About to remove a task](images/guideview-"
-"removetask.png) ![View after removal of task](images/guideview-after-"
-"taskremoval.png)"
+"process. Notice the PENCIL icon on the top right hand side of tab "
+"\"INFORMATION ABOUT THE TASK\". Currently only \"Remove task\" is "
+"allowed, soon you will be able to add new objectives & tasks. Check below"
+" how a task is removed after having clicked on the PENCIL icon which "
+"appears on the right hand side of the task visualization panel. ![About "
+"to remove a task](images/guideview-removetask.png) ![View after removal "
+"of task](images/guideview-after-taskremoval.png)"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:14
+#: ../../coproductionprocess-guide.md:16
 msgid "About to remove a task"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:14
+#: ../../coproductionprocess-guide.md:16
 msgid "View after removal of task"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:17
+#: ../../coproductionprocess-guide.md:19
 msgid ""
-"Observe that specific co-production trees can be defined and, hence, "
+"Remember that specific co-production trees can be defined and, hence, "
 "selected (e.g. [VARAM case](https://github.com/interlink-project"
-"/interlinkers-data/tree/master/schemas/servicedescriptionenhancement))"
+"/interlinkers-data/tree/master/schemas/servicedescriptionenhancement)) as"
+" was done before with the \"Default schema\" of INTERLINK"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:18
+#: ../../coproductionprocess-guide.md:20
 msgid ""
 "You may also assign durations to tasks ![Assigning duration to "
 "task](images/guideview-assignduration.png)"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:18
+#: ../../coproductionprocess-guide.md:20
 #: ../../coproductionprocess-workplan.md:10
 msgid "Assigning duration to task"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:20
+#: ../../coproductionprocess-guide.md:22
 msgid ""
-"Then, we can see in [WORKPLAN view](https://dev.interlink-"
-"project.eu/docs/en/coproductionprocess-workplan.html) the time"
-" span defined, by clicking on the \"Time planification\" link in the "
-"[GUIDE view](/docs/en"
-"/coproductionprocess-guide.html) or clicking on the left hand side menu "
-"option named \"Workplan\". You may return to the Guide view, to see the "
-"task details by clicking on the name of the task in the WORKPLAN view.  "
-"![Workplan view](images/workplanview-taskduration.png)"
+"Then, we can see in [WORKPLAN view](/docs/en/coproductionprocess-"
+"workplan.html) the time span defined, by clicking on the \"Time "
+"planification\" link in the [GUIDE view](/docs/en/coproductionprocess-"
+"guide.html) or clicking on the left hand side menu option named "
+"\"Workplan\". You may return to the Guide view, to see the task details "
+"by clicking on the name of the task in the WORKPLAN view, e.g. in the "
+"picture task \"Create awareness and communication\".  ![Workplan "
+"view](images/workplanview-taskduration.png)"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:20
+#: ../../coproductionprocess-guide.md:22
 #: ../../coproductionprocess-workplan.md:7
 msgid "Workplan view"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:24
-msgid ""
-"The GUIDE view allows to instantiate INTERLINKERs to, hence, make "
-"progress in the co-production process. For each of the tasks in the co-"
-"production phases you may select any of the recommended INTERLINKERs or "
-"instantiate a new one based on the generic software INTERLINKERs "
-"available at the bottom of the screen shown when selecting a co-"
-"production task."
-msgstr ""
-
 #: ../../coproductionprocess-guide.md:26
 msgid ""
-"For intance, let's create a new document to collect feedback of "
-"collaboration process."
+"The GUIDE view allows to instantiate INTERLINKERs to, hence, make "
+"progress in the co-production process. See tab RESOURCES within task "
+"view. For each of the tasks in the co-production phases you may select "
+"any of the recommended INTERLINKERs or instantiate a new one based on the"
+" generic software INTERLINKERs provided when clicking on blue button "
+"\"Instantiate task resource (result) through generic INTERLINKERs "
+"(enablers)\" at the bottom of the view of a co-production task."
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:27
+#: ../../coproductionprocess-guide.md:28
+msgid ""
+"For intance, let's create a new document to define a collaboration "
+"agreement in a collaboration process."
+msgstr ""
+
+#: ../../coproductionprocess-guide.md:29
 msgid ""
 "Select a task in the GUIDE view, e.g. ENGAGE > Engage Stakeholders > "
 "Create awareness and Communication"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:28
+#: ../../coproductionprocess-guide.md:30
 msgid ""
-"Notice the INTERLINKERs recommended   ![Notice INTERLINKERs "
-"recommended](images/catalogueview-recommendedinterlinkers.png)"
-msgstr ""
-
-#: ../../coproductionprocess-guide.md:28
-msgid "Notice INTERLINKERs recommended"
+"Notice the INTERLINKERs recommended by clicking on button \"Instantiate "
+"task resource (result) through recommended INTERLINKERs (enablers)\""
+"       ![Click on button Instantiate task resource (result) through "
+"recommended INTERLINKERs (enablers)](images/catalogueview-"
+"recommendedinterlinkers0.png)   ![Notice INTERLINKERs recommended](images"
+"/catalogueview-recommendedinterlinkers.png)"
 msgstr ""
 
 #: ../../coproductionprocess-guide.md:30
+msgid ""
+"Click on button Instantiate task resource (result) through recommended "
+"INTERLINKERs (enablers)"
+msgstr ""
+
+#: ../../coproductionprocess-guide.md:30
+msgid "Notice INTERLINKERs recommended"
+msgstr ""
+
+#: ../../coproductionprocess-guide.md:33
 msgid ""
 "Select a task in the GUIDE view, e.g. ENGAGE > Define legal and ethical "
 "framework > Define a non-disclosure agreement (NDA)"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:31
+#: ../../coproductionprocess-guide.md:34
 msgid ""
-"Click on the blue button at the bottom entitled \"Initiate Procedure\" to"
-" give place to a new Google Docs document   ![Creating a new Google "
-"Docs](images/guideview-genericINTERLINKERinstantiation.png)"
+"Click on the blue button at the bottom entitled \"Instantiate task "
+"resource (result) through generic INTERLINKERs (enablers)\" to give place"
+" to a new Google Docs document   ![Creating a new Google Docs](images"
+"/guideview-genericINTERLINKERinstantiation.png)"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:31
+#: ../../coproductionprocess-guide.md:34
 msgid "Creating a new Google Docs"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:33
+#: ../../coproductionprocess-guide.md:36
 msgid ""
 "Select the type of document to create with the support of Google Drive "
 "INTERLINKER   ![Select and name the Google Docs](images/googledrive-"
 "interlinker-init.png)"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:33
+#: ../../coproductionprocess-guide.md:36
 msgid "Select and name the Google Docs"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:35
+#: ../../coproductionprocess-guide.md:38
 msgid ""
-"Realize about the new resource that appears at the bottom of the task "
-"description panel   ![New resource created](images/guideview-newresource-"
-"created.png)"
+"Realize about the new resource that appears at the top of the task "
+"description panel within its RESOURCE tab:   ![New resource "
+"created](images/guideview-newresource-created.png)"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:35 ../../coproductionprocess-guide.md:37
+#: ../../coproductionprocess-guide.md:38 ../../coproductionprocess-guide.md:40
 msgid "New resource created"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:37
+#: ../../coproductionprocess-guide.md:40
 msgid ""
 "Open it in Google Drive by clicking on the newly created resource name   "
 "![New resource created](images/googledrive-viewdocument.png)"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:39
+#: ../../coproductionprocess-guide.md:42
 msgid "You may repeat the process, selecting a recommended INTERLINKER instead:"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:40
+#: ../../coproductionprocess-guide.md:43
 msgid ""
 "For instance, select *\"Stakeholders Mapping Canvas\"* INTERLINKER under "
 "task shown when navigating to *Engage > Identify Stakeholders*"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:41
-msgid "Click on button “Instantiate as resource to use in the project”"
-msgstr ""
-
-#: ../../coproductionprocess-guide.md:42
+#: ../../coproductionprocess-guide.md:44
 msgid ""
-"Check the newly created resource appears at the bottom of the page under "
-"**“Current resources”**"
+"Click on button “Instantiate task resource (result) through recommended "
+"INTERLINKERs (enablers)”"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:43
+#: ../../coproductionprocess-guide.md:45
+msgid ""
+"Check the newly created resource appears at the top of the task "
+"description panel within RESOURCE tab"
+msgstr ""
+
+#: ../../coproductionprocess-guide.md:46
 msgid ""
 "Open the generated resource in the form of a presentation and add some "
 "modifications"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:45
+#: ../../coproductionprocess-guide.md:48
 msgid ""
-"Finally, you can see the progress achieved, so far, in a given co-"
-"production process by visiting the [OVERVIEW view](https://dev.interlink-"
-"project.eu/docs/en/coproductionprocess-overview.html), by "
-"clicking on \"Overview\" menu item on the left hand-side menu option. \t"
-"![Resources created so far](images/coproductionproces-overview-NDA.png)"
+"You may also assign PERMISSIONS to phases, objectives or tasks in the co-"
+"production tree. Let's select task ENGAGE > Define legal and ethical "
+"framework > Define a non-disclosure agreement (NDA) and click on the TASK"
+" VIEW's PERMISSIONS tab. First, click on button \"Add new permission to "
+"the task\" \t![Assign team permissions to task](images/guideview-"
+"addpermissiontask0.png) Then, choose, among the available organizations, "
+"the one from which you want to appoint a TEAM to the task. Notice that "
+"you may use the button \"+ Create new team\" to create a brand new team "
+"if none of the already defined ones is suitable to take part and be "
+"granted permissions in the current coproduction process and selected "
+"task.  \t![Select team to assing permissions to task](images/guideview-"
+"addpermissiontask1.png) Next, grant the corresponding resource access "
+"(view, create, delete) permissions to members of the team for that task."
+"  \t![Choose resource access rights for task](images/guideview-"
+"addpermissiontask2.png) You should now see the granted permissions to the"
+" selected team for the task in question.  \t![View team permissions for "
+"task](images/guideview-addpermissiontask3.png)"
 msgstr ""
 
-#: ../../coproductionprocess-guide.md:45
+#: ../../coproductionprocess-guide.md:48
+msgid "Assign team permissions to task"
+msgstr ""
+
+#: ../../coproductionprocess-guide.md:48
+msgid "Select team to assing permissions to task"
+msgstr ""
+
+#: ../../coproductionprocess-guide.md:48
+msgid "Choose resource access rights for task"
+msgstr ""
+
+#: ../../coproductionprocess-guide.md:48
+msgid "View team permissions for task"
+msgstr ""
+
+#: ../../coproductionprocess-guide.md:57
+msgid ""
+"If you visit the co-production process [TEAM view](/docs/en"
+"/coproductionprocess-team.html), by clicking on \"Team\" left hand side "
+"menu option, you should now see the permissions assigned to the before "
+"mentioned task. \t![View teams permissions in process](images/teamview-"
+"viewpermissions.png)"
+msgstr ""
+
+#: ../../coproductionprocess-guide.md:57
+msgid "View teams permissions in process"
+msgstr ""
+
+#: ../../coproductionprocess-guide.md:60
+msgid ""
+"Finally, you can see the progress achieved, so far, in a given co-"
+"production process by visiting the [OVERVIEW view](/docs/en"
+"/coproductionprocess-overview.html), by clicking on \"Overview\" menu "
+"item on the left hand-side menu option. In the case that you are "
+"administrator of the co-created process you will see two tabs, namely, "
+"PROGRES and RESOURCES. Users that are simply taking part in a "
+"coproduction process by being part of a team granted persmisions over "
+"coproduction tree items will only see the RESOURCES tab.  \t![Resources "
+"created so far](images/coproductionproces-overview-NDA.PNG)"
+msgstr ""
+
+#: ../../coproductionprocess-guide.md:60
 msgid "Resources created so far"
 msgstr ""
 
@@ -331,41 +423,82 @@ msgstr ""
 
 #: ../../coproductionprocess-overview.md:3
 msgid ""
-"The Overview view is one of the three co-production process visualization"
-" available, namely [Overview](https://dev.interlink-"
-"project.eu/docs/en/coproductionprocess-overview.html#), "
-"[Guide](/docs/en"
-"/coproductionprocess-guide.html) and [Workplan](https://dev.interlink-"
-"project.eu/docs/en/coproductionprocess-workplan.html) views."
+"The Overview view is one of the five co-production process visualizations"
+" available, namely [Overview](/docs/en/coproductionprocess-"
+"overview.html#), [Guide](/docs/en/coproductionprocess-guide.html), "
+"[Workplan](/docs/en/coproductionprocess-workplan.html), [Team](/docs/en"
+"/coproductionprocess-team.html) and [Settings](/docs/en"
+"/coproductionprocess-settings.html) views."
 msgstr ""
 
 #: ../../coproductionprocess-overview.md:5
 msgid ""
 "The Overview view is in charge of showing the ongoing activity on a given"
-" co-production process. It displays the current set of resources "
-"instantiated. The following actions can be performed over the resources "
-"listed:"
-msgstr ""
-
-#: ../../coproductionprocess-overview.md:6
-msgid ""
-"Visit the INTERLINKER with which such resources are being created, by "
-"clicking on the link with the name of the INTERLINKER."
+" co-production process. Inside you can find two sections, the first is "
+"progress and the second is resources.  The progress view display several "
+"activities require to setup a co-production project. Each one allows us "
+"to access directly to the section where the activity takes place. The "
+"list of activities are:"
 msgstr ""
 
 #: ../../coproductionprocess-overview.md:7
-msgid ""
-"Visit the task a given resource has been created with, by clicking on "
-"\"See task\" button."
+msgid "Set coproduction process data"
 msgstr ""
 
 #: ../../coproductionprocess-overview.md:8
-msgid ""
-"Open the corresponding resource by clicking on the hyperlinked name of "
-"the resource."
+msgid "(Optional) Set coproduction process administrators"
+msgstr ""
+
+#: ../../coproductionprocess-overview.md:9
+msgid "Select the coproduction schema"
 msgstr ""
 
 #: ../../coproductionprocess-overview.md:10
+msgid ""
+"Grant permissions over process to co-producer teams and start co-"
+"producing through Guide view"
+msgstr ""
+
+#: ../../coproductionprocess-overview.md:11
+msgid "(Optional) Add new resources to the coproduction process"
+msgstr ""
+
+#: ../../coproductionprocess-overview.md:13
+msgid "![Coproduction process overview](images/dashboard-overview-progress.png)"
+msgstr ""
+
+#: ../../coproductionprocess-overview.md:13
+#: ../../coproductionprocess-overview.md:20
+msgid "Coproduction process overview"
+msgstr ""
+
+#: ../../coproductionprocess-overview.md:15
+msgid ""
+"Resources view displays the current set of resources instantiated. The "
+"following actions can be performed over the resources listed:"
+msgstr ""
+
+#: ../../coproductionprocess-overview.md:16
+msgid ""
+"Visit the INTERLINKER with which a given resource has been created, by "
+"clicking on the link with the name of the INTERLINKER."
+msgstr ""
+
+#: ../../coproductionprocess-overview.md:17
+msgid ""
+"Visit the task a given resource has been created with, by clicking on the"
+" three \".\"s under \"Action\" column of the table of resources and then "
+"select \"Go to the task\" menu option in the pop-up menu."
+msgstr ""
+
+#: ../../coproductionprocess-overview.md:18
+msgid ""
+"Open the corresponding resource by clicking on the hyperlinked name of "
+"the resource or by clicking on the three \".\"s under \"Action\" and then"
+" select \"Open\" menu option"
+msgstr ""
+
+#: ../../coproductionprocess-overview.md:20
 msgid ""
 "![Coproduction process overview](images/coproductionproces-overview.png) "
 "![INTERLINK associated to resource](images/overview-resource-"
@@ -373,33 +506,30 @@ msgid ""
 "task.png) ![View of a resource](images/overview-resource-view.png)"
 msgstr ""
 
-#: ../../coproductionprocess-overview.md:10
-msgid "Coproduction process overview"
-msgstr ""
-
-#: ../../coproductionprocess-overview.md:10
+#: ../../coproductionprocess-overview.md:20
 msgid "INTERLINK associated to resource"
 msgstr ""
 
-#: ../../coproductionprocess-overview.md:10
+#: ../../coproductionprocess-overview.md:20
 msgid "Task associated to resource"
 msgstr ""
 
-#: ../../coproductionprocess-overview.md:10
+#: ../../coproductionprocess-overview.md:20
 msgid "View of a resource"
 msgstr ""
 
 #: ../../coproductionprocess-settings.md:1
-msgid "Settings a co-production process"
+msgid "Settings of a co-production process"
 msgstr ""
 
 #: ../../coproductionprocess-settings.md:3
 msgid ""
 "Once you have configured a co-production process, you can always update "
 "its details by clicking on the **Settings** menu option on the left hand-"
-"side menu. Then, click on the PENCIL icon on the top right hand side to "
-"start editing the project details. Finally, hit on the button \"Save\" to"
-" save changes or \"Cancel\" to cancel them."
+"side menu. Then, click on the blue button \"Edit coproduction process\", "
+"after the fields of the process, to start editing the project details. "
+"Finally, hit on the button \"Save\" to save changes or \"Cancel\" to "
+"cancel them."
 msgstr ""
 
 #: ../../coproductionprocess-settings.md:5
@@ -407,15 +537,15 @@ msgid "The following details can be updated per project:"
 msgstr ""
 
 #: ../../coproductionprocess-settings.md:6
-msgid "Logo of the project"
+msgid "Logo of the coproduction process"
 msgstr ""
 
 #: ../../coproductionprocess-settings.md:7
-msgid "Name of the project"
+msgid "Name of the coproduction process"
 msgstr ""
 
 #: ../../coproductionprocess-settings.md:8
-msgid "Short description of the project"
+msgid "Short description of the coproduction process"
 msgstr ""
 
 #: ../../coproductionprocess-settings.md:9
@@ -423,7 +553,7 @@ msgid "Actual organization of the service"
 msgstr ""
 
 #: ../../coproductionprocess-settings.md:10
-msgid "Aim of the project"
+msgid "Aim of the coproduction process"
 msgstr ""
 
 #: ../../coproductionprocess-settings.md:11
@@ -431,21 +561,24 @@ msgid "Idea of service to be codelivered"
 msgstr ""
 
 #: ../../coproductionprocess-settings.md:12
-msgid "Challenges of the project"
+msgid "Challenges of the coproduction process"
 msgstr ""
 
 #: ../../coproductionprocess-settings.md:14
 msgid ""
 "As we can see, this section allows for the definition of the purpose of a"
-" project, establishing how will be managed and what challenges it will "
-"need to solve."
+" coproduction process, establishing how will be managed and what "
+"challenges it will need to solve. Notice the button \"Edit coproduction "
+"process\" to activate modification of coproduction process' metadata "
+"fields."
 msgstr ""
 
 #: ../../coproductionprocess-settings.md:16
 msgid ""
-"![Main screen with co-production process settings](images/project-"
-"settings1.png) ![Co-production process setting screen after clicking on "
-"PENCIL icon](images/project-settings2.png)"
+"![Main screen with co-production process settings](images"
+"/coproductionprocess-settings-metadata.png) ![Co-production process "
+"setting screen after clicking on PENCIL icon](images/coproductionprocess-"
+"settings-metadata1.png)"
 msgstr ""
 
 #: ../../coproductionprocess-settings.md:16
@@ -456,8 +589,59 @@ msgstr ""
 msgid "Co-production process setting screen after clicking on PENCIL icon"
 msgstr ""
 
+#: ../../coproductionprocess-settings.md:19
+msgid ""
+"Besides, the co-production process' SETTING view allows for the following"
+" actions to be taken over a process:"
+msgstr ""
+
+#: ../../coproductionprocess-settings.md:20
+msgid ""
+"Management of administrators of the coproduction process, i.e. process "
+"administrators can be deleted or added. Only a user who is an admin of a "
+"co-production process can carry out this action."
+msgstr ""
+
+#: ../../coproductionprocess-settings.md:21
+msgid ""
+"Clear coproduction process tree. The co-production tree assigned to a co-"
+"production process can be removed by the process administrators. This "
+"will force the association of a new co-production tree schema before co-"
+"production process activities can be resumed."
+msgstr ""
+
+#: ../../coproductionprocess-settings.md:22
+msgid ""
+"Delete coproduction process. This action again can only be performed by "
+"the admin of a coproduction process. It will result on the removal of the"
+" current coproduction process with the associated removal of all its "
+"assets."
+msgstr ""
+
+#: ../../coproductionprocess-settings.md:24
+msgid ""
+"Next screenshot shows how highlighted by a red frame appear "
+"administrative tasks that coproduction process administrators can apply "
+"over a coproduction process. For all the action buttons with red "
+"background, namely \"Clear coproduction process tree\", \"Remove "
+"coproduction process\" or \"Remove\" menu option that pops up when an "
+"admin clicks on 3 \".\"s on the right hand side on administrator, a "
+"confirmation of such action is requested from users, to prevent damage as"
+" result of this risky actions."
+msgstr ""
+
+#: ../../coproductionprocess-settings.md:26
+msgid ""
+"![Admin actions overs coproduction process](images/coproductionprocess-"
+"settings-adminactions.png)"
+msgstr ""
+
+#: ../../coproductionprocess-settings.md:26
+msgid "Admin actions overs coproduction process"
+msgstr ""
+
 #: ../../coproductionprocess-team.md:1
-msgid "Team management in co-production process"
+msgid "Organization and team management in co-production processes"
 msgstr ""
 
 #: ../../coproductionprocess-team.md:3
@@ -469,130 +653,268 @@ msgid ""
 "your pilot server:"
 msgstr ""
 
-#: ../../coproductionprocess-team.md:4 ../../dashboard.md:14
+#: ../../coproductionprocess-team.md:4 ../../dashboard.md:15
 msgid ""
 "[MEF pilot's deployment of Collaborative Environment](https://mef"
 ".interlink-project.eu/)"
 msgstr ""
 
-#: ../../coproductionprocess-team.md:5 ../../dashboard.md:15
+#: ../../coproductionprocess-team.md:5 ../../dashboard.md:16
 msgid ""
 "[VARAM pilot's deployment of Collaborative Environment](https://varam"
 ".interlink-project.eu/)"
 msgstr ""
 
-#: ../../coproductionprocess-team.md:6
+#: ../../coproductionprocess-team.md:6 ../../dashboard.md:17
 msgid ""
 "[Zaragoza pilot's deployment of Collaborative Environment](https://zgz"
-".interlink-project.eu/) **IMPORTANT**: All members of an envisaged team "
-"must logged into the platform before they can be added to a team. ![Login"
-" required screen](images/dashboard-loginrequired.PNG) ![AAC "
+".interlink-project.eu/)"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:8
+msgid ""
+"**IMPORTANT**: All members of an envisaged team must have logged into the"
+" platform before they can be added to a team. Besides, as we will see, "
+"every team defined in INTERLINK must be first bound to an ORGANIZATION. "
+"![Login required screen](images/dashboard-loginrequired.PNG) ![AAC "
 "screen](images/aac-login-window.PNG)"
 msgstr ""
 
-#: ../../coproductionprocess-team.md:6 ../../dashboard.md:18
+#: ../../coproductionprocess-team.md:8 ../../dashboard.md:19
 msgid "Login required screen"
 msgstr ""
 
-#: ../../coproductionprocess-team.md:6 ../../dashboard.md:18
+#: ../../coproductionprocess-team.md:8 ../../dashboard.md:19
 msgid "AAC screen"
 msgstr ""
 
-#: ../../coproductionprocess-team.md:9
+#: ../../coproductionprocess-team.md:10
 msgid ""
-"Next, create a team for taking part in a co-production process. In the "
-"figure you can see how two members of a team first log in and then they "
-"are assigned to the same team. ![Two user sessions](images/team-"
-"management-two-users-login.png) ![Creating a team](images/dashboard-team-"
-"creation.png) ![Adding a user](images/dashboard-team-creation2.png) "
-"![Team editing window](images/teamview-edit.png)"
+"To illustrate organization and team management, let's consider two "
+"possible users that want to take part in different co-production "
+"processes. In the figure you can see two members who after having logged "
+"in are shown the coproduction processes on which they are currently "
+"involved. In this case, the processes named \"Zaragoza Apps4Good\" and "
+"\"New coproduction process\" are shown to both. Notice that a user is "
+"bound to a co-production process (and, therefore, sees a coproduction "
+"process) in two possible manners:"
 msgstr ""
 
-#: ../../coproductionprocess-team.md:9
+#: ../../coproductionprocess-team.md:11
+msgid ""
+"The user has been appointed as admin of the process through the [SETTINGS"
+" view](/docs/en/coproductionprocess-setting.html) of the coproduction "
+"process."
+msgstr ""
+
+#: ../../coproductionprocess-team.md:12
+msgid ""
+"The user has been added to a team who has been granted permissions over "
+"some nodes in a given co-production process. ![Two user sessions](images"
+"/team-management-two-users-login.png)"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:12
 msgid "Two user sessions"
-msgstr ""
-
-#: ../../coproductionprocess-team.md:9
-msgid "Creating a team"
-msgstr ""
-
-#: ../../coproductionprocess-team.md:9
-msgid "Adding a user"
-msgstr ""
-
-#: ../../coproductionprocess-team.md:9
-msgid "Team editing window"
-msgstr ""
-
-#: ../../coproductionprocess-team.md:11
-msgid ""
-"The main purpose of a team in the Collaborative Environment is to take "
-"part in a [co-production process](https://dev.interlink-"
-"project.eu/docs/en/coproductionprocess-overview.html). "
-"Consequently, we need to create a co-production project where the "
-"activity to co-create will be managed ![Creating a new co-production "
-"project](images/dashboard-createnewcoproductionprocess.png)"
-msgstr ""
-
-#: ../../coproductionprocess-team.md:11
-msgid "Creating a new co-production project"
-msgstr ""
-
-#: ../../coproductionprocess-team.md:13
-msgid ""
-"In order to **link the created team to the created co-production "
-"process**, you must click on \"Add new Team\" button, and then select the"
-" suitable team in the drop-down list of the pop-up window to be assigned "
-"to the currently active co-production process. ![Select Team menu option "
-"and \"Add new Team\" button](images/coproduction-team-assignment.png) "
-"![Click on pop-up window's Add team button](images/coproduction-team-"
-"assignment2.png)"
-msgstr ""
-
-#: ../../coproductionprocess-team.md:13
-msgid "Select Team menu option and \"Add new Team\" button"
-msgstr ""
-
-#: ../../coproductionprocess-team.md:13
-msgid "Click on pop-up window's Add team button"
 msgstr ""
 
 #: ../../coproductionprocess-team.md:15
 msgid ""
-"Notice that you may create new roles and new teams with different rights "
-"than the core co-producers’ team. Currently a role applies to all phases,"
-" objectives and tasks of a co-production process."
+"Every user can create a new organization. See in the following screenshot"
+" how user \"Diego López-de-Ipiña\" can create a new organization by "
+"clicking on \"+Create new organization\" blue button. However, a user who"
+" is not the administrator of an ORGANIZATION, e.g. \"FBK\" case, cannot, "
+"by default, create a new team by clicking the blue button \"+ Create a "
+"new team\", which in this case is deactivated."
 msgstr ""
 
-#: ../../coproductionprocess-team.md:16
+#: ../../coproductionprocess-team.md:17
 msgid ""
-"Create a new team    ![Creating a new team](images/team-management-new-"
-"team.png)"
+"![Creating a new organization](images/organizationview-"
+"createneworganization.png)"
 msgstr ""
 
-#: ../../coproductionprocess-team.md:16
-msgid "Creating a new team"
+#: ../../coproductionprocess-team.md:17 ../../coproductionprocess-team.md:19
+msgid "Creating a new organization"
 msgstr ""
 
-#: ../../coproductionprocess-team.md:18
+#: ../../coproductionprocess-team.md:19
 msgid ""
-"Create a new role, assigning it the right to \"View resources\" only   "
-"![Creation of co-observers role](images/team-management-new-role.png)"
+"Notice that option \"Who can create teams\" in an organization can have "
+"any of the following values: \"Only the administrators of the "
+"organization\" (default), \"Members of at least a team in the "
+"organization\" or \"Anyone (the organization must be public)\". Besides, "
+"be aware that apart from the title and description, an organization can "
+"be declared as PUBLIC, i.e. every logged in user can see it and have a "
+"default type for the teams that are created within a given organization. "
+"The possible options being \"Citizens\", \"Public administration\", \"Non"
+" profit organization\" or \"For profit organization\".  ![Creating a new "
+"organization](images/organizationview-createneworganization2.png)"
 msgstr ""
 
-#: ../../coproductionprocess-team.md:18
-msgid "Creation of co-observers role"
-msgstr ""
-
-#: ../../coproductionprocess-team.md:20
+#: ../../coproductionprocess-team.md:22
 msgid ""
-"Assign the role of co-observers to the co-observers team   ![Assignment "
-"of co-observers role to co-observers team](images/team-management-assign-"
-"role-team.png)"
+"After hitting the \"Create\" button a new ORGANIZATION with no teams "
+"associated to it appears.  ![New empty without teams organization](images"
+"/organizationview-createneworganization3.png)"
 msgstr ""
 
-#: ../../coproductionprocess-team.md:20
-msgid "Assignment of co-observers role to co-observers team"
+#: ../../coproductionprocess-team.md:22
+msgid "New empty without teams organization"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:25
+msgid ""
+"If another user \"Diego Lopez de Ipina Gonzalez de Artaza\" as shown in "
+"the figure below checks the organizations that it can see or manage, it "
+"will find the newly created public organization, named \"Test "
+"organization INTERLINK\", since it is public, but s/he will not be able "
+"to add new teams to it.  ![Other user can see public organization but not"
+" add teams](images/organizationview-viewneworganizationotheruser.png)"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:25
+msgid "Other user can see public organization but not add teams"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:28
+msgid ""
+"Going back to the other user \"Diego López-de-Ipiña\" who is the "
+"administrator of the organization \"Test organization INTERLINK\", he can"
+" click on blue button \"+ Create new team\" and fill in a pop up dialogue"
+" with the following fields: name of the team, its description, the role "
+"that its users will play (by default the same of the parent organization)"
+" which in this case is changed to \"Non profit organization\". When "
+"clicking button \"Next\" the organization admin can include other "
+"previously logged in users or previously appointed users to other teams "
+"in the organization to the current team. Notice, that the system "
+"recommends users who have already taken part in the organization. After "
+"adding the required users, the organization admin is now presented the "
+"newly created team."
+msgstr ""
+
+#: ../../coproductionprocess-team.md:30
+msgid ""
+"![New team in organization](images/organizationview-createnewteam.png) "
+"![Add members to team in organization](images/organizationview-"
+"createnewteam1.png) ![Show new team in organization](images"
+"/organizationview-createnewteam2.png)"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:30
+msgid "New team in organization"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:30
+msgid "Add members to team in organization"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:30
+msgid "Show new team in organization"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:34
+msgid ""
+"The creator of a team may edit the details of team by clicking on top of "
+"the name of the team. The following dialogue shows up: ![View team "
+"details](images/organizationview-editteam.png)"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:34 ../../coproductionprocess-team.md:39
+msgid "View team details"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:37
+msgid ""
+"When the user clicks on the blue button \"Edit\" the user may change the "
+"name and description of the team, appoint new members to the team, or "
+"assign other administrators to the team."
+msgstr ""
+
+#: ../../coproductionprocess-team.md:39
+msgid "![View team details](images/organizationview-editteam2.png)"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:41
+msgid ""
+"A user that belongs to a team in an organization but is not its "
+"administrator can see the details of the team but cannot perform changes "
+"to it. See below, what user \"Diego Lopez de Ipina Gonzalez de Artaza\" "
+"sees regarding team \"MORElab researchers\" ![View team details for non "
+"administrator](images/organizationview-viewteamnonadmin.png) ![View team "
+"details for non administrator](images/organizationview-"
+"viewteamnonadmin1.png)"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:41
+msgid "View team details for non administrator"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:45
+msgid ""
+"Once a team has been created, coproduction process administrators can "
+"associate teams to different coproduction tree nodes, i.e. to phases, "
+"objectives or tasks. See the coproduction process GUIDE view for more "
+"details. Remember that the main purpose of a team in the Collaborative "
+"Environment is to take part in a [co-production process](/docs/en"
+"/coproductionprocess-overview.html). Consequently, we need to create a "
+"co-production process where the activity to co-create will be managed."
+msgstr ""
+
+#: ../../coproductionprocess-team.md:47
+msgid ""
+"In order to **link the created team to the created co-production "
+"process**, you must select a phase, objective or task in a co-production "
+"process and within its PERMISSION tab, click on blue button \"Add new "
+"permission to ...\". The following snapshots illustrate the proces."
+msgstr ""
+
+#: ../../coproductionprocess-team.md:48
+msgid ""
+"Add new permisson to task ![Add new permisson to task](images"
+"/coproductionprocess-bind-treenode-team.png)"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:48
+msgid "Add new permisson to task"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:50
+msgid ""
+"Select team in organization ![Select team in organization](images"
+"/coproductionprocess-bind-treenode-team1.png)"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:50
+msgid "Select team in organization"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:52
+msgid ""
+"Assign resource permissions to team ![Assign resource permissions to "
+"team](images/coproductionprocess-bind-treenode-team2.png)"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:52
+msgid "Assign resource permissions to team"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:54
+msgid ""
+"View the new team bound to task through permissions ![View the new team "
+"bound to task through permissions](images/coproductionprocess-bind-"
+"treenode-team2.png)"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:54
+msgid "View the new team bound to task through permissions"
+msgstr ""
+
+#: ../../coproductionprocess-team.md:57
+msgid ""
+"Notice that you may create new teams with different roles and associated "
+"permissions to a given co-production process. The permissions of a team "
+"apply to the chosen phases, objectives or tasks."
 msgstr ""
 
 #: ../../coproductionprocess-workplan.md:1
@@ -607,30 +929,25 @@ msgstr ""
 
 #: ../../coproductionprocess-workplan.md:5
 msgid ""
-"You may access the [WORKPLAN view](https://dev.interlink-"
-"project.eu/docs/en/coproductionprocess-workplan.html) by "
-"either clicking on the \"Time planification\" link in the [GUIDE "
-"view](/docs/en"
-"/coproductionprocess-guide.html) of a task or clicking on the left hand "
-"side menu option named \"Workplan\"."
+"You may access the [WORKPLAN view](/docs/en/coproductionprocess-"
+"workplan.html) by either clicking on the \"Time planification\" link in "
+"the [GUIDE view](/docs/en/coproductionprocess-guide.html) of a task or "
+"clicking on the left hand side menu option named \"Workplan\"."
 msgstr ""
 
 #: ../../coproductionprocess-workplan.md:7
 msgid ""
-"You may return to the  [GUIDE view](https://dev.interlink-"
-"project.eu/docs/en/coproductionprocess-guide.html), to see the"
-" task details by clicking on the name of the task in the [WORKPLAN "
-"view](/docs/en"
-"/coproductionprocess-workplan.html).     ![Workplan view](images"
-"/workplanview-taskduration.png)"
+"You may return to the  [GUIDE view](/docs/en/coproductionprocess-"
+"guide.html), to see the task details by clicking on the name of the task "
+"in the [WORKPLAN view](/docs/en/coproductionprocess-workplan.html).     "
+"![Workplan view](images/workplanview-taskduration.png)"
 msgstr ""
 
 #: ../../coproductionprocess-workplan.md:10
 msgid ""
 "Remember that you assign durations to tasks, by editing a task in [GUIDE "
-"view](/docs/en"
-"/coproductionprocess-guide.html):    ![Assigning duration to task](images"
-"/guideview-assignduration.png)"
+"view](/docs/en/coproductionprocess-guide.html):    ![Assigning duration "
+"to task](images/guideview-assignduration.png)"
 msgstr ""
 
 #: ../../dashboard.md:1
@@ -651,9 +968,10 @@ msgstr ""
 
 #: ../../dashboard.md:5
 msgid ""
-"The [Platform](https://demo.interlink-project.eu/platform) (\"Platform\" "
-"top menu option) giving details about the Collaborative Environment made "
-"available by the project"
+"The [Collaborative Environment](https://demo.interlink-"
+"project.eu/platform) (\"Collaborative Environment\" top menu option) "
+"giving details about the Collaborative Environment made available by the "
+"project"
 msgstr ""
 
 #: ../../dashboard.md:6
@@ -672,35 +990,37 @@ msgstr ""
 #: ../../dashboard.md:8
 msgid ""
 "The [About](https://demo.interlink-project.eu/about) page (\"About\" menu"
-" option\") where users can learn about the INTERLINK project.  "
-"![Dashboard landing page](images/dashboard-entry.png)"
+" option\") where users can learn about the INTERLINK project."
 msgstr ""
 
-#: ../../dashboard.md:8
+#: ../../dashboard.md:9
+msgid ""
+"Notice the settings icon, at the right hand side of \"About\", clicking "
+"on it will result on settings pop up menu which allows users to select "
+"the theme, namely \"Light\" or \"Dark\" view and the language of the user"
+" interface, being able to select among English, Spanish, Latvian or "
+"Italian.  ![Dashboard landing page](images/dashboard-entry.png)"
+msgstr ""
+
+#: ../../dashboard.md:9
 msgid "Dashboard landing page"
 msgstr ""
 
-#: ../../dashboard.md:11
+#: ../../dashboard.md:12
 msgid ""
-"When a user clicks on button [\"Go to dashboard\"](https://demo"
-".interlink-project.eu/dashboard) it will be given access to the INTERLINK"
-" Collaborative Environment front-end."
+"When a user clicks on button [\"Access Collaborative "
+"Environment\"](https://demo.interlink-project.eu/dashboard) it will be "
+"given access to the INTERLINK Collaborative Environment front-end."
 msgstr ""
 
-#: ../../dashboard.md:13
+#: ../../dashboard.md:14
 msgid ""
 "**IMPORTANT**. You may use INTERLINK's deployment at [Staging "
 "Server](https://demo.interlink-project.eu/), or, alternatively, you may "
 "access the Collaborative Environment's Dashboard in your pilot server:"
 msgstr ""
 
-#: ../../dashboard.md:16
-msgid ""
-"[Zaragoza pilot's deployment of Collaborative Environment](https://zgz"
-".interlink-project.eu/)"
-msgstr ""
-
-#: ../../dashboard.md:18
+#: ../../dashboard.md:19
 msgid ""
 "Before using the Collaborative environment, for first time, you must "
 "first login with your google credentials or create your own credentials "
@@ -711,62 +1031,141 @@ msgid ""
 "loginrequired.PNG) ![AAC screen](images/aac-login-window.PNG)"
 msgstr ""
 
-#: ../../dashboard.md:20
-msgid ""
-"Once logged in, you are given access to the INTERLINK Dashboard view, "
-"where the user has access to two core main functionalities:"
-msgstr ""
-
 #: ../../dashboard.md:21
 msgid ""
-"My teams: the user can see the teams s/he is part of and create new co-"
-"proction teams if needed."
+"Once logged in, you are given access to the INTERLINK Dashboard view, "
+"where the user has access to three core main functionalities:"
 msgstr ""
 
 #: ../../dashboard.md:22
 msgid ""
-"My processes: the user can see the co-production processess where s/he is"
-" taking part in or create new co-production processes if needed."
+"[Workspace](https://demo.interlink-project.eu/dashboard): the user can "
+"see the co-production processess where s/he is taking part in or create "
+"new co-production processes if needed by clicking on top right hand side "
+"button named \"+ Create new process\"."
+msgstr ""
+
+#: ../../dashboard.md:23
+msgid ""
+"[Organizations](https://demo.interlink-"
+"project.eu/dashboard/organizations): the user can see the organizations "
+"that are registered in the collaborative environment and browse through "
+"the teams within the created organizations. Besides, the user can create "
+"new organizations by clicking on top left hand side button \"+ Create new"
+" organization\""
 msgstr ""
 
 #: ../../dashboard.md:24
+msgid ""
+"[Catalogue](https://demo.interlink-project.eu/dashboard/interlinkers): "
+"the user is given access to the INTERLINKERs catalogue where s/he can "
+"browse through the available INTERLINKERs, filter them according to their"
+" \"Nature\", \"Problem profile\", \"Minimum rating\" or their title "
+"contents."
+msgstr ""
+
+#: ../../dashboard.md:26
 msgid "![INTERLINK Dashboard view](images/dashboard-view.png)"
 msgstr ""
 
-#: ../../dashboard.md:24
+#: ../../dashboard.md:26
 msgid "INTERLINK Dashboard view"
 msgstr ""
 
-#: ../../dashboard.md:26
+#: ../../dashboard.md:28
 msgid ""
-"Within \"My Teams\" section, once a user hits \"+ Create new team\", s/he"
-" is shown a pop-up window where a new team details (Name, Description and"
-" list of team members) can be input. ![New team creation in "
-"dashboard](images/dashboard-team-creation.png) ![New team creation in "
-"dashboard 2](images/dashboard-team-creation2.png)"
+"Within \"ORGANIZATIONS\" section of dashboard, after the user clicks on "
+"\"ORGANIZATIONS\" top menu option, once a user hits \"+ Create new "
+"organization\", s/he is shown a pop-up window where a new organization "
+"details (Name, Description, publickly seen or private, who can create "
+"teams option and the default team type, namely, Citizens, Public "
+"administration, Non profit organization and For project organization) can"
+" be input."
 msgstr ""
 
-#: ../../dashboard.md:26 ../../dashboard.md:30
+#: ../../dashboard.md:31
+msgid ""
+"![New organization creation in dashboard](images/dashboard-team-"
+"creation.png)"
+msgstr ""
+
+#: ../../dashboard.md:31
+msgid "New organization creation in dashboard"
+msgstr ""
+
+#: ../../dashboard.md:35
+msgid ""
+"Once a new organization has been created, the user is shown in the "
+"dashboard's organization view those public teams or private teams the "
+"loged in user is administrator of."
+msgstr ""
+
+#: ../../dashboard.md:37
+msgid ""
+"![Organizations view in dashboard](images/dashboard-organizations-"
+"view.png)"
+msgstr ""
+
+#: ../../dashboard.md:37
+msgid "Organizations view in dashboard"
+msgstr ""
+
+#: ../../dashboard.md:39
+msgid ""
+"The user may browse through the already created teams in an organization "
+"or create a new team by clicking on button \"+ Create new team\". An "
+"already existing team details can be modified by clicking on the blue "
+"\"Edit\" button. Notice that new members or administrators can be "
+"appointed to a team. New team members are suggested when typing part of "
+"their name or email address if they have already registered with the "
+"environment. Clicking on the button \"+Create new team\", the user is "
+"given the option of adding a logo to the team, its name, description and "
+"to select what type of team will be, i.e. representing \"Public "
+"administration\", \"Citizens\", \"Non profit organization\" or \"For "
+"profit organization\". After adding the metadata of the team, the user is"
+" given the option to add new members to such team."
+msgstr ""
+
+#: ../../dashboard.md:42
+msgid ""
+"![View of details of team in organization](images/dashboard-team-"
+"view.png) ![New team creation in dashboard](images/dashboard-team-"
+"creation.png) ![New team creation in dashboard 2](images/dashboard-team-"
+"creation2.png)"
+msgstr ""
+
+#: ../../dashboard.md:42
+msgid "View of details of team in organization"
+msgstr ""
+
+#: ../../dashboard.md:42 ../../dashboard.md:50
 msgid "New team creation in dashboard"
 msgstr ""
 
-#: ../../dashboard.md:26
+#: ../../dashboard.md:42
 msgid "New team creation in dashboard 2"
 msgstr ""
 
-#: ../../dashboard.md:30
+#: ../../dashboard.md:47
 msgid ""
-"Within \"My processes\" section, once a user hits \"+ Create new "
-"process\", s/he is shown a pop-up window where a new team details (Name, "
-"Language, Description) can be input. ![New team creation in "
-"dashboard](images/dashboard-createnewcoproductionprocess.png)"
+"Within \"WORKSPACE\" section, after the user clicks on \"WORKSPACE\" top "
+"menu option, once a user hits \"+ Create new process\", s/he is shown a "
+"pop-up window where a new process details (Name, Language, Description) "
+"can be input."
 msgstr ""
 
-#: ../../dashboard.md:33
+#: ../../dashboard.md:50
 msgid ""
-"By clicking on the name of a co-production process, the user is switched "
-"to the [\"co-production process\" view](https://dev.interlink-"
-"project.eu/docs/en/coproductionprocess-guide.html)."
+"![New team creation in dashboard](images/dashboard-"
+"createnewcoproductionprocess.png)."
+msgstr ""
+
+#: ../../dashboard.md:53
+msgid ""
+"The user is automatically switched to the [\"co-production process\" "
+"view](/docs/en/coproductionprocess-guide.html). The user can always check"
+" the coproduction processess s/he is taking part in by clicking on on "
+"\"WORKSPACE\" top menu option."
 msgstr ""
 
 #: ../../index.rst:9
@@ -3581,5 +3980,510 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Welcome to Interlink's user manual!"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You may access the INTERLINK catalogue"
+#~ " by clicking on INTERLINKERs top menu"
+#~ " option. This will give you access"
+#~ " to a new screen where you can"
+#~ " perform browsing, filtering and selection"
+#~ " of INTERLINKERs."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Next some examples of the actions "
+#~ "that you can currently carry out "
+#~ "in the INTERLINKERs catalogue:"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Enter in the catalogue of INTERLINNKERs"
+#~ " by clicking on INTERLINKERs top menu"
+#~ "   ![INTERLINKERs catalogue view](images"
+#~ "/catalogueview-main.png)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Filter by selecting options on Nature"
+#~ " filter and select \"Internal Knowledge\""
+#~ " to see only those INTERLINKERs of"
+#~ " type \"knowledge\" prepared for the "
+#~ "project.    ![Filtered INTERLINKERs](images"
+#~ "/catalogueview-filtering.png)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Review contents of an INTERLINKER by "
+#~ "clicking on the title of one of"
+#~ " the displayed INTERLINKERs   ![Filtered "
+#~ "INTERLINKERs](images/catalogueview-browsing.png)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You main review what offers the "
+#~ "selected INTERLINKER by visiting Preview "
+#~ "tab   ![Filtered INTERLINKERs](images/catalogueview-"
+#~ "download.png)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The GUIDE view can be considered "
+#~ "the main view of a co-production"
+#~ " process. It is closely linked to "
+#~ "the other available views, namely "
+#~ "[OVERVIEW](/docs/en/coproductionprocess-overview.html) and"
+#~ " [WORKPLAN](https://dev.interlink-project.eu/docs/en"
+#~ "/coproductionprocess-workplan.html) views of a"
+#~ " co-production process."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The [GUIDE view](/docs/en/coproductionprocess-"
+#~ "guide.html) displays a co-production "
+#~ "tree, allowing the co-production team"
+#~ " members to browse through the phases"
+#~ " of a co-production process, its "
+#~ "corresponding objectives, the tasks that "
+#~ "help accomplishing those objectives and "
+#~ "the INTERLINKERs that are recommended to"
+#~ " aid team member completing certain "
+#~ "tasks of the co-production process. "
+#~ "Very importantly, from the GUIDE view,"
+#~ " users can instantiate the recommended "
+#~ "INTERLINKERs for a task or create "
+#~ "new instances from a range of "
+#~ "generic INTERLINKERs."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "After creating a new co-production "
+#~ "process, the user is requested to "
+#~ "choose a co-production process guide."
+#~ " Notice that there is flexibility to"
+#~ " choose the best fitting schema (you"
+#~ " may check available co-production "
+#~ "schemas in our [interlinkers-"
+#~ "data/schemas](https://github.com/interlink-project"
+#~ "/interlinkers-data/tree/master/schemas) repo). The "
+#~ "left-hand-side \"Guide\" menu item "
+#~ "does not appear until a schema has"
+#~ " been chosen."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Notice that there are several co-"
+#~ "production trees available. Let's select, "
+#~ "for instance, [\"Default "
+#~ "schema\"](https://github.com/interlink-project/interlinkers-"
+#~ "data/tree/master/schemas/default) ![Select default "
+#~ "schema](images/guideview-defineschema.png)"
+#~ msgstr ""
+
+#~ msgid "Select default schema"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "As result, notice the emergence of "
+#~ "Guide view menu item on left hand"
+#~ " side ![Beware of emergence of Guide"
+#~ " view menu item on left hand "
+#~ "side](images/guideview-menuitememergence.png)"
+#~ msgstr ""
+
+#~ msgid "Some of the actions that you may carry in the GUIDE view are:"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You may customize such tree to the"
+#~ " specific needs of your co-production"
+#~ " process. Currently only DELETE task "
+#~ "allowed, soon you will be able to"
+#~ " add new objectives & tasks. Check"
+#~ " below how a task is removed "
+#~ "after having clicked on the PENCIL "
+#~ "icon which appears on the right "
+#~ "hand side of the task visualization "
+#~ "panel. ![About to remove a task](images"
+#~ "/guideview-removetask.png) ![View after removal"
+#~ " of task](images/guideview-after-taskremoval.png)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Observe that specific co-production "
+#~ "trees can be defined and, hence, "
+#~ "selected (e.g. [VARAM case](https://github.com"
+#~ "/interlink-project/interlinkers-"
+#~ "data/tree/master/schemas/servicedescriptionenhancement))"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Then, we can see in [WORKPLAN "
+#~ "view](https://dev.interlink-project.eu/docs/en"
+#~ "/coproductionprocess-workplan.html) the time span"
+#~ " defined, by clicking on the \"Time"
+#~ " planification\" link in the [GUIDE "
+#~ "view](/docs/en/coproductionprocess-guide.html) or "
+#~ "clicking on the left hand side "
+#~ "menu option named \"Workplan\". You may"
+#~ " return to the Guide view, to "
+#~ "see the task details by clicking "
+#~ "on the name of the task in "
+#~ "the WORKPLAN view.  ![Workplan view](images"
+#~ "/workplanview-taskduration.png)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The GUIDE view allows to instantiate "
+#~ "INTERLINKERs to, hence, make progress in"
+#~ " the co-production process. For each"
+#~ " of the tasks in the co-"
+#~ "production phases you may select any "
+#~ "of the recommended INTERLINKERs or "
+#~ "instantiate a new one based on the"
+#~ " generic software INTERLINKERs available at"
+#~ " the bottom of the screen shown "
+#~ "when selecting a co-production task."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "For intance, let's create a new "
+#~ "document to collect feedback of "
+#~ "collaboration process."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Notice the INTERLINKERs recommended   ![Notice"
+#~ " INTERLINKERs recommended](images/catalogueview-"
+#~ "recommendedinterlinkers.png)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Click on the blue button at the"
+#~ " bottom entitled \"Initiate Procedure\" to"
+#~ " give place to a new Google "
+#~ "Docs document   ![Creating a new Google"
+#~ " Docs](images/guideview-genericINTERLINKERinstantiation.png)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Realize about the new resource that "
+#~ "appears at the bottom of the task"
+#~ " description panel   ![New resource "
+#~ "created](images/guideview-newresource-created.png)"
+#~ msgstr ""
+
+#~ msgid "Click on button “Instantiate as resource to use in the project”"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Check the newly created resource appears"
+#~ " at the bottom of the page "
+#~ "under **“Current resources”**"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Finally, you can see the progress "
+#~ "achieved, so far, in a given "
+#~ "co-production process by visiting the "
+#~ "[OVERVIEW view](https://dev.interlink-project.eu/docs/en"
+#~ "/coproductionprocess-overview.html), by clicking "
+#~ "on \"Overview\" menu item on the "
+#~ "left hand-side menu option. \t"
+#~ "![Resources created so far](images"
+#~ "/coproductionproces-overview-NDA.png)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The Overview view is one of the"
+#~ " three co-production process visualization"
+#~ " available, namely [Overview](https://dev.interlink-"
+#~ "project.eu/docs/en/coproductionprocess-overview.html#), "
+#~ "[Guide](/docs/en/coproductionprocess-guide.html) and "
+#~ "[Workplan](https://dev.interlink-project.eu/docs/en"
+#~ "/coproductionprocess-workplan.html) views."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The Overview view is in charge of"
+#~ " showing the ongoing activity on a"
+#~ " given co-production process. It "
+#~ "displays the current set of resources"
+#~ " instantiated. The following actions can"
+#~ " be performed over the resources "
+#~ "listed:"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Visit the INTERLINKER with which such"
+#~ " resources are being created, by "
+#~ "clicking on the link with the name"
+#~ " of the INTERLINKER."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Visit the task a given resource "
+#~ "has been created with, by clicking "
+#~ "on \"See task\" button."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Open the corresponding resource by "
+#~ "clicking on the hyperlinked name of "
+#~ "the resource."
+#~ msgstr ""
+
+#~ msgid "Settings a co-production process"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Once you have configured a co-"
+#~ "production process, you can always "
+#~ "update its details by clicking on "
+#~ "the **Settings** menu option on the "
+#~ "left hand-side menu. Then, click "
+#~ "on the PENCIL icon on the top "
+#~ "right hand side to start editing "
+#~ "the project details. Finally, hit on "
+#~ "the button \"Save\" to save changes "
+#~ "or \"Cancel\" to cancel them."
+#~ msgstr ""
+
+#~ msgid "Logo of the project"
+#~ msgstr ""
+
+#~ msgid "Name of the project"
+#~ msgstr ""
+
+#~ msgid "Short description of the project"
+#~ msgstr ""
+
+#~ msgid "Aim of the project"
+#~ msgstr ""
+
+#~ msgid "Challenges of the project"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "As we can see, this section allows"
+#~ " for the definition of the purpose"
+#~ " of a project, establishing how will"
+#~ " be managed and what challenges it"
+#~ " will need to solve."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "![Main screen with co-production process"
+#~ " settings](images/project-settings1.png) ![Co-"
+#~ "production process setting screen after "
+#~ "clicking on PENCIL icon](images/project-"
+#~ "settings2.png)"
+#~ msgstr ""
+
+#~ msgid "Team management in co-production process"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "[Zaragoza pilot's deployment of Collaborative"
+#~ " Environment](https://zgz.interlink-project.eu/) "
+#~ "**IMPORTANT**: All members of an "
+#~ "envisaged team must logged into the "
+#~ "platform before they can be added "
+#~ "to a team. ![Login required "
+#~ "screen](images/dashboard-loginrequired.PNG) ![AAC "
+#~ "screen](images/aac-login-window.PNG)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Next, create a team for taking "
+#~ "part in a co-production process. "
+#~ "In the figure you can see how "
+#~ "two members of a team first log"
+#~ " in and then they are assigned "
+#~ "to the same team. ![Two user "
+#~ "sessions](images/team-management-two-users-"
+#~ "login.png) ![Creating a team](images/dashboard-"
+#~ "team-creation.png) ![Adding a user](images"
+#~ "/dashboard-team-creation2.png) ![Team editing "
+#~ "window](images/teamview-edit.png)"
+#~ msgstr ""
+
+#~ msgid "Creating a team"
+#~ msgstr ""
+
+#~ msgid "Adding a user"
+#~ msgstr ""
+
+#~ msgid "Team editing window"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The main purpose of a team in "
+#~ "the Collaborative Environment is to take"
+#~ " part in a [co-production "
+#~ "process](https://dev.interlink-project.eu/docs/en"
+#~ "/coproductionprocess-overview.html). Consequently, we"
+#~ " need to create a co-production "
+#~ "project where the activity to co-"
+#~ "create will be managed ![Creating a "
+#~ "new co-production project](images/dashboard-"
+#~ "createnewcoproductionprocess.png)"
+#~ msgstr ""
+
+#~ msgid "Creating a new co-production project"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "In order to **link the created "
+#~ "team to the created co-production "
+#~ "process**, you must click on \"Add "
+#~ "new Team\" button, and then select "
+#~ "the suitable team in the drop-down"
+#~ " list of the pop-up window to"
+#~ " be assigned to the currently active"
+#~ " co-production process. ![Select Team "
+#~ "menu option and \"Add new Team\" "
+#~ "button](images/coproduction-team-assignment.png) "
+#~ "![Click on pop-up window's Add "
+#~ "team button](images/coproduction-team-"
+#~ "assignment2.png)"
+#~ msgstr ""
+
+#~ msgid "Select Team menu option and \"Add new Team\" button"
+#~ msgstr ""
+
+#~ msgid "Click on pop-up window's Add team button"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Notice that you may create new "
+#~ "roles and new teams with different "
+#~ "rights than the core co-producers’ "
+#~ "team. Currently a role applies to "
+#~ "all phases, objectives and tasks of "
+#~ "a co-production process."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Create a new team    ![Creating a "
+#~ "new team](images/team-management-new-team.png)"
+#~ msgstr ""
+
+#~ msgid "Creating a new team"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Create a new role, assigning it "
+#~ "the right to \"View resources\" only"
+#~ "   ![Creation of co-observers role](images"
+#~ "/team-management-new-role.png)"
+#~ msgstr ""
+
+#~ msgid "Creation of co-observers role"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Assign the role of co-observers to"
+#~ " the co-observers team   ![Assignment "
+#~ "of co-observers role to co-"
+#~ "observers team](images/team-management-assign-"
+#~ "role-team.png)"
+#~ msgstr ""
+
+#~ msgid "Assignment of co-observers role to co-observers team"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You may access the [WORKPLAN "
+#~ "view](https://dev.interlink-project.eu/docs/en"
+#~ "/coproductionprocess-workplan.html) by either "
+#~ "clicking on the \"Time planification\" "
+#~ "link in the [GUIDE view](/docs/en"
+#~ "/coproductionprocess-guide.html) of a task "
+#~ "or clicking on the left hand side"
+#~ " menu option named \"Workplan\"."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "You may return to the  [GUIDE "
+#~ "view](https://dev.interlink-project.eu/docs/en"
+#~ "/coproductionprocess-guide.html), to see the "
+#~ "task details by clicking on the "
+#~ "name of the task in the [WORKPLAN"
+#~ " view](/docs/en/coproductionprocess-workplan.html).     "
+#~ "![Workplan view](images/workplanview-taskduration.png)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The [Platform](https://demo.interlink-project.eu/platform)"
+#~ " (\"Platform\" top menu option) giving "
+#~ "details about the Collaborative Environment"
+#~ " made available by the project"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The [About](https://demo.interlink-project.eu/about) "
+#~ "page (\"About\" menu option\") where "
+#~ "users can learn about the INTERLINK "
+#~ "project.  ![Dashboard landing page](images"
+#~ "/dashboard-entry.png)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "When a user clicks on button [\"Go"
+#~ " to dashboard\"](https://demo.interlink-"
+#~ "project.eu/dashboard) it will be given "
+#~ "access to the INTERLINK Collaborative "
+#~ "Environment front-end."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Once logged in, you are given "
+#~ "access to the INTERLINK Dashboard view,"
+#~ " where the user has access to "
+#~ "two core main functionalities:"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "My teams: the user can see the "
+#~ "teams s/he is part of and create"
+#~ " new co-proction teams if needed."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "My processes: the user can see the"
+#~ " co-production processess where s/he "
+#~ "is taking part in or create new"
+#~ " co-production processes if needed."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Within \"My Teams\" section, once a "
+#~ "user hits \"+ Create new team\", "
+#~ "s/he is shown a pop-up window "
+#~ "where a new team details (Name, "
+#~ "Description and list of team members)"
+#~ " can be input. ![New team creation"
+#~ " in dashboard](images/dashboard-team-"
+#~ "creation.png) ![New team creation in "
+#~ "dashboard 2](images/dashboard-team-creation2.png)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Within \"My processes\" section, once a"
+#~ " user hits \"+ Create new process\","
+#~ " s/he is shown a pop-up window"
+#~ " where a new team details (Name, "
+#~ "Language, Description) can be input. "
+#~ "![New team creation in dashboard](images"
+#~ "/dashboard-createnewcoproductionprocess.png)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "By clicking on the name of a "
+#~ "co-production process, the user is "
+#~ "switched to the [\"co-production "
+#~ "process\" view](https://dev.interlink-project.eu/docs/en"
+#~ "/coproductionprocess-guide.html)."
 #~ msgstr ""
 
