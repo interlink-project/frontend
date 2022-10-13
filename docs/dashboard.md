@@ -29,7 +29,7 @@ Within "ORGANIZATIONS" section of dashboard, after the user clicks on "ORGANIZAT
 
 
 ![New organization creation in dashboard](images/dashboard-team-creation.png)
-![New organization creation in dashboard 2](images/dashboard-team-creation2.png)
+
 
 
 Once a new organization has been created, the user is shown in the dashboard's organization view those public teams or private teams the loged in user is administrator of.  
@@ -44,7 +44,7 @@ The user may browse through the already created teams in an organization or crea
 ![New team creation in dashboard 2](images/dashboard-team-creation2.png)
 
 
-Within "WORKSPACE" section, after the user clicks on "WORKSPACE" top menu option,, once a user hits "+ Create new process", s/he is shown a pop-up window where a new process details (Name, Language, Description) can be input.
+Within "WORKSPACE" section, after the user clicks on "WORKSPACE" top menu option, once a user hits "+ Create new process", s/he is shown a pop-up window where a new process details (Name, Language, Description) can be input.
 
 
 ![New team creation in dashboard](images/dashboard-createnewcoproductionprocess.png). 
