@@ -15,6 +15,9 @@ import './translations/i18n';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProcess, getTree } from 'slices/process';
 import getAssets from './components/dashboard/coproductionprocesses/RightSide'
+import { getCoproductionProcesses } from 'slices/general';
+
+
 
 export const RemoveTrailingSlash = ({ ...rest }) => {
   const location = useLocation();
@@ -42,11 +45,41 @@ const App = () => {
   const auth = useAuth();
   const { process, selectedTreeItem } = useSelector((state) => state.process);
   const [socket, setSocket] = useState(null)
+  const [personalSocket, setPersonalSocket] = useState(null)
   const [lastProcessId, setLastProcessId] = useState(null)
   const dispatch = useDispatch();
   const navigate = useNavigate()
+  const location = useLocation();
+  const getUuid = require('uuid-by-string');
 
   useScrollReset();
+
+  // Create personal websocket to receive updates on dashboard view
+  useEffect(() => {
+    if (location.pathname === '/dashboard' && auth.isAuthenticated && !personalSocket) {
+
+      let socketProtocol = 'ws:';
+      if (REACT_APP_DOMAIN !== 'localhost') {
+        socketProtocol = 'wss:';
+      }
+
+      const new_socket = new WebSocket(`${socketProtocol}//${REACT_APP_DOMAIN}/coproduction/api/v1/users/${getUuid(auth.user.id)}/ws`);
+
+      new_socket.onopen = () => {
+        console.log('PERSONAL WebSocket Client Connected', new_socket);
+      };
+      new_socket.onmessage = (message) => {
+        console.log("RECEIVING MESSAGE ON PERSONAL SOCKET")
+        console.log(message);
+        dispatch(getCoproductionProcesses());
+      };
+      setPersonalSocket(new_socket)
+    } if (location.pathname !== '/dashboard' && personalSocket) {
+      console.log('PERSONAL WebSocket Client Closed');
+      personalSocket.close();
+      setPersonalSocket(null);
+    }
+  }, [location, auth]);
 
   useEffect(() => {
     const process_changed = !process || process.id !== lastProcessId
@@ -54,6 +87,7 @@ const App = () => {
       if (socket) {
         console.log('WebSocket Client Closed');
         socket.close();
+        setSocket(null);
       }
 
       if (process) {
@@ -79,27 +113,27 @@ const App = () => {
     }
   }, [process])
 
-  useEffect(() => {
-    if (!socket && process) {
-      console.log(REACT_APP_DOMAIN)
+  // useEffect(() => {
+  //   if (!socket && process) {
+  //     console.log(REACT_APP_DOMAIN)
 
-      let socketProtocol = 'ws:';
-      if (REACT_APP_DOMAIN !== 'localhost') {
-        socketProtocol = 'wss:';
-      }
+  //     let socketProtocol = 'ws:';
+  //     if (REACT_APP_DOMAIN !== 'localhost') {
+  //       socketProtocol = 'wss:';
+  //     }
 
-      const new_socket = new WebSocket(`${socketProtocol}//${REACT_APP_DOMAIN}/coproduction/api/v1/coproductionprocesses/${process.id}/ws`);
-      new_socket.onopen = () => {
-        console.log('WebSocket Client Connected', new_socket);
-      };
-      new_socket.onmessage = (message) => {
-        console.log(message)
-        // dispatch(getProcess(process.id, false, selectedTreeItem.id ))
-      };
-      setSocket(new_socket)
-      setLastProcessId(process.id)
-    }
-  }, [socket])
+  //     const new_socket = new WebSocket(`${socketProtocol}//${REACT_APP_DOMAIN}/coproduction/api/v1/coproductionprocesses/${process.id}/ws`);
+  //     new_socket.onopen = () => {
+  //       console.log('WebSocket Client Connected', new_socket);
+  //     };
+  //     new_socket.onmessage = (message) => {
+  //       console.log(message)
+  //       // dispatch(getProcess(process.id, false, selectedTreeItem.id ))
+  //     };
+  //     setSocket(new_socket)
+  //     setLastProcessId(process.id)
+  //   }
+  // }, [socket])
 
 
   useEffect(() => {
@@ -119,37 +153,37 @@ const App = () => {
           }
 
         } else
-        if (event.includes("phase") || event.includes("objective") || event.includes("task")) {
-          if (event.includes("removed")) {
-            dispatch(getTree(process.id, selectedTreeItem.prerequisites_ids[0]))
-          } else {
-            dispatch(getTree(process.id, selectedTreeItem.id))
-          }
-
-        } else if (event.includes("coproductionprocess_removed")) {
-          navigate('/dashboard')
-          // show advertence
-        } else if (event.includes("coproductionprocess") || event.includes("permission")) {
-          dispatch(getProcess(process.id, false, selectedTreeItem.id))
-        }
-        else if (event.includes("asset")) {
-          
-          const datosTemp = JSON.parse(message.data)
-          console.log(datosTemp)
-          console.log("UPDATE ASSETS")
-
-          //Ask if the selected task is the same:
-          if (selectedTreeItem.id === datosTemp.extra.task_id) {
-            dispatch(getTree(process.id, selectedTreeItem.id))
-          }else{
-            
-            if (window.location.pathname.includes("overview")){
-              dispatch(getProcess(process.id, false))
+          if (event.includes("phase") || event.includes("objective") || event.includes("task")) {
+            if (event.includes("removed")) {
+              dispatch(getTree(process.id, selectedTreeItem.prerequisites_ids[0]))
+            } else {
+              dispatch(getTree(process.id, selectedTreeItem.id))
             }
+
+          } else if (event.includes("coproductionprocess_removed")) {
+            navigate('/dashboard')
+            // show advertence
+          } else if (event.includes("coproductionprocess") || event.includes("permission")) {
+            dispatch(getProcess(process.id, false, selectedTreeItem.id))
           }
+          else if (event.includes("asset")) {
+
+            const datosTemp = JSON.parse(message.data)
+            console.log(datosTemp)
+            console.log("UPDATE ASSETS")
+
+            //Ask if the selected task is the same:
+            if (selectedTreeItem.id === datosTemp.extra.task_id) {
+              dispatch(getTree(process.id, selectedTreeItem.id))
+            } else {
+
+              if (window.location.pathname.includes("overview")) {
+                dispatch(getProcess(process.id, false))
+              }
+            }
 
 
-        }
+          }
       };
     }
   }, [selectedTreeItem])
