@@ -79,6 +79,8 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
         }).catch(err => {
             console.log(err)
             setLoading(false)
+            alert("You don't have enought permissions to make this action. (You must have administrator role)")
+
         })
     };
 

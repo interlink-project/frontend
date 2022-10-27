@@ -88,6 +88,7 @@ const App = () => {
         console.log('WebSocket Client Closed');
         socket.close();
         setSocket(null);
+        setLastProcessId(null);
       }
 
       if (process) {
