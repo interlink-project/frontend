@@ -57,7 +57,10 @@ In order to **link the created team to the created co-production process**, you 
 Notice that you may create new teams with different roles and associated permissions to a given co-production process. The permissions of a team apply to the chosen phases, objectives or tasks. 
 
 You may also assign a team to a co-production process through the Teams view of a given co-production process by clicking on button "Add new permission to the overall process", as shown in the figure below.
+![Assign team to co-production-process](images/team-assignment-process.png)
 
-Once a given team is selected through the window that pops us with all available organization and teams.
+Now, you should select a given team through the window that pops us with all available organization and teams, as shown below.
+![Team selection for assignment to co-production process](images/team-selection-for-process-assignment.png)
 
-The selected team should have access rights granted to the resources generated across the whole co-production tree. 
+The selected team should have access rights granted to the resources generated across the whole co-production tree. In this case we have only granted resource view access to this team, they can neither write nor delete resources. 
+![Team selection for assignment to co-production process](images/team-assigned-process-view-resources-only.png)
