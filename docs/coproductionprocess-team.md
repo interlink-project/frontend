@@ -55,3 +55,9 @@ In order to **link the created team to the created co-production process**, you 
 ![View the new team bound to task through permissions](images/coproductionprocess-bind-treenode-team2.png)
 
 Notice that you may create new teams with different roles and associated permissions to a given co-production process. The permissions of a team apply to the chosen phases, objectives or tasks. 
+
+You may also assign a team to a co-production process through the Teams view of a given co-production process by clicking on button "Add new permission to the overall process", as shown in the figure below.
+
+Once a given team is selected through the window that pops us with all available organization and teams.
+
+The selected team should have access rights granted to the resources generated across the whole co-production tree. 
