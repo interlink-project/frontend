@@ -18,7 +18,7 @@ const MyMenuItem = ({ onClick, text, icon, id, disabled = false, loading = false
     <ListItemText>{text}</ListItemText>
   </MenuItem>
 );
-const UserRow = ({ t, user, actions, showLastLogin, size = 30 }) => {
+const UserRow = ({ t, user, actions, showLastLogin, showTemporalMessage, size = 30 }) => {
   const { user: auth_user } = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(null);
@@ -114,7 +114,7 @@ const UserRow = ({ t, user, actions, showLastLogin, size = 30 }) => {
                   id={id}
                   disabled={disabled}
                   sx={sx}
-                  onClick={() => { onClick(user); handleActionsClose(); }}
+                  onClick={() => { onClick(user); handleActionsClose(); showTemporalMessage(); }}
                   text={text}
                   icon={icon}
                 />

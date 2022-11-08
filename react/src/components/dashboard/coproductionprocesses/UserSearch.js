@@ -4,7 +4,7 @@ import useMounted from 'hooks/useMounted';
 import { useEffect, useRef, useState } from 'react';
 import { usersApi } from '__api__';
 
-const UserSearch = ({ exclude = [], onClick, organization_id = null }) => {
+const UserSearch = ({ exclude = [], onClick, showTemporalMessage, organization_id = null }) => {
   const [loading, setLoading] = useState(false);
   const mounted = useMounted();
   const [searchResults, setSearchResults] = useState([]);
@@ -47,7 +47,7 @@ const UserSearch = ({ exclude = [], onClick, organization_id = null }) => {
             setLoading(false);
           }
         });
-      }, 1000);
+      }, 3500);
     }
     return () => {
       clearTimeout(delayDebounceFn);
@@ -123,6 +123,7 @@ const UserSearch = ({ exclude = [], onClick, organization_id = null }) => {
                   disabled={alreadySelected}
                   onClick={(event) => {
                     onClick(user);
+                    showTemporalMessage();
                     setInputValue('');
                     handleClose();
                   }}

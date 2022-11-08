@@ -1,11 +1,28 @@
-import { Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Alert, Snackbar, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import UserSearch from 'components/dashboard/coproductionprocesses/UserSearch';
 import UserRow from './UserRow';
+import { useState } from 'react';
 
 const UsersList = ({ users, size = 'medium', searchOnOrganization = null, onSearchResultClick = null, getActions = null, disableContainer = true, disableHeader = true, showLastLogin = true }) => {
+  const [openSnackbarChangeUser, setSnackbarChangeUserOpen] = useState(false);
   const { t } = useTranslation();
+
+  const handlClickShowUserMsn = () => {
+    setSnackbarChangeUserOpen(true);
+  };
+
+  const handleCloseShowUserMsn = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbarChangeUserOpen(false);
+  };
+
+
   const table = (
+    <>
     <Table size={size}>
       {!disableHeader && (
       <TableHead>
@@ -26,10 +43,18 @@ const UsersList = ({ users, size = 'medium', searchOnOrganization = null, onSear
             t={t}
             actions={getActions && getActions(user)}
             showLastLogin={showLastLogin}
+            showTemporalMessage= {handlClickShowUserMsn}
           />
         ))}
       </TableBody>
     </Table>
+  <Snackbar open={openSnackbarChangeUser} autoHideDuration={4000} onClose={handleCloseShowUserMsn} anchorOrigin={{ vertical:'center', horizontal: 'center' }} key={ 'center' + 'center'}>
+  
+        <Alert onClose={handleCloseShowUserMsn} severity="success">
+        {t('The admin list has been modified, please wait a couple of minutes for the changes to take effect.')}
+        </Alert>
+      </Snackbar>
+    </>
   );
 
   return (
@@ -47,6 +72,7 @@ const UsersList = ({ users, size = 'medium', searchOnOrganization = null, onSear
           exclude={users.map((user) => user.id)}
           organization_id={searchOnOrganization}
           onClick={onSearchResultClick}
+          showTemporalMessage= {handlClickShowUserMsn}
         />
       </>
       )}
