@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProcess, getTree } from 'slices/process';
 import getAssets from './components/dashboard/coproductionprocesses/RightSide'
 import { getCoproductionProcesses } from 'slices/general';
+import { getOrganizations } from 'slices/general';
 
 
 
@@ -56,7 +57,8 @@ const App = () => {
 
   // Create personal websocket to receive updates on dashboard view
   useEffect(() => {
-    if (location.pathname === '/dashboard' && auth.isAuthenticated && !personalSocket) {
+    //The personal websocket will include when is in organizations
+    if ( ( location.pathname === '/dashboard' || location.pathname === '/dashboard/organizations' ) && auth.isAuthenticated && !personalSocket) {
 
       let socketProtocol = 'ws:';
       if (REACT_APP_DOMAIN !== 'localhost') {
@@ -72,9 +74,14 @@ const App = () => {
         console.log("RECEIVING MESSAGE ON PERSONAL SOCKET")
         console.log(message);
         dispatch(getCoproductionProcesses());
+
+        if (window.location.pathname.includes("organizations")) {
+          dispatch(getOrganizations(''));
+        }
+
       };
       setPersonalSocket(new_socket)
-    } if (location.pathname !== '/dashboard' && personalSocket) {
+    } if ( !(location.pathname === '/dashboard'  || location.pathname === '/dashboard/organizations') && personalSocket) {
       console.log('PERSONAL WebSocket Client Closed');
       personalSocket.close();
       setPersonalSocket(null);

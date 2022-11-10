@@ -48,7 +48,7 @@ const UsersList = ({ users, size = 'medium', searchOnOrganization = null, onSear
         ))}
       </TableBody>
     </Table>
-  <Snackbar open={openSnackbarChangeUser} autoHideDuration={4000} onClose={handleCloseShowUserMsn} anchorOrigin={{ vertical:'center', horizontal: 'center' }} key={ 'center' + 'center'}>
+  <Snackbar open={openSnackbarChangeUser} autoHideDuration={4000} onClose={handleCloseShowUserMsn} anchorOrigin={{ vertical:'bottom', horizontal: 'center' }} key={ 'bottom' + 'center'}>
   
         <Alert onClose={handleCloseShowUserMsn} severity="success">
         {t('The admin list has been modified, please wait a couple of minutes for the changes to take effect.')}
