@@ -6,6 +6,12 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { getLanguage } from 'translations/i18n';
+import { getUnseenUserNotifications } from 'slices/general';
+import React from 'react';
+import { cleanProcess } from 'slices/process';
+import useAuth from 'hooks/useAuth';
+import { useDispatch, useSelector } from 'react-redux';
+import useMounted from 'hooks/useMounted';
 
 const Catalogue = () => {
   const [open, setOpen] = useState(false);
@@ -13,6 +19,37 @@ const Catalogue = () => {
 
   const { t } = useTranslation();
   const language = getLanguage();
+
+  const [searchValue] = React.useState('');
+  const { user, isAuthenticated } = useAuth();
+  const dispatch = useDispatch();
+  const mounted = useMounted();
+
+  const getUnseenUserNotificationsData = React.useCallback(async (search) => {
+    if (isAuthenticated) {
+      dispatch(cleanProcess());
+      dispatch(getUnseenUserNotifications(search));
+      //dispatch(getUnseenUserNotifications({'user_id':user.id}));
+    
+    }
+  }, [isAuthenticated, mounted]);
+
+  
+  React.useEffect(() => {
+    let delayDebounceFn;
+    if (mounted.current) {
+      delayDebounceFn = setTimeout(() => {
+        getUnseenUserNotificationsData({'user_id':user.id});
+      }, searchValue ? 800 : 0);
+    }
+    return () => {
+      if (delayDebounceFn) {
+        clearTimeout(delayDebounceFn);
+      }
+    };
+  }, [getUnseenUserNotificationsData]);
+
+
 
   const handleClickOpen = () => {
     setOpen(true);

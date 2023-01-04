@@ -96,6 +96,7 @@ const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
     teamsApi.delete(teamId).then(() => {
       onChanges && onChanges();
       setOpen(false);
+      window.location.reload(false);
     });
   };
 

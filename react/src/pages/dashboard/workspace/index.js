@@ -8,7 +8,7 @@ import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { getCoproductionProcesses } from 'slices/general';
+import { getCoproductionProcesses, getUnseenUserNotifications } from 'slices/general';
 import { cleanProcess } from 'slices/process';
 import useAuth from '../../../hooks/useAuth';
 import CoproductionprocessCreate from './CoproductionProcessCreate';
@@ -106,6 +106,15 @@ const MyWorkspace = () => {
     }
   }, [isAuthenticated, mounted]);
 
+  const getUnseenUserNotificationsData = React.useCallback(async (search) => {
+    if (isAuthenticated) {
+      dispatch(cleanProcess());
+      dispatch(getUnseenUserNotifications(search));
+      //dispatch(getUnseenUserNotifications({'user_id':user.id}));
+    
+    }
+  }, [isAuthenticated, mounted]);
+
   React.useEffect(() => {
     let delayDebounceFn;
     if (mounted.current) {
@@ -119,6 +128,21 @@ const MyWorkspace = () => {
       }
     };
   }, [getCoproductionProcessesData, searchValue]);
+
+
+  React.useEffect(() => {
+    let delayDebounceFn;
+    if (mounted.current) {
+      delayDebounceFn = setTimeout(() => {
+        getUnseenUserNotificationsData({'user_id':user.id});
+      }, searchValue ? 800 : 0);
+    }
+    return () => {
+      if (delayDebounceFn) {
+        clearTimeout(delayDebounceFn);
+      }
+    };
+  }, [getUnseenUserNotificationsData]);
 
   const onProcessCreate = (res) => {
     navigate(`/dashboard/coproductionprocesses/${res.id}/overview`);

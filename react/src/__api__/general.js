@@ -17,6 +17,8 @@ export default class GeneralApi {
   }
 
   async getMulti(params = {}, language = getLanguage()) {
+    console.log(`/${this.url}`+params);
+    //Get data of user_notifications
     const res = await axiosInstance.get(
       `/${this.url}`, {
         params: removeEmpty(params),

@@ -7,7 +7,8 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrganizations } from 'slices/general';
+import { getOrganizations, getUnseenUserNotifications } from 'slices/general';
+import { cleanProcess } from 'slices/process';
 import OrganizationCreate from 'components/dashboard/organizations/OrganizationCreate';
 import OrganizationProfile from 'components/dashboard/organizations/OrganizationProfile';
 import OrganizationsList from 'components/dashboard/organizations/OrganizationsList';
@@ -25,7 +26,7 @@ const Organizations = () => {
   const dispatch = useDispatch();
   const mounted = useMounted();
 
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const getOrganizationsData = React.useCallback(async (search) => {
     dispatch(getOrganizations(search));
@@ -44,6 +45,34 @@ const Organizations = () => {
       }
     };
   }, [getOrganizationsData, searchValue]);
+
+
+  const getUnseenUserNotificationsData = React.useCallback(async (search) => {
+    if (isAuthenticated) {
+      dispatch(cleanProcess());
+      dispatch(getUnseenUserNotifications(search));
+      //dispatch(getUnseenUserNotifications({'user_id':user.id}));
+    
+    }
+  }, [isAuthenticated, mounted]);
+
+
+  
+  React.useEffect(() => {
+    let delayDebounceFn;
+    if (mounted.current) {
+      delayDebounceFn = setTimeout(() => {
+        getUnseenUserNotificationsData({'user_id':user.id});
+      }, searchValue ? 800 : 0);
+    }
+    return () => {
+      if (delayDebounceFn) {
+        clearTimeout(delayDebounceFn);
+      }
+    };
+  }, [getUnseenUserNotificationsData]);
+
+
 
   const updateOrganizations = (res) => {
     setSearchValue('');
@@ -126,6 +155,7 @@ const Organizations = () => {
             open={!!selectedTeam}
             setOpen={setSelectedTeam}
             onChanges={updateOrganizations}
+            organizations={organizations}
           />
           )}
           <Box sx={{ mt: 4 }}>

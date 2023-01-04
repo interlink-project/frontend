@@ -17,6 +17,7 @@ import { getProcess, getTree } from 'slices/process';
 import getAssets from './components/dashboard/coproductionprocesses/RightSide'
 import { getCoproductionProcesses } from 'slices/general';
 import { getOrganizations } from 'slices/general';
+import { getUnseenUserNotifications } from 'slices/general';
 
 
 
@@ -74,6 +75,8 @@ const App = () => {
         console.log("RECEIVING MESSAGE ON PERSONAL SOCKET")
         console.log(message);
         dispatch(getCoproductionProcesses());
+        dispatch(getOrganizations(''));
+        dispatch(getUnseenUserNotifications({'user_id':auth.user.id}));
 
         if (window.location.pathname.includes("organizations")) {
           dispatch(getOrganizations(''));
