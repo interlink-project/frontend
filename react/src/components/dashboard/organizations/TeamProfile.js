@@ -1,11 +1,12 @@
 import { Alert, Avatar, Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, Input, Paper, Stack, Tab, Tabs, TextField, Typography } from '@material-ui/core';
-import { Close, Delete, Edit, Save } from '@material-ui/icons';
+import { Close, Delete, Edit, Save, Mail } from '@material-ui/icons';
 import ConfirmationButton from 'components/ConfirmationButton';
 import { OrganizationChip } from 'components/Icons';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useState } from 'react';
 import { teamsApi } from '__api__';
+import { ExportToCsv } from 'export-to-csv';
 import UsersList from './UsersList';
 
 const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
@@ -61,6 +62,28 @@ const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
       }
     });
   };
+
+  const downloadMembersMails = (team) => {
+    console.log('Downloading mails');
+    var mails = [];
+    team.users.map((user) => mails.push({
+      name: user.full_name,
+      mail: user.email,
+    }));
+    
+    const options = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalSeparator: '.',
+      showLabels: false,
+      filename: team.name + '_Mails',
+      useTextFile: false,
+      useBom: true,
+      useKeysAsHeaders: true,
+    };
+    const csvExporter = new ExportToCsv(options);
+    csvExporter.generateCsv(mails);
+  }
 
   const nameAndDescChanged = (name !== team.name) || (description !== team.description);
   const somethingChanged = nameAndDescChanged || logotype !== null;
@@ -266,70 +289,87 @@ const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
                     t={t}
                   />
                   {isAdmin && (
-                  <>
-                    {!editMode ? (
-                      <Button
-                        disabled={!isAdmin}
-                        startIcon={<Edit />}
-                        variant='contained'
-                        color='primary'
-                        onClick={() => setEditMode(true)}
-                      >
-                        {t('Edit')}
-                      </Button>
-                    )
-                      : (
-                        <Stack
-                          direction='row'
-                          justifyContent='center'
-                          sx={{ mt: 2 }}
-                        >
-                          <Button
-                            variant='text'
-                            color='warning'
-                            onClick={() => setEditMode(false)}
-                          >
-                            {t('Discard changes')}
-                          </Button>
-                          <Button
-                            disabled={!somethingChanged}
-                            startIcon={<Save />}
-                            variant='contained'
-                            color='success'
-                            onClick={handleSave}
-                          >
-                            {t('Save')}
-                          </Button>
-                        </Stack>
-                      )}
-                    <ConfirmationButton
-                      Actionator={({ onClick }) => (
+                    <>
+                      {!editMode ? (
+
                         <Button
-                          startIcon={<Delete />}
-                          disabled={!editMode}
-                          variant='text'
-                          color='error'
-                          onClick={onClick}
-                        >
-                          {t('Remove {{what}}', { what: team_trans })}
-                        </Button>
-                      )}
-                      ButtonComponent={({ onClick }) => (
-                        <Button
-                          sx={{ mt: 1 }}
-                          fullWidth
+                          disabled={!isAdmin}
+                          startIcon={<Edit />}
                           variant='contained'
-                          color='error'
-                          onClick={onClick}
+                          color='primary'
+                          onClick={() => setEditMode(true)}
                         >
-                          {t('Confirm deletion')}
+                          {t('Edit')}
                         </Button>
+                      )
+                        : (
+                          <Stack
+                            direction='row'
+                            justifyContent='center'
+                            sx={{ mt: 2 }}
+                          >
+                            <Button
+                              variant='text'
+                              color='warning'
+                              onClick={() => setEditMode(false)}
+                            >
+                              {t('Discard changes')}
+                            </Button>
+                            <Button
+                              disabled={!somethingChanged}
+                              startIcon={<Save />}
+                              variant='contained'
+                              color='success'
+                              onClick={handleSave}
+                            >
+                              {t('Save')}
+                            </Button>
+                          </Stack>
+                        )}
+                      <ConfirmationButton
+                        Actionator={({ onClick }) => (
+                          <Button
+                            startIcon={<Delete />}
+                            disabled={!editMode}
+                            variant='text'
+                            color='error'
+                            onClick={onClick}
+                          >
+                            {t('Remove {{what}}', { what: team_trans })}
+                          </Button>
+                        )}
+                        ButtonComponent={({ onClick }) => (
+                          <Button
+                            sx={{ mt: 1 }}
+                            fullWidth
+                            variant='contained'
+                            color='error'
+                            onClick={onClick}
+                          >
+                            {t('Confirm deletion')}
+                          </Button>
+                        )}
+                        onClick={handleRemove}
+                        text={t('Are you sure?')}
+                      />
+                      {!editMode && (
+                        <Button
+                          startIcon={<Mail />}
+                          variant='outlined'
+                          color='primary'
+                          style={{
+                            position: 'relative',
+                            bottom: 0,
+                          }}
+                          onClick={() => downloadMembersMails(team)}
+                        >
+                          {t('Download mails')}
+                        </Button>
+
                       )}
-                      onClick={handleRemove}
-                      text={t('Are you sure?')}
-                    />
-                  </>
+                    </>
                   )}
+
                 </Stack>
               </Paper>
             </Grid>
@@ -355,55 +395,55 @@ const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
                 />
               </Tabs>
               {tabValue === 'members' && (
-              <UsersList
-                size='small'
-                users={team.users}
-                searchOnOrganization={isAdmin && team.organization_id}
-                disableHeader={false}
-                onSearchResultClick={isAdmin && addUserToTeam}
-                getActions={(user) => isAdmin && (
-                  [
-                    {
-                      id: `${user.id}-remove-action`,
-                      onClick: removeUserFromTeam,
-                      text: t('Remove member'),
-                      sx: { color: 'red' },
-                      icon: <Delete />
-                    }
-                  ]
-                )}
-              />
-              )}
-
-              {tabValue === 'administrators' && (
-              <>
-                <Alert
-                  sx={{ mb: 2 }}
-                  severity='info'
-                >
-                  {t('Administrators of the team can add/remove users and edit the information of the team')}
-                </Alert>
                 <UsersList
                   size='small'
-                  users={team.administrators}
+                  users={team.users}
                   searchOnOrganization={isAdmin && team.organization_id}
                   disableHeader={false}
-                  onSearchResultClick={isAdmin && handleAdministratorAdd}
+                  onSearchResultClick={isAdmin && addUserToTeam}
                   getActions={(user) => isAdmin && (
                     [
                       {
-                        id: `${user.id}-remove-admin-action`,
-                        onClick: handleAdministratorRemove,
-                        text: t('Remove administrator'),
-                        icon: <Delete />,
+                        id: `${user.id}-remove-action`,
+                        onClick: removeUserFromTeam,
+                        text: t('Remove member'),
                         sx: { color: 'red' },
-                        disabled: team.administrators_ids.length === 1
+                        icon: <Delete />
                       }
                     ]
                   )}
                 />
-              </>
-              ) }
+              )}
+
+              {tabValue === 'administrators' && (
+                <>
+                  <Alert
+                    sx={{ mb: 2 }}
+                    severity='info'
+                  >
+                    {t('Administrators of the team can add/remove users and edit the information of the team')}
+                  </Alert>
+                  <UsersList
+                    size='small'
+                    users={team.administrators}
+                    searchOnOrganization={isAdmin && team.organization_id}
+                    disableHeader={false}
+                    onSearchResultClick={isAdmin && handleAdministratorAdd}
+                    getActions={(user) => isAdmin && (
+                      [
+                        {
+                          id: `${user.id}-remove-admin-action`,
+                          onClick: handleAdministratorRemove,
+                          text: t('Remove administrator'),
+                          icon: <Delete />,
+                          sx: { color: 'red' },
+                          disabled: team.administrators_ids.length === 1
+                        }
+                      ]
+                    )}
+                  />
+                </>
+              )}
 
             </Grid>
           </Grid>

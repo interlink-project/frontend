@@ -22,6 +22,15 @@ class TeamsApi extends GeneralApi {
     console.log('remove user call', res.data);
     return res.data;
   }
+
+  // async getUsers(id) {
+  //   const res = await axiosInstance.get(
+  //     `/${this.url}/${id}`
+  //   );
+  //   console.log('list of members from team', res.data);
+  //   return res.data;
+  // }
+
 }
 
 export const teamsApi = new TeamsApi();
