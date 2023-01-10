@@ -14,6 +14,10 @@ import HelpPopover from './HelpPopover';
 import SearchAppBar from './Search';
 import SettingsPopover from './SettingsPopover';
 
+import React from 'react';
+import useAuth from '../../hooks/useAuth';
+import UserNotificationsPopover from './UserNotificationsPopover';
+
 const DashboardNavbarRoot = experimentalStyled(AppBar)(({ theme }) => ({
   ...(theme.palette.mode === 'light' && {
     backgroundColor: theme.palette.primary.main,
@@ -51,6 +55,9 @@ const DashboardNavbar = (props) => {
   const onMobile = !useMediaQuery(theme.breakpoints.up('sm'));
   const onReduced = !useMediaQuery(theme.breakpoints.up('md'));
 
+  const auth = useAuth();
+  const { user, isAuthenticated } = auth;
+  
   return (
     <DashboardNavbarRoot {...other}>
       <Toolbar sx={{ minHeight: 64 }}>
@@ -109,11 +116,15 @@ const DashboardNavbar = (props) => {
         {!onMobile
           && (
           <>
-            {/*
-            <Box sx={{ ml: 1 }}>
-              <NotificationsPopover />
-            </Box>
-          */}
+        { isAuthenticated ?(      
+        <Box sx={{ ml: 1 }}>
+          <UserNotificationsPopover />
+        </Box>
+          
+        ):(
+          <></>
+        )}
+           
             <Box sx={{ ml: 2 }}>
               <AccountPopover />
             </Box>

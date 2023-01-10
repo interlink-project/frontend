@@ -10,6 +10,10 @@ import { useNavigate } from 'react-router';
 import { setSelectedTreeItemById } from 'slices/process';
 import { coproductionProcessesApi } from '__api__';
 import TimeLine from 'components/dashboard/coproductionprocesses/TimeLine';
+import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
+import {  getCoproductionProcessNotifications_byCoproId } from 'slices/general';
+import useAuth from 'hooks/useAuth';
+import { cleanProcess } from 'slices/process';
 
 export default function Overview({ }) {
   const { process, isAdministrator, tree } = useSelector((state) => state.process);
@@ -20,6 +24,10 @@ export default function Overview({ }) {
   const mounted = useMounted();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [searchValue, setSearchValue] = React.useState('');
+
+
+  const { user, isAuthenticated } = useAuth();
 
   React.useEffect(() => {
     setLoading(true);
@@ -59,50 +67,53 @@ export default function Overview({ }) {
     return;
   }
 
-  return (
-    <Box sx={{ pb: 3, justifyContent: 'center' }}>
+  if (mounted.current) {
+  dispatch(getCoproductionProcessNotifications_byCoproId({'coproductionprocess_id':process.id}))
+  }
 
-      <AppBar sx={{ position: 'relative' }}>
-        <Typography
-          variant='h6'
-          sx={{ p: 2 }}
-        >
-          {t('Coproduction process overview')}
+
+  return (
+    <Box sx={{ pb: 3, justifyContent: "center" }}>
+      <AppBar sx={{ position: "relative" }}>
+        <Typography variant="h6" sx={{ p: 2 }}>
+          {t("Coproduction process overview")}
         </Typography>
       </AppBar>
       {isAdministrator && (
-      <Paper sx={{ bgcolor: 'background.default' }}>
-        <Tabs
-          value={tab}
-          onChange={(event, newValue) => {
-            setTab(newValue);
-          }}
-          aria-label='overview-tabs'
-          centered
-        >
-          <Tab
-            value='progress'
-            label={t('Progress')}
-          />
-          <Tab
-            value='assets'
-            label={`${t('Resources')} (${loading ? '...' : assets.length})`}
-          />
-        </Tabs>
-      </Paper>
-      )}
-      {tab === 'progress'
-        ? <TimeLine assets={assets} />
-        : (
-          <Box sx={{ p: 3, justifyContent: 'center' }}>
-            <AssetsTable
-              language={process.language}
-              loading={loading}
-              assets={assets}
-              getActions={getAssetsActions}
+        <Paper sx={{ bgcolor: "background.default" }}>
+          <Tabs
+            value={tab}
+            onChange={(event, newValue) => {
+              setTab(newValue);
+            }}
+            aria-label="overview-tabs"
+            centered
+          >
+            <Tab value="progress" label={t("Progress")} />
+            <Tab
+              value="assets"
+              label={`${t("Resources")} (${loading ? "..." : assets.length})`}
             />
-          </Box>
-        )}
+            <Tab value="notifications" label={t("Notifications")} />
+          </Tabs>
+        </Paper>
+      )}
+      {tab === "progress" ? <TimeLine assets={assets} /> : <></>}
+
+      {tab === "assets" ? (
+        <Box sx={{ p: 3, justifyContent: "center" }}>
+          <AssetsTable
+            language={process.language}
+            loading={loading}
+            assets={assets}
+            getActions={getAssetsActions}
+          />
+        </Box>
+      ) : (
+        <></>
+      )}
+      
+      {tab === "notifications" ? <CoproNotifications assets={assets} /> : <></>}
     </Box>
   );
 }
