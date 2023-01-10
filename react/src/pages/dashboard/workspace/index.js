@@ -115,6 +115,11 @@ const MyWorkspace = () => {
     }
   }, [isAuthenticated, mounted]);
 
+  // if (mounted.current) {
+  //   dispatch(cleanProcess());
+  //   dispatch(getUnseenUserNotifications(search));
+  // }
+
   React.useEffect(() => {
     let delayDebounceFn;
     if (mounted.current) {

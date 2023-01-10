@@ -7,6 +7,7 @@ import { coproductionSchemasApi } from './catalogue/coproductionSchemasApi';
 import { objectivesApi } from './coproduction/objectivesApi';
 import { organizationsApi } from './coproduction/organizationsApi';
 import { usernotificationsApi } from './coproduction/usernotificationsApi';
+import { coproductionprocessnotificationsApi } from './coproduction/coproductionprocessnotificationsApi';
 import { permissionsApi } from './coproduction/permissionsApi';
 import { phasesApi } from './coproduction/phasesApi';
 import { tasksApi } from './coproduction/tasksApi';
@@ -14,4 +15,4 @@ import { teamsApi } from './coproduction/teamsApi';
 import { usersApi } from './users';
 import { problemprofilesApi } from './catalogue/problemProfilesApi';
 
-export { problemprofilesApi, permissionsApi, organizationsApi, usernotificationsApi, assetsApi, knowledgeInterlinkersApi, softwareInterlinkersApi, coproductionProcessesApi, coproductionSchemasApi, teamsApi, usersApi, tasksApi, phasesApi, objectivesApi, interlinkersApi };
+export { problemprofilesApi, permissionsApi, organizationsApi, usernotificationsApi,coproductionprocessnotificationsApi, assetsApi, knowledgeInterlinkersApi, softwareInterlinkersApi, coproductionProcessesApi, coproductionSchemasApi, teamsApi, usersApi, tasksApi, phasesApi, objectivesApi, interlinkersApi };
