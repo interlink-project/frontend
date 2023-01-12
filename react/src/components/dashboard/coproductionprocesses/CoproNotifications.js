@@ -21,6 +21,12 @@ import AddchartIcon from '@material-ui/icons/Addchart';
 import ArticleIcon from '@material-ui/icons/Article';
 
 
+const iconsMap = {
+  group: GroupsIcon,
+  addresource: AddchartIcon,
+  changeresource: ArticleIcon,
+  defaulticon: LaptopMacIcon
+};
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -75,6 +81,10 @@ export default function CoproNotifications({ assets }) {
 <Timeline position="alternate">
     <>
     { copronotifications.map((copronotification) => {
+      
+      //Verify if the icon is defined:
+      const Icon = copronotification.notification.icon ? iconsMap[copronotification.notification.icon] : iconsMap['defaulticon'];
+      
       return(
       <TimelineItem>
         <TimelineOppositeContent>
@@ -87,7 +97,7 @@ export default function CoproNotifications({ assets }) {
         </TimelineOppositeContent>
         <TimelineSeparator>
           <TimelineDot>
-            <GroupsIcon />
+            <Icon />
           </TimelineDot>
           <TimelineConnector />
         </TimelineSeparator>
@@ -107,74 +117,6 @@ export default function CoproNotifications({ assets }) {
       );
       })}
       </>
-      <TimelineItem>
-        <TimelineOppositeContent>
-          <Typography variant="body2" color="textSecondary">
-            10:00 am
-          </Typography>
-        </TimelineOppositeContent>
-        <TimelineSeparator>
-          <TimelineDot color="primary">
-            <AddchartIcon />
-          </TimelineDot>
-          <TimelineConnector />
-        </TimelineSeparator>
-        <TimelineContent>
-         
-            <Typography variant="h6" component="h1">
-            Daniel Silva performs a creation over resource 'My survey' of of the task 1.1
-            </Typography>
-            <Typography>Comment: I just created a demographic survey.</Typography>
-         
-        </TimelineContent>
-      </TimelineItem>
-      <TimelineItem>
-        <TimelineSeparator>
-          <TimelineDot color="primary" variant="outlined">
-            <ArticleIcon />
-          </TimelineDot>
-          <TimelineConnector className={classes.secondaryTail} />
-        </TimelineSeparator>
-        <TimelineContent>
-         
-            <Typography variant="h6" component="h1">
-              Sleep
-            </Typography>
-            <Typography>Because you need rest</Typography>
-        
-        </TimelineContent>
-      </TimelineItem>
-      <TimelineItem>
-        <TimelineSeparator>
-          <TimelineDot color="secondary">
-            <RepeatIcon />
-          </TimelineDot>
-        </TimelineSeparator>
-        <TimelineContent>
-          
-            <Typography variant="h6" component="h1">
-              Repeat
-            </Typography>
-            <Typography>Because this is the life you love!</Typography>
-          
-        </TimelineContent>
-      </TimelineItem>
-
-      <TimelineItem>
-        <TimelineSeparator>
-          <TimelineConnector sx={{ bgcolor: 'secondary.main' }} />
-          <TimelineDot color="secondary">
-            <RepeatIcon />
-          </TimelineDot>
-          <TimelineConnector />
-        </TimelineSeparator>
-        <TimelineContent sx={{ py: '12px', px: 2 }}>
-          <Typography variant="h6" component="span">
-            Repeat
-          </Typography>
-          <Typography>Because this is the life you love!</Typography>
-        </TimelineContent>
-      </TimelineItem>
 
     </Timeline>
   );

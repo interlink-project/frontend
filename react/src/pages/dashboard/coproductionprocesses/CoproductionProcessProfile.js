@@ -89,7 +89,7 @@ const TabsMobile = ({ tabs, tab, process }) => {
 };
 
 const CoproductionProcessProfile = () => {
-  const { processId, tab = 'overview' } = useParams();
+  const { processId, treeitemId, tab = 'overview' } = useParams();
   const dispatch = useDispatch();
   const mounted = useMounted();
   const { trackEvent } = useMatomo();
@@ -98,6 +98,7 @@ const CoproductionProcessProfile = () => {
 
   const theme = useTheme();
   const showMobileTabs = !useMediaQuery(theme.breakpoints.up('lg'));
+  const navigate = useNavigate();
 
   const _setSelectedTreeItem = (item, callback) => {
     trackEvent({
@@ -111,7 +112,12 @@ const CoproductionProcessProfile = () => {
   const getCoproductionProcess = useCallback(async () => {
     try {
       if (mounted.current) {
-        dispatch(getProcess(processId));
+        if(treeitemId){
+          dispatch(getProcess(processId,true,treeitemId));
+          navigate(`/dashboard/coproductionprocesses/${processId}/guide`);
+        }else{
+          dispatch(getProcess(processId));
+        }
       }
     } catch (err) {
       console.error(err);
@@ -121,6 +127,9 @@ const CoproductionProcessProfile = () => {
   useEffect(() => {
     getCoproductionProcess();
   }, [getCoproductionProcess]);
+
+ 
+
 
   const t = useCustomTranslation(process && process.language);
 

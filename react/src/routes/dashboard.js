@@ -56,6 +56,20 @@ export const routes = [
         ]
       },
       {
+        path: 'coproductionprocesses/:processId/:treeitemId/guide',
+        children: [
+          {
+            path: '',
+            element: <AuthGuard><CoproductionProcessProfile /></AuthGuard>
+            ,
+          },
+          {
+            path: ':tab',
+            element: <AuthGuard><CoproductionProcessProfile /></AuthGuard>
+          },
+        ]
+      },
+      {
         path: 'interlinkers',
         children: [
           {

@@ -19,21 +19,28 @@ import BellIcon from '../../icons/Bell';
 import ChatAltIcon from '../../icons/ChatAlt';
 import CreditCardIcon from '../../icons/CreditCard';
 import ShoppingCartIcon from '../../icons/ShoppingCart';
+
+import GroupsIcon from '@material-ui/icons/Groups';
+import AddchartIcon from '@material-ui/icons/Addchart';
+import ArticleIcon from '@material-ui/icons/Article';
+import LaptopMacIcon from '@material-ui/icons/LaptopMac';
+
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import MuiListItem from "@material-ui/core/ListItem";
 import {  useSelector } from 'react-redux';
 
 import { usernotificationsApi } from '__api__';
-
+import { formatDistanceToNowStrict } from 'date-fns';
+import { useCustomTranslation } from 'hooks/useDependantTranslation';
 
 const now = new Date();
 
-
-
 const iconsMap = {
-  item_shipped: ShoppingCartIcon,
-  new_message: ChatAltIcon,
-  order_placed: CreditCardIcon
+  group: GroupsIcon,
+  addresource: AddchartIcon,
+  changeresource: ArticleIcon,
+  
+  defaulticon: ChatAltIcon
 };
 
 const UserNotificationsPopover = () => {
@@ -112,11 +119,15 @@ const UserNotificationsPopover = () => {
   
   };
 
-
+  const onClickMarkAll = () => {
+    //Save the state to seen of the notification.
+    usernotificationsApi.setSeenAllUserNotification();
+  
+  };
 
   return (
     <>
-      <Tooltip title='UserNotifications'>
+      <Tooltip title='Notifications'>
         <IconButton
           color='inherit'
           ref={anchorRef}
@@ -147,7 +158,7 @@ const UserNotificationsPopover = () => {
             color='textPrimary'
             variant='h6'
           >
-            UserNotifications
+            Notifications
           </Typography>
         </Box>
         {usernotifications.length === 0
@@ -157,7 +168,7 @@ const UserNotificationsPopover = () => {
                 color='textPrimary'
                 variant='subtitle2'
               >
-                There are no usernotifications
+                There are no notifications
               </Typography>
             </Box>
           )
@@ -165,7 +176,9 @@ const UserNotificationsPopover = () => {
             <>
               <List disablePadding>
                 {usernotifications.map((usernotification) => {
-                  const Icon = iconsMap['new_message'];
+                  //Verify if the icon is defined:
+                  const Icon = usernotification.notification.icon ? iconsMap[usernotification.notification.icon] : iconsMap['defaulticon'];
+      
 
                   return (
                     <ListItem
@@ -197,7 +210,7 @@ const UserNotificationsPopover = () => {
                            
                           </Link>
                         )}
-                        secondary={usernotification.notification.event}
+                        secondary={formatDistanceToNowStrict(new Date(usernotification.updated_at || usernotification.created_at))}
                       />
                     </ListItem>
                   );
@@ -214,6 +227,7 @@ const UserNotificationsPopover = () => {
                   color='primary'
                   size='small'
                   variant='text'
+                  onClick={() =>  onClickMarkAll()}
                 >
                   Mark all as read
                 </Button>
