@@ -134,7 +134,7 @@ const MyWorkspace = () => {
     };
   }, [getCoproductionProcessesData, searchValue]);
 
-
+  
   React.useEffect(() => {
     let delayDebounceFn;
     if (mounted.current) {
