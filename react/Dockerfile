@@ -30,8 +30,7 @@ RUN npm run build
 FROM golang:1.15.6-alpine3.12 as go-downloader
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
-RUN go get github.com/urfave/cli/v2
-RUN go get github.com/nrmitchi/runtime-js-env
+RUN go get github.com/interlink-project/runtime-js-env
 
 
 FROM nginx:stable-alpine AS prod
