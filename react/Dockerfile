@@ -27,11 +27,11 @@ RUN npm run build
 
 # Download and build our environment injector
 # https://www.nrmitchi.com/2020/12/building-environment-friendly-react-apps/?utm_source=reddit&utm_medium=r%2Fdocker&utm_campaign=direct-post
-FROM golang:1.15.6-alpine3.12 as go-downloader
+FROM golang:1.17.3-alpine3.15 as go-downloader
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 ENV GO111MODULE=on
-RUN go get github.com/nrmitchi/runtime-js-env
+RUN go get github.com/interlink-project/runtime-js-env
 
 
 FROM nginx:stable-alpine AS prod
