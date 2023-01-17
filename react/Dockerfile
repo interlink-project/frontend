@@ -30,6 +30,7 @@ RUN npm run build
 FROM golang:1.15.6-alpine3.12 as go-downloader
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
+ENV GO111MODULE=on
 RUN go get github.com/interlink-project/runtime-js-env
 
 
