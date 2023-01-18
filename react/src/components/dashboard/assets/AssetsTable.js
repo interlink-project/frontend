@@ -135,9 +135,10 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
               {actions && (
               <IconButton
                 aria-label='settings'
-                id='basic-button'
+                id={'bt-'+asset.id}
                 aria-controls='basic-menu'
                 aria-haspopup='true'
+                name={data.name}
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
               >

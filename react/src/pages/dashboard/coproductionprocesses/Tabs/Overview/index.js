@@ -67,9 +67,17 @@ export default function Overview({ }) {
     return;
   }
 
-  if (mounted.current) {
-  dispatch(getCoproductionProcessNotifications_byCoproId({'coproductionprocess_id':process.id}))
-  }
+
+   React.useEffect(() => {
+    
+    if (mounted.current) {
+        //Obtain the Organization 
+        //getCoproductionData();
+        dispatch(getCoproductionProcessNotifications_byCoproId({'coproductionprocess_id':process.id}))
+      
+    }
+    
+  }, [mounted]);
 
 
   return (

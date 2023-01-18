@@ -20,6 +20,10 @@ import GroupsIcon from '@material-ui/icons/Groups';
 import AddchartIcon from '@material-ui/icons/Addchart';
 import ArticleIcon from '@material-ui/icons/Article';
 
+import { assetsApi } from '__api__';
+import { useEffect } from 'react';
+import useMounted from 'hooks/useMounted';
+
 
 const iconsMap = {
   group: GroupsIcon,
@@ -37,12 +41,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
+
+
 export default function CoproNotifications({ assets }) {
   const classes = useStyles();
-
-
-
-
   const { process, hasSchema, tree } = useSelector((state) => state.process);
   const { user } = useAuth()
   const t = useCustomTranslation(process.language);
@@ -56,12 +60,23 @@ export default function CoproNotifications({ assets }) {
     setOpen(false);
   };
 
-  
+  const [ notificationsList,setNotificationsList]= React.useState([]);
+  let copronotifications = [];
+  const mounted = useMounted();
 
   const coproductionprocessnotificationsState= useSelector(state => state.general);
-  const copronotifications = coproductionprocessnotificationsState.coproductionprocessnotifications;
-  console.log('Carga las notifications');
-  console.log(copronotifications);
+  
+  useEffect(() => {
+    copronotifications = coproductionprocessnotificationsState.coproductionprocessnotifications;
+    setNotificationsList(copronotifications)
+    console.log('Carga las notifications');
+    console.log(copronotifications);
+  
+  }, [mounted]);
+
+
+  
+
 
   const includeParametersValues = (text, parameters) => {
     if(parameters){
@@ -71,22 +86,101 @@ export default function CoproNotifications({ assets }) {
       //Loop over each parameter value and replace in the text
       for (let i = 0; i < extractParams.length; i++) {
         //console.log(extractParams[i]);
-        text=text.replace('{'+extractParams[i]+'}', JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]);  
+        if(JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]){
+          text=text.replace('{'+extractParams[i]+'}', JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]);
+        }
+          
       }
     }
+
+    //Reemplazo con el valor del asset
+    const paramsPattern = /[^{}]+(?=})/g;
+    let extractParams = text.match(paramsPattern);
+    //Loop over each parameter value and replace in the text
+    if(extractParams){
+      for (let i = 0; i < extractParams.length; i++) {
+        if(extractParams[i].includes(':')){
+
+          // console.log('----->'+extractParams[i]);
+          const entidadName=extractParams[i].split(":")[0];
+          const entidadId=extractParams[i].split(":")[1];
+
+          if(entidadName=='assetid'){
+            //Obtain the asset name:
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', `/coproduction/api/v1/assets/internal/${entidadId}`, true);  // `false` makes the request synchronous
+            
+            xhr.onload = (e) => {
+              if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                  //console.log(xhr.responseText);
+                  const assetdata = JSON.parse(xhr.responseText);
+                  if(document.getElementById("lk_"+entidadId+"")){
+                  const assetName=assetdata.name.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+                  document.getElementById("lk_"+entidadId+"").innerHTML=assetName;
+
+           
+
+                  document.getElementById("im_"+entidadId+"").src=assetdata.icon;
+
+                  const collection = document.getElementsByTagName("h1");
+                  for (let i = 0; i < collection.length; i++) {
+                    const textotoReemp=collection[i].innerText;
+                    const textonuevo=textotoReemp.replace('{assetid:'+entidadId+'}', assetName);
+                    collection[i].innerText=textonuevo;
+                  }
+
+
+                  }
+
+                } else {
+                  console.error(xhr.statusText);
+                }
+              }
+            };
+            xhr.onerror = (e) => {
+              console.error(xhr.statusText);
+            };
+            xhr.send(null);
+
+
+            
+            // const request = new XMLHttpRequest();
+            // request.open('GET', `/coproduction/api/v1/assets/internal/${entidadId}`, false);  // `false` makes the request synchronous
+            // request.send(null);
+
+            // if (request.status === 200) {
+            //   //console.log(request.responseText);
+            //   const assetdata = JSON.parse(request.responseText);
+            //   const assetIcon=assetdata.icon
+            //   //console.log(assetdata.name)
+            //   text=text.replace('{'+extractParams[i]+'}', '\''+ assetdata.name+'\'');
+            //   text=text.replace('{assetIcon}', assetIcon);
+              
+                
+            // }
+          }
+
+        }
+        
+      }
+    }
+
+
     return text;
   }
 
   return (
 <Timeline position="alternate">
     <>
-    { copronotifications.map((copronotification) => {
+    { notificationsList.map((copronotification) => {
       
       //Verify if the icon is defined:
       const Icon = copronotification.notification.icon ? iconsMap[copronotification.notification.icon] : iconsMap['defaulticon'];
       
       return(
-      <TimelineItem>
+      <TimelineItem key={'tln_'+copronotification.id} id={'tln_'+copronotification.id}>
         <TimelineOppositeContent>
           <Typography variant="body2" color="textSecondary">
             
@@ -96,7 +190,7 @@ export default function CoproNotifications({ assets }) {
           </Typography>
         </TimelineOppositeContent>
         <TimelineSeparator>
-          <TimelineDot>
+          <TimelineDot color="primary" variant="outlined">
             <Icon />
           </TimelineDot>
           <TimelineConnector />
@@ -108,7 +202,7 @@ export default function CoproNotifications({ assets }) {
             </Typography>
             <Typography>{copronotification.notification.event}</Typography>
             <Typography>
-              <td dangerouslySetInnerHTML={{__html: includeParametersValues(copronotification.notification.text,copronotification.parameters)}} />
+              <span dangerouslySetInnerHTML={{__html: includeParametersValues(copronotification.notification.text,copronotification.parameters)}} />
 
             </Typography>
          

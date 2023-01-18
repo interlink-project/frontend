@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProcess, getTree } from 'slices/process';
 import { information_about_translations } from 'utils/someCommonTranslations';
 import * as Yup from 'yup';
-import { assetsApi, permissionsApi } from '__api__';
+import { assetsApi, permissionsApi,assetsDataApi } from '__api__';
 import NewAssetModal from 'components/dashboard/coproductionprocesses/NewAssetModal';
 
 const RightSide = ({ softwareInterlinkers }) => {
@@ -95,6 +95,25 @@ const RightSide = ({ softwareInterlinkers }) => {
 
   const handleDelete = (asset, callback) => {
     setLoading('delete');
+    //Obtain the name with the id
+    const botonAsset=document.getElementById('bt-'+asset.id);
+    const nombreAsset=botonAsset.getAttribute('name');
+
+    const dataToSend = {
+      id: asset.id,
+      name: nombreAsset
+    };
+
+    assetsDataApi.createAssetData(dataToSend).then((res) => {
+      console.log('Ingreso Exitoso');
+      console.log(res.data)
+    }).catch((err) => {
+      console.log(err);
+    });
+
+
+
+    //Enviar el nombre a guardar
     assetsApi.delete(asset.id).then(() => {
       setLoading('');
       callback && callback();
