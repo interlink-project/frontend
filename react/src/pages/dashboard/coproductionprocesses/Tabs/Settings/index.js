@@ -24,6 +24,10 @@ const SettingsTab = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const onCopy = () => {
+    coproductionProcessesApi.copy(process.id).then(() => navigate('/dashboard'));
+  };
+
   const onRemove = () => {
     coproductionProcessesApi.delete(process.id).then(() => navigate('/dashboard'));
   };
@@ -512,6 +516,48 @@ const SettingsTab = () => {
                   </Button>
                 )}
                 onClick={onRemove}
+                text={t('Are you sure?')}
+              />
+            )}
+          >
+            {t('The deletion of the co-production process is irreversible. All resources created in it will disappear.')}
+          </Alert>
+        </Card>
+
+        {/* Cloning coprod */}
+        <Card sx={{ border: '1px solid red', p: 5, my: 4 }}>
+          <Typography variant='h6'>
+            {t('Clone coproduction process')}
+          </Typography>
+          <Alert
+            severity='warning'
+            sx={{ mt: 3 }}
+            action={(
+              <ConfirmationButton
+
+                Actionator={({ onClick }) => (
+                  <Button
+                    variant='contained'
+                    disabled={!isAdministrator}
+                    color='warning'
+                    onClick={onClick}
+                    startIcon={<Delete />}
+                  >
+                    {t('Clone coproduction process')}
+                  </Button>
+                )}
+                ButtonComponent={({ onClick }) => (
+                  <Button
+                    sx={{ mt: 1 }}
+                    fullWidth
+                    variant='contained'
+                    color='error'
+                    onClick={onClick}
+                  >
+                    {t('Confirm clonation')}
+                  </Button>
+                )}
+                onClick={onCopy}
                 text={t('Are you sure?')}
               />
             )}

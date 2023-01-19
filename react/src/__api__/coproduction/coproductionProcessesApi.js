@@ -56,6 +56,14 @@ class CoproductionProcessesApi extends GeneralApi {
       return res.data;
     }
   }
+
+  async copy(id) {
+    if (id) {
+      const res = await axiosInstance.post(`/${this.url}/${id}/copy`);
+      console.log('copy', res.data);
+      return res.data;
+    }
+  }
 }
 
 export const coproductionProcessesApi = new CoproductionProcessesApi();
