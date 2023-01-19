@@ -69,8 +69,8 @@ export default function CoproNotifications({ assets }) {
   useEffect(() => {
     copronotifications = coproductionprocessnotificationsState.coproductionprocessnotifications;
     setNotificationsList(copronotifications)
-    console.log('Carga las notifications');
-    console.log(copronotifications);
+    //console.log('Carga las notifications');
+    //console.log(copronotifications);
   
   }, [mounted]);
 
@@ -84,12 +84,14 @@ export default function CoproNotifications({ assets }) {
       const paramsPattern = /[^{}]+(?=})/g;
       let extractParams = text.match(paramsPattern);
       //Loop over each parameter value and replace in the text
-      for (let i = 0; i < extractParams.length; i++) {
-        //console.log(extractParams[i]);
-        if(JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]){
-          text=text.replace('{'+extractParams[i]+'}', JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]);
+      if(extractParams){
+        for (let i = 0; i < extractParams.length; i++) {
+          //console.log(extractParams[i]);
+          if(JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]){
+            text=text.replace('{'+extractParams[i]+'}', JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]);
+          }
+            
         }
-          
       }
     }
 
@@ -200,7 +202,7 @@ export default function CoproNotifications({ assets }) {
             <Typography variant="h6" component="h1">
               { includeParametersValues(copronotification.notification.title,copronotification.parameters) }
             </Typography>
-            <Typography>{copronotification.notification.event}</Typography>
+            {/* <Typography>{copronotification.notification.event}</Typography> */}
             <Typography>
               <span dangerouslySetInnerHTML={{__html: includeParametersValues(copronotification.notification.text,copronotification.parameters)}} />
 

@@ -16,6 +16,16 @@ class CoproductionProcessNotificationsApi extends GeneralApi {
     }
   }
 
+  async updateAssetNameParameter(data) {
+   
+    //Call update method in backend
+
+    const res = await axiosInstance.put(`/${this.url}/updateAssetNameParameter/${data.asset_id}?name=${data.name}&coproductionprocess_id=${data.coproductionprocess_id}`);
+    //console.log('put coproductionnotifications with assetName', res.data);
+    return res.data;
+    
+  }
+
 
   //Obtain the list of notification of a coproductionprocess
   async getCoproductionProcessNotifications_byCoproId(params = {}, language = getLanguage()) {

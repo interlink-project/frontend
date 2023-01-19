@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProcess, getTree } from 'slices/process';
 import { information_about_translations } from 'utils/someCommonTranslations';
 import * as Yup from 'yup';
-import { assetsApi, permissionsApi,assetsDataApi } from '__api__';
+import { assetsApi, permissionsApi,assetsDataApi, coproductionprocessnotificationsApi } from '__api__';
 import NewAssetModal from 'components/dashboard/coproductionprocesses/NewAssetModal';
 
 const RightSide = ({ softwareInterlinkers }) => {
@@ -96,21 +96,12 @@ const RightSide = ({ softwareInterlinkers }) => {
   const handleDelete = (asset, callback) => {
     setLoading('delete');
     //Obtain the name with the id
-    const botonAsset=document.getElementById('bt-'+asset.id);
-    const nombreAsset=botonAsset.getAttribute('name');
-
-    const dataToSend = {
-      id: asset.id,
-      name: nombreAsset
-    };
-
-    assetsDataApi.createAssetData(dataToSend).then((res) => {
-      console.log('Ingreso Exitoso');
-      console.log(res.data)
-    }).catch((err) => {
-      console.log(err);
-    });
-
+    const nombreAsset=document.getElementById('bt-'+asset.id).innerHTML;
+    //const nombreAsset=spanAsset.getAttribute('name');
+    localStorage.setItem('assetId', asset.id);
+    const capitalizeAssetName= nombreAsset.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+    localStorage.setItem('assetName', capitalizeAssetName);
+    
 
 
     //Enviar el nombre a guardar
@@ -118,7 +109,25 @@ const RightSide = ({ softwareInterlinkers }) => {
       setLoading('');
       callback && callback();
       setAnchorEl(null);
-    });
+
+      //Update the dinamic name with a static name for the asset
+      //on the coproduction notifications
+      const dataUpdateParameter = {
+        asset_id: localStorage.getItem('assetId'),
+        name: localStorage.getItem('assetName'),
+        coproductionprocess_id:process.id
+      };
+
+      //console.log('El proceso a actualizar')
+      coproductionprocessnotificationsApi.updateAssetNameParameter(dataUpdateParameter).then((res) => {
+          //console.log('Actualizacion Exitosa');
+          //console.log(res.data)
+        }).catch((err) => {
+          console.log(err);
+        });
+      });
+
+
   };
 
   const handleClone = (asset, callback) => {

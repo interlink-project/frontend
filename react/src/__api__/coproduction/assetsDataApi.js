@@ -7,13 +7,15 @@ class AssetsDataApi extends GeneralApi {
   }
 
 
-  async createAssetData(id, name) {
-    const res = await axiosInstance.post(`/${this.url}`, {
-      id,
-      name
-    });
-    console.log('post call', res, res.data);
+  async createAssetData(data) {
+
+    const res = await axiosInstance.post(
+      `/${this.url}/create`,
+      data
+    );
+    console.log('add assetdata call', res.data);
     return res.data;
+
   }
 
   

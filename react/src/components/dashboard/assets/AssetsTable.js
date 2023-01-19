@@ -99,7 +99,12 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
               style={{ cursor: 'pointer' }}
               align='left'
             >
+              <span
+              id={'bt-'+asset.id}
+              >
               {data.name}
+              </span>
+              
             </TableCell>
             <TableCell
               width='15%'
@@ -135,10 +140,10 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
               {actions && (
               <IconButton
                 aria-label='settings'
-                id={'bt-'+asset.id}
+                
                 aria-controls='basic-menu'
                 aria-haspopup='true'
-                name={data.name}
+                
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
               >
