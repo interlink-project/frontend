@@ -57,10 +57,13 @@ const UserNotificationsPopover = () => {
       const paramsPattern = /[^{}]+(?=})/g;
       let extractParams = text.match(paramsPattern);
       //Loop over each parameter value and replace in the text
-      for (let i = 0; i < extractParams.length; i++) {
-        //console.log(extractParams[i]);
-        text=text.replace('{'+extractParams[i]+'}', JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]);  
+      if(extractParams){
+        for (let i = 0; i < extractParams.length; i++) {
+          //console.log(extractParams[i]);
+          text=text.replace('{'+extractParams[i]+'}', JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]);  
+        }
       }
+      
     }
     return text;
   }

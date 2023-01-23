@@ -2,7 +2,9 @@ import {
   Alert,
   Box,
   Button,
+  CircularProgress,
   Dialog,
+  Fade,
   Stack,
   Step,
   StepLabel,
@@ -42,6 +44,7 @@ import { assetsApi } from "__api__";
 import { useEffect } from "react";
 import useMounted from "hooks/useMounted";
 
+
 const iconsMap = {
   group: GroupsIcon,
   addresource: AddchartIcon,
@@ -56,6 +59,17 @@ const useStyles = makeStyles((theme) => ({
   secondaryTail: {
     backgroundColor: theme.palette.secondary.main,
   },
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  button: {
+    margin: theme.spacing(2),
+  },
+  placeholder: {
+    height: 40,
+  }
 }));
 
 export default function CoproNotifications({ assets }) {
@@ -80,6 +94,12 @@ export default function CoproNotifications({ assets }) {
   const coproductionprocessnotificationsState = useSelector(
     (state) => state.general
   );
+
+
+  const [loading, setLoading] = React.useState(true);
+  const handleClickLoading = () => {
+    setLoading((prevLoading) => !prevLoading);
+  };
 
   useEffect(() => {
     copronotifications =
@@ -156,6 +176,7 @@ export default function CoproNotifications({ assets }) {
                     for (let i = 0; i < nodes.length; i++) {
                       nodes2[i].src = assetdata.icon;
                     }
+                    setLoading(false);
                   } else {
                     console.error(xhr.statusText);
                   }
@@ -169,8 +190,9 @@ export default function CoproNotifications({ assets }) {
           }
         }
       }
+      
     }
-
+    
     return text;
   };
 
@@ -198,9 +220,25 @@ export default function CoproNotifications({ assets }) {
             : iconsMap["defaulticon"];
 
           return (
+            <>
+            <div className={classes.root}   >
+              <div className={classes.placeholder}>
+                <Fade
+                  in={loading}
+                  style={{
+                    transitionDelay: loading ? '800ms' : '0ms',
+                  }}
+                  unmountOnExit
+                >
+                  <CircularProgress />
+                </Fade>
+              </div>
+            </div>
+
             <TimelineItem
               key={"tln_" + copronotification.id}
               id={"tln_" + copronotification.id}
+              style={{ visibility: !loading? 'visible': 'hidden'}}
             >
               <TimelineOppositeContent>
                 <Typography variant="body2" color="textSecondary">
@@ -242,6 +280,7 @@ export default function CoproNotifications({ assets }) {
                 </Typography>
               </TimelineContent>
             </TimelineItem>
+            </>
           );
         })}
       </>
