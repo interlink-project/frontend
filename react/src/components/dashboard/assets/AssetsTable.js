@@ -72,6 +72,8 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
   };
 
   const avatarSize = { height: '30px', width: '30px' };
+console.log(actions);
+
   return (
     <Grow in={show}>
       <TableRow
@@ -178,6 +180,7 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
                     icon={icon}
                   />
                 ))}
+                
               </Menu>
             </TableCell>
           </>

@@ -7,6 +7,10 @@ class CoproductionProcessNotificationsApi extends GeneralApi {
     super('coproduction/api/v1/coproductionprocessnotifications');
   }
 
+  async createbyEvent(data){
+      return axiosInstance.post(`/${this.url}/createbyEvent`, data);
+  }
+
   async getNotification(id) {
     if (id) {
       //Get notification by coproductionprocessnotification id

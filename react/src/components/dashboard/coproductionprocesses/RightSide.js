@@ -1,5 +1,5 @@
-import { Alert, Avatar, Box, Button, Dialog, DialogContent, Grid, IconButton, Menu, MenuItem, Paper, Stack, Tab, Tabs, TextField } from '@material-ui/core';
-import { Close, CopyAll, Delete, Download, Edit, KeyboardArrowDown, OpenInNew } from '@material-ui/icons';
+import { Alert, Avatar, Box, Button, Dialog, DialogContent, Grid, IconButton, Menu, MenuItem, Paper, Stack, Tab, Tabs, TextField, Typography } from '@material-ui/core';
+import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@material-ui/icons';
 import { LoadingButton } from '@material-ui/lab';
 import { AssetsTable } from 'components/dashboard/assets';
 import InterlinkerBrowse from 'components/dashboard/interlinkers/browse/InterlinkerBrowse';
@@ -26,9 +26,11 @@ const RightSide = ({ softwareInterlinkers }) => {
   const [loading, setLoading] = useState('');
   // new asset modal
   const [selectedInterlinker, setSelectedInterlinker] = useState(null);
+  const [selectedAsset,setSelectedAsset]= useState(null);
   const [newAssetDialogOpen, setNewAssetDialogOpen] = useState(false);
   const mounted = useMounted();
   const [externalAssetOpen, setExternalAssetOpen] = useState(false);
+  const [claimDialogOpen, setClaimDialogOpen] = useState(false);
   const [catalogueOpen, setCatalogueOpen] = useState(false);
   const { t } = useDependantTranslation();
   const dispatch = useDispatch();
@@ -144,6 +146,14 @@ const RightSide = ({ softwareInterlinkers }) => {
     setAnchorEl(null);
   };
 
+  const handleClaim = (asset) => {
+    //window.open(`${asset.link}/download`, '_blank');
+    setSelectedAsset(asset);
+
+    setAnchorEl(null);
+    setClaimDialogOpen(true);
+  };
+
   const handleEdit = (asset) => {
     window.open(`${asset.link}/edit`, '_blank');
     setAnchorEl(null);
@@ -217,6 +227,18 @@ const RightSide = ({ softwareInterlinkers }) => {
                 text={t("Are you sure?")} />)
                 */
       }
+      
+        actions.push({
+          id: `${id}-claim-action`,
+          loading: loading === 'clain',
+          onClick: (closeMenuItem) => {
+            handleClaim(asset);
+            closeMenuItem();
+          },
+          text: t('Claim'),
+          icon: <RecordVoiceOver fontSize='small' />
+        });
+      
       // if (capabilities.download) {
       //   actions.push({
       //     id: `${id}-download-action`,
@@ -494,6 +516,169 @@ const RightSide = ({ softwareInterlinkers }) => {
                     </Formik>
                   </DialogContent>
                 </Dialog>
+
+                <Dialog
+                  open={claimDialogOpen}
+                  onClose={() => setClaimDialogOpen(false)}
+                >
+                  <IconButton
+                    aria-label='close'
+                    onClick={() => setClaimDialogOpen(false)}
+                    sx={{
+                      position: 'absolute',
+                      right: 8,
+                      top: 8,
+                      color: (theme) => theme.palette.grey[500],
+                    }}
+                  >
+                    <Close />
+                  </IconButton>
+
+                  <DialogContent sx={{ p: 2 }}>
+                    <Formik
+                      initialValues={{
+                        title: '',
+                        description: ''
+                      }}
+                      validationSchema={Yup.object().shape({
+                        title: Yup.string()
+                          .min(3, 'Must be at least 3 characters')
+                          .max(255)
+                          .required('Required'),
+                        description: Yup.string()
+                          .min(3, 'Must be at least 3 characters')
+                          .required('Required'),
+                      })}
+                      onSubmit={(values, { setErrors, setStatus, setSubmitting }) => {
+                        setSubmitting(true);
+
+                        //Defino el link del asset
+                        let selectedAssetLink='';
+                        let selectedAssetIcon='';
+                        let selectedShowIcon='';
+                        let selectedShowLink='';
+                        if(selectedAsset.type=='externalasset'){
+                          //Is external
+                          selectedAssetLink=selectedAsset.uri;
+                          selectedAssetIcon=selectedAsset.icon_path;
+                          selectedShowIcon='';
+                          selectedShowLink='hidden';
+
+                        }else{
+                          //Is internal
+                          selectedAssetLink=selectedAsset.link+'/view'
+                          selectedShowIcon='';
+                          selectedShowLink='hidden';
+                        }
+
+                        const parametersList ={
+                          assetId: selectedAsset.id,
+                          assetName:'{assetid:'+selectedAsset.id+'}',
+                          assetLink: selectedAssetLink,
+                          assetIcon: selectedAssetIcon,
+                          commentTitle: values.title,
+                          commentDescription: values.description,
+                          treeitem_id: selectedTreeItem.id,
+                          treeItemName: selectedTreeItem.name,
+                          copro_id: process.id,
+                          showIcon: selectedShowIcon,
+                          showLink: selectedShowLink
+                        };
+                        const paramListJson=JSON.stringify(parametersList)
+                       // console.log(parametersList)
+                        const dataToSend = {
+                          coproductionprocess_id: process.id,
+                          notification_event:'add_contribution_asset',
+                          parameters: paramListJson,
+                          
+                        };
+
+                        console.log(dataToSend)
+                    
+                        console.log(dataToSend);
+                        coproductionprocessnotificationsApi.createbyEvent(dataToSend).then((res) => {
+                          setStatus({ success: true });
+                          setSubmitting(false);
+                        // getAssets();
+                          setClaimDialogOpen(false);
+
+                        }).catch((err) => {
+                          setStatus({ success: false });
+                          setErrors({ submit: err });
+                          console.log(err);
+                          setSubmitting(false);
+                        });
+
+
+                      }}
+                    >
+                      {({
+                        errors,
+                        handleBlur,
+                        handleChange,
+                        handleSubmit,
+                        isSubmitting,
+                        setFieldValue,
+                        setFieldTouched,
+                        touched,
+                        values,
+                      }) => (
+                        <form onSubmit={handleSubmit}>
+                          <Box sx={{ mt: 3 }}>
+                            
+                            <Typography variant="h6" component="h2">
+                            Introduce the details of your contribution:
+                            </Typography>
+                            <TextField
+                              required
+                              error={Boolean(touched.title && errors.title)}
+                              fullWidth
+                              helperText={touched.title && errors.title}
+                              label='Title'
+                              name='title'
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                              onClick={() => setFieldTouched('title')}
+                              value={values.title}
+                              variant='outlined'
+                              sx={{ mt: 3 }}
+                            />
+                            <TextField
+                              required
+                              sx={{ mt: 2 }}
+                              rows={4}
+                              multiline
+                              error={Boolean(touched.description && errors.description)}
+                              fullWidth
+                              helperText={touched.description && errors.description}
+                              label='Description'
+                              name='description'
+                              onBlur={handleBlur}
+                              onChange={handleChange}
+                              onClick={() => setFieldTouched('description')}
+                              value={values.description}
+                              variant='outlined'
+                            />
+                            <LoadingButton
+                              sx={{ mt: 2 }}
+                              variant='contained'
+                              fullWidth
+                              loading={isSubmitting}
+                              onClick={handleSubmit}
+                            >
+                              {t('Claim')}
+                            </LoadingButton>
+                          </Box>
+                        </form>
+                      )}
+                    </Formik>
+                  </DialogContent>
+                </Dialog>
+
+
+
+
+
                 <Menu
                   id='basic-menu'
                   anchorEl={anchorEl}
