@@ -97,9 +97,7 @@ export default function CoproNotifications({ assets }) {
 
 
   const [loading, setLoading] = React.useState(true);
-  const handleClickLoading = () => {
-    setLoading((prevLoading) => !prevLoading);
-  };
+
 
   useEffect(() => {
     copronotifications =
@@ -108,6 +106,8 @@ export default function CoproNotifications({ assets }) {
     //console.log('Carga las notifications');
     //console.log(copronotifications);
   }, [mounted]);
+
+  
 
   let listAssets = [];
 
@@ -137,7 +137,7 @@ export default function CoproNotifications({ assets }) {
     let extractParams = text.match(paramsPattern);
     //Loop over each parameter value and replace in the text
     if (extractParams) {
-      for (let i = 0; i < extractParams.length; i++) {
+      for (let i = 0; i < extractParams.length; i++) {       
         if (extractParams[i].includes(":")) {
           // console.log('----->'+extractParams[i]);
           const entidadName = extractParams[i].split(":")[0];
@@ -155,6 +155,7 @@ export default function CoproNotifications({ assets }) {
                 true
               ); // `false` makes the request synchronous
               xhr.onload = (e) => {
+                
                 if (xhr.readyState === 4) {
                   if (xhr.status === 200) {
                     const assetdata = JSON.parse(xhr.responseText);
@@ -176,11 +177,16 @@ export default function CoproNotifications({ assets }) {
                     for (let i = 0; i < nodes.length; i++) {
                       nodes2[i].src = assetdata.icon;
                     }
-                    setLoading(false);
+                    if(loading ==true){
+                      setLoading(false);
+                    }
+                    
+                   
                   } else {
                     console.error(xhr.statusText);
                   }
-                }
+                  
+                }             
               };
               xhr.onerror = (e) => {
                 console.error(xhr.statusText);
@@ -210,9 +216,14 @@ export default function CoproNotifications({ assets }) {
     }
   };
 
+
+
   return (
     <Timeline position="alternate">
       <>
+      <div  style={{  visibility: (loading? 'visible':'hidden')}} >
+          <CircularProgress  />
+      </div>
         {notificationsList.map((copronotification) => {
           //Verify if the icon is defined:
           const Icon = copronotification.notification.icon
@@ -220,27 +231,13 @@ export default function CoproNotifications({ assets }) {
             : iconsMap["defaulticon"];
 
           return (
-            <>
-            <div className={classes.root}   >
-              <div className={classes.placeholder}>
-                <Fade
-                  in={loading}
-                  style={{
-                    transitionDelay: loading ? '800ms' : '0ms',
-                  }}
-                  unmountOnExit
-                >
-                  <CircularProgress />
-                </Fade>
-              </div>
-            </div>
-
+            
             <TimelineItem
               key={"tln_" + copronotification.id}
               id={"tln_" + copronotification.id}
-              style={{ visibility: !loading? 'visible': 'hidden'}}
+              // style={{ visibility: loading? 'hidden':'visible'}}
             >
-              <TimelineOppositeContent>
+              <TimelineOppositeContent key={"tlo_" + copronotification.id}>
                 <Typography variant="body2" color="textSecondary">
                   {t("time-ago", {
                     when: formatDistanceToNowStrict(
@@ -254,13 +251,13 @@ export default function CoproNotifications({ assets }) {
                 </Typography>
                 
               </TimelineOppositeContent>
-              <TimelineSeparator>
+              <TimelineSeparator key={"tls_" + copronotification.id}>
                 <TimelineDot color={compareDates(copronotification.created_at,user.last_login)?"secondary":"primary"}  variant={compareDates(copronotification.created_at,user.last_login)?"filled":"outlined"}>
                   <Icon />
                 </TimelineDot>
                 <TimelineConnector />
               </TimelineSeparator>
-              <TimelineContent>
+              <TimelineContent key={"tlc_" + copronotification.id}>
                 <Typography variant="h6" component="h1">
                   {includeParametersValues(
                     copronotification.notification.title,
@@ -269,7 +266,7 @@ export default function CoproNotifications({ assets }) {
                 </Typography>
                 {/* <Typography>{copronotification.notification.event}</Typography> */}
                 <Typography>
-                  <span
+                  <span key={"span2_" + copronotification.id}
                     dangerouslySetInnerHTML={{
                       __html: includeParametersValues(
                         copronotification.notification.text,
@@ -280,7 +277,6 @@ export default function CoproNotifications({ assets }) {
                 </Typography>
               </TimelineContent>
             </TimelineItem>
-            </>
           );
         })}
       </>
