@@ -96,9 +96,6 @@ export default function CoproNotifications({ assets }) {
   );
 
 
-  const [loading, setLoading] = React.useState(true);
-
-
   useEffect(() => {
     copronotifications =
       coproductionprocessnotificationsState.coproductionprocessnotifications;
@@ -113,7 +110,7 @@ export default function CoproNotifications({ assets }) {
 
   //This function will obtain and reeplace all paremeters
   // and replace in the text.
-  const includeParametersValues = (text, parameters) => {
+  const includeParametersValues = (text, parameters,process_id) => {
     if (parameters) {
       //Obtain all parameters of the text
       const paramsPattern = /[^{}]+(?=})/g;
@@ -132,11 +129,21 @@ export default function CoproNotifications({ assets }) {
       }
     }
 
+    
+    return text;
+  };
+
+
+  const includeObjectNames = (text) => {
+    
+
     //Search and reemplace que assetName and icon
     const paramsPattern = /[^{}]+(?=})/g;
     let extractParams = text.match(paramsPattern);
     //Loop over each parameter value and replace in the text
     if (extractParams) {
+      
+     
       for (let i = 0; i < extractParams.length; i++) {       
         if (extractParams[i].includes(":")) {
           // console.log('----->'+extractParams[i]);
@@ -171,14 +178,13 @@ export default function CoproNotifications({ assets }) {
                       nodes[i].innerHTML = assetName;
                     }
 
+                    
+
                     const nodes2 = document.getElementsByClassName(
                       "im_" + entidadId
                     );
                     for (let i = 0; i < nodes.length; i++) {
                       nodes2[i].src = assetdata.icon;
-                    }
-                    if(loading ==true){
-                      setLoading(false);
                     }
                     
                    
@@ -197,11 +203,10 @@ export default function CoproNotifications({ assets }) {
         }
       }
       
-    }
+    } 
     
     return text;
   };
-
 
   const compareDates = (d1, d2) => {
     let date1 = new Date(d1).getTime();
@@ -221,21 +226,17 @@ export default function CoproNotifications({ assets }) {
   return (
     <Timeline position="alternate">
       <>
-      <div  style={{  visibility: (loading? 'visible':'hidden')}} >
-          <CircularProgress  />
-      </div>
         {notificationsList.map((copronotification) => {
           //Verify if the icon is defined:
           const Icon = copronotification.notification.icon
             ? iconsMap[copronotification.notification.icon]
             : iconsMap["defaulticon"];
-
+    
           return (
             
             <TimelineItem
               key={"tln_" + copronotification.id}
               id={"tln_" + copronotification.id}
-              // style={{ visibility: loading? 'hidden':'visible'}}
             >
               <TimelineOppositeContent key={"tlo_" + copronotification.id}>
                 <Typography variant="body2" color="textSecondary">
@@ -261,19 +262,22 @@ export default function CoproNotifications({ assets }) {
                 <Typography variant="h6" component="h1">
                   {includeParametersValues(
                     copronotification.notification.title,
-                    copronotification.parameters
+                    copronotification.parameters,
+                    copronotification.id
                   )}
                 </Typography>
                 {/* <Typography>{copronotification.notification.event}</Typography> */}
                 <Typography>
-                  <span key={"span2_" + copronotification.id}
+                  <span key={"cont_" + copronotification.id} id={"text_" + copronotification.id} class="textNotification"
                     dangerouslySetInnerHTML={{
-                      __html: includeParametersValues(
+                      __html: includeObjectNames(includeParametersValues(
                         copronotification.notification.text,
-                        copronotification.parameters
-                      ),
+                        copronotification.parameters,
+                        copronotification.id
+                      )),
                     }}
-                  />
+                    // style={{display:'none'}}
+                  /> 
                 </Typography>
               </TimelineContent>
             </TimelineItem>
