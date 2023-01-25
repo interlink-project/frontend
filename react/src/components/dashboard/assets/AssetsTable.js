@@ -1,8 +1,9 @@
 import {
   Alert, Avatar, Box, CircularProgress, Fade, Grow, IconButton, LinearProgress, ListItemIcon, ListItemText, Menu,
-  MenuItem, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, Zoom
+  MenuItem, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, Zoom, TableSortLabel
 } from '@material-ui/core';
 import { Article, MoreVert as MoreVertIcon, ShowChart } from '@material-ui/icons';
+import { visuallyHidden } from '@material-ui/utils';
 import { InterlinkerDialog } from 'components/dashboard/interlinkers';
 import SearchBox from 'components/SearchBox';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
@@ -11,6 +12,40 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { assetsApi } from '__api__';
 import { InterlinkerReference } from '../interlinkers';
+import PropTypes from 'prop-types';
+
+
+function descendingComparator(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+function getComparator(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
+// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
+// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
+// with exampleArray.slice().sort(exampleComparator)
+function stableSort(array, comparator) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) {
+      return order;
+    }
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+}
 
 const MyMenuItem = ({ onClick, text, icon, id, loading }) => (
   <MenuItem
@@ -200,12 +235,99 @@ console.log(actions);
   );
 };
 
+const headCells = [
+  {
+    id: 'icon',
+    numeric: false,
+    disablePadding: true,
+    label: '',
+  },
+  {
+    id: 'name',
+    numeric: false,
+    disablePadding: true,
+    label: 'Name',
+  },
+  {
+    id: 'created',
+    numeric: false,
+    disablePadding: false,
+    label: 'Created',
+  },
+  {
+    id: 'updated',
+    numeric: false,
+    disablePadding: false,
+    label: 'Updated',
+  },
+  {
+    id: 'interlinker',
+    numeric: false,
+    disablePadding: false,
+    label: 'INTERLINKER',
+  },
+  {
+    id: 'actions',
+    numeric: true,
+    disablePadding: false,
+    label: 'Actions',
+  },
+];
+
+function EnhancedTableHead(order, orderBy, onRequestSort) {
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property);
+  };
+
+  return (
+    <TableHead>
+      <TableRow>
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? 'right' : 'left'}
+            padding={headCell.disablePadding ? 'none' : 'normal'}
+            sortDirection={orderBy === headCell.id ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : 'asc'}
+              onClick={createSortHandler(headCell.id)}
+            >
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+}
+
+// EnhancedTableHead.propTypes = {
+//   onRequestSort: PropTypes.func.isRequired,
+//   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+//   orderBy: PropTypes.string.isRequired,
+// };
+
 const Assets = ({ language, loading, assets, getActions = null }) => {
   const [interlinkerDialogOpen, setInterlinkerDialogOpen] = useState(false);
   const [selectedInterlinker, setSelectedInterlinker] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const [order, setOrder] = React.useState('asc');
+  const [orderBy, setOrderBy] = React.useState('updated');
 
   const t = useCustomTranslation(language);
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
 
   return (
     <>
@@ -230,14 +352,21 @@ const Assets = ({ language, loading, assets, getActions = null }) => {
         aria-label='resources table'
         size='small'
       >
-        <TableHead>
+        {/* <TableHead>
           <TableRow>
             <TableCell width='5%' />
             <TableCell
               width='35%'
               align='center'
-            >
+              key={'name'}
+              sortDirection={orderBy === 'name' ? order : false}
+            ><TableSortLabel
+            active={orderBy === 'name'}
+            direction={orderBy === 'name' ? order : 'asc'}
+            onClick={createSortHandler('name')}
+          >
               {t('Name')}
+              </TableSortLabel>
             </TableCell>
             <TableCell
               width='15%'
@@ -272,8 +401,12 @@ const Assets = ({ language, loading, assets, getActions = null }) => {
             </TableCell>
           </TableRow>
           )}
-        </TableHead>
-
+        </TableHead> */}
+        <EnhancedTableHead
+              order={order}
+              orderBy={orderBy}
+              onRequestSort={handleRequestSort}
+            />
         <TableBody>
           {!loading && assets.map((asset) => (
             <React.Fragment key={asset.id}>
