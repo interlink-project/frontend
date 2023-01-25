@@ -129,7 +129,7 @@ const SettingsPopover = () => {
                 key={lang.value}
                 value={lang.value}
               >
-                {lang.label}
+                {lang.label} 
               </option>
             ))}
           </TextField>
