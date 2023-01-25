@@ -24,6 +24,10 @@ const SettingsTab = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const onCopy = () => {
+    coproductionProcessesApi.copy(process.id).then(() => navigate('/dashboard'));
+  };
+
   const onRemove = () => {
     coproductionProcessesApi.delete(process.id).then(() => navigate('/dashboard'));
   };
@@ -173,7 +177,7 @@ const SettingsTab = () => {
             name: process.name || '',
             status: process.status || '',
             description: process.description || '',
-            organization: process.organization || '',
+            organization_desc: process.organization_desc || '',
             aim: process.aim || '',
             idea: process.idea || '',
             challenges: process.challenges || '',
@@ -192,7 +196,6 @@ const SettingsTab = () => {
             })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
             try {
-              console.log(values);
               dispatch(updateProcess({
                 id: process.id,
                 data: values,
@@ -305,12 +308,12 @@ const SettingsTab = () => {
                     minRows={8}
                     label={t('ACTUAL ORGANIZATION OF THE SERVICE')}
                     multiline
-                    helperText={touched.organization && errors.organization}
-                    error={Boolean(touched.organization && errors.organization)}
-                    value={values.organization}
+                    helperText={touched.organization_desc && errors.organization_desc}
+                    error={Boolean(touched.organization_desc && errors.organization_desc)}
+                    value={values.organization_desc}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    name='organization'
+                    name='organization_desc'
                   />
                 </Grid>
                 <Grid
@@ -512,6 +515,48 @@ const SettingsTab = () => {
                   </Button>
                 )}
                 onClick={onRemove}
+                text={t('Are you sure?')}
+              />
+            )}
+          >
+            {t('The deletion of the co-production process is irreversible. All resources created in it will disappear.')}
+          </Alert>
+        </Card>
+
+        {/* Cloning coprod */}
+        <Card sx={{ border: '1px solid yellow', p: 5, my: 4 }}>
+          <Typography variant='h6'>
+            {t('Copy coproduction process')}
+          </Typography>
+          <Alert
+            severity='warning'
+            sx={{ mt: 3 }}
+            action={(
+              <ConfirmationButton
+
+                Actionator={({ onClick }) => (
+                  <Button
+                    variant='contained'
+                    disabled={!isAdministrator}
+                    color='warning'
+                    onClick={onClick}
+                    startIcon={<Delete />}
+                  >
+                    {t('Copy coproduction process')}
+                  </Button>
+                )}
+                ButtonComponent={({ onClick }) => (
+                  <Button
+                    sx={{ mt: 1 }}
+                    fullWidth
+                    variant='contained'
+                    color='warning'
+                    onClick={onClick}
+                  >
+                    {t('Confirm clonation')}
+                  </Button>
+                )}
+                onClick={onCopy}
                 text={t('Are you sure?')}
               />
             )}
