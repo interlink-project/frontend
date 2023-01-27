@@ -96,12 +96,11 @@ export const getUnseenUserNotifications = (search) => async (dispatch) => {
   dispatch(slice.actions.setLoadingUnseenUserNotifications(false));
 };
 
-export const getCoproductionProcessNotifications_byCoproId = (search) => async (dispatch) => {
+export const getCoproductionProcessNotifications = (search) => async (dispatch) => {
   dispatch(slice.actions.setLoadingCoproductionProcessNotifications(true));
-  const coproductionprocessnotifications_data = await coproductionprocessnotificationsApi.getCoproductionProcessNotifications_byCoproId({ search });
+  const coproductionprocessnotifications_data = await coproductionprocessnotificationsApi.getCoproductionProcessNotifications({ search });
   dispatch(slice.actions.setCoproductionProcessNotifications(coproductionprocessnotifications_data));
   dispatch(slice.actions.setLoadingCoproductionProcessNotifications(false));
 };
-
 
 export default slice;

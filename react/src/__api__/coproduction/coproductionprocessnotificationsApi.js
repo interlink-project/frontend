@@ -32,34 +32,68 @@ class CoproductionProcessNotificationsApi extends GeneralApi {
 
 
   //Obtain the list of notification of a coproductionprocess
-  async getCoproductionProcessNotifications_byCoproId(params = {}, language = getLanguage()) {
+  // async getCoproductionProcessNotifications_byCoproId(params = {}, language = getLanguage()) {
 
-    console.log(`/coproduction/api/v1/coproductionprocessnotifications`+params+'  coproductionprocess_id: '+params['search']['coproductionprocess_id']);
+  //   console.log(`/coproduction/api/v1/coproductionprocessnotifications`+params+'  coproductionprocess_id: '+params['search']['coproductionprocess_id']);
     
-    let datos={};
+  //   let datos={};
 
-    console.log(`/${this.url}/${params['search']['coproductionprocess_id']}/listCoproductionProcessNotifications`);
+  //   console.log(`/${this.url}/${params['search']['coproductionprocess_id']}/listCoproductionProcessNotifications`);
 
-    //Get data of coproductionprocess_notifications
-    const res = await axiosInstance.get(
-      `/${this.url}/${params['search']['coproductionprocess_id']}/listCoproductionProcessNotifications`, {
-        params: removeEmpty(params),
-        headers: {
-          'Accept-Language': language
-        }
-      }
-    );
-    console.log('getMulti call', res.data, 'in', language);
+  //   //Get data of coproductionprocess_notifications
+  //   const res = await axiosInstance.get(
+  //     `/${this.url}/${params['search']['coproductionprocess_id']}/listCoproductionProcessNotifications`, {
+  //       params: removeEmpty(params),
+  //       headers: {
+  //         'Accept-Language': language
+  //       }
+  //     }
+  //   );
+  //   console.log('getMulti call', res.data, 'in', language);
 
     
 
-    datos=res.data;
+  //   datos=res.data;
 
-    return datos;
-  }
+  //   return datos;
+  // }
 
   
+    //Obtain the list of notification of a coproductionprocess
+    async getCoproductionProcessNotifications(params = {}, language = getLanguage()) {
 
+      console.log(`/coproduction/api/v1/coproductionprocessnotifications`+params+'  coproductionprocess_id: '+params['search']['coproductionprocess_id']+'  asset_id: '+params['search']['asset_id']);
+      
+      let datos={};
+  
+      console.log(`/${this.url}/${params['search']['coproductionprocess_id']}/${params['search']['asset_id']}/listCoproductionProcessNotifications`);
+      
+      let ruta='';
+      if(params['search']['asset_id']!=""){
+        ruta=`/${this.url}/${params['search']['coproductionprocess_id']}/${params['search']['asset_id']}/listCoproductionProcessNotifications`;
+
+      }else{
+        ruta=`/${this.url}/${params['search']['coproductionprocess_id']}/listCoproductionProcessNotifications`
+      }
+      
+
+      //Get data of coproductionprocess_notifications
+      const res = await axiosInstance.get(
+        ruta, {
+          params: removeEmpty(params),
+          headers: {
+            'Accept-Language': language
+          }
+        }
+      );
+      console.log('getMulti call', res.data, 'in', language);
+  
+      
+  
+      datos=res.data;
+  
+      return datos;
+    }
 
   
   

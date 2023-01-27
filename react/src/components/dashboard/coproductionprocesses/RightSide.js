@@ -589,6 +589,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                         const dataToSend = {
                           coproductionprocess_id: process.id,
                           notification_event:'add_contribution_asset',
+                          asset_id:selectedAsset.id,
                           parameters: paramListJson,
                           
                         };

@@ -1,7 +1,9 @@
 import {
-  Alert, Avatar, Box, CircularProgress, Fade, Grow, IconButton, LinearProgress, ListItemIcon, ListItemText, Menu,
+ Button,Dialog, DialogContent,Alert, Avatar, Box, CircularProgress, Fade, Grow, IconButton, LinearProgress, ListItemIcon, ListItemText, Menu,
   MenuItem, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, Zoom, TableSortLabel
 } from '@material-ui/core';
+import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@material-ui/icons';
+
 import { Article, MoreVert as MoreVertIcon, ShowChart } from '@material-ui/icons';
 import { visuallyHidden } from '@material-ui/utils';
 import { InterlinkerDialog } from 'components/dashboard/interlinkers';
@@ -13,6 +15,11 @@ import React, { useEffect, useState } from 'react';
 import { assetsApi } from '__api__';
 import { InterlinkerReference } from '../interlinkers';
 import PropTypes from 'prop-types';
+import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
+import { useDispatch, useSelector} from 'react-redux';
+import {  getCoproductionProcessNotifications } from "slices/general";
+
+
 
 
 function descendingComparator(a, b, orderBy) {
@@ -68,13 +75,23 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
   const t = useCustomTranslation(language);
   const showInterlinkerId = data && (data.externalinterlinker_id || data.knowledgeinterlinker_id || data.softwareinterlinker_id);
   const isInternal = asset.type === 'internalasset';
-
+  const [activitiesDialogOpen, setactivitiesDialogOpen] = useState(false);
   const show = inputValue ? data ? data.name.toLowerCase().includes(inputValue) : false : true;
+  const dispatch = useDispatch();
+  const { process } = useSelector((state) => state.process);
 
   const handleClick = (event) => {
     event.stopPropagation();
     event.preventDefault();
     setAnchorEl(event.currentTarget);
+    
+  };
+  const handleClickHistory = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setactivitiesDialogOpen(true);
+    
+    dispatch(getCoproductionProcessNotifications({'coproductionprocess_id':process.id,'asset_id':asset.id}))
   };
 
   const handleClose = () => {
@@ -94,7 +111,7 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
       setData({ ...asset });
       setLoading('');
     }
-  }, [asset, mounted]);
+     }, [asset, mounted]);
 
   const handleOpen = (event) => {
     event.stopPropagation();
@@ -107,9 +124,11 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
   };
 
   const avatarSize = { height: '30px', width: '30px' };
-console.log(actions);
+  console.log(actions);
+  
 
   return (
+    <>
     <Grow in={show}>
       <TableRow
         hover
@@ -143,12 +162,7 @@ console.log(actions);
               </span>
               
             </TableCell>
-            <TableCell
-              width='15%'
-              align='left'
-            >
-              {moment(data.created_at).format('LL')}
-            </TableCell>
+            
             <TableCell
               width='15%'
               align='left'
@@ -169,6 +183,15 @@ console.log(actions);
                   interlinker_id={showInterlinkerId}
                 />
               ) : t('external-resource')}
+            </TableCell>
+            <TableCell
+              width='15%'
+              align='left'
+            >
+              <Button variant="contained" onClick={handleClickHistory} color="primary">
+              Activities
+              </Button>
+              
             </TableCell>
             <TableCell
               width='10%'
@@ -232,6 +255,28 @@ console.log(actions);
         )}
       </TableRow>
     </Grow>
+    <Dialog
+                  open={activitiesDialogOpen}
+                  onClose={() => setactivitiesDialogOpen(false)}
+                >
+                  <IconButton
+                    aria-label='close'
+                    onClick={() => setactivitiesDialogOpen(false)}
+                    sx={{
+                      position: 'absolute',
+                      right: 8,
+                      top: 8,
+                      color: (theme) => theme.palette.grey[500],
+                    }}
+                  >
+                    <Close />
+                  </IconButton>
+
+                  <DialogContent sx={{ p: 3 }}>
+                    <CoproNotifications  />
+                  </DialogContent>
+                </Dialog>
+    </>
   );
 };
 
@@ -249,12 +294,6 @@ const headCells = [
     label: 'Name',
   },
   {
-    id: 'created',
-    numeric: false,
-    disablePadding: false,
-    label: 'Created',
-  },
-  {
     id: 'updated',
     numeric: false,
     disablePadding: false,
@@ -267,11 +306,17 @@ const headCells = [
     label: 'INTERLINKER',
   },
   {
+    id: 'history',
+    numeric: false,
+    disablePadding: false,
+    label: 'History',
+  },
+  {
     id: 'actions',
     numeric: true,
     disablePadding: false,
     label: 'Actions',
-  },
+  }
 ];
 
 function EnhancedTableHead(order, orderBy, onRequestSort) {
@@ -308,11 +353,6 @@ function EnhancedTableHead(order, orderBy, onRequestSort) {
   );
 }
 
-// EnhancedTableHead.propTypes = {
-//   onRequestSort: PropTypes.func.isRequired,
-//   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-//   orderBy: PropTypes.string.isRequired,
-// };
 
 const Assets = ({ language, loading, assets, getActions = null }) => {
   const [interlinkerDialogOpen, setInterlinkerDialogOpen] = useState(false);
@@ -352,56 +392,7 @@ const Assets = ({ language, loading, assets, getActions = null }) => {
         aria-label='resources table'
         size='small'
       >
-        {/* <TableHead>
-          <TableRow>
-            <TableCell width='5%' />
-            <TableCell
-              width='35%'
-              align='center'
-              key={'name'}
-              sortDirection={orderBy === 'name' ? order : false}
-            ><TableSortLabel
-            active={orderBy === 'name'}
-            direction={orderBy === 'name' ? order : 'asc'}
-            onClick={createSortHandler('name')}
-          >
-              {t('Name')}
-              </TableSortLabel>
-            </TableCell>
-            <TableCell
-              width='15%'
-              align='center'
-            >
-              {t('Created')}
-            </TableCell>
-            <TableCell
-              width='15%'
-              align='center'
-            >
-              {t('Updated')}
-            </TableCell>
-            <TableCell
-              width='20%'
-              align='center'
-            >
-              {t('Interlinker')}
-            </TableCell>
-            <TableCell
-              width='10%'
-              align='center'
-            >
-              {t('Actions')}
-            </TableCell>
-          </TableRow>
-          {false && loading && (
-          <TableRow>
-            <TableCell colSpan={6}>
-              {' '}
-              <LinearProgress />
-            </TableCell>
-          </TableRow>
-          )}
-        </TableHead> */}
+        
         <EnhancedTableHead
               order={order}
               orderBy={orderBy}

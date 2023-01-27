@@ -11,9 +11,10 @@ import { setSelectedTreeItemById } from 'slices/process';
 import { coproductionProcessesApi } from '__api__';
 import TimeLine from 'components/dashboard/coproductionprocesses/TimeLine';
 import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
-import {  getCoproductionProcessNotifications_byCoproId } from 'slices/general';
+import {  getCoproductionProcessNotifications } from 'slices/general';
 import useAuth from 'hooks/useAuth';
 import { cleanProcess } from 'slices/process';
+import { defaultReduceAnimations } from '@material-ui/lab/CalendarPicker/CalendarPicker';
 
 export default function Overview({ }) {
   const { process, isAdministrator, tree } = useSelector((state) => state.process);
@@ -38,6 +39,14 @@ export default function Overview({ }) {
       }
     });
   }, [process]);
+
+  React.useEffect(() => {
+    if(tab === "notifications"){
+      //Load notifications when the tab change to notifications:
+      dispatch(getCoproductionProcessNotifications({'coproductionprocess_id':process.id,'asset_id':''}));
+
+    }
+  }, [tab]);
 
   const getAssetsActions = (asset) => {
     const actions = [];
@@ -66,18 +75,6 @@ export default function Overview({ }) {
   if (!process || !tree) {
     return;
   }
-
-
-   React.useEffect(() => {
-    
-    if (mounted.current) {
-        //Obtain the Organization 
-        //getCoproductionData();
-        dispatch(getCoproductionProcessNotifications_byCoproId({'coproductionprocess_id':process.id}))
-      
-    }
-    
-  }, [mounted]);
 
 
   return (
@@ -121,7 +118,7 @@ export default function Overview({ }) {
         <></>
       )}
       
-      {tab === "notifications" ? <CoproNotifications assets={assets} /> : <></>}
+      {tab === "notifications" ? <CoproNotifications /> : <></>}
     </Box>
   );
 }

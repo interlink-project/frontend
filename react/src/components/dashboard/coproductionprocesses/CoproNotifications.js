@@ -43,6 +43,8 @@ import ArticleIcon from "@material-ui/icons/Article";
 import { assetsApi } from "__api__";
 import { useEffect } from "react";
 import useMounted from "hooks/useMounted";
+import { useDispatch} from 'react-redux';
+//import {  getCoproductionProcessNotifications } from "slices/general";
 
 
 const iconsMap = {
@@ -72,13 +74,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function CoproNotifications({ assets }) {
+export default function CoproNotifications() {
   const classes = useStyles();
   const { process, hasSchema, tree } = useSelector((state) => state.process);
   const { user } = useAuth();
   const t = useCustomTranslation(process.language);
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
+  const dispatch = useDispatch();
+  const mounted = useMounted();
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -87,24 +92,9 @@ export default function CoproNotifications({ assets }) {
     setOpen(false);
   };
 
-  const [notificationsList, setNotificationsList] = React.useState([]);
-  let copronotifications = [];
-  const mounted = useMounted();
-
-  const coproductionprocessnotificationsState = useSelector(
-    (state) => state.general
+  const notificationsList = useSelector(
+    (state) => state.general.coproductionprocessnotifications
   );
-
-
-  useEffect(() => {
-    copronotifications =
-      coproductionprocessnotificationsState.coproductionprocessnotifications;
-    setNotificationsList(copronotifications);
-    //console.log('Carga las notifications');
-    //console.log(copronotifications);
-  }, [mounted]);
-
-  
 
   let listAssets = [];
 
@@ -136,14 +126,12 @@ export default function CoproNotifications({ assets }) {
 
   const includeObjectNames = (text) => {
     
-
     //Search and reemplace que assetName and icon
     const paramsPattern = /[^{}]+(?=})/g;
     let extractParams = text.match(paramsPattern);
     //Loop over each parameter value and replace in the text
     if (extractParams) {
       
-     
       for (let i = 0; i < extractParams.length; i++) {       
         if (extractParams[i].includes(":")) {
           // console.log('----->'+extractParams[i]);
@@ -178,16 +166,13 @@ export default function CoproNotifications({ assets }) {
                       nodes[i].innerHTML = assetName;
                     }
 
-                    
-
                     const nodes2 = document.getElementsByClassName(
                       "im_" + entidadId
                     );
                     for (let i = 0; i < nodes.length; i++) {
                       nodes2[i].src = assetdata.icon;
                     }
-                    
-                   
+            
                   } else {
                     console.error(xhr.statusText);
                   }
@@ -225,6 +210,7 @@ export default function CoproNotifications({ assets }) {
 
   return (
     <Timeline position="alternate">
+      
       <>
         {notificationsList.map((copronotification) => {
           //Verify if the icon is defined:
@@ -254,7 +240,7 @@ export default function CoproNotifications({ assets }) {
               </TimelineOppositeContent>
               <TimelineSeparator key={"tls_" + copronotification.id}>
                 <TimelineDot color={compareDates(copronotification.created_at,user.last_login)?"secondary":"primary"}  variant={compareDates(copronotification.created_at,user.last_login)?"filled":"outlined"}>
-                  <Icon />
+                  <Icon /> 
                 </TimelineDot>
                 <TimelineConnector />
               </TimelineSeparator>
@@ -266,7 +252,7 @@ export default function CoproNotifications({ assets }) {
                     copronotification.id
                   )}
                 </Typography>
-                {/* <Typography>{copronotification.notification.event}</Typography> */}
+                
                 <Typography>
                   <span key={"cont_" + copronotification.id} id={"text_" + copronotification.id} class="textNotification"
                     dangerouslySetInnerHTML={{
@@ -276,7 +262,7 @@ export default function CoproNotifications({ assets }) {
                         copronotification.id
                       )),
                     }}
-                    // style={{display:'none'}}
+                    
                   /> 
                 </Typography>
               </TimelineContent>
