@@ -90,12 +90,12 @@ class UserNotificationsApi extends GeneralApi {
   }
 
   //Change the state of all unseen user notification
-  async setSeenAllUserNotification(params = {}){
+  async setSeenAllUserNotification(){
     let datos={};
     //console.log(`/${this.url}/${params.usernotificationId}`);
     //Put data of user_notifications
 
-    await axiosInstance.get(`/${this.url}/setAllSeen`);
+    await axiosInstance.put(`/${this.url}/setAllSeen`);
     return {};
   }
 

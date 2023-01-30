@@ -27,11 +27,16 @@ import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import MuiListItem from "@material-ui/core/ListItem";
-import {  useSelector } from 'react-redux';
+import {  useDispatch, useSelector } from 'react-redux';
 
 import { usernotificationsApi } from '__api__';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
+
+
+import { getUnseenUserNotifications } from 'slices/general';
+import useAuth from 'hooks/useAuth';
+
 
 const now = new Date();
 
@@ -48,8 +53,8 @@ const UserNotificationsPopover = () => {
   //Obtain the notification data from State Reducer
   const usernotificationsState= useSelector(state => state.general)
   const usernotifications = usernotificationsState.unseenusernotifications
-
-
+  const { user } = useAuth();
+  const dispatch = useDispatch();
 
   const includeParametersValues = (text, parameters) => {
     if(parameters){
@@ -122,9 +127,17 @@ const UserNotificationsPopover = () => {
   
   };
 
+  
+  
   const onClickMarkAll = () => {
-    //Save the state to seen of the notification.
-    usernotificationsApi.setSeenAllUserNotification();
+
+    //Recorro todas las notificaciones y les pongo como vistas
+
+    for (let i=0 ; i < usernotifications.length; i++) {
+      usernotificationsApi.setSeenUserNotification({'usernotificationId':usernotifications[i].id});
+    }
+
+    dispatch(getUnseenUserNotifications({'user_id':user.id}));
   
   };
 
