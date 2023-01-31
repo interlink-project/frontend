@@ -11,13 +11,15 @@ import ConfirmationButton from 'components/ConfirmationButton';
 import { FinishedIcon, InProgressIcon } from 'components/dashboard/assets';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import moment from 'moment';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { getTree, setSelectedTreeItemById, setUpdatingTree } from 'slices/process';
 import { tree_items_translations } from 'utils/someCommonTranslations';
 import { objectivesApi, phasesApi, tasksApi } from '__api__';
 import { AwaitingIcon, statusIcon, StatusText } from '../../Icons';
+import { coproductionprocessnotificationsApi } from '__api__';
+
 
 const apis = {
   task: tasksApi,
@@ -25,18 +27,22 @@ const apis = {
   phase: phasesApi
 };
 
-const TreeItemData = ({ language, processId, element }) => {
+const TreeItemData = ({ language, processId, element, assets }) => {
   const [dateRange, setDateRange] = useState([null, null]);
   const [status, setStatus] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [taskDataContributions,setTaskDataContributions] = useState(null);
   const [editMode, setEditMode] = useState(false);
-  const { updatingTree, treeitems, isAdministrator } = useSelector((state) => state.process);
+  const { process, updatingTree, treeitems,selectedTreeItem, isAdministrator } = useSelector((state) => state.process);
+  const isTask = selectedTreeItem && selectedTreeItem.type === 'task';
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const t = useCustomTranslation(language);
   const { trackEvent } = useMatomo();
+
+
 
   const restart = (el) => {
     setName(el.name);
@@ -52,6 +58,9 @@ const TreeItemData = ({ language, processId, element }) => {
   useEffect(() => {
     setEditMode(false);
     restart(element);
+    tasksApi.getAssetsAndContributions(selectedTreeItem.id).then(datos=> {
+      setTaskDataContributions(datos);
+    })
   }, [element]);
 
   const saveData = () => {
@@ -112,7 +121,21 @@ const TreeItemData = ({ language, processId, element }) => {
     });
   };
 
+  console.log('Te assets are:');
+  console.log(assets);
+
+  
+
+
+  if(isTask){
+    
+   
+  }
+  
   const treeitem_translations = tree_items_translations(t);
+
+
+
   return (
     <>
       {isAdministrator && !editMode && (
@@ -165,6 +188,70 @@ const TreeItemData = ({ language, processId, element }) => {
           {description}
         </p>
       )}
+      <>
+      <Typography
+        variant='h6'
+        sx={{ mt: 2 }}
+      >
+        {t('Actions')}
+
+      </Typography>
+      
+      <ul>
+      { taskDataContributions && taskDataContributions['assetsWithContribution']?.map((asset) => {
+        const hasContribution=asset.contributors.length;
+        if (!hasContribution){
+          return (
+            <>
+              <li>
+              <Typography
+                variant='h6'
+                sx={{ mt: 2 }}
+              >
+                Asset: {asset.id}
+
+              </Typography>
+                
+              </li>
+
+            </>
+
+          );
+        }
+
+        return (  
+          <>
+              
+            <li>
+
+            <Typography
+                variant='h6'
+                sx={{ mt: 2 }}
+              >
+                Asset: {asset.id}
+
+              </Typography>
+
+     
+            </li>
+            Contributions:{asset.contributors.parameters}
+            <ol>
+            { asset.contributors && asset.contributors?.map((contribution) => ( 
+              <li>
+              The user '{contribution.user_id}' title: {JSON.parse(contribution.parameters).commentTitle} 
+              </li>
+             ))}
+            </ol>
+  
+  
+          </> 
+  
+             
+            );
+      })}
+          </ul>
+      </>
+
 
       {false && element.problemprofiles && (
       <>

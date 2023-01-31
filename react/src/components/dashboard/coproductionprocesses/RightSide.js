@@ -338,6 +338,7 @@ const RightSide = ({ softwareInterlinkers }) => {
               language={process.language}
               processId={process.id}
               element={selectedTreeItem}
+              assets={assets}
             />
           )}
           {tabValue === 'permissions' && (
