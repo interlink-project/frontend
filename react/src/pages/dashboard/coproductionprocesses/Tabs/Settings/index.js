@@ -1,6 +1,7 @@
 import { Alert, Avatar, Box, Button, Card, CardHeader, Grid, IconButton, Input, Stack, TextField as MuiTextField, FormControl, InputLabel, Select, MenuItem, Typography } from '@material-ui/core';
 import { Delete, Edit, Save } from '@material-ui/icons';
 import ConfirmationButton from 'components/ConfirmationButton';
+import { LoadingButton } from '@material-ui/lab';
 import UsersList from 'components/dashboard/organizations/UsersList';
 import { Form, Formik } from 'formik';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
@@ -15,6 +16,7 @@ import * as Yup from 'yup';
 import { coproductionProcessesApi } from '__api__';
 
 const SettingsTab = () => {
+  const[isCloning, setIsCloning] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const { process, hasSchema, isAdministrator } = useSelector((state) => state.process);
   const [logotype, setLogotype] = useState(null);
@@ -25,6 +27,7 @@ const SettingsTab = () => {
   const dispatch = useDispatch();
 
   const onCopy = () => {
+    setIsCloning(true);
     coproductionProcessesApi.copy(process.id).then(() => navigate('/dashboard'));
   };
 
@@ -535,15 +538,16 @@ const SettingsTab = () => {
               <ConfirmationButton
 
                 Actionator={({ onClick }) => (
-                  <Button
+                  <LoadingButton
                     variant='contained'
                     disabled={!isAdministrator}
+                    loading={isCloning}
                     color='warning'
                     onClick={onClick}
                     startIcon={<Delete />}
                   >
                     {t('Copy coproduction process')}
-                  </Button>
+                  </LoadingButton>
                 )}
                 ButtonComponent={({ onClick }) => (
                   <Button
