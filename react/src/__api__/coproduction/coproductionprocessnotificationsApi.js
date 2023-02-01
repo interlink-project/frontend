@@ -35,11 +35,11 @@ class CoproductionProcessNotificationsApi extends GeneralApi {
     //Obtain the list of notification of a coproductionprocess
     async getCoproductionProcessNotifications(params = {}, language = getLanguage()) {
 
-      console.log(`/coproduction/api/v1/coproductionprocessnotifications`+params+'  coproductionprocess_id: '+params['search']['coproductionprocess_id']+'  asset_id: '+params['search']['asset_id']);
+      //console.log(`/coproduction/api/v1/coproductionprocessnotifications`+params+'  coproductionprocess_id: '+params['search']['coproductionprocess_id']+'  asset_id: '+params['search']['asset_id']);
       
       let datos={};
   
-      console.log(`/${this.url}/${params['search']['coproductionprocess_id']}/${params['search']['asset_id']}/listCoproductionProcessNotifications`);
+      //console.log(`/${this.url}/${params['search']['coproductionprocess_id']}/${params['search']['asset_id']}/listCoproductionProcessNotifications`);
       
       let ruta='';
       if(params['search']['asset_id']!=""){

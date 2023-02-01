@@ -84,7 +84,7 @@ export default function Overview({ }) {
           {t("Coproduction process overview")}
         </Typography>
       </AppBar>
-      {isAdministrator && (
+      {  (
         <Paper sx={{ bgcolor: "background.default" }}>
           <Tabs
             value={tab}
@@ -94,7 +94,9 @@ export default function Overview({ }) {
             aria-label="overview-tabs"
             centered
           >
+            { isAdministrator &&(
             <Tab value="progress" label={t("Progress")} />
+            )}
             <Tab
               value="assets"
               label={`${t("Resources")} (${loading ? "..." : assets.length})`}
