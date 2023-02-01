@@ -11,7 +11,7 @@ class UserNotificationsApi extends GeneralApi {
     if (id) {
       //Get notification by usernotification id
       const res = await axiosInstance.get(`/${this.url}/${id}`);
-      console.log('get notifications data', res.data);
+      //console.log('get notifications data', res.data);
       return res.data;
     }
   }
@@ -20,11 +20,11 @@ class UserNotificationsApi extends GeneralApi {
   //Obtain the list of notification of a user
   async getUserNotifications(params = {}, language = getLanguage()) {
 
-    console.log(`/coproduction/api/v1/usernotifications`+params+'  user_id: '+params['search']['user_id']);
+    //console.log(`/coproduction/api/v1/usernotifications`+params+'  user_id: '+params['search']['user_id']);
     
     let datos={};
 
-    console.log(`/${this.url}/${params['search']['user_id']}/listUserNotifications`);
+    //console.log(`/${this.url}/${params['search']['user_id']}/listUserNotifications`);
 
     //Get data of user_notifications
     const res = await axiosInstance.get(
@@ -35,7 +35,7 @@ class UserNotificationsApi extends GeneralApi {
         }
       }
     );
-    console.log('getMulti call', res.data, 'in', language);
+    //console.log('getMulti call', res.data, 'in', language);
 
     
 
@@ -49,11 +49,11 @@ class UserNotificationsApi extends GeneralApi {
    //Obtain the list of notification of a user
    async getUnseenUserNotifications(params = {}, language = getLanguage()) {
 
-    console.log(`/coproduction/api/v1/usernotifications`+params+'  user_id: '+params['search']['user_id']);
+    //console.log(`/coproduction/api/v1/usernotifications`+params+'  user_id: '+params['search']['user_id']);
     
     let datos={};
 
-    console.log(`/${this.url}/${params['search']['user_id']}/listUnseenUserNotifications`);
+    //console.log(`/${this.url}/${params['search']['user_id']}/listUnseenUserNotifications`);
 
     //Get data of user_notifications
     const res = await axiosInstance.get(
@@ -64,7 +64,7 @@ class UserNotificationsApi extends GeneralApi {
         }
       }
     );
-    console.log('getMulti call', res.data, 'in', language);
+    //console.log('getMulti call', res.data, 'in', language);
 
     
 
@@ -76,7 +76,7 @@ class UserNotificationsApi extends GeneralApi {
   //Change the state of a notification to unseen
   async setSeenUserNotification(params = {}){
     let datos={};
-    //console.log(`/${this.url}/${params.usernotificationId}`);
+    ////console.log(`/${this.url}/${params.usernotificationId}`);
     //Put data of user_notifications
 
     const res = await axiosInstance.put(
@@ -92,7 +92,7 @@ class UserNotificationsApi extends GeneralApi {
   //Change the state of all unseen user notification
   async setSeenAllUserNotification(){
     let datos={};
-    //console.log(`/${this.url}/${params.usernotificationId}`);
+    ////console.log(`/${this.url}/${params.usernotificationId}`);
     //Put data of user_notifications
 
     await axiosInstance.put(`/${this.url}/setAllSeen`);

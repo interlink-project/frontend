@@ -180,8 +180,8 @@ const App = () => {
           else if (event.includes("asset")) {
 
             const datosTemp = JSON.parse(message.data)
-            console.log(datosTemp)
-            console.log("UPDATE ASSETS")
+            // console.log(datosTemp)
+            // console.log("UPDATE ASSETS")
 
             //Ask if the selected task is the same:
             if (selectedTreeItem.id === datosTemp.extra.task_id) {

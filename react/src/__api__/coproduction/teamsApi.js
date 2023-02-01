@@ -9,8 +9,8 @@ class TeamsApi extends GeneralApi {
   async addUser(id, user_id) {
     var settings = localStorage.getItem('settings');
     
-    console.log("Los settings son:::::::::");
-    console.log(settings);
+    // console.log("Los settings son:::::::::");
+    // console.log(settings);
     
     const res = await axiosInstance.post(
       `/${this.url}/${id}/users`,

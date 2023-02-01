@@ -121,8 +121,8 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     });
   };
 
-  console.log('Te assets are:');
-  console.log(assets);
+  // console.log('Te assets are:');
+  // console.log(assets);
 
   
 
