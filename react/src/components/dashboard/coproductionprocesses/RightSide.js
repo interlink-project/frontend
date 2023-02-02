@@ -539,7 +539,8 @@ const RightSide = ({ softwareInterlinkers }) => {
                     <Formik
                       initialValues={{
                         title: '',
-                        description: ''
+                        description: '',
+                        claim_type:'',
                       }}
                       validationSchema={Yup.object().shape({
                         title: Yup.string()
@@ -548,6 +549,10 @@ const RightSide = ({ softwareInterlinkers }) => {
                           .required('Required'),
                         description: Yup.string()
                           .min(3, 'Must be at least 3 characters')
+                          .required('Required'),
+                        claim_type: Yup.string()
+                          .min(3, 'Must be at least 3 characters')
+                          .max(255)
                           .required('Required'),
                       })}
                       onSubmit={(values, { setErrors, setStatus, setSubmitting }) => {
@@ -592,6 +597,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                           notification_event:'add_contribution_asset',
                           asset_id:selectedAsset.id,
                           parameters: paramListJson,
+                          claim_type: values.claim_type
                           
                         };
 
@@ -661,6 +667,28 @@ const RightSide = ({ softwareInterlinkers }) => {
                               value={values.description}
                               variant='outlined'
                             />
+
+                            <TextField
+                              required
+                              sx={{ mt: 2 }}
+                              select
+                              fullWidth
+                              label="Claim Type"
+                              name="claim_type"
+                              value={values.claim_type}
+                              onChange={handleChange}
+                              error={Boolean(touched.claim_type && errors.claim_type)}
+                              helperText={touched.claim_type && errors.claim_type}
+                              variant='outlined'
+                            >
+                                 
+
+                                      <MenuItem value="Management">{t('Management')}</MenuItem>
+                                      <MenuItem value="Development">{t('Development')}</MenuItem>
+                                      <MenuItem value="Exploitation">{t('Exploitation')}</MenuItem>
+
+                                      
+                                    </TextField>
                             <LoadingButton
                               sx={{ mt: 2 }}
                               variant='contained'

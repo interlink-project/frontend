@@ -1,6 +1,6 @@
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import {
-  Alert,
+  Alert, Grid,
   Box, Button, Chip, Divider, IconButton, Link, Stack, TextField, ToggleButton, ToggleButtonGroup, Typography
 } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
@@ -32,6 +32,9 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   const [status, setStatus] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [management, setManagement] = useState('');
+  const [development, setDevelopment] = useState('');
+  const [exploitation, setExploitation] = useState('');
   const [taskDataContributions,setTaskDataContributions] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const { process, updatingTree, treeitems,selectedTreeItem, isAdministrator } = useSelector((state) => state.process);
@@ -47,6 +50,9 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   const restart = (el) => {
     setName(el.name);
     setDescription(el.description);
+    setManagement(el.management);
+    setDevelopment(el.development);
+    setExploitation(el.exploitation);
     setStatus(el.status);
     setDateRange([el.start_date ? new Date(el.start_date) : null, el.end_date ? new Date(el.end_date) : null]);
   };
@@ -84,6 +90,15 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     }
     if (description !== element.description) {
       data.description = description;
+    }
+    if (management !== element.management) {
+      data.management = parseInt(management);
+    }
+    if (development !== element.development) {
+      data.development = parseInt(development);
+    }
+    if (exploitation !== element.exploitation) {
+      data.exploitation = parseInt(exploitation);
     }
     trackEvent({
       category: processId,
@@ -188,7 +203,100 @@ const TreeItemData = ({ language, processId, element, assets }) => {
           {description}
         </p>
       )}
+     { isTask ? (
+     <>
+      <Typography
+        variant='h6'
+        sx={{ mt: 2 }}
+      >
+        {t('Values')}
+      </Typography>
+      
+   
+    
+      {editMode ? (
+        <>
+        <Box  
+              justifyContent='center'
+              sx={{ mt: 2, gap: 10,margin: 2 }}
+            >
+
+        <TextField
+           onChange={(event) => {
+             setManagement(event.target.value);
+           }}
+          multiline
+          sx={{ mt: 2, gap: 10, margin: 2 }}
+          variant='standard'
+          label={t('Management')}
+          value={management}
+          type="number"
+        />
+        <TextField
+           onChange={(event) => {
+             setDevelopment(event.target.value);
+           }}
+          multiline
+          sx={{ mt: 2, gap: 10, margin: 2 }}
+          variant='standard'
+          label={t('Development')}
+          value={development}
+          type="number"
+        />
+        <TextField
+           onChange={(event) => {
+             setExploitation(event.target.value);
+           }}
+          multiline
+          sx={{ mt: 2, gap: 10, margin: 2 }}
+          variant='standard'
+          label={t('Exploitation')}
+          value={exploitation}
+          type="number"
+        />
+         </Box>
+        </>
+      ) : (
+        <p style={{
+          whiteSpace: 'pre-wrap',
+          marginTop: 0
+        }}
+        >
+
+          <Box  
+              justifyContent='center'
+              sx={{ mt: 2, gap: 10,margin: 2 }}
+            >
+              
+          <Box  
+          component="span"
+              justifyContent='center'
+              sx={{ mt: 2, gap: 10, margin: 2 }}
+            >{t('Management')} : {management}
+              </Box>    
+
+              <Box  
+              component="span"
+              justifyContent='center'
+              sx={{ mt: 2, gap: 10, margin: 2 }}
+            >{t('Development')} : {development}
+              </Box> 
+          
+              <Box  
+              component="span"
+              justifyContent='center'
+              sx={{ mt: 2, gap: 10, margin: 2 }}
+            >{t('Exploitation')} : {exploitation}
+              </Box>
+          
+          </Box>
+        </p>
+      )}
+      </>
+      ):(<></>)}
+      
       <>
+      
       <Typography
         variant='h6'
         sx={{ mt: 2 }}
