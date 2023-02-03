@@ -31,6 +31,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   const [dateRange, setDateRange] = useState([null, null]);
   const [status, setStatus] = useState('');
   const [name, setName] = useState('');
+  const [listAssetsNames,setListAssetsNames] = useState('');
   const [description, setDescription] = useState('');
   const [management, setManagement] = useState('');
   const [development, setDevelopment] = useState('');
@@ -64,9 +65,10 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   useEffect(() => {
     setEditMode(false);
     restart(element);
+    if (element.type === 'task') {
     tasksApi.getAssetsAndContributions(selectedTreeItem.id).then(datos=> {
       setTaskDataContributions(datos);
-    })
+    })}
   }, [element]);
 
   const saveData = () => {
@@ -139,7 +141,80 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   // console.log('Te assets are:');
   // console.log(assets);
 
-  
+  let listAssets = [];
+  const includeObjectNames = (text) => {
+    
+    //Search and reemplace que assetName and icon
+    const paramsPattern = /[^{}]+(?=})/g;
+    let extractParams = text.match(paramsPattern);
+    //Loop over each parameter value and replace in the text
+    if (extractParams) {
+      
+      for (let i = 0; i < extractParams.length; i++) {       
+        if (extractParams[i].includes(":")) {
+          // console.log('----->'+extractParams[i]);
+          const entidadName = extractParams[i].split(":")[0];
+          const entidadId = extractParams[i].split(":")[1];
+
+          if (entidadName == "assetid") {
+            //Obtain the asset name:
+            const xhr = new XMLHttpRequest();
+
+            if (!listAssets.includes(entidadId)) {
+              listAssets.push(entidadId);
+              xhr.open(
+                "GET",
+                `/coproduction/api/v1/assets/internal/${entidadId}`,
+                true
+              ); // `false` makes the request synchronous
+              xhr.onload = (e) => {
+                
+                if (xhr.readyState === 4) {
+                  if (xhr.status === 200) {
+                    const assetdata = JSON.parse(xhr.responseText);
+                    const assetName = assetdata.name.replace(
+                      /(^\w{1})|(\s+\w{1})/g,
+                      (letter) => letter.toUpperCase()
+                    );
+                    const nodes = document.getElementsByClassName(
+                      "lk_" + entidadId
+                    );
+
+                    if(nodes.length>0){
+                    for (let i = 0; i < nodes.length; i++) {
+                      nodes[i].innerHTML = assetName;
+                    }
+                  }
+
+                    const nodes2 = document.getElementsByClassName(
+                      "im_" + entidadId
+                    );
+                    if(nodes2.length>0){
+                      for (let i = 0; i < nodes.length; i++) {
+                        nodes2[i].src = assetdata.icon;
+                      }
+                    }
+                   
+            
+                  } else {
+                    console.error(xhr.statusText);
+                  }
+                  
+                }             
+              };
+              xhr.onerror = (e) => {
+                console.error(xhr.statusText);
+              };
+              xhr.send(null);
+            }
+          }
+        }
+      }
+      
+    } 
+    
+    return text;
+  };
 
 
   if(isTask){
@@ -315,9 +390,17 @@ const TreeItemData = ({ language, processId, element, assets }) => {
               <Typography
                 variant='h6'
                 sx={{ mt: 2 }}
+               
               >
-                Asset: {asset.id}
+                Asset: 
+                <Box  
+                
+                class={"lk_" + asset.id}
+              component="span">
+                  {includeObjectNames('{assetid:'+asset.id+'}')}
 
+              </Box>
+                
               </Typography>
                 
               </li>
@@ -335,9 +418,18 @@ const TreeItemData = ({ language, processId, element, assets }) => {
             <Typography
                 variant='h6'
                 sx={{ mt: 2 }}
+               
               >
-                Asset: {asset.id}
+                Asset:  
+                <Box  
+            
+                class={"lk_" + asset.id}
+                
+              component="span">
+                  {includeObjectNames(' {assetid:'+asset.id+'}')}
 
+              </Box>
+                
               </Typography>
 
      
@@ -346,7 +438,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
             <ol>
             { asset.contributors && asset.contributors?.map((contribution) => ( 
               <li>
-              The user '{contribution.user_id}' title: {JSON.parse(contribution.parameters).commentTitle} 
+              The user '{JSON.parse(contribution.parameters).userName}' made a ({contribution.claim_type}) claim: {JSON.parse(contribution.parameters).commentTitle} 
               </li>
              ))}
             </ol>
