@@ -10,12 +10,13 @@ import { LoadingButton } from '@material-ui/lab';
 import { TEAM_TYPES } from '../../../constants';
 import useAuth from 'hooks/useAuth';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import { getLanguage } from 'translations/i18n';
-import { teamsApi, usersApi } from '__api__';
+import { teamsApi } from '__api__';
 import UserSearch from 'components/dashboard/coproductionprocesses/UserSearch';
-import Papa from 'papaparse';
+
+
 
 const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOpen, onCreate, organization }) => {
   const { user } = useAuth()
@@ -25,7 +26,6 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
   const [type, setType] = useState('');
   const [description, setDescription] = useState('');
   const [logotype, setLogotype] = useState(null);
-  const [parsedCsvData, setParsedCsvData] = useState('')
 
   const t = useCustomTranslation(language);
   const [activeStep, setActiveStep] = useState(0);
@@ -114,29 +114,6 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
     if (activeStep === 0 && (!name || !description || !type)) {
       return true;
     }
-  };
-
-  const parseFile = (evt) => {
-    if (!(evt.target && evt.target.files && evt.target.files[0])) {
-      return;
-    }
-    Papa.parse(evt.target.files[0], {
-      header: false,
-      skipEmptyLines: true,
-      complete: function (results) {
-        for (let i = 0; i < results.data[0].length; i++) {
-          usersApi.search(results.data[0][i]).then((res) => {
-            console.log(res[0]);
-            if (res.length > 0) {
-              setSelectedUsers(([...selectedUsers, res[0]]))
-            }
-          });
-          // setSelectedUsers(results.data[0][i]);
-          // results.data[i] = results.data[i][0].split(';');
-        }
-        console.log(results);
-      }
-    });
   };
 
   return (
@@ -278,20 +255,6 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
                 organization_id={organization.id}
                 onClick={us => setSelectedUsers([...selectedUsers, us])}
               />
-              <Button
-                // onClick={ }
-                variant="contained"
-                component="label">
-                {t('Import from csv')}
-                {parsedCsvData}
-                <input
-                  type="file"
-                  accept=".csv"
-                  hidden
-                  onChange={parseFile}
-                />
-              </Button>
-
             </>
           )}
 

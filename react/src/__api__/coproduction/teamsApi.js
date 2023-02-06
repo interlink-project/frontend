@@ -7,7 +7,7 @@ class TeamsApi extends GeneralApi {
   }
 
   async addUser(id, user_id) {
-    var settings = localStorage.getItem('settings');
+    // var settings = localStorage.getItem('settings');
     
     // console.log("Los settings son:::::::::");
     // console.log(settings);
