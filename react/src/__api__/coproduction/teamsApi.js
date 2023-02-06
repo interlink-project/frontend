@@ -15,9 +15,9 @@ class TeamsApi extends GeneralApi {
     const res = await axiosInstance.post(
       `/${this.url}/${id}/users`,
       { user_id },
-      'en'
-      
+      // 'en'
     );
+    
     console.log('add user call', res.data);
     return res.data;
   }
