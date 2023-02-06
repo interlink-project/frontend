@@ -16,6 +16,8 @@ import { getLanguage } from 'translations/i18n';
 import { teamsApi } from '__api__';
 import UserSearch from 'components/dashboard/coproductionprocesses/UserSearch';
 
+
+
 const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOpen, onCreate, organization }) => {
   const { user } = useAuth()
   const [_loading, _setLoading] = useState(false);
