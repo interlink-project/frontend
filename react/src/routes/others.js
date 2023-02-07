@@ -15,6 +15,7 @@ const HomeAbout = Loadable(lazy(() => import('../pages/HomeAbout')));
 const HomeCoproduction = Loadable(lazy(() => import('../pages/HomeCoproduction')));
 const HomePlatform = Loadable(lazy(() => import('../pages/HomePlatform')));
 const HomeCatalogue = Loadable(lazy(() => import('../pages/HomeCatalogue')));
+const HomeSuccessCatalogue = Loadable(lazy(() => import('../pages/HomeSuccessCatalogue')));
 
 export const routes = [
   {
@@ -36,6 +37,10 @@ export const routes = [
       {
         path: 'catal',
         element: <HomeCatalogue />,
+      },
+      {
+        path: 'successcatal',
+        element: <HomeSuccessCatalogue />,
       },
       {
         path: 'about',

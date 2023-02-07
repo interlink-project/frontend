@@ -1,7 +1,7 @@
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import {
   Alert, Grid,
-  Box, Button, Chip, Divider, IconButton, Link, Stack, TextField, ToggleButton, ToggleButtonGroup, Typography
+  Box, Button, Chip, Divider, IconButton, Link, Stack, TextField, ToggleButton, ToggleButtonGroup, Typography,Select, MenuItem,
 } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 import {
@@ -225,6 +225,20 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   const treeitem_translations = tree_items_translations(t);
 
 
+  const complexityLevelsF= (status) => {
+    
+    switch(status) {
+      case 33: 
+        return 'light';
+      case 66: 
+        return 'normal'
+      case 100: 
+        return 'substancial';  
+      default: 
+        return 'no defined';
+    }
+  }
+
 
   return (
     <>
@@ -284,7 +298,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
         variant='h6'
         sx={{ mt: 2 }}
       >
-        {t('Values')}
+        {t('Complexity Levels')}
       </Typography>
       
    
@@ -295,40 +309,85 @@ const TreeItemData = ({ language, processId, element, assets }) => {
               justifyContent='center'
               sx={{ mt: 2, gap: 10,margin: 2 }}
             >
-
+        
         <TextField
-           onChange={(event) => {
-             setManagement(event.target.value);
-           }}
-          multiline
-          sx={{ mt: 2, gap: 10, margin: 2 }}
-          variant='standard'
+          id="management_txt"
+          select
           label={t('Management')}
           value={management}
           type="number"
-        />
+          sx={{ mt: 2, gap: 10, margin: 2, minWidth: 120 }}
+          onChange={(event) => {
+            setManagement(event.target.value);
+          }}
+        
+        >
+          
+          <MenuItem key='mi_m_1' value='33'>
+            {t('light')}
+          </MenuItem>
+          <MenuItem key='mi_m_2' value='66'>
+            {t('normal')}
+          </MenuItem>
+          <MenuItem key='mi_m_3' value='100'>
+            {t('substancial')}
+          </MenuItem>
+          
+        </TextField>
+
+
         <TextField
-           onChange={(event) => {
-             setDevelopment(event.target.value);
-           }}
-          multiline
-          sx={{ mt: 2, gap: 10, margin: 2 }}
-          variant='standard'
+          id="development_txt"
+          select
           label={t('Development')}
           value={development}
           type="number"
-        />
+          sx={{ mt: 2, gap: 10, margin: 2, minWidth: 120 }}
+          onChange={(event) => {
+            setDevelopment(event.target.value);
+          }}
+        
+        >
+          
+          <MenuItem key='mi_d_1' value='33'>
+            {t('light')}
+          </MenuItem>
+          <MenuItem key='mi_d_2' value='66'>
+            {t('normal')}
+          </MenuItem>
+          <MenuItem key='mi_d_3' value='100'>
+            {t('substancial')}
+          </MenuItem>
+          
+        </TextField>
+
         <TextField
-           onChange={(event) => {
-             setExploitation(event.target.value);
-           }}
-          multiline
-          sx={{ mt: 2, gap: 10, margin: 2 }}
-          variant='standard'
+          id="exploitation_txt"
+          select
           label={t('Exploitation')}
           value={exploitation}
           type="number"
-        />
+          sx={{ mt: 2, gap: 10, margin: 2, minWidth: 120 }}
+          onChange={(event) => {
+            setExploitation(event.target.value);
+          }}
+     
+        >
+          
+          <MenuItem key='mi_e_1' value='33'>
+            {t('light')}
+          </MenuItem>
+          <MenuItem key='mi_e_2' value='66'>
+            {t('normal')}
+          </MenuItem>
+          <MenuItem key='mi_e_3' value='100'>
+            {t('substancial')}
+          </MenuItem>
+          
+        </TextField>
+
+        
+      
          </Box>
         </>
       ) : (
@@ -343,26 +402,25 @@ const TreeItemData = ({ language, processId, element, assets }) => {
               sx={{ mt: 2, gap: 10,margin: 2 }}
             >
               
-          <Box  
-          component="span"
-              justifyContent='center'
-              sx={{ mt: 2, gap: 10, margin: 2 }}
-            >{t('Management')} : {management}
-              </Box>    
 
-              <Box  
-              component="span"
-              justifyContent='center'
-              sx={{ mt: 2, gap: 10, margin: 2 }}
-            >{t('Development')} : {development}
-              </Box> 
+        <Box 
+        >
+          <span sx={{}}></span>Management={complexityLevelsF(management)} | Development={complexityLevelsF(development)} | Exploitation={complexityLevelsF(exploitation)}
+        </Box>
+
+        <Box
+        sx={{ mt: 2, gap: 10, margin: 2}}
+        >
           
-              <Box  
-              component="span"
-              justifyContent='center'
-              sx={{ mt: 2, gap: 10, margin: 2 }}
-            >{t('Exploitation')} : {exploitation}
-              </Box>
+        </Box>
+
+        <Box
+        sx={{ mt: 2, gap: 10, margin: 2}}
+        >
+          
+        </Box>
+          
+              
           
           </Box>
         </p>
@@ -376,7 +434,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
         variant='h6'
         sx={{ mt: 2 }}
       >
-        {t('Actions')}
+        {t('Levels of Participation')}
 
       </Typography>
       

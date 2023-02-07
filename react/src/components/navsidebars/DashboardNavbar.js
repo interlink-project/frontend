@@ -46,6 +46,10 @@ const pages = [
     label: i18n.t('Catalogue'),
     path: '/dashboard/interlinkers',
   },
+  {
+    label: i18n.t('Stories'),
+    path: '/dashboard/stories',
+  },
 ];
 const DashboardNavbar = (props) => {
   const { onSidebarMobileOpen, showOpenMenuButton, ...other } = props;

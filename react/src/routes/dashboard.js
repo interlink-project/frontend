@@ -13,6 +13,11 @@ const Settings = Loadable(
 const Catalogue = Loadable(
   lazy(() => import('../pages/dashboard/interlinkers/Catalogue'))
 );
+
+const SuccessCatalogue = Loadable(
+  lazy(() => import('../pages/dashboard/stories/SucessCatalogue'))
+);
+
 const InterlinkerProfile = Loadable(
   lazy(() => import('../components/dashboard/interlinkers/profile/InterlinkerProfile'))
 );
@@ -83,6 +88,20 @@ export const routes = [
         ],
       },
       {
+        path: 'stories',
+        children: [
+          {
+            path: '',
+            element: <SuccessCatalogue />,
+          },
+          {
+            path: ':interlinkerId',
+            element: <InterlinkerProfile />,
+          },
+        ],
+      },
+      {
+      
         path: 'organizations',
         children: [
           {
