@@ -70,7 +70,7 @@ const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
       name: user.full_name,
       mail: user.email,
     }));
-    
+
     const options = {
       fieldSeparator: ',',
       quoteStrings: '"',
@@ -355,16 +355,13 @@ const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
                       />
                       {!editMode && (
                         <Button
+                          sx={{ mt: 1 }}
                           startIcon={<Mail />}
                           variant='outlined'
                           color='primary'
-                          style={{
-                            position: 'relative',
-                            bottom: 0,
-                          }}
                           onClick={() => downloadMembersMails(team)}
                         >
-                          {t('Download mails')}
+                          {t('Download e-mails')}
                         </Button>
 
                       )}

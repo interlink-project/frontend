@@ -1,4 +1,8 @@
-import { Alert, Avatar, LinearProgress, Menu, MenuItem, Paper, TextField, Button, Snackbar } from '@material-ui/core';
+import {
+  Alert, Avatar, LinearProgress, Menu, MenuItem, Paper, TextField, Button, Snackbar, IconButton, Dialog,
+DialogActions, DialogContent, DialogContentText, DialogTitle
+} from '@material-ui/core';
+import { Info } from '@material-ui/icons';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useRef, useState } from 'react';
@@ -17,6 +21,7 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
   const textInput = useRef(null);
   const [fileParsedMsn, setFileParsedMsn] = useState(false);
   const [mailErrors, setMailErrors] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
 
 
@@ -29,7 +34,34 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
       return;
     }
     setFileParsedMsn(false);
-    setMailErrors(false);
+  };
+
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const downloadExampleFile = () => {
+    const options = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      filename: 'example',
+      useTextFile: false,
+      useBom: true,      
+    };
+    const csvExporter = new ExportToCsv(options);
+    const data = [
+      {
+        email: 'example1@example.com',
+      },
+      {
+        email: 'example2@example.com',
+      },
+    ];
+    csvExporter.generateCsv(data);
   };
 
 
@@ -96,7 +128,7 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
         console.log(results.data)
         for (let i = 0; i < results.data.length; i++) {
           await usersApi.search(results.data[i]).then((res) => {
-            if (res.length > 0) {
+            if (res.length > 0 && !exclude.includes(res[0].id)) {
               onClick(res[0]);
             } else {
               rejected_users.push(results.data[i]);
@@ -114,6 +146,7 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
 
   return (
     <>
+      {/* Snackbar that informs about mail parsing */}
       <Snackbar open={fileParsedMsn} autoHideDuration={6000} onClose={handleCloseParseMsn}>
         {mailErrors ? (
           <Alert onClose={handleCloseParseMsn} severity="warning">
@@ -126,6 +159,30 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
         )}
 
       </Snackbar>
+
+      {/* Dialog that provides help about csv format */}
+      <Dialog
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {t("E-mail file fomating")}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {t('The file must be a CSV file with one column containing all the mails to be added. Here you can download an example file.')}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={downloadExampleFile}>Download example</Button>
+          <Button onClick={handleCloseDialog} autoFocus>
+            Okay
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Alert severity='warning'>{t('Only registered users can be added')}</Alert>
       <TextField
         sx={{ mt: 1 }}
@@ -154,6 +211,12 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
           onChange={parseFile}
         />
       </Button>
+      <IconButton
+        sx={{ mt: 2 }}
+        color="primary"
+        onClick={handleOpenDialog}>
+        <Info />
+      </IconButton>
       {open && (
         <Paper>
           <Menu
