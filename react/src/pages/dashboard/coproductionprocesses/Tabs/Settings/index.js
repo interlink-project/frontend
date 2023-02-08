@@ -1,4 +1,4 @@
-import { Alert, Avatar, Box, Button, Card, CardHeader, Grid, IconButton, Input, Stack, TextField as MuiTextField, FormControl, InputLabel, Select, MenuItem, Typography } from '@material-ui/core';
+import { Alert, Avatar, Box,Switch, Button, Card, CardHeader, Grid, IconButton, Input, Stack, TextField as MuiTextField, FormControl, InputLabel, Select, MenuItem, Typography } from '@material-ui/core';
 import { Delete, Edit, Save } from '@material-ui/icons';
 import ConfirmationButton from 'components/ConfirmationButton';
 import { LoadingButton } from '@material-ui/lab';
@@ -18,7 +18,10 @@ import { coproductionProcessesApi } from '__api__';
 const SettingsTab = () => {
   const[isCloning, setIsCloning] = useState(false);
   const [editMode, setEditMode] = useState(false);
+ 
   const { process, hasSchema, isAdministrator } = useSelector((state) => state.process);
+ 
+  const [isIncentiveModuleActive,setIsIncentiveModuleActive]= useState(process.incentive_and_rewards_state);
   const [logotype, setLogotype] = useState(null);
   const mounted = useMounted();
   const t = useCustomTranslation(process.language);
@@ -87,6 +90,34 @@ const SettingsTab = () => {
       />
     </>
   );
+
+  const toggleIncentivesRewards = () => {
+    setIsIncentiveModuleActive((prev) => !prev);
+   
+      //Active the incentive and reguards
+      const values={incentive_and_rewards_state:!isIncentiveModuleActive};
+      console.log('La bandera es:')
+      console.log(isIncentiveModuleActive)
+      try {
+        dispatch(updateProcess({
+          id: process.id,
+          data: values,
+          logotype,
+          onSuccess: () => {
+            if (mounted.current) {
+              //alert("se ha grabado la bandera")
+            }
+          }
+        }));
+      } catch (err) {
+        console.error(err);
+       
+      }
+ 
+
+
+
+  };
 
   return (
     <Box style={{ minHeight: '87vh', backgroundColor: 'background.default' }}>
@@ -568,6 +599,32 @@ const SettingsTab = () => {
             {t('The deletion of the co-production process is irreversible. All resources created in it will disappear.')}
           </Alert>
         </Card>
+       {/* Cloning coprod */}
+       <Card  sx={{ border: '1px solid red', p: 5, my: 4 }}>
+          <Typography variant='h6'>
+            {t('Activate Incentivization and Rewards')}
+          </Typography>
+          <Alert
+            severity='info'
+            sx={{ mt: 3 }}
+            action={(
+              <>
+              <Switch
+                checked={isIncentiveModuleActive}
+                onChange={toggleIncentivesRewards}
+                name="incentiveSwitch"
+                inputProps={{ 'aria-label': 'secondary checkbox' }}
+                disabled={!isAdministrator}
+                color="secondary"
+              />
+              
+              </>
+            )}
+          >
+            {t('The activation will allow incentives and rewards to be given to the collaborators of the process.')}
+          </Alert>
+        </Card>
+
       </Box>
     </Box>
   );

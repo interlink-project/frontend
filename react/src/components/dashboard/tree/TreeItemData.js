@@ -33,9 +33,9 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   const [name, setName] = useState('');
   const [listAssetsNames,setListAssetsNames] = useState('');
   const [description, setDescription] = useState('');
-  const [management, setManagement] = useState('');
+  //const [management, setManagement] = useState('');
   const [development, setDevelopment] = useState('');
-  const [exploitation, setExploitation] = useState('');
+  //const [exploitation, setExploitation] = useState('');
   const [taskDataContributions,setTaskDataContributions] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const { process, updatingTree, treeitems,selectedTreeItem, isAdministrator } = useSelector((state) => state.process);
@@ -51,9 +51,9 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   const restart = (el) => {
     setName(el.name);
     setDescription(el.description);
-    setManagement(el.management);
+    //setManagement(el.management);
     setDevelopment(el.development);
-    setExploitation(el.exploitation);
+    //setExploitation(el.exploitation);
     setStatus(el.status);
     setDateRange([el.start_date ? new Date(el.start_date) : null, el.end_date ? new Date(el.end_date) : null]);
   };
@@ -93,15 +93,15 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     if (description !== element.description) {
       data.description = description;
     }
-    if (management !== element.management) {
-      data.management = parseInt(management);
-    }
+    // if (management !== element.management) {
+    //   data.management = parseInt(management);
+    // }
     if (development !== element.development) {
       data.development = parseInt(development);
     }
-    if (exploitation !== element.exploitation) {
-      data.exploitation = parseInt(exploitation);
-    }
+    // if (exploitation !== element.exploitation) {
+    //   data.exploitation = parseInt(exploitation);
+    // }
     trackEvent({
       category: processId,
       action: 'update-treeitem',
@@ -228,14 +228,20 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   const complexityLevelsF= (status) => {
     
     switch(status) {
-      case 33: 
-        return 'light';
-      case 66: 
-        return 'normal'
+      case 0: 
+        return 'None';
+      case 20: 
+        return 'Very low'
+      case 40: 
+        return 'Low';  
+      case 60: 
+        return 'Medium';
+      case 80: 
+        return 'High';
       case 100: 
-        return 'substancial';  
+        return 'Very high';
       default: 
-        return 'no defined';
+        return 'No defined';
     }
   }
 
@@ -310,7 +316,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
               sx={{ mt: 2, gap: 10,margin: 2 }}
             >
         
-        <TextField
+        {/* <TextField
           id="management_txt"
           select
           label={t('Management')}
@@ -333,7 +339,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
             {t('substancial')}
           </MenuItem>
           
-        </TextField>
+        </TextField> */}
 
 
         <TextField
@@ -349,19 +355,28 @@ const TreeItemData = ({ language, processId, element, assets }) => {
         
         >
           
-          <MenuItem key='mi_d_1' value='33'>
-            {t('light')}
+          <MenuItem key='mi_d_1' value='0'>
+            {t('none')}
           </MenuItem>
-          <MenuItem key='mi_d_2' value='66'>
-            {t('normal')}
+          <MenuItem key='mi_d_2' value='20'>
+            {t('very low')}
+          </MenuItem>
+          <MenuItem key='mi_d_3' value='40'>
+            {t('low')}
+          </MenuItem>
+          <MenuItem key='mi_d_3' value='60'>
+            {t('medium')}
+          </MenuItem>
+          <MenuItem key='mi_d_3' value='80'>
+            {t('high')}
           </MenuItem>
           <MenuItem key='mi_d_3' value='100'>
-            {t('substancial')}
+            {t('very high')}
           </MenuItem>
           
         </TextField>
 
-        <TextField
+        {/* <TextField
           id="exploitation_txt"
           select
           label={t('Exploitation')}
@@ -384,7 +399,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
             {t('substancial')}
           </MenuItem>
           
-        </TextField>
+        </TextField> */}
 
         
       
@@ -405,7 +420,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
 
         <Box 
         >
-          <span sx={{}}></span>Management={complexityLevelsF(management)} | Development={complexityLevelsF(development)} | Exploitation={complexityLevelsF(exploitation)}
+          <span sx={{}}></span> {complexityLevelsF(development)}
         </Box>
 
         <Box
