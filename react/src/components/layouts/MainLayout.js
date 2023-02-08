@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Outlet } from 'react-router-dom';
-import { experimentalStyled } from '@material-ui/core/styles';
+import { experimentalStyled } from '@mui/material/styles';
 import MainNavbar from '../navsidebars/MainNavbar';
 import MainSidebar from '../navsidebars/MainSidebar';
 

@@ -1,5 +1,5 @@
-import { Alert, Avatar, Box, Button, Card, CardActionArea, CardHeader, Grid, IconButton, List, ListItem, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
-import { green, red } from '@material-ui/core/colors';
+import { Alert, Avatar, Box, Button, Card, CardActionArea, CardHeader, Grid, IconButton, List, ListItem, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { green, red } from '@mui/material/colors';
 import { Add, ArrowForward, CheckOutlined, Close, Delete, Edit } from '@material-ui/icons';
 import { OrganizationChip, TreeItemTypeChip } from 'components/Icons';
 import TeamAvatar from 'components/TeamAvatar';

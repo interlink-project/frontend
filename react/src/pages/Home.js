@@ -1,4 +1,4 @@
-import { Box, Button, Container, Fade, Typography } from '@material-ui/core';
+import { Box, Button, Container, Fade, Typography } from '@mui/material';
 import { ChevronRight } from '@material-ui/icons';
 import { HomeRow } from 'components/home';
 import { HomeLogo } from 'components/Logo';

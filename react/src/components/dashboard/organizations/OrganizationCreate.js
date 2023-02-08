@@ -1,7 +1,7 @@
 import {
   Alert,
   Avatar, Box, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, IconButton, Input, InputLabel, MenuItem, Select, Stack, Switch, TextField, Typography
-} from '@material-ui/core';
+} from '@mui/material';
 import { Close, KeyboardArrowRight } from '@material-ui/icons';
 import { LoadingButton } from '@material-ui/lab';
 import { TEAM_TYPES, WHO_CAN_CREATE_OPTIONS } from 'constants';

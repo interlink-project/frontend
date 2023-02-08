@@ -5,7 +5,7 @@ import {
   ButtonBase,
   Divider, Popover,
   Typography
-} from '@material-ui/core';
+} from '@mui/material';
 import { Login } from '@material-ui/icons';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';

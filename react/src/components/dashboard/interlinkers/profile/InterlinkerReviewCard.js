@@ -1,4 +1,4 @@
-import { Avatar, Box, Card, CardHeader, IconButton, Link, Rating, Typography } from '@material-ui/core';
+import { Avatar, Box, Card, CardHeader, IconButton, Link, Rating, Typography } from '@mui/material';
 import { Edit } from '@material-ui/icons';
 import moment from 'moment';
 import PropTypes from 'prop-types';

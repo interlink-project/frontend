@@ -1,4 +1,4 @@
-import { Avatar, CircularProgress, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Skeleton, TableCell, TableRow } from '@material-ui/core';
+import { Avatar, CircularProgress, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Skeleton, TableCell, TableRow } from '@mui/material';
 import { MoreVert } from '@material-ui/icons';
 import useAuth from 'hooks/useAuth';
 import useMounted from 'hooks/useMounted';

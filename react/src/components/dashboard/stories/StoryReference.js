@@ -1,4 +1,4 @@
-import { Avatar, Link, Skeleton, Stack } from '@material-ui/core';
+import { Avatar, Link, Skeleton, Stack } from '@mui/material';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useState } from 'react';
 //import { storiesApi } from '__api__';

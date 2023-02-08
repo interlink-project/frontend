@@ -1,8 +1,8 @@
-import { Paper, Button, Typography, Box, Card, CardContent, useMediaQuery } from '@material-ui/core';
+import { Paper, Button, Typography, Box, Card, CardContent, useMediaQuery } from '@mui/material';
 import PropTypes from 'prop-types';
 import useAuth from '../../hooks/useAuth';
 import { styled } from '@material-ui/styles';
-import { useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 

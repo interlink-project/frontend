@@ -1,7 +1,7 @@
 import {
   Alert, Avatar, Box, Button, IconButton, Switch, Table, TableBody, TableCell, TableHead, TableRow, Typography
-} from '@material-ui/core';
-import { green, red } from '@material-ui/core/colors';
+} from '@mui/material';
+import { green, red } from '@mui/material/colors';
 import { CheckOutlined, Close, Delete } from '@material-ui/icons';
 import { LoadingButton } from '@material-ui/lab';
 import ConfirmationButton from 'components/ConfirmationButton';

@@ -2,7 +2,7 @@ import {
   Box,
   Button, Dialog, DialogActions, DialogContent,
   DialogTitle, Grid, IconButton
-} from '@material-ui/core';
+} from '@mui/material';
 import { ArrowBack, Close, DoubleArrow, Download, Preview } from '@material-ui/icons';
 import { LoadingButton } from '@material-ui/lab';
 import CentricCircularProgress from 'components/CentricCircularProgress';

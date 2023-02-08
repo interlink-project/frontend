@@ -14,7 +14,7 @@ import {
   Popover,
   Tooltip,
   Typography
-} from '@material-ui/core';
+} from '@mui/material';
 import BellIcon from '../../icons/Bell';
 import ChatAltIcon from '../../icons/ChatAlt';
 import CreditCardIcon from '../../icons/CreditCard';
@@ -25,8 +25,8 @@ import AddchartIcon from '@material-ui/icons/Addchart';
 import ArticleIcon from '@material-ui/icons/Article';
 import LaptopMacIcon from '@material-ui/icons/LaptopMac';
 
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import MuiListItem from "@material-ui/core/ListItem";
+import { makeStyles, withStyles } from "@mui/material/styles";
+import MuiListItem from "@mui/material/ListItem";
 import {  useDispatch, useSelector } from 'react-redux';
 
 import { usernotificationsApi } from '__api__';

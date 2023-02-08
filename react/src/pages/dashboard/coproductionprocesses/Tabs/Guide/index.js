@@ -1,4 +1,4 @@
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid } from '@mui/material';
 import RightSide from 'components/dashboard/coproductionprocesses/RightSide';
 import { StyledTree } from 'components/dashboard/tree';
 import ProcessPhaseTabs from 'components/dashboard/tree/ProcessPhaseTabs';

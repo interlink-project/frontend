@@ -1,4 +1,4 @@
-import { Box, Card, Chip, Divider, Input, LinearProgress, Rating, Typography } from '@material-ui/core';
+import { Box, Card, Chip, Divider, Input, LinearProgress, Rating, Typography } from '@mui/material';
 import { Search } from '@material-ui/icons';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';

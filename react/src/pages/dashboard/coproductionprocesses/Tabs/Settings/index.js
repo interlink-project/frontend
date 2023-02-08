@@ -1,4 +1,4 @@
-import { Alert, Avatar, Box,Switch, Button, Card, CardHeader, Grid, IconButton, Input, Stack, TextField as MuiTextField, FormControl, InputLabel, Select, MenuItem, Typography } from '@material-ui/core';
+import { Alert, Avatar, Box,Switch, Button, Card, CardHeader, Grid, IconButton, Input, Stack, TextField as MuiTextField, FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material';
 import { Delete, Edit, Save } from '@material-ui/icons';
 import ConfirmationButton from 'components/ConfirmationButton';
 import { LoadingButton } from '@material-ui/lab';

@@ -1,4 +1,4 @@
-import { AppBar, LinearProgress, Stack, Tab, Tabs as MuiTabs } from "@material-ui/core";
+import { AppBar, LinearProgress, Stack, Tab, Tabs as MuiTabs } from "@mui/material";
 import { TreeItemTypeChip } from "components/Icons";
 
 

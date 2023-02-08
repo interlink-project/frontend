@@ -1,6 +1,6 @@
 import {
   alpha, Typography
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   TreeItem, treeItemClasses, useTreeItem
 } from '@material-ui/lab';

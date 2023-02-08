@@ -1,4 +1,4 @@
-import { Alert, Avatar, Box, Button, Chip, FormControl, Grid, IconButton, Input, InputLabel, MenuItem, Select, Skeleton, Stack, Switch, Tab, Table, TableBody, TableCell, TableHead, TableRow, Tabs, TextField, Typography } from '@material-ui/core';
+import { Alert, Avatar, Box, Button, Chip, FormControl, Grid, IconButton, Input, InputLabel, MenuItem, Select, Skeleton, Stack, Switch, Tab, Table, TableBody, TableCell, TableHead, TableRow, Tabs, TextField, Typography } from '@mui/material';
 import { Add, Delete, Edit, People, Save } from '@material-ui/icons';
 import { LoadingButton } from '@material-ui/lab';
 import CentricCircularProgress from 'components/CentricCircularProgress';

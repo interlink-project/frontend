@@ -1,7 +1,7 @@
 import {
   Alert, Avatar, LinearProgress, Menu, MenuItem, Paper, TextField, Button, Snackbar, IconButton, Dialog,
 DialogActions, DialogContent, DialogContentText, DialogTitle
-} from '@material-ui/core';
+} from '@mui/material';
 import { Info } from '@material-ui/icons';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';

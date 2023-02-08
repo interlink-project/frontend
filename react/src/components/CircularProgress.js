@@ -3,7 +3,7 @@ import {
   Box,
   Typography,
   CircularProgress,
-} from '@material-ui/core';
+} from '@mui/material';
 import colorScale from '../utils/colorScale';
 
 function CircularProgressWithLabel({ size, value, sx }) {

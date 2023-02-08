@@ -1,7 +1,7 @@
 import {
   Chip,
   IconButton
-} from '@material-ui/core';
+} from '@mui/material';
 import { AccessTime, Check, Done, Loop, Warning } from '@material-ui/icons';
 
 export const InProgressIcon = () => (

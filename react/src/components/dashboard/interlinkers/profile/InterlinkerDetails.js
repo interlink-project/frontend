@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Card, CardContent, Chip, Divider, Grid, Link, Paper, Stack, Tab, Tabs, Typography } from '@material-ui/core';
+import { Alert, Box, Button, Card, CardContent, Chip, Divider, Grid, Link, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { NatureChip, OfficialityChip } from 'components/Icons';
 import {
   InterlinkerReference,

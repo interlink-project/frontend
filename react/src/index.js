@@ -1,5 +1,5 @@
 import { createInstance, MatomoProvider } from '@datapunt/matomo-tracker-react';
-import StyledEngineProvider from '@material-ui/core/StyledEngineProvider';
+import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
 import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
 import { REACT_APP_COMPLETE_DOMAIN, REACT_APP_MATOMO_ID } from 'configuration';

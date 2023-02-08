@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Box, Button, Card, CardContent, Grid, Paper, Rating, TextField, Typography, Stack, CircularProgress, Dialog } from '@material-ui/core';
+import { Box, Button, Card, CardContent, Grid, Paper, Rating, TextField, Typography, Stack, CircularProgress, Dialog } from '@mui/material';
 import InterlinkerReviewCard from './InterlinkerReviewCard';
 import { useEffect, useState } from 'react';
 import axiosInstance from 'axiosInstance';

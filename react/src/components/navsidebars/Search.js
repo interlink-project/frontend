@@ -8,7 +8,7 @@ import {
   Typography,
   IconButton,
   InputBase
-} from '@material-ui/core';
+} from '@mui/material';
 import { Search as SearchIcon, Menu as MenuIcon } from '@material-ui/icons';
 import { useTranslation } from 'react-i18next';
 

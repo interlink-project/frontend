@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup, Box, Button, Chip, Container, Divider, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Avatar, AvatarGroup, Box, Button, Chip, Container, Divider, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { Add, Folder } from '@material-ui/icons';
 import { LoadingButton } from '@material-ui/lab';
 import AuthGuardSkeleton from 'components/guards/AuthGuardSkeleton';

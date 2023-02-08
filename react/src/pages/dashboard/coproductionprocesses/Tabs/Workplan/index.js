@@ -1,4 +1,4 @@
-import { Grid, Skeleton, ToggleButton, ToggleButtonGroup } from '@material-ui/core';
+import { Grid, Skeleton, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import ProcessPhaseTabs from 'components/dashboard/tree/ProcessPhaseTabs';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import useSettings from 'hooks/useSettings';

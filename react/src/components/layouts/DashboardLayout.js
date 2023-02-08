@@ -1,5 +1,5 @@
-import { useMediaQuery, useTheme } from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
+import { useMediaQuery, useTheme } from '@mui/material';
+import { experimentalStyled } from '@mui/material/styles';
 import ProcessSidebar from 'components/navsidebars/ProcessSidebar';
 import useAuth from 'hooks/useAuth';
 import { useState } from 'react';

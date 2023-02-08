@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Card, CardActionArea, CardMedia, Container, Grid, IconButton, Stack, TextField, Typography } from '@material-ui/core';
+import { Alert, Box, Button, Card, CardActionArea, CardMedia, Container, Grid, IconButton, Stack, TextField, Typography } from '@mui/material';
 import { Add, Delete } from '@material-ui/icons';
 import useAuth from 'hooks/useAuth';
 import useSettings from 'hooks/useSettings';

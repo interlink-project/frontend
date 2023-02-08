@@ -2,7 +2,7 @@ import {
     Avatar,
     Box, Card, CardHeader, Chip, Grid, Link,
     Rating, Typography
-  } from '@material-ui/core';
+  } from '@mui/material';
   //import { NatureChip } from 'components/Icons';
   import SwipeableTextMobileStepper from 'components/SwipeableTextMobileStepper';
   import { formatDistanceToNowStrict } from 'date-fns';

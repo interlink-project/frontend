@@ -1,5 +1,5 @@
-import { AppBar, Box, Button, IconButton, Toolbar, Typography, useMediaQuery, useTheme } from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
+import { AppBar, Box, Button, IconButton, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { experimentalStyled } from '@mui/material/styles';
 import { Search } from '@material-ui/icons';
 import { DashboardNavbarLogo } from 'components/Logo';
 import useSettings from 'hooks/useSettings';

@@ -2,7 +2,7 @@ import { useMatomo } from '@datapunt/matomo-tracker-react';
 import {
   Alert, Grid,
   Box, Button, Chip, Divider, IconButton, Link, Stack, TextField, ToggleButton, ToggleButtonGroup, Typography,Select, MenuItem,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Edit } from '@material-ui/icons';
 import {
   DesktopDateRangePicker, LoadingButton

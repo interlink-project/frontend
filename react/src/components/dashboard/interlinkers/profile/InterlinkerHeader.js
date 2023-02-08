@@ -1,4 +1,4 @@
-import { Avatar, Button, Rating, Snackbar, Stack, Typography } from '@material-ui/core';
+import { Avatar, Button, Rating, Snackbar, Stack, Typography } from '@mui/material';
 import { Share } from '@material-ui/icons';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import { useState } from 'react';

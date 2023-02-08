@@ -9,8 +9,8 @@ import {
   ListItemText,
   Skeleton,
   Typography
-} from '@material-ui/core';
-import { alpha, useTheme } from '@material-ui/core/styles';
+} from '@mui/material';
+import { alpha, useTheme } from '@mui/material/styles';
 import { AllInclusive, Build } from '@material-ui/icons';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';

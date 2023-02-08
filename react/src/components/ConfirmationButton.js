@@ -1,4 +1,4 @@
-import { Box, Popover, Typography } from '@material-ui/core';
+import { Box, Popover, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
 const ConfirmationButton = ({ text, Actionator, ButtonComponent, onClick }) => {

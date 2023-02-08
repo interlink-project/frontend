@@ -10,7 +10,7 @@ import {
   StepLabel,
   Stepper,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import CreateSchema from "components/dashboard/SchemaSelector";
 import useAuth from "hooks/useAuth";
@@ -19,7 +19,7 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/material/styles";
 
 import {
   Timeline,

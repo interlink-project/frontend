@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useTheme } from '@material-ui/core/styles';
-import { Box, MobileStepper, Paper, Typography, Button } from '@material-ui/core';
+import { useTheme } from '@mui/material/styles';
+import { Box, MobileStepper, Paper, Typography, Button } from '@mui/material';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';

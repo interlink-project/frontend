@@ -1,4 +1,4 @@
-import { AppBar, Box, Paper, Tab, Tabs, Typography } from '@material-ui/core';
+import { AppBar, Box, Paper, Tab, Tabs, Typography } from '@mui/material';
 import { AccountTree, OpenInNew } from '@material-ui/icons';
 import { AssetsTable } from 'components/dashboard/assets';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';

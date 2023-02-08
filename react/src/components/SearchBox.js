@@ -1,4 +1,4 @@
-import { Box, Card, Input, LinearProgress } from '@material-ui/core';
+import { Box, Card, Input, LinearProgress } from '@mui/material';
 import { Search } from '@material-ui/icons';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import { getLanguage } from 'translations/i18n';

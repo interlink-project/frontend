@@ -1,5 +1,5 @@
 import { useMatomo } from '@datapunt/matomo-tracker-react';
-import { Box, Collapse, Grid, ToggleButton, ToggleButtonGroup, Typography } from '@material-ui/core';
+import { Box, Collapse, Grid, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { List, ViewModule } from '@material-ui/icons';
 import { LoadingButton } from '@material-ui/lab';
 

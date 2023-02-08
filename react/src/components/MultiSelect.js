@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Checkbox, FormControlLabel, Menu, MenuItem } from '@material-ui/core';
+import { Button, Checkbox, FormControlLabel, Menu, MenuItem } from '@mui/material';
 import ChevronDownIcon from '../icons/ChevronDown';
 
 const MultiSelect = (props) => {

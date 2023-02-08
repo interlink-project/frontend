@@ -4,7 +4,7 @@ import {
   List,
   ListItem,
   ListItemAvatar, ListItemSecondaryAction, ListItemText, MenuItem, MobileStepper, Select, TextField, Typography, useTheme
-} from '@material-ui/core';
+} from '@mui/material';
 import { Close, Delete, KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 import { LoadingButton } from '@material-ui/lab';
 import { TEAM_TYPES } from '../../../constants';

@@ -1,7 +1,7 @@
 import {
  Button,Dialog, DialogContent,Alert, Avatar, Box, CircularProgress, Fade, Grow, IconButton, LinearProgress, ListItemIcon, ListItemText, Menu,
   MenuItem, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, Zoom, TableSortLabel
-} from '@material-ui/core';
+} from '@mui/material';
 import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@material-ui/icons';
 
 import { Article, MoreVert as MoreVertIcon, ShowChart } from '@material-ui/icons';

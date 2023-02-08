@@ -1,7 +1,7 @@
 import {
   Box,
   Button, IconButton, Popover, TextField, Tooltip
-} from '@material-ui/core';
+} from '@mui/material';
 import { Settings } from '@material-ui/icons';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';

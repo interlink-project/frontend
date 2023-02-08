@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup, Box, SvgIcon } from '@material-ui/core';
+import { Avatar, AvatarGroup, Box, SvgIcon } from '@mui/material';
 import { People } from '@material-ui/icons';
 import { TreeView } from '@material-ui/lab';
 import { statusIcon, TreeItemTypeChip } from 'components/Icons';

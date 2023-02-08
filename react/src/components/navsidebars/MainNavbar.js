@@ -4,7 +4,7 @@ import {
   IconButton,
   Link,
   Toolbar
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
