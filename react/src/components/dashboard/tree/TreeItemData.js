@@ -107,9 +107,15 @@ const TreeItemData = ({ language, processId, element, assets }) => {
       action: 'update-treeitem',
       name: element.id,
     });
+
+    if(selectedTreeItem.status=='finished' &&  development !== element.development){
+      alert('The status of the task is finished, the complexity values can not be modified.');
+    }else{
     apis[element.type].update(element.id, data).then(() => {
       update(element.id);
     });
+  }
+
   };
 
   const update = (selectedTreeItemId) => {

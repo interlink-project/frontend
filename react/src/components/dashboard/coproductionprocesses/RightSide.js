@@ -540,7 +540,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                       initialValues={{
                         title: '',
                         description: '',
-                        claim_type:'',
+                        
                       }}
                       validationSchema={Yup.object().shape({
                         title: Yup.string()
@@ -549,11 +549,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                           .required('Required'),
                         description: Yup.string()
                           .min(3, 'Must be at least 3 characters')
-                          .required('Required'),
-                        claim_type: Yup.string()
-                          .min(3, 'Must be at least 3 characters')
-                          .max(255)
-                          .required('Required'),
+                          .required('Required')
                       })}
                       onSubmit={(values, { setErrors, setStatus, setSubmitting }) => {
                         setSubmitting(true);
@@ -597,7 +593,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                           notification_event:'add_contribution_asset',
                           asset_id:selectedAsset.id,
                           parameters: paramListJson,
-                          claim_type: values.claim_type
+                          claim_type: 'Development'
                           
                         };
 
@@ -617,7 +613,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                           setSubmitting(false);
                         });
 
-
+                      
                       }}
                     >
                       {({
@@ -668,7 +664,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                               variant='outlined'
                             />
 
-                            <TextField
+                            {/* <TextField
                               required
                               sx={{ mt: 2 }}
                               select
@@ -688,7 +684,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                                       <MenuItem value="Exploitation">{t('Exploitation')}</MenuItem>
 
                                       
-                                    </TextField>
+                                    </TextField> */}
                             <LoadingButton
                               sx={{ mt: 2 }}
                               variant='contained'
