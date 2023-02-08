@@ -90,6 +90,7 @@ const SuccessCatalogue = () => {
               //   action: 'story-open',
               //   name: story.id
               // });
+              alert('Le dio un click en la story');
               setStory(story);
               handleClickOpen();
             }}

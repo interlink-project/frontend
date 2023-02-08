@@ -99,7 +99,7 @@ const StoryResults = ({ loading: propLoading = null, setLoading: propSetLoading 
 
 }
   
-  ]
+  ];
     setLoadedRows(dataStories);       
     setLoading(false);
     setPage(page + 1);

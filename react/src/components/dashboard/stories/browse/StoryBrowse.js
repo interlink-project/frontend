@@ -1,8 +1,9 @@
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { Box } from '@material-ui/core';
-//import { InterlinkerBrowseFilter } from 'components/dashboard/interlinkers';
+
 import { useState } from 'react';
 import { getLanguage } from 'translations/i18n';
+import StoryBrowseFilter from './StoryBrowseFilter';
 import StoryResults from './StoryResults';
 
 // const initialDefaultFilters = {
@@ -32,12 +33,12 @@ const StoryBrowse = ({ language = getLanguage(), initialFilters = {}, onStoryCli
   return (
     <>
       <Box sx={{ mt: 3 }}>
-        {/* <InterlinkerBrowseFilter
+        <StoryBrowseFilter
           loading={loading}
           language={language}
           filters={filters}
           onFiltersChange={setFilters}
-        /> */}
+        />
       </Box>
 
       <Box sx={{ mt: 6 }}>

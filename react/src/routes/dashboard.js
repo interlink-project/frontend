@@ -7,6 +7,9 @@ import OrganizationProfileSolo from 'components/dashboard/organizations/Organiza
 const CoproductionProcessProfile = Loadable(
   lazy(() => import('../pages/dashboard/coproductionprocesses/CoproductionProcessProfile'))
 );
+const StoryProfile = Loadable(
+  lazy(() => import('../pages/dashboard/stories/StoryProfile'))
+);
 const Settings = Loadable(
   lazy(() => import('../pages/dashboard/settings/index'))
 );
@@ -44,8 +47,6 @@ export const routes = [
         path: 'settings',
         element: <Settings />,
       },
-
-
       {
         path: 'coproductionprocesses/:processId',
         children: [
@@ -57,6 +58,20 @@ export const routes = [
           {
             path: ':tab',
             element: <AuthGuard><CoproductionProcessProfile /></AuthGuard>
+          },
+        ]
+      },
+      {
+        path: 'stories/:storyId',
+        children: [
+          {
+            path: '',
+            element: <AuthGuard><StoryProfile /></AuthGuard>
+            ,
+          },
+          {
+            path: ':tab',
+            element: <AuthGuard><StoryProfile /></AuthGuard>
           },
         ]
       },
@@ -95,8 +110,8 @@ export const routes = [
             element: <SuccessCatalogue />,
           },
           {
-            path: ':interlinkerId',
-            element: <InterlinkerProfile />,
+            path: ':storyId',
+            element: <StoryProfile />,
           },
         ],
       },

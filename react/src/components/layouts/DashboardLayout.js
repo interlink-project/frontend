@@ -74,6 +74,7 @@ const DashboardLayout = () => {
   return (
     <DashboardLayoutRoot>
       {coproductionProcessLocation && (
+      
       <ProcessSidebar
         onMobileClose={() => setIsSidebarMobileOpen(false)}
         openMobile={!onMobile && isSidebarMobileOpen}
