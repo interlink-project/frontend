@@ -446,18 +446,6 @@ const TreeItemData = ({ language, processId, element, assets }) => {
       
       <>
       
-      <Typography
-        variant='h6'
-        sx={{ mt: 2 }}
-      >
-        {t('Levels of Participation')}
-
-        <BasicEditingGrid>
-          
-        </BasicEditingGrid>
-
-      </Typography>
-      
       <ul>
       { taskDataContributions && taskDataContributions['assetsWithContribution']?.map((asset) => {
         const hasContribution=asset.contributors.length;

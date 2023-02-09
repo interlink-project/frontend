@@ -3,7 +3,7 @@ import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowD
 import { LoadingButton } from '@mui/lab';
 import { AssetsTable } from 'components/dashboard/assets';
 import InterlinkerBrowse from 'components/dashboard/interlinkers/browse/InterlinkerBrowse';
-import { TreeItemData } from 'components/dashboard/tree';
+import { ContributionsTabs, TreeItemData } from 'components/dashboard/tree';
 import PermissionsTable from 'components/dashboard/tree/PermissionsTable';
 import { Formik } from 'formik';
 import useDependantTranslation from 'hooks/useDependantTranslation';
@@ -782,14 +782,14 @@ const RightSide = ({ softwareInterlinkers }) => {
             </>
           )}
           {tabValue === 'contributions' && (
-            <PermissionsTable
-              your_permissions={permissions && permissions.your_permissions}
-              your_roles={permissions && permissions.your_roles}
-              onChanges={() => dispatch(getProcess(process.id, false, selectedTreeItem.id))}
-              language={process.language}
-              processId={process.id}
-              element={selectedTreeItem}
-              isAdministrator={isAdministrator}
+            <ContributionsTabs
+              // your_permissions={permissions && permissions.your_permissions}
+              // your_roles={permissions && permissions.your_roles}
+              // onChanges={() => dispatch(getProcess(process.id, false, selectedTreeItem.id))}
+              // language={process.language}
+              // processId={process.id}
+              // element={selectedTreeItem}
+              // isAdministrator={isAdministrator}
             />
           )}
 
