@@ -222,7 +222,7 @@ const SettingsTab = () => {
       <Grid
                 container
                 direction='row'
-                justifyContent='center'
+                justifyContent='right'
                 spacing={2}
               >
       {!editMode && isAdministrator && (
@@ -300,7 +300,7 @@ const SettingsTab = () => {
               <Grid
                 container
                 direction='row'
-                justifyContent='center'
+                justifyContent='right'
                 spacing={2}
               >
               {editMode && (
