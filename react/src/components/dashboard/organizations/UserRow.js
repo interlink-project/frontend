@@ -1,5 +1,5 @@
 import { Avatar, CircularProgress, IconButton, ListItemIcon, ListItemText, Menu, MenuItem, Skeleton, TableCell, TableRow } from '@mui/material';
-import { MoreVert } from '@material-ui/icons';
+import { MoreVert } from '@mui/icons-material';
 import useAuth from 'hooks/useAuth';
 import useMounted from 'hooks/useMounted';
 import moment from 'moment';

@@ -4,7 +4,7 @@ import { interlinkersApi } from '__api__';
 import InterlinkerDetails from './InterlinkerDetails';
 import InterlinkerHeader from './InterlinkerHeader';
 import useMounted from 'hooks/useMounted';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
 
 const InterlinkerDialog = ({ language, open, setOpen, interlinker }) => {
   const [data, setData] = useState(null);

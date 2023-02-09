@@ -3,10 +3,10 @@ import {
   Alert, Grid,
   Box, Button, Chip, Divider, IconButton, Link, Stack, TextField, ToggleButton, ToggleButtonGroup, Typography,Select, MenuItem,
 } from '@mui/material';
-import { Edit } from '@material-ui/icons';
+import { Edit } from '@mui/icons-material';
 import {
   DesktopDateRangePicker, LoadingButton
-} from '@material-ui/lab';
+} from '@mui/lab';
 import ConfirmationButton from 'components/ConfirmationButton';
 import { FinishedIcon, InProgressIcon } from 'components/dashboard/assets';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
@@ -19,6 +19,7 @@ import { tree_items_translations } from 'utils/someCommonTranslations';
 import { objectivesApi, phasesApi, tasksApi } from '__api__';
 import { AwaitingIcon, statusIcon, StatusText } from '../../Icons';
 import { coproductionprocessnotificationsApi } from '__api__';
+import BasicEditingGrid from 'components/dashboard/tree/BasicEditingGrid';
 
 
 const apis = {
@@ -450,6 +451,10 @@ const TreeItemData = ({ language, processId, element, assets }) => {
         sx={{ mt: 2 }}
       >
         {t('Levels of Participation')}
+
+        <BasicEditingGrid>
+          
+        </BasicEditingGrid>
 
       </Typography>
       

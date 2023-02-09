@@ -4,7 +4,7 @@ import InterlinkerReviewCard from './InterlinkerReviewCard';
 import { useEffect, useState } from 'react';
 import axiosInstance from 'axiosInstance';
 import { ratingsApi } from '__api__/catalogue/ratingsApi';
-import { LoadingButton } from '@material-ui/lab';
+import { LoadingButton } from '@mui/lab';
 import useAuth from 'hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 

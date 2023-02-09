@@ -20,12 +20,12 @@ import ChatAltIcon from '../../icons/ChatAlt';
 import CreditCardIcon from '../../icons/CreditCard';
 import ShoppingCartIcon from '../../icons/ShoppingCart';
 
-import GroupsIcon from '@material-ui/icons/Groups';
-import AddchartIcon from '@material-ui/icons/Addchart';
-import ArticleIcon from '@material-ui/icons/Article';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
+import GroupsIcon from '@mui/icons-material/Groups';
+import AddchartIcon from '@mui/icons-material/Addchart';
+import ArticleIcon from '@mui/icons-material/Article';
+import LaptopMacIcon from '@mui/icons-material/LaptopMac';
 
-import { makeStyles, withStyles } from "@mui/material/styles";
+import { makeStyles, withStyles } from "@mui/styles";
 import MuiListItem from "@mui/material/ListItem";
 import {  useDispatch, useSelector } from 'react-redux';
 

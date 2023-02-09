@@ -1,6 +1,6 @@
 import { Box, Container, Grid, Typography } from '@mui/material';
-import { Add } from '@material-ui/icons';
-import { LoadingButton } from '@material-ui/lab';
+import { Add } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import useAuth from 'hooks/useAuth';
 import useMounted from 'hooks/useMounted';
 import React from 'react';

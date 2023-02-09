@@ -11,7 +11,7 @@ import {
   Typography
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
-import { AllInclusive, Build } from '@material-ui/icons';
+import { AllInclusive, Build } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';

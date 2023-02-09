@@ -3,8 +3,8 @@ import {
 } from '@mui/material';
 import {
   TreeItem, treeItemClasses, useTreeItem
-} from '@material-ui/lab';
-import { styled } from '@material-ui/styles';
+} from '@mui/lab';
+import { styled } from '@mui/styles';
 import clsx from 'clsx';
 import { forwardRef } from 'react';
 

@@ -2,7 +2,7 @@ import {
   Alert, Avatar, LinearProgress, Menu, MenuItem, Paper, TextField, Button, Snackbar, IconButton, Dialog,
 DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material';
-import { Info } from '@material-ui/icons';
+import { Info } from '@mui/icons-material';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useRef, useState } from 'react';

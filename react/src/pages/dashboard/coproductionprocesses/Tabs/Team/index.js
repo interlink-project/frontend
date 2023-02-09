@@ -1,6 +1,6 @@
 import { Alert, Avatar, Box, Button, Card, CardActionArea, CardHeader, Grid, IconButton, List, ListItem, Paper, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import { green, red } from '@mui/material/colors';
-import { Add, ArrowForward, CheckOutlined, Close, Delete, Edit } from '@material-ui/icons';
+import { Add, ArrowForward, CheckOutlined, Close, Delete, Edit } from '@mui/icons-material';
 import { OrganizationChip, TreeItemTypeChip } from 'components/Icons';
 import TeamAvatar from 'components/TeamAvatar';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router';
 import { getProcess, setSelectedTreeItem } from 'slices/process';
 import PermissionCreate from 'components/dashboard/coproductionprocesses/PermissionCreate';
 import ConfirmationButton from 'components/ConfirmationButton';
-import { LoadingButton } from '@material-ui/lab';
+import { LoadingButton } from '@mui/lab';
 import { permissionsApi } from '__api__';
 
 function TeamRow({ t, team, process, treeitems, setSelectedTeam, setSelectedTreeItem }) {

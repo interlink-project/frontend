@@ -1,5 +1,5 @@
 import { Alert, Box, Button, Card, CardActionArea, CardMedia, Container, Grid, IconButton, Stack, TextField, Typography } from '@mui/material';
-import { Add, Delete } from '@material-ui/icons';
+import { Add, Delete } from '@mui/icons-material';
 import useAuth from 'hooks/useAuth';
 import useSettings from 'hooks/useSettings';
 import { useEffect, useState } from 'react';

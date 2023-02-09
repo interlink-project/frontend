@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BottomNavigation, BottomNavigationAction, Badge } from '@mui/material';
-import { AccountBox, Folder, Dashboard, Notifications } from '@material-ui/icons';
+import { AccountBox, Folder, Dashboard, Notifications } from '@mui/icons-material';
 import { grey } from '@mui/material/colors';
 
 const sections = [{

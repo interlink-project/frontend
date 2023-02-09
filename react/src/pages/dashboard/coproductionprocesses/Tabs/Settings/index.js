@@ -1,7 +1,7 @@
 import { Alert, Avatar, Box,Switch, Button, Card, CardHeader, Grid, IconButton, Input, Stack, TextField as MuiTextField, FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material';
-import { Delete, Edit, Save } from '@material-ui/icons';
+import { Delete, Edit, Save } from '@mui/icons-material';
 import ConfirmationButton from 'components/ConfirmationButton';
-import { LoadingButton } from '@material-ui/lab';
+import { LoadingButton } from '@mui/lab';
 import UsersList from 'components/dashboard/organizations/UsersList';
 import { Form, Formik } from 'formik';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';

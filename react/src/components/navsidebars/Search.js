@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled } from '@material-ui/styles';
+import { styled } from '@mui/styles';
 import {
   Box,
   AppBar,
@@ -9,7 +9,7 @@ import {
   IconButton,
   InputBase
 } from '@mui/material';
-import { Search as SearchIcon, Menu as MenuIcon } from '@material-ui/icons';
+import { Search as SearchIcon, Menu as MenuIcon } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 
 const Search = styled('div')(({ theme }) => ({

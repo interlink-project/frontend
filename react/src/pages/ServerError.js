@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Box, Button, Container, Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/styles';
 
 const ServerError = () => {
   const theme = useTheme();

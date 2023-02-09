@@ -1,5 +1,5 @@
 import { Avatar, Button, Rating, Snackbar, Stack, Typography } from '@mui/material';
-import { Share } from '@material-ui/icons';
+import { Share } from '@mui/icons-material';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import { useState } from 'react';
 

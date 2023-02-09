@@ -1,6 +1,6 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-import { KeyboardArrowRight } from '@material-ui/icons';
-import { LoadingButton } from '@material-ui/lab';
+import { KeyboardArrowRight } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

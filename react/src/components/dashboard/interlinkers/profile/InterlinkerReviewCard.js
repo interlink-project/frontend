@@ -1,5 +1,5 @@
 import { Avatar, Box, Card, CardHeader, IconButton, Link, Rating, Typography } from '@mui/material';
-import { Edit } from '@material-ui/icons';
+import { Edit } from '@mui/icons-material';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import { useState } from 'react';

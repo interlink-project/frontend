@@ -3,7 +3,7 @@ import {
   Button, Dialog, DialogContent, DialogTitle, Divider, FormControlLabel, IconButton, Popover, Switch, Toolbar, Tooltip,
   Typography
 } from '@mui/material';
-import { Close, Help, OpenInNew } from '@material-ui/icons';
+import { Close, Help, OpenInNew } from '@mui/icons-material';
 import { Component, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getLanguage } from 'translations/i18n';

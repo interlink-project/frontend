@@ -1,7 +1,7 @@
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { Box, Collapse, Grid, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import { List, ViewModule } from '@material-ui/icons';
-import { LoadingButton } from '@material-ui/lab';
+import { List, ViewModule } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';

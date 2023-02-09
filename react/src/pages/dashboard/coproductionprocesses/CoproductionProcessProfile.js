@@ -5,7 +5,7 @@ import {
   useTheme
 } from '@mui/material';
 import { red } from '@mui/material/colors';
-import { MoreVert } from '@material-ui/icons';
+import { MoreVert } from '@mui/icons-material';
 import MainSkeleton from 'components/MainSkeleton';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import { useCallback, useEffect } from 'react';

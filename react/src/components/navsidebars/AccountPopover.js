@@ -6,7 +6,7 @@ import {
   Divider, Popover,
   Typography
 } from '@mui/material';
-import { Login } from '@material-ui/icons';
+import { Login } from '@mui/icons-material';
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';

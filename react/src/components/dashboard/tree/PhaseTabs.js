@@ -13,7 +13,7 @@ const PhaseTabs = ({ t, loading = false, selectedId, phases, onSelect, extra = n
                 indicatorColor="secondary"
                 onChange={(event, value) => onSelect(value)}
                 value={selectedId || phases[0].id}
-                centered
+                // centered
                 variant="scrollable"
                 textColor="inherit"
                 aria-label="Coproduction phases tabs"

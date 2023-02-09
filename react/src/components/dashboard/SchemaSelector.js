@@ -1,7 +1,7 @@
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import { Alert, Box, Button, Chip, Grid, Rating, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { ArrowBack, ArrowForward, RemoveRedEye } from '@material-ui/icons';
-import { LoadingButton } from '@material-ui/lab';
+import { ArrowBack, ArrowForward, RemoveRedEye } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import CentricCircularProgress from 'components/CentricCircularProgress';
 import { InterlinkerResults } from 'components/dashboard/interlinkers';
 import { PhaseTabs, StyledTree } from 'components/dashboard/tree';

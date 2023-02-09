@@ -1,5 +1,5 @@
 import { Box, Card, Input, LinearProgress } from '@mui/material';
-import { Search } from '@material-ui/icons';
+import { Search } from '@mui/icons-material';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import { getLanguage } from 'translations/i18n';
 

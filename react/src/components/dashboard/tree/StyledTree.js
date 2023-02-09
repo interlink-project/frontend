@@ -1,6 +1,6 @@
 import { Avatar, AvatarGroup, Box, SvgIcon } from '@mui/material';
-import { People } from '@material-ui/icons';
-import { TreeView } from '@material-ui/lab';
+import { People } from '@mui/icons-material';
+import { TreeView } from '@mui/lab';
 import { statusIcon, TreeItemTypeChip } from 'components/Icons';
 import { StyledTreeItem } from 'components/dashboard/tree';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';

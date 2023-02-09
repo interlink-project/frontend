@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Outlet } from 'react-router-dom';
-import { experimentalStyled } from '@mui/material/styles';
+import { styled } from '@mui/styles';
 import MainNavbar from '../navsidebars/MainNavbar';
 import MainSidebar from '../navsidebars/MainSidebar';
 
-const MainLayoutRoot = experimentalStyled('div')(({ theme }) => ({
+const MainLayoutRoot = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   height: '100%',
   paddingTop: 64
