@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router';
 import { getProcess, updateProcess } from 'slices/process';
 import * as Yup from 'yup';
 import { coproductionProcessesApi } from '__api__';
+import { withStyles } from '@material-ui/core/styles';
 
 const SettingsTab = () => {
   const[isCloning, setIsCloning] = useState(false);
@@ -113,11 +114,21 @@ const SettingsTab = () => {
         console.error(err);
        
       }
- 
-
-
-
   };
+
+  const GoldSwitch = withStyles({
+    switchBase: {
+      color: '#6f7598',
+      '&$checked': {
+        color: '#b2b200',
+      },
+      '&$checked + $track': {
+        backgroundColor: '#b2b1a1',
+      },
+    },
+    checked: {},
+    track: {},
+  })(Switch);
 
   return (
     <Box style={{ minHeight: '87vh', backgroundColor: 'background.default' }}>
@@ -204,7 +215,28 @@ const SettingsTab = () => {
 
         )}
       />
+
+
+
       <Box sx={{ mx: 4 }}>
+      <Grid
+                container
+                direction='row'
+                justifyContent='center'
+                spacing={2}
+              >
+      {!editMode && isAdministrator && (
+          <Button
+            sx={{ mb: 3, justifyContent: 'right', textAlign: 'center' }}
+            variant='contained'
+            color='primary'
+            onClick={() => setEditMode(true)}
+            startIcon={<Edit />}
+          >
+            {t('Edit coproduction process')}
+          </Button>
+        )}
+        </Grid>
 
         <Formik
           initialValues={{
@@ -265,6 +297,45 @@ const SettingsTab = () => {
             values
           }) => (
             <Form>
+              <Grid
+                container
+                direction='row'
+                justifyContent='center'
+                spacing={2}
+              >
+              {editMode && (
+                <Stack
+                  direction='row'
+                  spacing={2}
+                  sx={{ justifyContent: 'right', mt: 3, mb: 2 }}
+                >
+                  <Button
+                    variant='contained'
+                    disabled={isSubmitting}
+                    color='warning'
+                    size='medium'
+                    startIcon={<Delete />}
+                    onClick={() => { setEditMode(false); resetForm(); setLogotype(null); }}
+                  >
+                    {t('Cancel')}
+                  </Button>
+                  <Button
+                    variant='contained'
+                    disabled={isSubmitting}
+                    color='success'
+                    size='large'
+                    startIcon={<Save />}
+                    onClick={submitForm}
+                    disabled={!isValid}
+                  >
+                    {t('Save')}
+                  </Button>
+                </Stack>
+              )}
+              </Grid>
+              
+
+
               <Grid
                 container
                 direction='row'
@@ -403,57 +474,18 @@ const SettingsTab = () => {
                 </Grid>
 
               </Grid>
-              {editMode && (
-                <Stack
-                  direction='row'
-                  spacing={2}
-                  sx={{ justifyContent: 'center', mt: 3, mb: 2 }}
-                >
-                  <Button
-                    variant='contained'
-                    disabled={isSubmitting}
-                    color='warning'
-                    size='medium'
-                    startIcon={<Delete />}
-                    onClick={() => { setEditMode(false); resetForm(); setLogotype(null); }}
-                  >
-                    {t('Cancel')}
-                  </Button>
-                  <Button
-                    variant='contained'
-                    disabled={isSubmitting}
-                    color='success'
-                    size='large'
-                    startIcon={<Save />}
-                    onClick={submitForm}
-                    disabled={!isValid}
-                  >
-                    {t('Save')}
-                  </Button>
-                </Stack>
-              )}
+              
             </Form>
           )}
         </Formik>
-        {!editMode && isAdministrator && (
-          <Button
-            sx={{ mt: 3, justifyContent: 'center', textAlign: 'center' }}
-            variant='contained'
-            color='primary'
-            onClick={() => setEditMode(true)}
-            startIcon={<Edit />}
-          >
-            {t('Edit coproduction process')}
-          </Button>
-        )}
-
+        
         <Card sx={{ border: '1px solid red', p: 5, my: 4 }}>
-          <Typography variant='h6'>
+          <Typography variant='h5'  sx={{fontWeight: 'bold',mb:0}}>
             {t('Administrators of the coproduction process')}
           </Typography>
           <Alert
             severity='error'
-            sx={{ my: 3 }}
+            sx={{ my: 2 }}
           >
             {t('Administrators of a co-production process can edit the co-production tree, assign new permissions to teams and even delete the co-production process. Be careful who you assign as an administrator.')}
           </Alert>
@@ -475,12 +507,12 @@ const SettingsTab = () => {
           />
         </Card>
         <Card sx={{ border: '1px solid red', p: 5, my: 4 }}>
-          <Typography variant='h6'>
+          <Typography variant='h5'  sx={{fontWeight: 'bold',mb:0}}>
             {t('Clear coproduction process tree')}
           </Typography>
           <Alert
             severity='error'
-            sx={{ mt: 3 }}
+            sx={{ mt: 2 }}
             action={(
               <ConfirmationButton
 
@@ -517,12 +549,12 @@ const SettingsTab = () => {
           <Box sx={{ mt: 2 }} />
         </Card>
         <Card sx={{ border: '1px solid red', p: 5, my: 4 }}>
-          <Typography variant='h6'>
+          <Typography variant='h5'  sx={{fontWeight: 'bold',mb:0}}>
             {t('Delete coproduction process')}
           </Typography>
           <Alert
             severity='error'
-            sx={{ mt: 3 }}
+            sx={{ mt: 2 }}
             action={(
               <ConfirmationButton
 
@@ -558,8 +590,8 @@ const SettingsTab = () => {
         </Card>
 
         {/* Cloning coprod */}
-        <Card sx={{ border: '1px solid yellow', p: 5, my: 4 }}>
-          <Typography variant='h6'>
+        <Card sx={{ border: '1px solid red', p: 5, my: 4 }}>
+          <Typography variant='h5'  sx={{fontWeight: 'bold',mb:0}}>
             {t('Copy coproduction process')}
           </Typography>
           <Alert
@@ -600,16 +632,18 @@ const SettingsTab = () => {
           </Alert>
         </Card>
        {/* Cloning coprod */}
-       <Card  sx={{ border: '1px solid red', p: 5, my: 4 }}>
-          <Typography variant='h6'>
-            {t('Activate Incentivization and Rewards')}
+       <Card  sx={{ border: '1px solid #b2b200', p: 5, my: 4 }}>
+          <Typography variant='h5'  sx={{fontWeight: 'bold',mb:0}}>
+            {t('Reward system')}
           </Typography>
           <Alert
             severity='info'
-            sx={{ mt: 3 }}
+            
+          
+            sx={{ mt: 2}}
             action={(
               <>
-              <Switch
+              <GoldSwitch
                 checked={isIncentiveModuleActive}
                 onChange={toggleIncentivesRewards}
                 name="incentiveSwitch"
@@ -621,7 +655,7 @@ const SettingsTab = () => {
               </>
             )}
           >
-            {t('The activation will allow incentives and rewards to be given to the collaborators of the process.')}
+            {t('If you disable the Reward system every data will be deleted, so if you want to enable again this option, you will not able to restore the old data.')}
           </Alert>
         </Card>
 
