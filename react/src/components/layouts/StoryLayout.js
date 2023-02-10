@@ -1,6 +1,6 @@
 import { useMediaQuery, useTheme } from '@material-ui/core';
 import { experimentalStyled } from '@material-ui/core/styles';
-import ProcessSidebar from 'components/navsidebars/ProcessSidebar';
+//import ProcessSidebar from 'components/navsidebars/ProcessSidebar';
 import StorySidebar from 'components/navsidebars/StorySidebar';
 import useAuth from 'hooks/useAuth';
 import { useState } from 'react';
@@ -8,7 +8,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import DashboardMobileAppbar from '../navsidebars/DashboardMobileAppbar';
 import DashboardNavbar from '../navsidebars/DashboardNavbar';
 
-const DashboardLayoutRoot = experimentalStyled('div')(({ theme }) => ({
+const StoryLayoutRoot = experimentalStyled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   display: 'flex',
   height: '100%',
@@ -16,7 +16,7 @@ const DashboardLayoutRoot = experimentalStyled('div')(({ theme }) => ({
   width: '100%',
 }));
 
-const DashboardLayoutWrapperWithNavbar = experimentalStyled('div')(({ theme }) => ({
+const StoryLayoutWrapperWithNavbar = experimentalStyled('div')(({ theme }) => ({
   display: 'flex',
   flex: '1 1 auto',
   overflow: 'hidden',
@@ -34,20 +34,20 @@ const MobileLayoutWrapper = experimentalStyled('div')(({ theme }) => ({
 
 }));
 
-const DashboardLayoutWrapper = experimentalStyled('div')(({ theme }) => ({
+const StoryLayoutWrapper = experimentalStyled('div')(({ theme }) => ({
   display: 'flex',
   flex: '1 1 auto',
   overflow: 'hidden',
   paddingTop: '64px',
 }));
 
-const DashboardLayoutContainer = experimentalStyled('div')({
+const StoryLayoutContainer = experimentalStyled('div')({
   display: 'flex',
   flex: '1 1 auto',
   overflow: 'hidden'
 });
 
-const DashboardLayoutContent = experimentalStyled('div')({
+const StoryLayoutContent = experimentalStyled('div')({
   flex: '1 1 auto',
   height: '100%',
   overflow: 'auto',
@@ -55,33 +55,26 @@ const DashboardLayoutContent = experimentalStyled('div')({
   WebkitOverflowScrolling: 'touch'
 });
 
-const DashboardLayout = () => {
+const StoryLayout = () => {
   const [isSidebarMobileOpen, setIsSidebarMobileOpen] = useState(false);
   const location = useLocation();
   const { isAuthenticated } = useAuth();
   const theme = useTheme();
   const onMobile = !useMediaQuery(theme.breakpoints.up('sm'));
 
-  const coproductionProcessLocation = location.pathname.indexOf('/dashboard/coproductionprocesses/') > -1;
-  const storyLocation = location.pathname.indexOf('/dashboard/stories/') > -1;
+  const storyLocation = location.pathname.indexOf('/stories/') > -1;
 
   const content = (
-    <DashboardLayoutContainer>
-      <DashboardLayoutContent>
+    <StoryLayoutContainer>
+      <StoryLayoutContent>
         <Outlet />
-      </DashboardLayoutContent>
-    </DashboardLayoutContainer>
+      </StoryLayoutContent>
+    </StoryLayoutContainer>
   );
 
   return (
-    <DashboardLayoutRoot>
-    {/*   {coproductionProcessLocation && (
+    <StoryLayoutRoot>
       
-      <ProcessSidebar
-        onMobileClose={() => setIsSidebarMobileOpen(false)}
-        openMobile={!onMobile && isSidebarMobileOpen}
-      />
-      )} */}
       
       {storyLocation && (
       
@@ -103,18 +96,17 @@ const DashboardLayout = () => {
           <>
            
             <DashboardNavbar
-              showOpenMenuButton={coproductionProcessLocation}
+              showOpenMenuButton={storyLocation}
               onSidebarMobileOpen={() => setIsSidebarMobileOpen(true)}
             />
             
-            
              
-            {coproductionProcessLocation ? <DashboardLayoutWrapperWithNavbar>{content}</DashboardLayoutWrapperWithNavbar> : <DashboardLayoutWrapper>{content}</DashboardLayoutWrapper>}
+            {storyLocation ? <StoryLayoutWrapperWithNavbar>{content}</StoryLayoutWrapperWithNavbar> : <StoryLayoutWrapper>{content}</StoryLayoutWrapper>}
              </>
         )}
 
-    </DashboardLayoutRoot>
+    </StoryLayoutRoot>
   );
 };
 
-export default DashboardLayout;
+export default StoryLayout;
