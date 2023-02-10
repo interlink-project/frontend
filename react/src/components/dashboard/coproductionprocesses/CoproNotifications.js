@@ -10,7 +10,7 @@ import {
   StepLabel,
   Stepper,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 
 import CreateSchema from "components/dashboard/SchemaSelector";
 import useAuth from "hooks/useAuth";
@@ -19,7 +19,7 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 
 import {
   Timeline,
@@ -29,16 +29,16 @@ import {
   TimelineContent,
   TimelineOppositeContent,
   TimelineDot,
-} from "@material-ui/lab";
+} from "@mui/lab";
 
-import FastfoodIcon from "@material-ui/icons/Fastfood";
-import LaptopMacIcon from "@material-ui/icons/LaptopMac";
-import HotelIcon from "@material-ui/icons/Hotel";
-import RepeatIcon from "@material-ui/icons/Repeat";
+import FastfoodIcon from "@mui/icons-material/Fastfood";
+import LaptopMacIcon from "@mui/icons-material/LaptopMac";
+import HotelIcon from "@mui/icons-material/Hotel";
+import RepeatIcon from "@mui/icons-material/Repeat";
 import { formatDistanceToNowStrict } from "date-fns";
-import GroupsIcon from "@material-ui/icons/Groups";
-import AddchartIcon from "@material-ui/icons/Addchart";
-import ArticleIcon from "@material-ui/icons/Article";
+import GroupsIcon from "@mui/icons-material/Groups";
+import AddchartIcon from "@mui/icons-material/Addchart";
+import ArticleIcon from "@mui/icons-material/Article";
 
 import { assetsApi } from "__api__";
 import { useEffect } from "react";

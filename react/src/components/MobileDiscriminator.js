@@ -1,7 +1,7 @@
 import {
   useMediaQuery,
   useTheme,
-} from '@material-ui/core';
+} from '@mui/material';
 
 const MobileDiscriminator = ({ defaultNode, onMobileNode }) => {
   const theme = useTheme();

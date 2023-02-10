@@ -1,6 +1,6 @@
-import { Avatar, AvatarGroup, Box, Button, Chip, Container, Divider, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@material-ui/core';
-import { Add, Folder } from '@material-ui/icons';
-import { LoadingButton } from '@material-ui/lab';
+import { Avatar, AvatarGroup, Box, Button, Chip, Container, Divider, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { Add, Folder } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import AuthGuardSkeleton from 'components/guards/AuthGuardSkeleton';
 import useMounted from 'hooks/useMounted';
 import React from 'react';

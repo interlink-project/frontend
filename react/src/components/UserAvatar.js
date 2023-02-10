@@ -1,6 +1,6 @@
 import {
   Avatar
-} from '@material-ui/core';
+} from '@mui/material';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useState } from 'react';
 import { usersApi } from '__api__';

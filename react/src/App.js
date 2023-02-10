@@ -1,5 +1,5 @@
 import { useMatomo } from '@datapunt/matomo-tracker-react';
-import { CssBaseline, ThemeProvider } from '@material-ui/core';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';

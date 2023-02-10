@@ -1,5 +1,5 @@
-import { Box, Typography } from '@material-ui/core';
-import { Error } from '@material-ui/icons';
+import { Box, Typography } from '@mui/material';
+import { Error } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 

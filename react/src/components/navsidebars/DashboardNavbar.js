@@ -1,6 +1,6 @@
-import { AppBar, Box, Button, IconButton, Toolbar, Typography, useMediaQuery, useTheme } from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
-import { Search } from '@material-ui/icons';
+import { AppBar, Box, Button, IconButton, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { styled } from '@mui/styles';
+import { Search } from '@mui/icons-material';
 import { DashboardNavbarLogo } from 'components/Logo';
 import useSettings from 'hooks/useSettings';
 import PropTypes from 'prop-types';
@@ -18,7 +18,7 @@ import React from 'react';
 import useAuth from '../../hooks/useAuth';
 import UserNotificationsPopover from './UserNotificationsPopover';
 
-const DashboardNavbarRoot = experimentalStyled(AppBar)(({ theme }) => ({
+const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   ...(theme.palette.mode === 'light' && {
     backgroundColor: theme.palette.primary.main,
     boxShadow: 'none',

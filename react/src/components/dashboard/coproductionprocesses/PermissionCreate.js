@@ -1,6 +1,6 @@
-import { Alert, Avatar, Box, Button, Card, CardHeader, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MobileStepper, Stack, Switch, Typography } from '@material-ui/core';
-import { Add, Close, KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
-import { LoadingButton } from '@material-ui/lab';
+import { Alert, Avatar, Box, Button, Card, CardHeader, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, MobileStepper, Stack, Switch, Typography } from '@mui/material';
+import { Add, Close, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import useMounted from 'hooks/useMounted';
 import OrganizationsList from 'components/dashboard/organizations/OrganizationsList';
 import TeamCreate from 'components/dashboard/organizations/TeamCreate';

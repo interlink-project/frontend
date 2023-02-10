@@ -1,5 +1,5 @@
-import { Avatar, Chip, Skeleton, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { People } from '@material-ui/icons';
+import { Avatar, Chip, Skeleton, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { People } from '@mui/icons-material';
 import { OrganizationChip } from 'components/Icons';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import moment from 'moment';

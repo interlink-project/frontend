@@ -1,5 +1,5 @@
-import { Alert, Avatar, Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, Input, Paper, Stack, Tab, Tabs, TextField, Typography } from '@material-ui/core';
-import { Close, Delete, Edit, Save, Mail } from '@material-ui/icons';
+import { Alert, Avatar, Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, IconButton, Input, Paper, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { Close, Delete, Edit, Save, Mail } from '@mui/icons-material';
 import ConfirmationButton from 'components/ConfirmationButton';
 import { OrganizationChip } from 'components/Icons';
 import useDependantTranslation from 'hooks/useDependantTranslation';

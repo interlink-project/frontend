@@ -1,4 +1,4 @@
-import { Box, Container } from '@material-ui/core';
+import { Box, Container } from '@mui/material';
 import { lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Loadable from 'routes/Loadable';

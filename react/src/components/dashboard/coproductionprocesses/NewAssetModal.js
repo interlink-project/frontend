@@ -2,9 +2,9 @@ import {
   Box,
   Button, Dialog, DialogActions, DialogContent,
   DialogTitle, Grid, IconButton
-} from '@material-ui/core';
-import { ArrowBack, Close, DoubleArrow, Download, Preview } from '@material-ui/icons';
-import { LoadingButton } from '@material-ui/lab';
+} from '@mui/material';
+import { ArrowBack, Close, DoubleArrow, Download, Preview } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import CentricCircularProgress from 'components/CentricCircularProgress';
 import { InterlinkerDetails, InterlinkerHeader } from 'components/dashboard/interlinkers';
 import { REACT_APP_DOMAIN } from 'configuration';

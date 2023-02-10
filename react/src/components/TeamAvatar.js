@@ -1,7 +1,7 @@
 import {
   Avatar
-} from '@material-ui/core';
-import { People } from '@material-ui/icons';
+} from '@mui/material';
+import { People } from '@mui/icons-material';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useState } from 'react';
 import { teamsApi } from '__api__';

@@ -4,9 +4,9 @@ import {
   List,
   ListItem,
   ListItemAvatar, ListItemSecondaryAction, ListItemText, MenuItem, MobileStepper, Select, TextField, Typography, useTheme
-} from '@material-ui/core';
-import { Close, Delete, KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
-import { LoadingButton } from '@material-ui/lab';
+} from '@mui/material';
+import { Close, Delete, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import { TEAM_TYPES } from '../../../constants';
 import useAuth from 'hooks/useAuth';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';

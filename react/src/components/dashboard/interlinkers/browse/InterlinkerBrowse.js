@@ -1,5 +1,5 @@
 import { useMatomo } from '@datapunt/matomo-tracker-react';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { InterlinkerBrowseFilter } from 'components/dashboard/interlinkers';
 import { useState } from 'react';
 import { getLanguage } from 'translations/i18n';

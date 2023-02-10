@@ -1,6 +1,6 @@
-import { Avatar, Box, Button, Chip, Divider, Drawer, Skeleton, Stack, Typography } from '@material-ui/core';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { AccountTree, ArrowBack, Dashboard, Folder, Group as GroupIcon, Settings, Timeline } from '@material-ui/icons';
+import { Avatar, Box, Button, Chip, Divider, Drawer, Skeleton, Stack, Typography } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { AccountTree, ArrowBack, Dashboard, Folder, Group as GroupIcon, Settings, Timeline } from '@mui/icons-material';
 import { StatusChip } from 'components/Icons';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import PropTypes from 'prop-types';

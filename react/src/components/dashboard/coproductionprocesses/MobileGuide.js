@@ -4,7 +4,7 @@ import {
   Tabs,
   Select,
   MenuItem,
-} from '@material-ui/core';
+} from '@mui/material';
 import SwipeableViews from 'react-swipeable-views';
 
 const styles = {

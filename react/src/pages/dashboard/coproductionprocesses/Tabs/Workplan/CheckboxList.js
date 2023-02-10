@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Checkbox, FormHelperText, FormControlLabel, FormGroup, FormControl, FormLabel } from '@material-ui/core';
+import { Box, Checkbox, FormHelperText, FormControlLabel, FormGroup, FormControl, FormLabel } from '@mui/material';
 
 export default function CheckboxesGroup() {
   const [state, setState] = React.useState({

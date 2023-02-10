@@ -1,5 +1,5 @@
-import { Button } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
+import { Button } from "@mui/material";
+import { Add } from "@mui/icons-material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getTree } from "slices/process";

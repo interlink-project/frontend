@@ -1,5 +1,5 @@
-import { AppBar, Box, Paper, Tab, Tabs, Typography } from '@material-ui/core';
-import { AccountTree, OpenInNew } from '@material-ui/icons';
+import { AppBar, Box, Paper, Tab, Tabs, Typography } from '@mui/material';
+import { AccountTree, OpenInNew } from '@mui/icons-material';
 import { AssetsTable } from 'components/dashboard/assets';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
@@ -14,7 +14,7 @@ import CoproNotifications from 'components/dashboard/coproductionprocesses/Copro
 import {  getCoproductionProcessNotifications } from 'slices/general';
 import useAuth from 'hooks/useAuth';
 import { cleanProcess } from 'slices/process';
-import { defaultReduceAnimations } from '@material-ui/lab/CalendarPicker/CalendarPicker';
+import { defaultReduceAnimations } from '@mui/lab/CalendarPicker/CalendarPicker';
 
 export default function Overview({ }) {
   const { process, isAdministrator, tree } = useSelector((state) => state.process);

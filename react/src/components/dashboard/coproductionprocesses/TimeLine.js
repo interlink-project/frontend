@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Dialog, Stack, Step, StepLabel, Stepper, Typography } from '@material-ui/core';
+import { Alert, Box, Button, Dialog, Stack, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import CreateSchema from 'components/dashboard/SchemaSelector';
 import useAuth from 'hooks/useAuth';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';

@@ -1,5 +1,5 @@
-import { Box, Button, Container, Fade, Typography } from '@material-ui/core';
-import { ChevronRight } from '@material-ui/icons';
+import { Box, Button, Container, Fade, Typography } from '@mui/material';
+import { ChevronRight } from '@mui/icons-material';
 import { HomeRow } from 'components/home';
 import { HomeLogo } from 'components/Logo';
 import { Helmet } from 'react-helmet-async';

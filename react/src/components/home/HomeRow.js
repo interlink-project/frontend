@@ -1,4 +1,4 @@
-import { Box, Container, Fade, Grid, Divider } from '@material-ui/core';
+import { Box, Container, Fade, Grid, Divider } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useInViewport } from 'react-in-viewport';
 

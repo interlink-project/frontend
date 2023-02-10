@@ -1,9 +1,9 @@
-import { Alert, Avatar, Box, Button, Dialog, DialogContent, Grid, IconButton, Menu, MenuItem, Paper, Stack, Tab, Tabs, TextField, Typography } from '@material-ui/core';
-import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@material-ui/icons';
-import { LoadingButton } from '@material-ui/lab';
+import { Alert, Avatar, Box, Button, Dialog, DialogContent, Grid, IconButton, Menu, MenuItem, Paper, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
+import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 import { AssetsTable } from 'components/dashboard/assets';
 import InterlinkerBrowse from 'components/dashboard/interlinkers/browse/InterlinkerBrowse';
-import { TreeItemData } from 'components/dashboard/tree';
+import { ContributionsTabs, TreeItemData } from 'components/dashboard/tree';
 import PermissionsTable from 'components/dashboard/tree/PermissionsTable';
 import { Formik } from 'formik';
 import useDependantTranslation from 'hooks/useDependantTranslation';
@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProcess, getTree } from 'slices/process';
 import { information_about_translations } from 'utils/someCommonTranslations';
 import * as Yup from 'yup';
-import { assetsApi, permissionsApi,assetsDataApi, coproductionprocessnotificationsApi } from '__api__';
+import { assetsApi, permissionsApi, assetsDataApi, coproductionprocessnotificationsApi } from '__api__';
 import NewAssetModal from 'components/dashboard/coproductionprocesses/NewAssetModal';
 
 const RightSide = ({ softwareInterlinkers }) => {
@@ -26,7 +26,7 @@ const RightSide = ({ softwareInterlinkers }) => {
   const [loading, setLoading] = useState('');
   // new asset modal
   const [selectedInterlinker, setSelectedInterlinker] = useState(null);
-  const [selectedAsset,setSelectedAsset]= useState(null);
+  const [selectedAsset, setSelectedAsset] = useState(null);
   const [newAssetDialogOpen, setNewAssetDialogOpen] = useState(false);
   const mounted = useMounted();
   const [externalAssetOpen, setExternalAssetOpen] = useState(false);
@@ -98,12 +98,12 @@ const RightSide = ({ softwareInterlinkers }) => {
   const handleDelete = (asset, callback) => {
     setLoading('delete');
     //Obtain the name with the id
-    const nombreAsset=document.getElementById('bt-'+asset.id).innerHTML;
+    const nombreAsset = document.getElementById('bt-' + asset.id).innerHTML;
     //const nombreAsset=spanAsset.getAttribute('name');
     localStorage.setItem('assetId', asset.id);
-    const capitalizeAssetName= nombreAsset.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+    const capitalizeAssetName = nombreAsset.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
     localStorage.setItem('assetName', capitalizeAssetName);
-    
+
 
 
     //Enviar el nombre a guardar
@@ -117,17 +117,17 @@ const RightSide = ({ softwareInterlinkers }) => {
       const dataUpdateParameter = {
         asset_id: localStorage.getItem('assetId'),
         name: localStorage.getItem('assetName'),
-        coproductionprocess_id:process.id
+        coproductionprocess_id: process.id
       };
 
       //console.log('El proceso a actualizar')
       coproductionprocessnotificationsApi.updateAssetNameParameter(dataUpdateParameter).then((res) => {
-          //console.log('Actualizacion Exitosa');
-          //console.log(res.data)
-        }).catch((err) => {
-          console.log(err);
-        });
+        //console.log('Actualizacion Exitosa');
+        //console.log(res.data)
+      }).catch((err) => {
+        console.log(err);
       });
+    });
 
 
   };
@@ -227,18 +227,18 @@ const RightSide = ({ softwareInterlinkers }) => {
                 text={t("Are you sure?")} />)
                 */
       }
-      
-        actions.push({
-          id: `${id}-claim-action`,
-          loading: loading === 'clain',
-          onClick: (closeMenuItem) => {
-            handleClaim(asset);
-            closeMenuItem();
-          },
-          text: t('Claim'),
-          icon: <RecordVoiceOver fontSize='small' />
-        });
-      
+
+      actions.push({
+        id: `${id}-claim-action`,
+        loading: loading === 'clain',
+        onClick: (closeMenuItem) => {
+          handleClaim(asset);
+          closeMenuItem();
+        },
+        text: t('Claim'),
+        icon: <RecordVoiceOver fontSize='small' />
+      });
+
       // if (capabilities.download) {
       //   actions.push({
       //     id: `${id}-download-action`,
@@ -330,6 +330,12 @@ const RightSide = ({ softwareInterlinkers }) => {
                 value='permissions'
                 label={`${t('Permissions')} (${selectedTreeItem.permissions.length})`}
               />
+              {isTask & isAdministrator && (
+                <Tab
+                  value='contributions'
+                  label={`${t('Contributions')} (${selectedTreeItem.permissions.length})`}
+                />
+              )}
             </Tabs>
           </Paper>
 
@@ -540,7 +546,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                       initialValues={{
                         title: '',
                         description: '',
-                        
+                        claim_type: '',
                       }}
                       validationSchema={Yup.object().shape({
                         title: Yup.string()
@@ -555,27 +561,27 @@ const RightSide = ({ softwareInterlinkers }) => {
                         setSubmitting(true);
 
                         //Defino el link del asset
-                        let selectedAssetLink='';
-                        let selectedAssetIcon='';
-                        let selectedShowIcon='';
-                        let selectedShowLink='';
-                        if(selectedAsset.type=='externalasset'){
+                        let selectedAssetLink = '';
+                        let selectedAssetIcon = '';
+                        let selectedShowIcon = '';
+                        let selectedShowLink = '';
+                        if (selectedAsset.type == 'externalasset') {
                           //Is external
-                          selectedAssetLink=selectedAsset.uri;
-                          selectedAssetIcon=selectedAsset.icon_path;
-                          selectedShowIcon='';
-                          selectedShowLink='hidden';
+                          selectedAssetLink = selectedAsset.uri;
+                          selectedAssetIcon = selectedAsset.icon_path;
+                          selectedShowIcon = '';
+                          selectedShowLink = 'hidden';
 
-                        }else{
+                        } else {
                           //Is internal
-                          selectedAssetLink=selectedAsset.link+'/view'
-                          selectedShowIcon='';
-                          selectedShowLink='hidden';
+                          selectedAssetLink = selectedAsset.link + '/view'
+                          selectedShowIcon = '';
+                          selectedShowLink = 'hidden';
                         }
 
-                        const parametersList ={
+                        const parametersList = {
                           assetId: selectedAsset.id,
-                          assetName:'{assetid:'+selectedAsset.id+'}',
+                          assetName: '{assetid:' + selectedAsset.id + '}',
                           assetLink: selectedAssetLink,
                           assetIcon: selectedAssetIcon,
                           commentTitle: values.title,
@@ -586,24 +592,24 @@ const RightSide = ({ softwareInterlinkers }) => {
                           showIcon: selectedShowIcon,
                           showLink: selectedShowLink
                         };
-                        const paramListJson=JSON.stringify(parametersList)
-                       // console.log(parametersList)
+                        const paramListJson = JSON.stringify(parametersList)
+                        // console.log(parametersList)
                         const dataToSend = {
                           coproductionprocess_id: process.id,
-                          notification_event:'add_contribution_asset',
-                          asset_id:selectedAsset.id,
+                          notification_event: 'add_contribution_asset',
+                          asset_id: selectedAsset.id,
                           parameters: paramListJson,
                           claim_type: 'Development'
                           
                         };
 
                         console.log(dataToSend)
-                    
+
                         console.log(dataToSend);
                         coproductionprocessnotificationsApi.createbyEvent(dataToSend).then((res) => {
                           setStatus({ success: true });
                           setSubmitting(false);
-                        // getAssets();
+                          // getAssets();
                           setClaimDialogOpen(false);
 
                         }).catch((err) => {
@@ -629,9 +635,9 @@ const RightSide = ({ softwareInterlinkers }) => {
                       }) => (
                         <form onSubmit={handleSubmit}>
                           <Box sx={{ mt: 3 }}>
-                            
+
                             <Typography variant="h6" component="h2">
-                            Introduce the details of your contribution:
+                              Introduce the details of your contribution:
                             </Typography>
                             <TextField
                               required
@@ -677,11 +683,11 @@ const RightSide = ({ softwareInterlinkers }) => {
                               helperText={touched.claim_type && errors.claim_type}
                               variant='outlined'
                             >
-                                 
 
-                                      <MenuItem value="Management">{t('Management')}</MenuItem>
-                                      <MenuItem value="Development">{t('Development')}</MenuItem>
-                                      <MenuItem value="Exploitation">{t('Exploitation')}</MenuItem>
+
+                              <MenuItem value="Management">{t('Management')}</MenuItem>
+                              <MenuItem value="Development">{t('Development')}</MenuItem>
+                              <MenuItem value="Exploitation">{t('Exploitation')}</MenuItem>
 
                                       
                                     </TextField> */}
@@ -771,6 +777,18 @@ const RightSide = ({ softwareInterlinkers }) => {
               )}
             </>
           )}
+          {tabValue === 'contributions' && (
+            <ContributionsTabs
+              // your_permissions={permissions && permissions.your_permissions}
+              // your_roles={permissions && permissions.your_roles}
+              // onChanges={() => dispatch(getProcess(process.id, false, selectedTreeItem.id))}
+              // language={process.language}
+              // processId={process.id}
+              // element={selectedTreeItem}
+              // isAdministrator={isAdministrator}
+            />
+          )}
+
         </Box>
       </Grid>
     )

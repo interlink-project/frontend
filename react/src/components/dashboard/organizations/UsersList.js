@@ -1,4 +1,4 @@
-import { Alert, Snackbar, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Alert, Snackbar, Divider, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import UserSearch from 'components/dashboard/coproductionprocesses/UserSearch';
 import UserRow from './UserRow';

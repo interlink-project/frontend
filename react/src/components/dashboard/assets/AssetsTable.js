@@ -1,11 +1,11 @@
 import {
  Button,Dialog, DialogContent,Alert, Avatar, Box, CircularProgress, Fade, Grow, IconButton, LinearProgress, ListItemIcon, ListItemText, Menu,
   MenuItem, Skeleton, Table, TableBody, TableCell, TableHead, TableRow, Zoom, TableSortLabel
-} from '@material-ui/core';
-import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@material-ui/icons';
+} from '@mui/material';
+import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@mui/icons-material';
 
-import { Article, MoreVert as MoreVertIcon, ShowChart } from '@material-ui/icons';
-import { visuallyHidden } from '@material-ui/utils';
+import { Article, MoreVert as MoreVertIcon, ShowChart } from '@mui/icons-material';
+import { visuallyHidden } from '@mui/utils';
 import { InterlinkerDialog } from 'components/dashboard/interlinkers';
 import SearchBox from 'components/SearchBox';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
