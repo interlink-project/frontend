@@ -12,6 +12,8 @@ import { cleanProcess } from 'slices/process';
 import useAuth from 'hooks/useAuth';
 import { useDispatch, useSelector } from 'react-redux';
 import useMounted from 'hooks/useMounted';
+import { useNavigate } from 'react-router-dom';
+
 
 const SuccessCatalogue = () => {
   const [open, setOpen] = useState(false);
@@ -24,7 +26,7 @@ const SuccessCatalogue = () => {
   const { user, isAuthenticated } = useAuth();
   const dispatch = useDispatch();
   const mounted = useMounted();
-
+  const navigate = useNavigate();
 
   
   const handleClickOpen = () => {
@@ -90,9 +92,10 @@ const SuccessCatalogue = () => {
               //   action: 'story-open',
               //   name: story.id
               // });
-              alert('Le dio un click en la story');
+              
               setStory(story);
               handleClickOpen();
+              navigate(story.id+"/overview");
             }}
           />
 

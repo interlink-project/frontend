@@ -75,13 +75,13 @@ const DashboardLayout = () => {
 
   return (
     <DashboardLayoutRoot>
-    {/*   {coproductionProcessLocation && (
+       {coproductionProcessLocation && (
       
       <ProcessSidebar
         onMobileClose={() => setIsSidebarMobileOpen(false)}
         openMobile={!onMobile && isSidebarMobileOpen}
       />
-      )} */}
+      )} 
       
       {storyLocation && (
       

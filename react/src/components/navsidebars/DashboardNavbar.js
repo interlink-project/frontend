@@ -48,7 +48,7 @@ const pages = [
   },
   {
     label: i18n.t('Stories'),
-    path: '/dashboard/stories',
+    path: '/stories',
   },
 ];
 const DashboardNavbar = (props) => {

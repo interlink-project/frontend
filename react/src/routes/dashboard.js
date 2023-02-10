@@ -91,20 +91,6 @@ export const routes = [
         ]
       },
       {
-        path: 'stories/:storyId',
-        children: [
-          {
-            path: '',
-            element: <AuthGuard><StoryProfile /></AuthGuard>
-            ,
-          },
-          {
-            path: ':tab',
-            element: <AuthGuard><StoryProfile /></AuthGuard>
-          },
-        ]
-      },
-      {
         path: 'coproductionprocesses/:processId/:treeitemId/guide',
         children: [
           {
@@ -128,19 +114,6 @@ export const routes = [
           {
             path: ':interlinkerId',
             element: <InterlinkerProfile />,
-          },
-        ],
-      },
-      {
-        path: 'stories',
-        children: [
-          {
-            path: '',
-            element: <SuccessCatalogue />,
-          },
-          {
-            path: ':storyId',
-            element: <StoryProfile />,
           },
         ],
       },

@@ -17,11 +17,11 @@ import { useParams } from 'react-router-dom';
 import OverviewStory from './Tabs/Overview';
 //import { getStory } from 'slices/process';
 
-// import Guide from './Tabs/Guide';
+// import RoadMap from './Tabs/RoadMap';
 // import Overview from './Tabs/Overview';
 // import SettingsTab from './Tabs/Settings';
 // import TeamTab from './Tabs/Team';
-// import Workplan from './Tabs/Workplan';
+// import Resources from './Tabs/Resources';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -72,7 +72,7 @@ const TabsMobile = ({ tabs, tab, story }) => {
     />
     <Tabs
       indicatorColor='secondary'
-      onChange={(event, value) => navigate(`/dashboard/stories/${story.id}/${value}`)}
+      onChange={(event, value) => navigate(`/stories/${story.id}/${value}`)}
       value={tab}
       aria-label='Coproduction tabs'
       centered
@@ -100,12 +100,12 @@ const StoryProfile = () => {
 
   const story={
     id:'1',
-    title:'Coproduce a Hackaton',
-    name:'Hackaton',
+    title:'Families Share @ Work',
+    name:'Families Share @ Work',
     description:'Story description is that it has a more-or-less normal distribution of letters, as opposed to using  making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
     isLiked:false,
     likes:0,
-    logotype_link:'https://dev.interlink-project.eu/coproduction/static/coproductionprocesses/f8c68b18-a8ce-4101-9067-40474c90c4ff.png',
+    logotype_link:'/static/coproductionprocesses/f8c68b18-a8ce-4101-9067-40474c90c4ff.png',
     updated_at:'2021-08-23',
     created_at:'2021-08-23',
     rating:10,
@@ -140,10 +140,8 @@ const StoryProfile = () => {
 
   const tabs = [
     { label: t('Overview'), value: 'overview' },
-    { label: t('Guide'), value: 'guide' },
-    { label: t('Workplan'), value: 'workplan' },
-    { label: t('Team'), value: 'team'},
-    { label: t('Settings'), value: 'settings' },
+    { label: t('RoadMap'), value: 'roadmap' },
+    { label: t('Resources'), value: 'resources' }
   ];
 
   return (
@@ -177,24 +175,25 @@ const StoryProfile = () => {
                   >
                     <Card sx={style}>
                         <OverviewStory /> 
-                      Overview
+                     
                     </Card>
                   </TabPanel>
                   <TabPanel
                     value={tab}
-                    index='workplan'
+                    index='resources'
                   >
                     <Card sx={{ ...style, mb: 3 }}>
-                      {/* <Workplan setSelectedTreeItem={_setSelectedTreeItem} /> */}
+                      {/* <Resources setSelectedTreeItem={_setSelectedTreeItem} /> */}
+                    Resources Space
                     </Card>
                   </TabPanel>
                   <TabPanel
                     value={tab}
-                    index='guide'
+                    index='roadmap'
                   >
                     <Card sx={{ ...style, mb: 3 }}>
-                      {/* <Guide setSelectedTreeItem={_setSelectedTreeItem} /> */}
-                      Guide
+                      {/* <RoadMap setSelectedTreeItem={_setSelectedTreeItem} /> */}
+                      RoadMap Space
                     </Card>
                   </TabPanel>
                   <TabPanel
@@ -202,13 +201,18 @@ const StoryProfile = () => {
                     index='team'
                   >
 {/*                     <TeamTab />
- */}              team    
+ */}              
+                  <Card sx={{ ...style, mb: 3 }}>
+                  Team Space
+                  </Card>
+                       
                   </TabPanel>
                   <TabPanel
                     value={tab}
                     index='settings'
                   >
-                    <Card>
+                    <Card sx={{ ...style, mb: 3 }}>
+                      Settings Space
                       {/* <SettingsTab /> */}
                     </Card>
                   </TabPanel>

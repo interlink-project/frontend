@@ -235,6 +235,7 @@ import {
         >
           <CardHeader
             avatar={(
+              <>
               <Avatar
                 alt={t('Logotype')}
                 src={story.logotype_link}
@@ -242,6 +243,9 @@ import {
               >
                 {story.title}
               </Avatar>
+           
+              </>
+              
   )}
             title={(
               <Link

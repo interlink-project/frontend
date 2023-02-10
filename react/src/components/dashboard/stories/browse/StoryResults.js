@@ -58,12 +58,20 @@ const StoryResults = ({ loading: propLoading = null, setLoading: propSetLoading 
     // }
     const dataStories=[{
         id:'1',
-        title:'Coproduce a Hackaton',
-        name:'Hackaton',
-        description:'Story description is that it has a more-or-less normal distribution of letters, as opposed to using  making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
+        title:'Families Share @ Work',
+        name:'Families Share @ Work',
+        short_description:'Co-creation of childcare services within companies by exploiting the time-shift model experimented in the Families Share approach',
+        description:`Families Share @ Work  offers a bottom-up solution to work/life balance by supporting families with childcare, parenting advice and after-school activities. 
+        It has been co-produced within the EU funded project Families Share and already tested  in 3 European Cities. 
+        Families Share represents an innovative solution for work-life balance, and can constitute a valuable integration to the existing local public childcare offers, during holiday periods in particular but even beyond. Co-playing weeks or activities can be either set up as new services or integrate existing ones.
+        In addition, it lays the basis for establishing good neighbourhood relationships from which to start for a wide range of other possible initiatives based on mutual help and solidarity.
+        Last but not least, if under-utilized or unused public spaces are made available for the activities, Families Share can serve regeneration of urban common goods purposes too.
+        
+        The Families Share approach has already been tested and validated in several pilot case studies, in different European countries where different models have been explored. In the Italian Cities of Venice and Bologna and in the Dutch City of Kortrijk, Families Share has been exploited to integrate the existing local public childcare offers (during holiday periods for instance) thanks to  neighborhood relationships based on mutual help and solidarity.
+        Different legal and ethical regulations, as well as local financial support, might apply locally when the initiative is replicated in specific contexts.`,
         isLiked:false,
         likes:0,
-        logotype_link:'/static/coproductionprocesses/47c40b06-2147-440b-8f08-fac9e976af38.png',
+        logotype_link:'http://localhost/coproduction/static/coproductionprocesses/47c40b06-2147-440b-8f08-fac9e976af38.png',
         updated_at:'2021-08-23',
         created_at:'2021-08-23',
         rating:10,
@@ -77,10 +85,10 @@ const StoryResults = ({ loading: propLoading = null, setLoading: propSetLoading 
       description:'Story description is that it has a more-or-less normal distribution of letters, as opposed to using  making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
       isLiked:false,
       likes:0,
-      logotype_link:'/static/coproductionprocesses/47c40b06-2147-440b-8f08-fac9e976af38.png',
+      logotype_link:'http://localhost/coproduction/static/coproductionprocesses/47c40b06-2147-440b-8f08-fac9e976af38.png',
       updated_at:'2021-08-23',
-      created_at:'2021-08-23',
-      rating:10,
+      created_at:'2022-08-23',
+      rating:3,
       tags:['salud','dinero','amor']
 
   },
@@ -91,10 +99,10 @@ const StoryResults = ({ loading: propLoading = null, setLoading: propSetLoading 
     description:'Story description is that it has a more-or-less normal distribution of letters, as opposed to using  making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
     isLiked:false,
     likes:0,
-    logotype_link:'/static/coproductionprocesses/47c40b06-2147-440b-8f08-fac9e976af38.png',
+    logotype_link:'http://localhost/coproduction/static/coproductionprocesses/47c40b06-2147-440b-8f08-fac9e976af38.png',
     updated_at:'2021-08-23',
-    created_at:'2021-08-23',
-    rating:10,
+    created_at:'2022-07-23',
+    rating:1,
     tags:['salud','dinero','amor']
 
 }

@@ -1,6 +1,6 @@
-import { Avatar, Box, Button, Chip, Divider, Drawer, Skeleton, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Avatar, Box, Button, Chip, Divider, Drawer, Skeleton, Stack, Typography, useMediaQuery, Rating } from '@mui/material';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { AccountTree, ArrowBack, Dashboard, Folder, Group as GroupIcon, Settings, Timeline } from '@mui/icons-material';
+import { AccountTree, ArrowBack,AssistantDirection, PermMedia, Dashboard, Balcony, Folder, Group as GroupIcon, Settings, Timeline } from '@mui/icons-material';
 import { StatusChip } from 'components/Icons';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import PropTypes from 'prop-types';
@@ -24,12 +24,12 @@ const StorySidebar = (props) => {
  
  const story={
     id:'1',
-    title:'Coproduce a Hackaton',
-    name:'Hackaton',
+    title:'Families Share @ Work',
+    name:'Families Share @ Work',
     description:'Story description is that it has a more-or-less normal distribution of letters, as opposed to using  making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
     isLiked:false,
     likes:0,
-    logotype_link:'/static/coproductionprocesses/47c40b06-2147-440b-8f08-fac9e976af38.png',
+    logotype_link:'http://localhost/coproduction/static/coproductionprocesses/47c40b06-2147-440b-8f08-fac9e976af38.png',
     updated_at:'2021-08-23',
     created_at:'2021-08-23',
     rating:10,
@@ -52,34 +52,22 @@ const StorySidebar = (props) => {
       title: '',
       items: [
         {
-          title: t('Overview'),
-          path: `/dashboard/stories/${storyId}/overview`,
-          icon: <Dashboard />,
+          title: t('Project Overview'),
+          path: `/stories/${storyId}/overview`,
+          icon: <Balcony />,
           disabled: false
         },
         {
-          title: t('Guide'),
-          path: `/dashboard/stories/${storyId}/guide`,
-          icon: <AccountTree />,
+          title: t('RoadMap'),
+          path: `/stories/${storyId}/roadmap`,
+          icon: <AssistantDirection />,
           //disabled: !hasSchema
         },
         {
-          title: t('Workplan'),
-          path: `/dashboard/stories/${storyId}/workplan`,
-          icon: <Timeline />,
+          title: t('Resources'),
+          path: `/stories/${storyId}/resources`,
+          icon: <PermMedia />,
          // disabled: !hasSchema
-        },
-        {
-          title: t('Team'),
-          path: `/dashboard/stories/${storyId}/team`,
-          icon: <GroupIcon />,
-         // disabled: !hasSchema
-        },
-        {
-          title: t('Settings'),
-          path: `/dashboard/stories/${storyId}/settings`,
-          icon: <Settings />,
-        //  disabled: false
         },
       ]
     },
@@ -134,6 +122,12 @@ const StorySidebar = (props) => {
             {story.name}
            {/*  {!loading && !updating && process ? process.name : <Skeleton />} */}
           </Typography>
+
+          <Rating
+            readOnly
+            size='small'
+            value={story.rating || 0}
+          />
          {/*  {!loading && !updating && process ? (
             <StatusChip
               t={t}
