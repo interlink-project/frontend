@@ -1,12 +1,14 @@
 import { useMatomo } from '@datapunt/matomo-tracker-react';
 import {
   Alert, Grid,
-  Box, Button, Chip, Divider, IconButton, Link, Stack, TextField, ToggleButton, ToggleButtonGroup, Typography,Select, MenuItem,
+  Box, Button, Chip, Divider, IconButton, Link, Stack, TextField, ToggleButton, ToggleButtonGroup, Typography, Select, MenuItem,
 } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import {
-  DesktopDateRangePicker, LoadingButton
+  LoadingButton
 } from '@mui/lab';
+import { DesktopDateRangePicker, LocalizationProvider } from '@mui/x-date-pickers-pro';
+import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import ConfirmationButton from 'components/ConfirmationButton';
 import { FinishedIcon, InProgressIcon } from 'components/dashboard/assets';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
@@ -31,20 +33,21 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   const [dateRange, setDateRange] = useState([null, null]);
   const [status, setStatus] = useState('');
   const [name, setName] = useState('');
-  const [listAssetsNames,setListAssetsNames] = useState('');
+  const [listAssetsNames, setListAssetsNames] = useState('');
   const [description, setDescription] = useState('');
   //const [management, setManagement] = useState('');
   const [development, setDevelopment] = useState('');
   //const [exploitation, setExploitation] = useState('');
-  const [taskDataContributions,setTaskDataContributions] = useState(null);
+  const [taskDataContributions, setTaskDataContributions] = useState(null);
   const [editMode, setEditMode] = useState(false);
-  const { process, updatingTree, treeitems,selectedTreeItem, isAdministrator } = useSelector((state) => state.process);
+  const { process, updatingTree, treeitems, selectedTreeItem, isAdministrator } = useSelector((state) => state.process);
   const isTask = selectedTreeItem && selectedTreeItem.type === 'task';
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const t = useCustomTranslation(language);
   const { trackEvent } = useMatomo();
+
 
 
 
@@ -66,9 +69,10 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     setEditMode(false);
     restart(element);
     if (element.type === 'task') {
-    tasksApi.getAssetsAndContributions(selectedTreeItem.id).then(datos=> {
-      setTaskDataContributions(datos);
-    })}
+      tasksApi.getAssetsAndContributions(selectedTreeItem.id).then(datos => {
+        setTaskDataContributions(datos);
+      })
+    }
   }, [element]);
 
   const saveData = () => {
@@ -108,13 +112,13 @@ const TreeItemData = ({ language, processId, element, assets }) => {
       name: element.id,
     });
 
-    if(selectedTreeItem.status=='finished' &&  development !== element.development){
+    if (selectedTreeItem.status == 'finished' && development !== element.development) {
       alert('The status of the task is finished, the complexity values can not be modified.');
-    }else{
-    apis[element.type].update(element.id, data).then(() => {
-      update(element.id);
-    });
-  }
+    } else {
+      apis[element.type].update(element.id, data).then(() => {
+        update(element.id);
+      });
+    }
 
   };
 
@@ -149,14 +153,14 @@ const TreeItemData = ({ language, processId, element, assets }) => {
 
   let listAssets = [];
   const includeObjectNames = (text) => {
-    
+
     //Search and reemplace que assetName and icon
     const paramsPattern = /[^{}]+(?=})/g;
     let extractParams = text.match(paramsPattern);
     //Loop over each parameter value and replace in the text
     if (extractParams) {
-      
-      for (let i = 0; i < extractParams.length; i++) {       
+
+      for (let i = 0; i < extractParams.length; i++) {
         if (extractParams[i].includes(":")) {
           // console.log('----->'+extractParams[i]);
           const entidadName = extractParams[i].split(":")[0];
@@ -174,7 +178,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
                 true
               ); // `false` makes the request synchronous
               xhr.onload = (e) => {
-                
+
                 if (xhr.readyState === 4) {
                   if (xhr.status === 200) {
                     const assetdata = JSON.parse(xhr.responseText);
@@ -186,27 +190,27 @@ const TreeItemData = ({ language, processId, element, assets }) => {
                       "lk_" + entidadId
                     );
 
-                    if(nodes.length>0){
-                    for (let i = 0; i < nodes.length; i++) {
-                      nodes[i].innerHTML = assetName;
+                    if (nodes.length > 0) {
+                      for (let i = 0; i < nodes.length; i++) {
+                        nodes[i].innerHTML = assetName;
+                      }
                     }
-                  }
 
                     const nodes2 = document.getElementsByClassName(
                       "im_" + entidadId
                     );
-                    if(nodes2.length>0){
+                    if (nodes2.length > 0) {
                       for (let i = 0; i < nodes.length; i++) {
                         nodes2[i].src = assetdata.icon;
                       }
                     }
-                   
-            
+
+
                   } else {
                     console.error(xhr.statusText);
                   }
-                  
-                }             
+
+                }
               };
               xhr.onerror = (e) => {
                 console.error(xhr.statusText);
@@ -216,37 +220,37 @@ const TreeItemData = ({ language, processId, element, assets }) => {
           }
         }
       }
-      
-    } 
-    
+
+    }
+
     return text;
   };
 
 
-  if(isTask){
-    
-   
+  if (isTask) {
+
+
   }
-  
+
   const treeitem_translations = tree_items_translations(t);
 
 
-  const complexityLevelsF= (status) => {
-    
-    switch(status) {
-      case 0: 
+  const complexityLevelsF = (status) => {
+
+    switch (status) {
+      case 0:
         return 'None';
-      case 20: 
+      case 20:
         return 'Very low'
-      case 40: 
-        return 'Low';  
-      case 60: 
+      case 40:
+        return 'Low';
+      case 60:
         return 'Medium';
-      case 80: 
+      case 80:
         return 'High';
-      case 100: 
+      case 100:
         return 'Very high';
-      default: 
+      default:
         return 'No defined';
     }
   }
@@ -255,16 +259,16 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   return (
     <>
       {isAdministrator && !editMode && (
-      <IconButton
-        onClick={() => setEditMode(true)}
-        sx={{
-          position: 'relative',
-          right: 0,
-          float: 'right'
-        }}
-      >
-        <Edit />
-      </IconButton>
+        <IconButton
+          onClick={() => setEditMode(true)}
+          sx={{
+            position: 'relative',
+            right: 0,
+            float: 'right'
+          }}
+        >
+          <Edit />
+        </IconButton>
       )}
       <Typography variant='h6'>
         {t('Name')}
@@ -304,25 +308,25 @@ const TreeItemData = ({ language, processId, element, assets }) => {
           {description}
         </p>
       )}
-     { isTask ? (
-     <>
-      <Typography
-        variant='h6'
-        sx={{ mt: 2 }}
-      >
-        {t('Complexity Levels')}
-      </Typography>
-      
-   
-    
-      {editMode ? (
+      {isTask ? (
         <>
-        <Box  
-              justifyContent='center'
-              sx={{ mt: 2, gap: 10,margin: 2 }}
-            >
-        
-        {/* <TextField
+          <Typography
+            variant='h6'
+            sx={{ mt: 2 }}
+          >
+            {t('Complexity Levels')}
+          </Typography>
+
+
+
+          {editMode ? (
+            <>
+              <Box
+                justifyContent='center'
+                sx={{ mt: 2, gap: 10, margin: 2 }}
+              >
+
+                {/* <TextField
           id="management_txt"
           select
           label={t('Management')}
@@ -348,41 +352,41 @@ const TreeItemData = ({ language, processId, element, assets }) => {
         </TextField> */}
 
 
-        <TextField
-          id="development_txt"
-          select
-          label={t('Development')}
-          value={development}
-          type="number"
-          sx={{ mt: 2, gap: 10, margin: 2, minWidth: 120 }}
-          onChange={(event) => {
-            setDevelopment(event.target.value);
-          }}
-        
-        >
-          
-          <MenuItem key='mi_d_1' value='0'>
-            {t('none')}
-          </MenuItem>
-          <MenuItem key='mi_d_2' value='20'>
-            {t('very low')}
-          </MenuItem>
-          <MenuItem key='mi_d_3' value='40'>
-            {t('low')}
-          </MenuItem>
-          <MenuItem key='mi_d_3' value='60'>
-            {t('medium')}
-          </MenuItem>
-          <MenuItem key='mi_d_3' value='80'>
-            {t('high')}
-          </MenuItem>
-          <MenuItem key='mi_d_3' value='100'>
-            {t('very high')}
-          </MenuItem>
-          
-        </TextField>
+                <TextField
+                  id="development_txt"
+                  select
+                  label={t('Development')}
+                  value={development}
+                  type="number"
+                  sx={{ mt: 2, gap: 10, margin: 2, minWidth: 120 }}
+                  onChange={(event) => {
+                    setDevelopment(event.target.value);
+                  }}
 
-        {/* <TextField
+                >
+
+                  <MenuItem key='mi_d_1' value='0'>
+                    {t('none')}
+                  </MenuItem>
+                  <MenuItem key='mi_d_2' value='20'>
+                    {t('very low')}
+                  </MenuItem>
+                  <MenuItem key='mi_d_3' value='40'>
+                    {t('low')}
+                  </MenuItem>
+                  <MenuItem key='mi_d_3' value='60'>
+                    {t('medium')}
+                  </MenuItem>
+                  <MenuItem key='mi_d_3' value='80'>
+                    {t('high')}
+                  </MenuItem>
+                  <MenuItem key='mi_d_3' value='100'>
+                    {t('very high')}
+                  </MenuItem>
+
+                </TextField>
+
+                {/* <TextField
           id="exploitation_txt"
           select
           label={t('Exploitation')}
@@ -407,136 +411,136 @@ const TreeItemData = ({ language, processId, element, assets }) => {
           
         </TextField> */}
 
-        
-      
-         </Box>
-        </>
-      ) : (
-        <p style={{
-          whiteSpace: 'pre-wrap',
-          marginTop: 0
-        }}
-        >
 
-          <Box  
-              justifyContent='center'
-              sx={{ mt: 2, gap: 10,margin: 2 }}
-            >
-              
-
-        <Box 
-        >
-          <span sx={{}}></span> {complexityLevelsF(development)}
-        </Box>
-
-        <Box
-        sx={{ mt: 2, gap: 10, margin: 2}}
-        >
-          
-        </Box>
-
-        <Box
-        sx={{ mt: 2, gap: 10, margin: 2}}
-        >
-          
-        </Box>
-          
-              
-          
-          </Box>
-        </p>
-      )}
-      </>
-      ):(<></>)}
-      
-      <>
-      
-      <ul>
-      { taskDataContributions && taskDataContributions['assetsWithContribution']?.map((asset) => {
-        const hasContribution=asset.contributors.length;
-        if (!hasContribution){
-          return (
-            <>
-              <li>
-              <Typography
-                variant='h6'
-                sx={{ mt: 2 }}
-               
-              >
-                Asset: 
-                <Box  
-                
-                class={"lk_" + asset.id}
-              component="span">
-                  {includeObjectNames('{assetid:'+asset.id+'}')}
 
               </Box>
-                
-              </Typography>
-                
-              </li>
-
             </>
+          ) : (
+            <p style={{
+              whiteSpace: 'pre-wrap',
+              marginTop: 0
+            }}
+            >
 
-          );
-        }
-
-        return (  
-          <>
-              
-            <li>
-
-            <Typography
-                variant='h6'
-                sx={{ mt: 2 }}
-               
+              <Box
+                justifyContent='center'
+                sx={{ mt: 2, gap: 10, margin: 2 }}
               >
-                Asset:  
-                <Box  
-            
-                class={"lk_" + asset.id}
-                
-              component="span">
-                  {includeObjectNames(' {assetid:'+asset.id+'}')}
+
+
+                <Box
+                >
+                  <span sx={{}}></span> {complexityLevelsF(development)}
+                </Box>
+
+                <Box
+                  sx={{ mt: 2, gap: 10, margin: 2 }}
+                >
+
+                </Box>
+
+                <Box
+                  sx={{ mt: 2, gap: 10, margin: 2 }}
+                >
+
+                </Box>
+
+
 
               </Box>
-                
-              </Typography>
+            </p>
+          )}
+        </>
+      ) : (<></>)}
 
-     
-            </li>
-            Contributions:{asset.contributors.parameters}
-            <ol>
-            { asset.contributors && asset.contributors?.map((contribution) => ( 
-              <li>
-              The user '{JSON.parse(contribution.parameters).userName}' made a ({contribution.claim_type}) claim: {JSON.parse(contribution.parameters).commentTitle} 
-              </li>
-             ))}
-            </ol>
-  
-  
-          </> 
-  
-             
+      <>
+
+        <ul>
+          {taskDataContributions && taskDataContributions['assetsWithContribution']?.map((asset) => {
+            const hasContribution = asset.contributors.length;
+            if (!hasContribution) {
+              return (
+                <>
+                  <li>
+                    <Typography
+                      variant='h6'
+                      sx={{ mt: 2 }}
+
+                    >
+                      Asset:
+                      <Box
+
+                        class={"lk_" + asset.id}
+                        component="span">
+                        {includeObjectNames('{assetid:' + asset.id + '}')}
+
+                      </Box>
+
+                    </Typography>
+
+                  </li>
+
+                </>
+
+              );
+            }
+
+            return (
+              <>
+
+                <li>
+
+                  <Typography
+                    variant='h6'
+                    sx={{ mt: 2 }}
+
+                  >
+                    Asset:
+                    <Box
+
+                      class={"lk_" + asset.id}
+
+                      component="span">
+                      {includeObjectNames(' {assetid:' + asset.id + '}')}
+
+                    </Box>
+
+                  </Typography>
+
+
+                </li>
+                Contributions:{asset.contributors.parameters}
+                <ol>
+                  {asset.contributors && asset.contributors?.map((contribution) => (
+                    <li>
+                      The user '{JSON.parse(contribution.parameters).userName}' made a ({contribution.claim_type}) claim: {JSON.parse(contribution.parameters).commentTitle}
+                    </li>
+                  ))}
+                </ol>
+
+
+              </>
+
+
             );
-      })}
-          </ul>
+          })}
+        </ul>
       </>
 
 
       {false && element.problemprofiles && (
-      <>
-        <Typography variant='h6'>
-          {t('Problem profiles')}
-        </Typography>
-        {element.problemprofiles.map((pp) => (
-          <Chip
-            sx={{ mr: 1, mt: 1 }}
-            label={pp}
-            key={`task-problemprofile-${pp}`}
-          />
-        ))}
-      </>
+        <>
+          <Typography variant='h6'>
+            {t('Problem profiles')}
+          </Typography>
+          {element.problemprofiles.map((pp) => (
+            <Chip
+              sx={{ mr: 1, mt: 1 }}
+              label={pp}
+              key={`task-problemprofile-${pp}`}
+            />
+          ))}
+        </>
       )}
 
       <Typography
@@ -624,25 +628,31 @@ const TreeItemData = ({ language, processId, element, assets }) => {
               justifyContent='center'
               sx={{ mt: 2 }}
             >
-              <DesktopDateRangePicker
-                startText='Start date'
-                endText='End date'
-                value={dateRange}
-                onChange={(newValue) => {
-                  setDateRange(newValue);
-                }}
+              <LocalizationProvider
+                dateAdapter={AdapterDayjs}
+                localeText={{ start: 'Desktop start', end: 'Desktop end' }}
+              >
 
-                renderInput={(startProps, endProps) => (
-                  <Stack
-                    spacing={3}
-                    direction='row'
-                    sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}
-                  >
-                    <TextField {...startProps} />
-                    <TextField {...endProps} />
-                  </Stack>
-                )}
-              />
+                <DesktopDateRangePicker
+                  startText='Start date'
+                  endText='End date'
+                  value={dateRange}
+                  onChange={(newValue) => {
+                    setDateRange(newValue);
+                  }}
+
+                  renderInput={(startProps, endProps) => (
+                    <Stack
+                      spacing={3}
+                      direction='row'
+                      sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}
+                    >
+                      <TextField {...startProps} />
+                      <TextField {...endProps} />
+                    </Stack>
+                  )}
+                />
+              </LocalizationProvider>
             </Box>
           ) : (
             <Alert
@@ -676,63 +686,63 @@ const TreeItemData = ({ language, processId, element, assets }) => {
       )}
 
       {editMode
-      && (
-      <Box sx={{ width: '100%', justifyContent: 'center', textAlign: 'center' }}>
-        <Stack
-          sx={{ mt: 2 }}
-          justifyContent='center'
-          direction='row'
-          spacing={2}
-        >
-          <Button
-            size='small'
-            variant='outlined'
-            onClick={() => setEditMode(false)}
-            color='warning'
-          >
-            {t('Discard changes')}
-          </Button>
-          <LoadingButton
-            loading={updatingTree}
-            sx={{ width: '200px' }}
-            variant='contained'
-            onClick={saveData}
-            color='primary'
-            size='small'
-          >
-            {t('Save')}
-          </LoadingButton>
-        </Stack>
-        <Divider sx={{ my: 2 }}>
-          {t('other actions')}
-        </Divider>
-        <ConfirmationButton
-          Actionator={({ onClick }) => (
-            <Button
-              size='small'
-              variant='text'
-              onClick={onClick}
-              color='error'
+        && (
+          <Box sx={{ width: '100%', justifyContent: 'center', textAlign: 'center' }}>
+            <Stack
+              sx={{ mt: 2 }}
+              justifyContent='center'
+              direction='row'
+              spacing={2}
             >
-              {t('Remove {{what}}', { what: treeitem_translations[element.type].toLowerCase() })}
-            </Button>
-          )}
-          ButtonComponent={({ onClick }) => (
-            <LoadingButton
-              sx={{ mt: 1 }}
-              fullWidth
-              variant='contained'
-              color='error'
-              onClick={onClick}
-            >
-              {t('Confirm deletion')}
-            </LoadingButton>
-          )}
-          onClick={deleteTreeItem}
-          text={t('Are you sure?')}
-        />
-      </Box>
-      )}
+              <Button
+                size='small'
+                variant='outlined'
+                onClick={() => setEditMode(false)}
+                color='warning'
+              >
+                {t('Discard changes')}
+              </Button>
+              <LoadingButton
+                loading={updatingTree}
+                sx={{ width: '200px' }}
+                variant='contained'
+                onClick={saveData}
+                color='primary'
+                size='small'
+              >
+                {t('Save')}
+              </LoadingButton>
+            </Stack>
+            <Divider sx={{ my: 2 }}>
+              {t('other actions')}
+            </Divider>
+            <ConfirmationButton
+              Actionator={({ onClick }) => (
+                <Button
+                  size='small'
+                  variant='text'
+                  onClick={onClick}
+                  color='error'
+                >
+                  {t('Remove {{what}}', { what: treeitem_translations[element.type].toLowerCase() })}
+                </Button>
+              )}
+              ButtonComponent={({ onClick }) => (
+                <LoadingButton
+                  sx={{ mt: 1 }}
+                  fullWidth
+                  variant='contained'
+                  color='error'
+                  onClick={onClick}
+                >
+                  {t('Confirm deletion')}
+                </LoadingButton>
+              )}
+              onClick={deleteTreeItem}
+              text={t('Are you sure?')}
+            />
+          </Box>
+        )}
     </>
   );
 };
