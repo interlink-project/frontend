@@ -1,5 +1,5 @@
-import { useMediaQuery, useTheme } from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
+import { useMediaQuery, useTheme } from '@mui/material';
+import { styled } from '@mui/styles';
 //import ProcessSidebar from 'components/navsidebars/ProcessSidebar';
 import StorySidebar from 'components/navsidebars/StorySidebar';
 import useAuth from 'hooks/useAuth';
@@ -8,7 +8,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import DashboardMobileAppbar from '../navsidebars/DashboardMobileAppbar';
 import DashboardNavbar from '../navsidebars/DashboardNavbar';
 
-const StoryLayoutRoot = experimentalStyled('div')(({ theme }) => ({
+const StoryLayoutRoot = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   display: 'flex',
   height: '100%',
@@ -16,7 +16,7 @@ const StoryLayoutRoot = experimentalStyled('div')(({ theme }) => ({
   width: '100%',
 }));
 
-const StoryLayoutWrapperWithNavbar = experimentalStyled('div')(({ theme }) => ({
+const StoryLayoutWrapperWithNavbar = styled('div')(({ theme }) => ({
   display: 'flex',
   flex: '1 1 auto',
   overflow: 'hidden',
@@ -26,7 +26,7 @@ const StoryLayoutWrapperWithNavbar = experimentalStyled('div')(({ theme }) => ({
   }
 }));
 
-const MobileLayoutWrapper = experimentalStyled('div')(({ theme }) => ({
+const MobileLayoutWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   flex: '1 1 auto',
   overflow: 'hidden',
@@ -34,20 +34,20 @@ const MobileLayoutWrapper = experimentalStyled('div')(({ theme }) => ({
 
 }));
 
-const StoryLayoutWrapper = experimentalStyled('div')(({ theme }) => ({
+const StoryLayoutWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   flex: '1 1 auto',
   overflow: 'hidden',
   paddingTop: '64px',
 }));
 
-const StoryLayoutContainer = experimentalStyled('div')({
+const StoryLayoutContainer = styled('div')({
   display: 'flex',
   flex: '1 1 auto',
   overflow: 'hidden'
 });
 
-const StoryLayoutContent = experimentalStyled('div')({
+const StoryLayoutContent = styled('div')({
   flex: '1 1 auto',
   height: '100%',
   overflow: 'auto',
