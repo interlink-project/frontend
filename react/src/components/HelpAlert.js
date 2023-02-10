@@ -1,4 +1,4 @@
-import { Alert, Zoom } from '@material-ui/core';
+import { Alert, Zoom } from '@mui/material';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import useSettings from 'hooks/useSettings';
 import { getLanguage } from 'translations/i18n';

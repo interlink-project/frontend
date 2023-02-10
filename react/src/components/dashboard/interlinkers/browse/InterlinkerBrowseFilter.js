@@ -1,5 +1,5 @@
-import { Box, Card, Chip, Divider, Input, LinearProgress, Rating, Typography } from '@material-ui/core';
-import { Search } from '@material-ui/icons';
+import { Box, Card, Chip, Divider, Input, LinearProgress, Rating, Typography } from '@mui/material';
+import { Search } from '@mui/icons-material';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import React, { useEffect, useState } from 'react';

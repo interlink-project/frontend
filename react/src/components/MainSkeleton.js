@@ -1,7 +1,7 @@
 import {
   Skeleton,
 
-} from '@material-ui/core';
+} from '@mui/material';
 
 const MainSkeleton = () => (
   <Skeleton

@@ -1,5 +1,5 @@
-import { Avatar, AvatarGroup, Chip, Paper, Stack, TableCell, TableRow } from '@material-ui/core';
-import { Check, KeyboardArrowDown, KeyboardArrowUp, People } from '@material-ui/icons';
+import { Avatar, AvatarGroup, Chip, Paper, Stack, TableCell, TableRow } from '@mui/material';
+import { Check, KeyboardArrowDown, KeyboardArrowUp, People } from '@mui/icons-material';
 import UserAvatar from 'components/UserAvatar';
 import moment from 'moment';
 import React from 'react';

@@ -1,4 +1,4 @@
-import { Box, Button, Container, Typography } from '@material-ui/core';
+import { Box, Button, Container, Typography } from '@mui/material';
 import { HomeRow } from 'components/home';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';

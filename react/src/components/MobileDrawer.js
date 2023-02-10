@@ -1,9 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Global } from '@emotion/react';
-import { styled } from '@material-ui/styles';
-import { grey } from '@material-ui/core/colors';
-import { Typography, Box, SwipeableDrawer, CssBaseline } from '@material-ui/core';
+import { styled } from '@mui/styles';
+import { grey } from '@mui/material/colors';
+import { Typography, Box, SwipeableDrawer, CssBaseline } from '@mui/material';
 
 const drawerBleeding = 56;
 

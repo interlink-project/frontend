@@ -2,11 +2,11 @@ import { useMatomo } from '@datapunt/matomo-tracker-react';
 import {
   Alert,
   Box, Button, Chip, Divider, IconButton, Link, Stack, TextField, ToggleButton, ToggleButtonGroup, Typography
-} from '@material-ui/core';
-import { Edit } from '@material-ui/icons';
+} from '@mui/material';
+import { Edit } from '@mui/icons-material';
 import {
   DesktopDateRangePicker, LoadingButton
-} from '@material-ui/lab';
+} from '@mui/lab';
 import ConfirmationButton from 'components/ConfirmationButton';
 import { FinishedIcon, InProgressIcon } from 'components/dashboard/assets';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';

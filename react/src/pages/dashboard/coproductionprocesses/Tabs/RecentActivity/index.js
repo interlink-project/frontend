@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@material-ui/core';
+import { Box, Button, Typography } from '@mui/material';
 import { AssetsTable } from 'components/dashboard/assets';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';

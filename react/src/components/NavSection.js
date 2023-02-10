@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { matchPath } from 'react-router-dom';
-import { List, ListSubheader } from '@material-ui/core';
+import { List, ListSubheader } from '@mui/material';
 import NavItem from './NavItem';
 
 const renderNavItems = ({ depth = 0, items, pathname, onClick }) => (

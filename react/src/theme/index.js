@@ -1,4 +1,4 @@
-import { createTheme, responsiveFontSizes } from '@material-ui/core/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 import merge from 'lodash/merge';
 import { THEMES } from '../constants';
 import { darkShadows, lightShadows } from './shadows';

@@ -1,7 +1,7 @@
 import {
   Box,
   Container
-} from '@material-ui/core';
+} from '@mui/material';
 import useMounted from 'hooks/useMounted';
 import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';

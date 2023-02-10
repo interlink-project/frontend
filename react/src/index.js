@@ -1,7 +1,7 @@
 import { createInstance, MatomoProvider } from '@datapunt/matomo-tracker-react';
-import StyledEngineProvider from '@material-ui/core/StyledEngineProvider';
-import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
-import LocalizationProvider from '@material-ui/lab/LocalizationProvider';
+import StyledEngineProvider from '@mui/material/StyledEngineProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from '@mui/x-date-pickers';
 import { REACT_APP_COMPLETE_DOMAIN, REACT_APP_MATOMO_ID } from 'configuration';
 import 'nprogress/nprogress.css';
 import { StrictMode } from 'react';

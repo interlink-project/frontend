@@ -3,9 +3,9 @@ import {
   Avatar,
   Box, Card, CardHeader, Container, IconButton, Tab, Tabs, useMediaQuery,
   useTheme
-} from '@material-ui/core';
-import { red } from '@material-ui/core/colors';
-import { MoreVert } from '@material-ui/icons';
+} from '@mui/material';
+import { red } from '@mui/material/colors';
+import { MoreVert } from '@mui/icons-material';
 import MainSkeleton from 'components/MainSkeleton';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import { useCallback, useEffect } from 'react';

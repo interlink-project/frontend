@@ -1,5 +1,5 @@
-import { useMediaQuery, useTheme } from '@material-ui/core';
-import { experimentalStyled } from '@material-ui/core/styles';
+import { useMediaQuery, useTheme } from '@mui/material';
+import { styled } from '@mui/styles';
 import ProcessSidebar from 'components/navsidebars/ProcessSidebar';
 import useAuth from 'hooks/useAuth';
 import { useState } from 'react';
@@ -7,7 +7,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import DashboardMobileAppbar from '../navsidebars/DashboardMobileAppbar';
 import DashboardNavbar from '../navsidebars/DashboardNavbar';
 
-const DashboardLayoutRoot = experimentalStyled('div')(({ theme }) => ({
+const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   display: 'flex',
   height: '100%',
@@ -15,7 +15,7 @@ const DashboardLayoutRoot = experimentalStyled('div')(({ theme }) => ({
   width: '100%',
 }));
 
-const DashboardLayoutWrapperWithNavbar = experimentalStyled('div')(({ theme }) => ({
+const DashboardLayoutWrapperWithNavbar = styled('div')(({ theme }) => ({
   display: 'flex',
   flex: '1 1 auto',
   overflow: 'hidden',
@@ -25,7 +25,7 @@ const DashboardLayoutWrapperWithNavbar = experimentalStyled('div')(({ theme }) =
   }
 }));
 
-const MobileLayoutWrapper = experimentalStyled('div')(({ theme }) => ({
+const MobileLayoutWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   flex: '1 1 auto',
   overflow: 'hidden',
@@ -33,20 +33,20 @@ const MobileLayoutWrapper = experimentalStyled('div')(({ theme }) => ({
 
 }));
 
-const DashboardLayoutWrapper = experimentalStyled('div')(({ theme }) => ({
+const DashboardLayoutWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   flex: '1 1 auto',
   overflow: 'hidden',
   paddingTop: '64px',
 }));
 
-const DashboardLayoutContainer = experimentalStyled('div')({
+const DashboardLayoutContainer = styled('div')({
   display: 'flex',
   flex: '1 1 auto',
   overflow: 'hidden'
 });
 
-const DashboardLayoutContent = experimentalStyled('div')({
+const DashboardLayoutContent = styled('div')({
   flex: '1 1 auto',
   height: '100%',
   overflow: 'auto',
