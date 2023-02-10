@@ -1,6 +1,9 @@
 import * as React from 'react';
+import { Button } from '@mui/material';
+
 import { DataGrid } from '@mui/x-data-grid';
 import clsx from 'clsx';
+import RightSide from '../coproductionprocesses/RightSide';
 
 
 export default function ContributionsTable() {
@@ -10,7 +13,7 @@ export default function ContributionsTable() {
   return (
     <div style={{ height: 300, width: '100%' }}>
       <DataGrid
-        autoHeight 
+        autoHeight
         disableSelectionOnClick
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -47,11 +50,26 @@ const contribValues = ['Low', 'Average', 'High'];
 
 const columns = [
   { field: 'name', headerName: 'Name', flex: 0.5, editable: false },
-  { field: 'contribution', headerName: 'Contribution', 
+  {
+    field: 'activity', headerName: 'Activity', flex: 0.3, editable: false, headerAlign: 'center', align: 'center',
+    renderCell: () => (
+      <strong>
+        <Button
+          variant="contained"
+          size="small"
+          style={{ marginLeft: 16 }}
+        >
+          Activity
+        </Button>
+      </strong>) },
+  {
+    field: 'contribution', headerName: 'Contribution',
     type: 'singleSelect',
     flex: 1,
     editable: true,
     valueOptions: contribValues,
+    headerAlign: 'center',
+    align: 'center',
     cellClassName: (params) => {
       if (params.value == null) {
         return '';
@@ -62,28 +80,29 @@ const columns = [
         average: params.value === 'Average',
         high: params.value === 'High',
       });
-    }, },
-  
+    },
+  },
+
 ];
 
 const rows = [
   {
     id: 1,
-    name: 'Paco',
+    name: 'Diego',
     contribution: 'Low',
-   
+
   },
   {
     id: 2,
     name: 'Rubén',
     contribution: 'Average',
-   
+
   },
   {
     id: 3,
     name: 'Daniel',
     contribution: 'High',
-   
+
   },
-  
+
 ];
