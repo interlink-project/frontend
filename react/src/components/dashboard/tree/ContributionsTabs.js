@@ -1,4 +1,4 @@
-import BasicEditingGrid from 'components/dashboard/tree/BasicEditingGrid';
+import ContributionsTable from 'components/dashboard/tree/ContributionsTable';
 
 const ContributionsTabs = () => {
 
@@ -6,7 +6,7 @@ const ContributionsTabs = () => {
     return (
     <>
         <p> Contributions </p>
-        <BasicEditingGrid />
+        <ContributionsTable />
     </>
     );
 }

@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import clsx from 'clsx';
 
 
-export default function BasicEditingGrid() {
+export default function ContributionsTable() {
   const [pageSize, setPageSize] = React.useState(5);
 
 
@@ -25,24 +25,16 @@ export default function BasicEditingGrid() {
           '& .MuiDataGrid-cell:hover': {
             color: 'primary.main',
           },
-          '& .super-app-theme--cell': {
-            backgroundColor: 'rgba(224, 183, 60, 0.55)',
-            color: '#1a3e72',
-            fontWeight: '600',
-          },
           '& .super-app.low': {
-            backgroundColor: '#f44336',
-            color: '#1a3e72',
+            color: '#f44336',
             fontWeight: '600',
           },
           '& .super-app.average': {
-            backgroundColor: '#ffe607',
-            color: '#1a3e72',
+            color: '#ffe607',
             fontWeight: '600',
           },
           '& .super-app.high': {
-            backgroundColor: '#44c949',
-            color: '#1a3e72',
+            color: '#44c949',
             fontWeight: '600',
           },
         }}

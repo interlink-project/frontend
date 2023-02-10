@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router';
 import { getProcess, updateProcess } from 'slices/process';
 import * as Yup from 'yup';
 import { coproductionProcessesApi } from '__api__';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@mui/styles';
 
 const SettingsTab = () => {
   const[isCloning, setIsCloning] = useState(false);

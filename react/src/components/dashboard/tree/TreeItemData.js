@@ -19,7 +19,6 @@ import { tree_items_translations } from 'utils/someCommonTranslations';
 import { objectivesApi, phasesApi, tasksApi } from '__api__';
 import { AwaitingIcon, statusIcon, StatusText } from '../../Icons';
 import { coproductionprocessnotificationsApi } from '__api__';
-import BasicEditingGrid from 'components/dashboard/tree/BasicEditingGrid';
 
 
 const apis = {
