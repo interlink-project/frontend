@@ -3,6 +3,8 @@ import { lazy } from 'react';
 import DashboardLayout from 'components/layouts/DashboardLayout';
 import Loadable from './Loadable';
 import OrganizationProfileSolo from 'components/dashboard/organizations/OrganizationProfileSolo';
+import StoryLayout from 'components/layouts/StoryLayout';
+
 
 const CoproductionProcessProfile = Loadable(
   lazy(() => import('../pages/dashboard/coproductionprocesses/CoproductionProcessProfile'))
@@ -33,6 +35,33 @@ const OrganizationProfile = Loadable(
 const Workspace = Loadable(lazy(() => import('../pages/dashboard/workspace')));
 
 export const routes = [
+  
+  {
+    path: 'stories',
+    element: (
+      <StoryLayout />
+    ),
+    children: [
+      {
+        path: '',
+        element: <SuccessCatalogue />,
+      },
+      {
+        path: ':processId',
+        children: [
+          {
+            path: '',
+            element: <AuthGuard><StoryProfile /></AuthGuard>
+            ,
+          },
+          {
+            path: ':tab',
+            element: <AuthGuard><StoryProfile /></AuthGuard>
+          },
+        ]
+      }
+    ]
+    },
   {
     path: 'dashboard',
     element: (
