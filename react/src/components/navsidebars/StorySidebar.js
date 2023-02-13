@@ -29,7 +29,7 @@ const StorySidebar = (props) => {
     description:'Story description is that it has a more-or-less normal distribution of letters, as opposed to using  making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
     isLiked:false,
     likes:0,
-    logotype_link:'http://localhost/coproduction/static/coproductionprocesses/47c40b06-2147-440b-8f08-fac9e976af38.png',
+    logotype_link:'/coproduction/static/coproductionprocesses/47c40b06-2147-440b-8f08-fac9e976af38.png',
     updated_at:'2021-08-23',
     created_at:'2021-08-23',
     rating:10,

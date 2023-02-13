@@ -135,9 +135,9 @@ const t = useCustomTranslation(story.language);
         <Box sx={{ p: 3, justifyContent: "center" }}>
            <Typography
                   color='textSecondary'
-                  variant='h6'
-                 align='center'
-                 sx={{mb:3}}
+                  variant='h5'
+                  align='center'
+                  sx={{mb:3}}
                 >
 {story.title}
 
