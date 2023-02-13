@@ -79,6 +79,9 @@ const RightSide = ({ softwareInterlinkers }) => {
     if (!isTask && tabValue === 'assets') {
       setTabValue('data');
     }
+    if (!isTask && tabValue === 'contributions') {
+      setTabValue('data');
+    }
   }, [selectedTreeItem, tabValue]);
 
   const can = {
@@ -600,7 +603,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                           asset_id: selectedAsset.id,
                           parameters: paramListJson,
                           claim_type: 'Development'
-                          
+
                         };
 
                         console.log(dataToSend)
@@ -619,7 +622,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                           setSubmitting(false);
                         });
 
-                      
+
                       }}
                     >
                       {({
@@ -779,13 +782,13 @@ const RightSide = ({ softwareInterlinkers }) => {
           )}
           {tabValue === 'contributions' && (
             <ContributionsTabs
-              // your_permissions={permissions && permissions.your_permissions}
-              // your_roles={permissions && permissions.your_roles}
-              // onChanges={() => dispatch(getProcess(process.id, false, selectedTreeItem.id))}
-              // language={process.language}
-              // processId={process.id}
-              // element={selectedTreeItem}
-              // isAdministrator={isAdministrator}
+            // your_permissions={permissions && permissions.your_permissions}
+            // your_roles={permissions && permissions.your_roles}
+            // onChanges={() => dispatch(getProcess(process.id, false, selectedTreeItem.id))}
+            // language={process.language}
+            // processId={process.id}
+            // element={selectedTreeItem}
+            // isAdministrator={isAdministrator}
             />
           )}
 

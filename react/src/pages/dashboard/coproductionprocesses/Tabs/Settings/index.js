@@ -592,7 +592,7 @@ const SettingsTab = () => {
         {/* Cloning coprod */}
         <Card sx={{ border: '1px solid red', p: 5, my: 4 }}>
           <Typography variant='h5'  sx={{fontWeight: 'bold',mb:0}}>
-            {t('Copy coproduction process')}
+            {t('Clone coproduction process')}
           </Typography>
           <Alert
             severity='warning'
@@ -609,7 +609,7 @@ const SettingsTab = () => {
                     onClick={onClick}
                     startIcon={<Delete />}
                   >
-                    {t('Copy coproduction process')}
+                    {t('Clone coproduction process')}
                   </LoadingButton>
                 )}
                 ButtonComponent={({ onClick }) => (
@@ -628,7 +628,7 @@ const SettingsTab = () => {
               />
             )}
           >
-            {t('The deletion of the co-production process is irreversible. All resources created in it will disappear.')}
+            {t('The clonation of the coproduction process will create a new coproduction process with the same structure and resources.')}
           </Alert>
         </Card>
        {/* Cloning coprod */}
@@ -638,8 +638,6 @@ const SettingsTab = () => {
           </Typography>
           <Alert
             severity='info'
-            
-          
             sx={{ mt: 2}}
             action={(
               <>
