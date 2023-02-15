@@ -12,7 +12,7 @@ export default class GeneralApi {
   }
 
   async create(data) {
-    console.log(data);
+    //console.log(data);
     return axiosInstance.post(`/${this.url}`, data);
   }
 

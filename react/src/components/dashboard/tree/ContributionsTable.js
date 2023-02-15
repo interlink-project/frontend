@@ -1,30 +1,51 @@
 import { useState, useEffect } from 'react';
-import { Button } from '@mui/material';
-
-import { DataGrid } from '@mui/x-data-grid';
+import { Button, Dialog, IconButton, DialogContent } from '@mui/material';
+import { DataGrid, GridApi } from '@mui/x-data-grid';
 import clsx from 'clsx';
-import RightSide from '../coproductionprocesses/RightSide';
+import useMounted from 'hooks/useMounted';
+import { getUserActivities } from "slices/general";
+import { useDispatch, useSelector } from 'react-redux';
+import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@mui/icons-material';
+import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
 
 
-export default function ContributionsTable(contributors) {
-  const [rows, setRows] = useState([]);
+
+export default function ContributionsTable({ rows, assets }) {
+  const [stateRows, setRows] = useState([]);
   const [pageSize, setPageSize] = useState(5);
   const contribValues = ['Low', 'Average', 'High'];
+  const [activitiesDialogOpen, setactivitiesDialogOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { process } = useSelector((state) => state.process);
+  // const [ userId, setUserId ] = useState(null);
+
+  const handleClickHistory = (userId) => {
+    console.log("Selected user: " + userId);
+    if (userId == null) {
+      return;
+    }
+    setactivitiesDialogOpen(true);
+    dispatch(getUserActivities({
+      'coproductionprocess_id': process.id, 'assets': assets, 'user_id': userId
+    }));
+  };
 
   const columns = [
     { field: 'name', headerName: 'Name', flex: 0.5, editable: false },
     {
       field: 'activity', headerName: 'Activity', flex: 0.3, editable: false, headerAlign: 'center', align: 'center',
-      renderCell: () => (
-        <strong>
-          <Button
-            variant="contained"
-            size="small"
-            style={{ marginLeft: 16 }}
-          >
-            Activity
-          </Button>
-        </strong>)
+      renderCell: (params) => {
+        const onClick = (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          // setUserId(params.row.id);
+          return handleClickHistory(params.row.id);
+        };
+        return (
+          <Button variant="contained" onClick={onClick} color="primary">
+            Activities
+          </Button>)
+      }
     },
     {
       field: 'contribution', headerName: 'Contribution',
@@ -50,19 +71,34 @@ export default function ContributionsTable(contributors) {
   ];
 
   useEffect(() => {
-    setRows([]);
-    console.log(contributors);
-    let tmp_rows = [];
-    for (let i = 0; i < contributors.contributors.length; i++) {
-      tmp_rows.push({
-        id: contributors.contributors[i].id,
-        name: contributors.contributors[i].name,
-        contribution: 'Average',
-      });
+    if (rows && rows.length > 0) {
+      console.log(rows);
+      setRows(rows);
+    } else {
+      setRows([]);
     }
+  }, [rows]);
 
-    setRows(tmp_rows);
-  }, [contributors]);
+  // useEffect(() => {
+  //   console.log(contributors);
+  //   console.log(contributors.contributors);
+  //   let tmp_rows = [];
+  //   console.log(contributors.contributors.length);
+  //   if (contributors.contributors.length > 0) {
+  //     console.log("qljdhfqwefjkqwejfkqjñlkwefjklqwfjek");
+  //     for (let i = 0; i < contributors.contributors.length; i++) {
+  //       console.log(contributors.contributors[i].name);
+  //       tmp_rows.push({
+  //         id: contributors.contributors[i].id,
+  //         name: contributors.contributors[i].name,
+  //         contribution: 'Average',
+  //       });
+  //       // setRows([...rows, {id: contributors[i].id, name: contributors[i].name, contribution: 'Average'}]);
+  //     }
+  //   }
+  //   setRows(tmp_rows);
+
+  // }, [contributors]);
 
   return (
     <div style={{ height: 300, width: '100%' }}>
@@ -72,7 +108,7 @@ export default function ContributionsTable(contributors) {
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         rowsPerPageOptions={[5, 10, 20]}
-        rows={rows}
+        rows={stateRows}
         columns={columns}
         experimentalFeatures={{ newEditingApi: true }}
         sx={{
@@ -96,6 +132,28 @@ export default function ContributionsTable(contributors) {
           },
         }}
       />
+      <Dialog
+        open={activitiesDialogOpen}
+        onClose={() => setactivitiesDialogOpen(false)}
+      >
+        <IconButton
+          aria-label='close'
+          onClick={() => setactivitiesDialogOpen(false)}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <Close />
+        </IconButton>
+
+        <DialogContent sx={{ p: 3 }}>
+          <CoproNotifications
+          mode={'activity'} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -42,6 +42,7 @@ class CoproductionProcessNotificationsApi extends GeneralApi {
       //console.log(`/${this.url}/${params['search']['coproductionprocess_id']}/${params['search']['asset_id']}/listCoproductionProcessNotifications`);
       
       let ruta='';
+      console.log(params);
       if(params['search']['asset_id']!=""){
         ruta=`/${this.url}/${params['search']['coproductionprocess_id']}/${params['search']['asset_id']}/listCoproductionProcessNotifications`;
 
@@ -67,10 +68,6 @@ class CoproductionProcessNotificationsApi extends GeneralApi {
   
       return datos;
     }
-
-  
-  
-
   
 }
 
