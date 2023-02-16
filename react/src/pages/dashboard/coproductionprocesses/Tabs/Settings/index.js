@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { getProcess, updateProcess } from 'slices/process';
 import * as Yup from 'yup';
-import { coproductionProcessesApi } from '__api__';
+import { coproductionProcessesApi, gamesApi } from '__api__';
 import { withStyles } from '@mui/styles';
 
 const SettingsTab = () => {
@@ -99,6 +99,9 @@ const SettingsTab = () => {
       const values={incentive_and_rewards_state:!isIncentiveModuleActive};
       console.log('La bandera es:')
       console.log(isIncentiveModuleActive)
+      gamesApi.getGame(process.id).then((res) => {
+        console.log(res);
+      });
       try {
         dispatch(updateProcess({
           id: process.id,
@@ -106,6 +109,9 @@ const SettingsTab = () => {
           logotype,
           onSuccess: () => {
             if (mounted.current) {
+              gamesApi.getGame(process.id).then((res) => {
+                console.log(res);
+              });
               //alert("se ha grabado la bandera")
             }
           }
