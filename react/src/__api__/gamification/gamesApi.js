@@ -3,7 +3,8 @@ import GeneralApi from '../general';
 
 class GamesApi extends GeneralApi {
   constructor() {
-    super('interlink-gamification/interlink/game/');
+    // Review the creation of gamification apis by /<variableName>
+    super('interlink-gamification/interlink/game/processId/');
   }
 
   async getGame(gameId) {

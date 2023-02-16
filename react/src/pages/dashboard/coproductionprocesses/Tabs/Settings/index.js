@@ -99,6 +99,7 @@ const SettingsTab = () => {
       const values={incentive_and_rewards_state:!isIncentiveModuleActive};
       console.log('La bandera es:')
       console.log(isIncentiveModuleActive)
+      console.log(process.id);
       gamesApi.getGame(process.id).then((res) => {
         console.log(res);
       });
