@@ -111,30 +111,31 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
             flexWrap: 'wrap',
             p: 1
           }}
-        > Filter 1
-          {/* <MultiSelect
+        > 
+        {/* Filter 1
+           <MultiSelect
             label={natureMultiselect.label}
             onChange={(e) => changeFilter('nature', e)}
             options={natureMultiselect.options}
             value={filters.nature}
-          /> */}
+          /> 
           <Divider
             orientation='vertical'
             flexItem
             sx={{ mx: 2 }}
           />
           Filter 2
-          {/* <MultiSelect
+           <MultiSelect
             label={problemprofilesMultiselect.label}
             onChange={(e) => changeFilter('problemprofiles', e)}
             options={problemprofilesMultiselect.options}
             value={filters.problemprofiles}
-          /> */}
+          /> 
           <Divider
             orientation='vertical'
             flexItem
             sx={{ mx: 2 }}
-          />
+          /> */}
 
           <Typography
             variant='body2'

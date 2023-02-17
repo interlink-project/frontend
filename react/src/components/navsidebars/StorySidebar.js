@@ -12,6 +12,7 @@ import { LANGUAGES } from 'translations/i18n';
 import NavSection from '../NavSection';
 import Scrollbar from '../Scrollbar';
 
+
 const StorySidebar = (props) => {
   const { onMobileClose, openMobile } = props;
   //const { process, hasSchema, loading, updating } = useSelector((state) => state.process);
@@ -19,25 +20,12 @@ const StorySidebar = (props) => {
   const location = useLocation();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   //const processId = process && process.id;
- const storyId =  1 ;
 
- 
- const story={
-    id:'1',
-    title:'Families Share @ Work',
-    name:'Families Share @ Work',
-    description:'Story description is that it has a more-or-less normal distribution of letters, as opposed to using  making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-    isLiked:false,
-    likes:0,
-    logotype_link:'/coproduction/static/coproductionprocesses/47c40b06-2147-440b-8f08-fac9e976af38.png',
-    updated_at:'2021-08-23',
-    created_at:'2021-08-23',
-    rating:10,
-    tags:['salud','dinero','amor']
-
-};
-
-
+  const { selectedStory } = useSelector((state) => state.general);
+  let storyId=1;
+  if(selectedStory){
+    storyId=selectedStory.id;
+  }
   const { t } = useDependantTranslation();
 
   useEffect(() => {
@@ -90,7 +78,7 @@ const StorySidebar = (props) => {
           onClick={() => navigate('/dashboard')}
         />
         )}
-
+        {selectedStory && (
         <Stack
           direction='column'
           justifyContent='center'
@@ -104,10 +92,10 @@ const StorySidebar = (props) => {
             <Avatar
               variant='rounded'
               sx={{ width: '80px', height: '80px' }}
-              src={story && story.logotype_link}
+              src={selectedStory.data_story.logo}
             >
-              {(!story || !story.logotype_link) && <Folder />}
-              {' '}
+{/*               {(!selectedStory || !selectedStory.logo) && <Folder />}
+              {' '} */}
             </Avatar>
          {/*  ) : ( */}
             {/* <Skeleton
@@ -119,14 +107,14 @@ const StorySidebar = (props) => {
             sx={{ textAlign: 'center', width: '100%' }}
             variant='h6'
           >
-            {story.name}
+            {selectedStory.name}
            {/*  {!loading && !updating && process ? process.name : <Skeleton />} */}
           </Typography>
 
           <Rating
             readOnly
             size='small'
-            value={story.rating || 0}
+            value={selectedStory.rating || 0}
           />
          {/*  {!loading && !updating && process ? (
             <StatusChip
@@ -143,6 +131,7 @@ const StorySidebar = (props) => {
           ) : <Skeleton sx={{ width: 80, height: 45, m: 0, p: 0 }} />} */}
 
         </Stack>
+        )}
         <Divider />
         <Box sx={{ p: 2 }}>
            { sections.map((section) => (

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { coproductionProcessesApi, organizationsApi, usernotificationsApi, coproductionprocessnotificationsApi, teamsApi } from '../__api__';
+import { storiesApi,coproductionProcessesApi, organizationsApi, usernotificationsApi, coproductionprocessnotificationsApi, teamsApi } from '../__api__';
 import { subDays, subHours } from 'date-fns';
 
 const now = new Date();
@@ -21,6 +21,9 @@ const initialState = {
 
   unseenusernotifications:[],
   loadingUnseenUserNotifications: false,
+
+  selectedStory:null,
+  loadingSelectedStory: false,
 };
 
 const slice = createSlice({
@@ -56,6 +59,12 @@ const slice = createSlice({
     },
     setLoadingCoproductionProcessNotifications(state, action) {
       state.loadingCoproductionProcessNotifications = action.payload;
+    },
+    setSelectedStory(state, action) {
+      state.selectedStory = action.payload;
+    },
+    setLoadingSelectedStory(state, action) {
+      state.loadingSelectedStory = action.payload;
     },
     setUnseenUserNotifications(state, action) {
       state.unseenusernotifications = action.payload;
@@ -101,6 +110,13 @@ export const getCoproductionProcessNotifications = (search) => async (dispatch) 
   const coproductionprocessnotifications_data = await coproductionprocessnotificationsApi.getCoproductionProcessNotifications({ search });
   dispatch(slice.actions.setCoproductionProcessNotifications(coproductionprocessnotifications_data));
   dispatch(slice.actions.setLoadingCoproductionProcessNotifications(false));
+};
+
+export const getSelectedStory = (id) => async (dispatch) => {
+  dispatch(slice.actions.setLoadingSelectedStory(true));
+  const selectedStory_data = await storiesApi.getStoriesbyId(id);
+  dispatch(slice.actions.setSelectedStory(selectedStory_data));
+  dispatch(slice.actions.setLoadingSelectedStory(false));
 };
 
 export default slice;
