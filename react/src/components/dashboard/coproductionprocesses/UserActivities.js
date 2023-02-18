@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function CoproNotifications({ mode = "notification" }) {
+export default function CoproNotifications() {
   const classes = useStyles();
   const { process, hasSchema, tree } = useSelector((state) => state.process);
   const { user } = useAuth();
@@ -92,14 +92,10 @@ export default function CoproNotifications({ mode = "notification" }) {
     setOpen(false);
   };
 
-  
-  const notificationsList = useSelector((state) =>{
-    if (mode === "notification") {
-      return state.general.coproductionprocessnotifications;
-    } else if (mode === "activity") {
-      return state.general.userActivities;
-    }
-  });
+  const notificationsList = useSelector(
+    (state) => state.general.userActivities
+
+  );
 
   let listAssets = [];
 

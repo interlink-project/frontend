@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProcess, getTree } from 'slices/process';
 import { information_about_translations } from 'utils/someCommonTranslations';
 import * as Yup from 'yup';
-import { assetsApi, permissionsApi, assetsDataApi, coproductionprocessnotificationsApi } from '__api__';
+import { assetsApi, permissionsApi, assetsDataApi, coproductionprocessnotificationsApi, tasksApi } from '__api__';
 import NewAssetModal from 'components/dashboard/coproductionprocesses/NewAssetModal';
 
 const RightSide = ({ softwareInterlinkers }) => {
@@ -34,6 +34,7 @@ const RightSide = ({ softwareInterlinkers }) => {
   const [catalogueOpen, setCatalogueOpen] = useState(false);
   const { t } = useDependantTranslation();
   const dispatch = useDispatch();
+  const [contributions, setContributions] = useState([]);
 
   const [permissions, setPermissions] = useState(null);
 
@@ -45,6 +46,11 @@ const RightSide = ({ softwareInterlinkers }) => {
         getAssets();
       } else {
         setAssets([])
+      }
+    });
+    tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
+      if (isTask && mounted.current && res) {
+        setContributions(res.assetsWithContribution);
       }
     });
   }, [selectedTreeItem]);
@@ -77,6 +83,9 @@ const RightSide = ({ softwareInterlinkers }) => {
 
   useEffect(() => {
     if (!isTask && tabValue === 'assets') {
+      setTabValue('data');
+    }
+    if (!isTask && tabValue === 'contributions') {
       setTabValue('data');
     }
   }, [selectedTreeItem, tabValue]);
@@ -333,7 +342,7 @@ const RightSide = ({ softwareInterlinkers }) => {
               {isTask & isAdministrator && (
                 <Tab
                   value='contributions'
-                  label={`${t('Contributions')} (${selectedTreeItem.permissions.length})`}
+                  label={`${t('Contributions')}`}
                 />
               )}
             </Tabs>
@@ -600,7 +609,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                           asset_id: selectedAsset.id,
                           parameters: paramListJson,
                           claim_type: 'Development'
-                          
+
                         };
 
                         console.log(dataToSend)
@@ -619,7 +628,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                           setSubmitting(false);
                         });
 
-                      
+
                       }}
                     >
                       {({
@@ -779,13 +788,14 @@ const RightSide = ({ softwareInterlinkers }) => {
           )}
           {tabValue === 'contributions' && (
             <ContributionsTabs
-              // your_permissions={permissions && permissions.your_permissions}
-              // your_roles={permissions && permissions.your_roles}
-              // onChanges={() => dispatch(getProcess(process.id, false, selectedTreeItem.id))}
-              // language={process.language}
-              // processId={process.id}
-              // element={selectedTreeItem}
-              // isAdministrator={isAdministrator}
+              contributions={contributions}
+            // element={selectedTreeItem}
+            // your_permissions={permissions && permissions.your_permissions}
+            // your_roles={permissions && permissions.your_roles}
+            // language={process.language}
+            // processId={process.id}
+            // element={selectedTreeItem}
+            // isAdministrator={isAdministrator}
             />
           )}
 

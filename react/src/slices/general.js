@@ -24,6 +24,9 @@ const initialState = {
 
   selectedStory:null,
   loadingSelectedStory: false,
+
+  userActivities:[],
+  loadingUserActivities: false,
 };
 
 const slice = createSlice({
@@ -72,6 +75,12 @@ const slice = createSlice({
     setLoadingUnseenUserNotifications(state, action) {
       state.loadingUnseenUserNotifications = action.payload;
     },
+    setUserActivities(state, action) {
+      state.userActivities = action.payload;
+    },
+    setLoadingUserActivities(state, action) {
+      state.loadingUserActivities = action.payload;
+    },
   }
 });
 
@@ -108,6 +117,7 @@ export const getUnseenUserNotifications = (search) => async (dispatch) => {
 export const getCoproductionProcessNotifications = (search) => async (dispatch) => {
   dispatch(slice.actions.setLoadingCoproductionProcessNotifications(true));
   const coproductionprocessnotifications_data = await coproductionprocessnotificationsApi.getCoproductionProcessNotifications({ search });
+  console.log(coproductionprocessnotifications_data);
   dispatch(slice.actions.setCoproductionProcessNotifications(coproductionprocessnotifications_data));
   dispatch(slice.actions.setLoadingCoproductionProcessNotifications(false));
 };
@@ -117,6 +127,23 @@ export const getSelectedStory = (id) => async (dispatch) => {
   const selectedStory_data = await storiesApi.getStoriesbyId(id);
   dispatch(slice.actions.setSelectedStory(selectedStory_data));
   dispatch(slice.actions.setLoadingSelectedStory(false));
+};
+
+export const getUserActivities = (params) => async (dispatch) => {
+  let callback = notification => notification.user_id === params.user_id;
+  let activity = [];
+  dispatch(slice.actions.setLoadingUserActivities(true));
+  
+  for (let i=0; i<params.assets.length; i++){
+    let search = { 'coproductionprocess_id': params.coproductionprocess_id,'asset_id': params.assets[i].id} ;
+    const coproductionprocessnotifications_data = await coproductionprocessnotificationsApi.getCoproductionProcessNotifications({ search });
+    // console.log(coproductionprocessnotifications_data);
+    // const filtered = (coproductionprocessnotifications_data.filter(callback));
+    activity = activity.concat(coproductionprocessnotifications_data.filter(callback))
+  }
+  console.log(activity);
+  dispatch(slice.actions.setUserActivities(activity));
+  dispatch(slice.actions.setLoadingUserActivities(false));
 };
 
 export default slice;

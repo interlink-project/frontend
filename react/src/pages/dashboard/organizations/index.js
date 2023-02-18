@@ -60,7 +60,7 @@ const Organizations = () => {
   
   React.useEffect(() => {
     let delayDebounceFn;
-    if (mounted.current) {
+    if (mounted.current && isAuthenticated) {
       delayDebounceFn = setTimeout(() => {
         getUnseenUserNotificationsData({'user_id':user.id});
       }, searchValue ? 800 : 0);
