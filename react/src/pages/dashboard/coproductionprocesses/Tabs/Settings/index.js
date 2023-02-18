@@ -639,9 +639,6 @@ const SettingsTab = () => {
         </Card>
 
         {/* Cloning coprod */}
-        <Card sx={{ border: '1px solid red', p: 5, my: 4 }}>
-          <Typography variant='h5'  sx={{fontWeight: 'bold',mb:0}}>
-            {t('Clone coproduction process')}
         <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
           <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
             {t("Copy coproduction process")}
@@ -680,9 +677,7 @@ const SettingsTab = () => {
             }
           >
             {t('The clonation of the coproduction process will create a new coproduction process with the same structure and resources.')}
-            {t(
-              "The deletion of the co-production process is irreversible. All resources created in it will disappear."
-            )}
+            
           </Alert>
         </Card>
         {/* Reward */}
