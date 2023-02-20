@@ -137,7 +137,7 @@ const StoryResults = ({ loading: propLoading = null, setLoading: propSetLoading 
       >
          {mode === 'grid' ? ( 
           <>
-             {/* {loadedRows.map((story, i) => (
+              {loadedRows.map((story, i) => (
               <Grid
                 item
                 key={story.id}
@@ -152,7 +152,7 @@ const StoryResults = ({ loading: propLoading = null, setLoading: propSetLoading 
                   mode={mode}
                 />
               </Grid>
-            ))}  */}
+            ))}  
           </>
          ) : (
             <>
