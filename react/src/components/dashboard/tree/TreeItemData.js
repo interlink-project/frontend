@@ -38,7 +38,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   //const [management, setManagement] = useState('');
   const [development, setDevelopment] = useState('');
   //const [exploitation, setExploitation] = useState('');
-  const [taskDataContributions, setTaskDataContributions] = useState(null);
+ // const [taskDataContributions, setTaskDataContributions] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const { process, updatingTree, treeitems, selectedTreeItem, isAdministrator } = useSelector((state) => state.process);
   const isTask = selectedTreeItem && selectedTreeItem.type === 'task';
@@ -69,11 +69,11 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   useEffect(() => {
     setEditMode(false);
     restart(element);
-    if (element.type === 'task') {
-      tasksApi.getAssetsAndContributions(selectedTreeItem.id).then(datos => {
-        setTaskDataContributions(datos);
-      })
-    }
+    // if (element.type === 'task') {
+    //   tasksApi.getAssetsAndContributions(selectedTreeItem.id).then(datos => {
+    //     setTaskDataContributions(datos);
+    //   })
+    // }
   }, [element]);
 
   const saveData = () => {
@@ -506,7 +506,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
 
       <>
 
-        <ul>
+{/*         <ul>
           {taskDataContributions && taskDataContributions['assetsWithContribution']?.map((asset) => {
             const hasContribution = asset.contributors.length;
             if (!hasContribution) {
@@ -575,7 +575,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
 
             );
           })}
-        </ul>
+        </ul> */}
       </>
 
 
