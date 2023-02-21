@@ -122,7 +122,6 @@ export default function OverviewStory({}) {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = React.useState("");
 
-  const { user, isAuthenticated } = useAuth();
 
   useEffect(() => {
     const id = window.location.pathname.split("/")[2];

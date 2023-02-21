@@ -123,9 +123,56 @@ export default function CoproNotifications() {
     
     return text;
   };
-
-
   const includeObjectNames = (text) => {
+    //Search and reemplace que assetName and icon
+    const paramsPattern = /[^{}]+(?=})/g;
+    let extractParams = text.match(paramsPattern);
+    //Loop over each parameter value and replace in the text
+    if (extractParams) {
+      extractParams = [...new Set(extractParams)];
+      for (let i = 0; i < extractParams.length; i++) {
+        if (extractParams[i].includes(":")) {
+          // console.log('----->'+extractParams[i]);
+          const entidadName = extractParams[i].split(":")[0];
+          const entidadId = extractParams[i].split(":")[1];
+
+          if (entidadName == "assetid") {
+            //Obtain the asset name:
+
+            if (!listAssets.includes(entidadId)) {
+              //listAssets.push(entidadId);
+              //alert('retrive the data');
+              assetsApi.getInternal(entidadId).then((res) => {
+                const assetdata = res;
+                const assetName = assetdata.name.replace(
+                  /(^\w{1})|(\s+\w{1})/g,
+                  (letter) => letter.toUpperCase()
+                );
+                const nodes = document.getElementsByClassName(
+                  "lk_" + entidadId
+                );
+
+                for (let i = 0; i < nodes.length; i++) {
+                  nodes[i].innerHTML = assetName;
+                }
+
+                const nodes2 = document.getElementsByClassName(
+                  "im_" + entidadId
+                );
+                for (let i = 0; i < nodes.length; i++) {
+                  nodes2[i].src = assetdata.icon;
+                }
+              });
+            }
+          }
+        }
+      }
+    }
+
+    return text;
+  };
+
+  /* const includeObjectNames = (text) => {
     
     //Search and reemplace que assetName and icon
     const paramsPattern = /[^{}]+(?=})/g;
@@ -192,7 +239,7 @@ export default function CoproNotifications() {
     } 
     
     return text;
-  };
+  }; */
 
   const compareDates = (d1, d2) => {
     let date1 = new Date(d1).getTime();
