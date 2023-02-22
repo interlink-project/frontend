@@ -461,7 +461,6 @@ const Assets = ({ language, loading, assets, getActions = null }) => {
                 actions={[]}
               /></>
               ):(
-                <React.Fragment>
               <AssetRow
                 inputValue={inputValue}
                 language={language}
@@ -469,8 +468,6 @@ const Assets = ({ language, loading, assets, getActions = null }) => {
                 asset={asset}
                 actions={getActions && getActions(asset)}
               />
-              
-              </>
 
               )}
               
