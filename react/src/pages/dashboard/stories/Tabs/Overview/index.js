@@ -176,7 +176,8 @@ export default function OverviewStory({}) {
                 {/* { isAdministrator &&( */}
                 <Tab value="showcase" label={t("Showcase")} />
                 {/* )} */}
-                <Tab value="reviews" label={t("Reviews")} />
+
+                {/* <Tab value="reviews" label={t("Reviews")} /> */}
               </Tabs>
             </Paper>
           }
@@ -209,15 +210,15 @@ export default function OverviewStory({}) {
 
              
 
-              {selectedStory.data_story.keywords != "" && (
+              {selectedStory.data_story.tags != "" && (
                 <Grid item xs={6} md={6} lg={3} xl={3} sx={{ m: 3 }}>
                   <Typography
                     color="textPrimary"
                     variant="subtitle2"
                     align="center"
                   >
-                    {selectedStory.data_story.keywords &&
-                      selectedStory.data_story.keywords
+                    {selectedStory.data_story.tags &&
+                      selectedStory.data_story.tags
                         .split(",")
                         .map((el) => (
                           <Chip

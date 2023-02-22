@@ -17,6 +17,11 @@ import { useParams } from 'react-router-dom';
 import OverviewStory from './Tabs/Overview';
 import { getProcess, setSelectedTreeItem } from 'slices/process';
 import Treeview from './Tabs/Treeview';
+import {
+  getCoproductionProcessNotifications,
+  getSelectedStory,
+} from "slices/general";
+import { getProcessCatalogue } from "slices/process";
 //import { getStory } from 'slices/process';
 
 // import RoadMap from './Tabs/RoadMap';
@@ -48,7 +53,7 @@ const style = {
 };
 
 const TabsMobile = ({ tabs, tab, story }) => {
-  const logoExists = story && story.logotype;
+  const logoExists = story && story.data_story.logo;
   const navigate = useNavigate();
 
   return story && (
@@ -59,9 +64,9 @@ const TabsMobile = ({ tabs, tab, story }) => {
           variant='rounded'
           sx={logoExists ? {} : { bgcolor: red[500] }}
           aria-label='recipe'
-          src={logoExists && story.logotype_link}
+          src={logoExists && story.data_story.logo}
         >
-          {story && !logoExists && story.name[0]}
+          {story && !logoExists && story.data_story.name}
         </Avatar>
       )}
       action={(
@@ -69,8 +74,8 @@ const TabsMobile = ({ tabs, tab, story }) => {
           <MoreVert />
         </IconButton>
       )}
-      title={story && story.name}
-      subheader={story && story.artefact_type}
+      title={story && story.data_story.name}
+      subheader={story && story.data_story.name}
     />
     <Tabs
       indicatorColor='secondary'
@@ -99,9 +104,41 @@ const StoryProfile = () => {
   const { trackEvent } = useMatomo();
   
   const { process, hasSchema, loading } = useSelector((state) => state.process);
+  const { selectedStory } = useSelector((state) => state.general);
 
 
-  const story={
+  useEffect(() => {
+    const id = window.location.pathname.split("/")[2];
+    if (selectedStory) {
+      if (selectedStory.id != id) {
+        dispatch(getSelectedStory(id));
+       
+      } //else{
+    } else {
+      dispatch(getSelectedStory(id));
+    }
+
+    // storiesApi.getStoriesbyId(id).then((res) => {
+    //   res.data=JSON.parse(res.data_story)
+    //   selectedStory=res
+
+    // });
+    //}
+  }, []);
+
+
+  //Every time another story is selected then the data info of the process is loaded
+  useEffect(() =>{
+    //console.log("La STORY A CAMBIADO:")
+    if(selectedStory){
+      //console.log(selectedStory.coproductionprocess_cloneforpub_id)
+      dispatch(getProcessCatalogue(selectedStory.coproductionprocess_cloneforpub_id))
+    }
+    
+  },[selectedStory])
+
+
+  /* const story={
     id:'1',
     title:'Families Share @ Work',
     name:'Families Share @ Work',
@@ -114,7 +151,7 @@ const StoryProfile = () => {
     rating:10,
     tags:['salud','dinero','amor']
 
-};
+}; */
 
   const theme = useTheme();
   const showMobileTabs = !useMediaQuery(theme.breakpoints.up('lg'));
@@ -146,7 +183,7 @@ const StoryProfile = () => {
  
 
 
-  const t = useCustomTranslation(story && story.language);
+  const t = useCustomTranslation(selectedStory && selectedStory.language);
 
   const tabs = [
     { label: t('Overview'), value: 'overview' },
@@ -173,10 +210,10 @@ const StoryProfile = () => {
             <TabsMobile
               tabs={tabs}
               tab={tab}
-              story={story}
+              story={selectedStory}
             />
             )}
-            { !story ? <MainSkeleton />
+            { !selectedStory ? <MainSkeleton />
               : (
                 <>
                   <TabPanel

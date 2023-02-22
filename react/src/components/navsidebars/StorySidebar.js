@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Chip, Divider, Drawer, Skeleton, Stack, Typography, useMediaQuery, Rating } from '@mui/material';
+import { Grid, Avatar, Box, Button, Chip, Divider, Drawer, Skeleton, Stack, Typography, useMediaQuery, Rating } from '@mui/material';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { AccountTree, ArrowBack,AssistantDirection, PermMedia, Dashboard, Balcony, Folder, Group as GroupIcon, Settings, Timeline } from '@mui/icons-material';
 import { StatusChip } from 'components/Icons';
@@ -52,12 +52,12 @@ const StorySidebar = (props) => {
           icon: <PermMedia />,
          // disabled: !hasSchema
         },
-        {
-          title: t('RoadMap'),
-          path: `/stories/${storyId}/roadmap`,
-          icon: <AssistantDirection />,
-          //disabled: !hasSchema
-        },
+        // {
+        //   title: t('RoadMap'),
+        //   path: `/stories/${storyId}/roadmap`,
+        //   icon: <AssistantDirection />,
+        //   //disabled: !hasSchema
+        // },
       ]
     },
   ];
@@ -117,6 +117,48 @@ const StorySidebar = (props) => {
             size='small'
             value={selectedStory.rating || 0}
           />
+
+          
+
+
+        </Stack>
+        )}
+
+            <Divider/>
+            
+          <Typography
+            sx={{ textAlign: 'center', width: '100%',mt:3,mb:3 }}
+            variant='h6'
+          >
+            Topics
+           {/*  {!loading && !updating && process ? process.name : <Skeleton />} */}
+          </Typography>
+           
+           {selectedStory?(<>
+            {selectedStory.data_story.keywords != "" && (
+                <Grid item xs={6} md={6} lg={3} xl={3} sx={{ m: 3 }}>
+                  <Typography
+                    color="textPrimary"
+                    variant="subtitle2"
+                    align="center"
+                  >
+                    {selectedStory.data_story.keywords &&
+                      selectedStory.data_story.keywords
+                        .split(",")
+                        .map((el) => (
+                          <Chip
+                            label={el}
+                            key={el}
+                            size="small"
+                            variant="outlined"
+                            sx={{ mr: 1 }}
+                          />
+                        ))}
+                  </Typography>
+                </Grid>
+              )}
+           </>):(<></>)}
+           
          {/*  {!loading && !updating && process ? (
             <StatusChip
               t={t}
@@ -131,8 +173,10 @@ const StorySidebar = (props) => {
             />
           ) : <Skeleton sx={{ width: 80, height: 45, m: 0, p: 0 }} />} */}
 
-        </Stack>
-        )}
+
+
+
+
         <Divider />
         <Box sx={{ p: 2 }}>
            { sections.map((section) => (

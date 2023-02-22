@@ -202,19 +202,21 @@ const SettingsTab = () => {
       let extractedData = JSON.parse(extractedData1);
 
       //Create a clone of the process:
-      coproductionProcessesApi.copy(process.id, "Catalogue Publication of ").then((res) => {
-        const clone_id=res;
-        setJsonPropertiesFile(extractedData);
+      coproductionProcessesApi
+        .copy(process.id, "Catalogue Publication of ")
+        .then((res) => {
+          const clone_id = res;
+          setJsonPropertiesFile(extractedData);
 
-        // console.log(objJson);
-        storiesApi.create(extractedData, process.id,clone_id).then((res) => {
-          setStoriesList((storiesList) => [...storiesList, res.data]);
+          // console.log(objJson);
+          storiesApi.create(extractedData, process.id, clone_id).then((res) => {
+            setStoriesList((storiesList) => [...storiesList, res.data]);
 
-          navigate(
-            "/dashboard/coproductionprocesses/" + process.id + "/settings"
-          );
+            navigate(
+              "/dashboard/coproductionprocesses/" + process.id + "/settings"
+            );
+          });
         });
-      });
     };
   };
 
@@ -224,6 +226,16 @@ const SettingsTab = () => {
       //console.log(storiesList);
     });
   }, []);
+
+  const handleDeleteStory = (event, story_id) => {
+    console.log("Delete story:" + story_id);
+    storiesApi
+    .delete(story_id)
+    .then(() => {
+      setStoriesList((storiesList) => storiesList.filter((story) => story.id !== story_id));
+      navigate("/dashboard/coproductionprocesses/" + process.id + "/settings");
+    });
+  };
 
   return (
     <Box style={{ minHeight: "87vh", backgroundColor: "background.default" }}>
@@ -790,7 +802,39 @@ const SettingsTab = () => {
                         </ListItemIcon>
                         <ListItemText primary={fechaStoryText} />
                       </ListItemButton>
+                      
+
+                      <ConfirmationButton
+                        Actionator={({ onClick }) => (
+                          <Button
+                            variant="outlined"
+                            disabled={!isAdministrator}
+                            color="error"
+                            onClick={onClick}
+                            startIcon={<Delete />}
+                          >
+                            {t("Delete")}
+                          </Button>
+                        )}
+                        ButtonComponent={({ onClick }) => (
+                          <Button
+                            sx={{ mt: 1 }}
+                            fullWidth
+                            variant="contained"
+                            color="error"
+                            onClick={onClick}
+                            value={story.id}
+                          >
+                            {t("Confirm deletion")}
+                          </Button>
+                        )}
+                        onClick={(e) => {
+                          handleDeleteStory(e, story.id);
+                       }}
+                        text={t("Are you sure?")}
+                      />
                     </ListItem>
+
                     <Divider />
                   </>
                 );
@@ -811,7 +855,7 @@ const SettingsTab = () => {
               </Grid>
               <Grid item xs={6} md={4}>
                 <Button sx={{ mt: 2 }} variant="contained" component="label">
-                  {t("Import from json")}
+                  {t("Publish from json")}
                   <input
                     type="file"
                     accept=".json"

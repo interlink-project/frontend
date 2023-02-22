@@ -6,6 +6,7 @@ import { StyledTreeItem } from 'components/dashboard/tree';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import { useEffect, useState } from 'react';
 import { getAllChildren } from 'slices/process';
+import { useLocation } from 'react-router';
 
 const Avat = ({ team }) => (
   <Avatar
@@ -75,6 +76,12 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
   const [all, setAll] = useState([]);
   const [expanded, setExpanded] = useState([]);
 
+  const location=useLocation();
+  const isLocationCatalogue=location.pathname.startsWith('/stories/');
+  if(isLocationCatalogue){
+    showIcon=false;
+  }
+
   useEffect(() => {
     const allItems = getAllChildren([parent]);
     setAll(allItems);
@@ -121,6 +128,13 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
             />
             {parent.name}
             {parent.teams && (
+            
+            <>
+{isLocationCatalogue ?(
+  <></>
+
+  ):(  
+            
             <AvatarGroup
               spacing='medium'
               sx={{ mt: 1, justifyContent: 'left' }}
@@ -134,6 +148,7 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
                 />
               ))}
             </AvatarGroup>
+  )}</>
             )}
           </Box>
       )}
@@ -155,19 +170,28 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
                 />
                 {objective.name}
                 {objective.teams && (
-                <AvatarGroup
-                  spacing='medium'
-                  sx={{ mt: 1, justifyContent: 'left' }}
-                  variant='rounded'
-                  max={5}
-                >
-                  {arrayUnique(objective.teams.concat(parent.teams)).map((team) => (
-                    <Avat
-                      key={`${objective.id}-${team.id}`}
-                      team={team}
-                    />
-                  ))}
-                </AvatarGroup>
+                  <>
+                  {isLocationCatalogue ?(
+                    <></>
+
+                    ):(
+                      <AvatarGroup
+                      spacing='medium'
+                      sx={{ mt: 1, justifyContent: 'left' }}
+                      variant='rounded'
+                      max={5}
+                    >
+                      {arrayUnique(objective.teams.concat(parent.teams)).map((team) => (
+                        <Avat
+                          key={`${objective.id}-${team.id}`}
+                          team={team}
+                        />
+                      ))}
+                    </AvatarGroup>
+                    )}
+                </>
+
+
                 )}
               </Box>
           )}
@@ -186,6 +210,11 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
                   />
                   {task.name}
                   {task.teams && (
+<>
+{isLocationCatalogue ?(
+  <></>
+
+  ):(  
                   <AvatarGroup
                     spacing='medium'
                     sx={{ mt: 1, justifyContent: 'left' }}
@@ -199,6 +228,9 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
                       />
                     ))}
                   </AvatarGroup>
+
+  )}
+  </>
                   )}
                 </Box>
               )}

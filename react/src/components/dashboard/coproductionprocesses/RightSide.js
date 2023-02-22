@@ -362,18 +362,19 @@ const RightSide = ({ softwareInterlinkers }) => {
               {isLocationCatalogue ?(
                 <></>
               ):(
+              <>
               <Tab
               value='permissions'
               label={`${t('Permissions')} (${selectedTreeItem.permissions.length})`}
               />
-              
-              )}
               
               {isTask & isAdministrator && (
                 <Tab
                   value='contributions'
                   label={`${t('Contributions')}`}
                 />
+              )}
+              </>
               )}
             </Tabs>
           </Paper>
@@ -425,14 +426,8 @@ const RightSide = ({ softwareInterlinkers }) => {
                       ) : <Alert severity='error'>{t('You do not have access to the resources of this task')}</Alert>}
                     </>
                   )}
-                  </>
 
-                )}
-
-
-
-                  
-                  <Box sx={{ textAlign: 'center', width: '100%' }}>
+<Box sx={{ textAlign: 'center', width: '100%' }}>
                     <Stack spacing={2}>
                       <Button
                         id='basic-button'
@@ -460,6 +455,17 @@ const RightSide = ({ softwareInterlinkers }) => {
                       </Button>
                     </Stack>
                   </Box>
+                  </>
+                  
+
+                )}
+
+
+
+                  
+                  
+
+
                 </Box>
 
                 <Dialog
