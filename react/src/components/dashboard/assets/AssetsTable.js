@@ -18,6 +18,9 @@ import PropTypes from 'prop-types';
 import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
 import { useDispatch, useSelector} from 'react-redux';
 import {  getCoproductionProcessNotifications } from "slices/general";
+import { useLocation } from 'react-router';
+
+
 
 
 
@@ -80,6 +83,9 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
   const dispatch = useDispatch();
   const { process } = useSelector((state) => state.process);
 
+  const location=useLocation();
+  const isLocationCatalogue=location.pathname.startsWith('/stories/');
+
   const handleClick = (event) => {
     event.stopPropagation();
     event.preventDefault();
@@ -101,12 +107,27 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
   useEffect(() => {
     setLoading('info');
     if (isInternal) {
-      assetsApi.getInternal(asset.id).then((res) => {
-        if (mounted.current) {
-          setData({ ...asset, ...res });
-          setLoading('');
-        }
-      });
+
+      if (isLocationCatalogue){
+        assetsApi.getInternalCatalogue(asset.id).then((res) => {
+          if (mounted.current) {
+            setData({ ...asset, ...res });
+            setLoading('');
+          }
+        });
+
+      }else{
+        assetsApi.getInternal(asset.id).then((res) => {
+          if (mounted.current) {
+            setData({ ...asset, ...res });
+            setLoading('');
+          }
+        });
+
+      }
+      
+
+
     } else if (mounted.current) {
       setData({ ...asset });
       setLoading('');
@@ -184,7 +205,12 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
                 />
               ) : t('external-resource')}
             </TableCell>
-            <TableCell
+
+            {isLocationCatalogue ?(
+            <></>
+            ):(
+              <>
+              <TableCell
               width='15%'
               align='left'
             >
@@ -241,6 +267,14 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
                 
               </Menu>
             </TableCell>
+            </>
+
+            )
+            
+            
+            }
+
+           
           </>
         ) : (
           <>
@@ -319,15 +353,29 @@ const headCells = [
   }
 ];
 
+
+
+
 function EnhancedTableHead(order, orderBy, onRequestSort) {
+  const location=useLocation();
+  const isLocationCatalogue=location.pathname.startsWith('/stories/');
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
 
+
+ let cabeceras=headCells;
+
+ if(isLocationCatalogue){
+  //Skip the heads of History and Actions (no needed for the catalogue)
+  cabeceras=headCells.slice(0, -2);
+ }
+
+ 
   return (
     <TableHead>
       <TableRow>
-        {headCells.map((headCell) => (
+        {cabeceras.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
@@ -369,6 +417,9 @@ const Assets = ({ language, loading, assets, getActions = null }) => {
     setOrderBy(property);
   };
 
+  const location=useLocation();
+  const isLocationCatalogue=location.pathname.startsWith('/stories/');
+
   return (
     <>
       <InterlinkerDialog
@@ -401,6 +452,16 @@ const Assets = ({ language, loading, assets, getActions = null }) => {
         <TableBody>
           {!loading && assets.map((asset) => (
             <React.Fragment key={asset.id}>
+              {isLocationCatalogue ?(
+              <><AssetRow
+                inputValue={inputValue}
+                language={language}
+                openInterlinkerDialog={(id) => { setInterlinkerDialogOpen(true); setSelectedInterlinker(id); }}
+                asset={asset}
+                actions={[]}
+              /></>
+              ):(
+                <React.Fragment>
               <AssetRow
                 inputValue={inputValue}
                 language={language}
@@ -408,6 +469,11 @@ const Assets = ({ language, loading, assets, getActions = null }) => {
                 asset={asset}
                 actions={getActions && getActions(asset)}
               />
+              
+              </>
+
+              )}
+              
             </React.Fragment>
           ))}
         </TableBody>

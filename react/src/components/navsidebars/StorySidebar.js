@@ -45,17 +45,18 @@ const StorySidebar = (props) => {
           icon: <Balcony />,
           disabled: false
         },
-        {
-          title: t('RoadMap'),
-          path: `/stories/${storyId}/roadmap`,
-          icon: <AssistantDirection />,
-          //disabled: !hasSchema
-        },
+        
         {
           title: t('Resources'),
           path: `/stories/${storyId}/resources`,
           icon: <PermMedia />,
          // disabled: !hasSchema
+        },
+        {
+          title: t('RoadMap'),
+          path: `/stories/${storyId}/roadmap`,
+          icon: <AssistantDirection />,
+          //disabled: !hasSchema
         },
       ]
     },

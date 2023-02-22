@@ -47,6 +47,7 @@ import { storiesApi } from "__api__";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/styles";
+import { getProcessCatalogue } from "slices/process";
 
 function TwoColumnsText(props) {
   const { text, mobileDevice, largeDevice, xlargeDevice, ...other } = props;
@@ -128,6 +129,7 @@ export default function OverviewStory({}) {
     if (selectedStory) {
       if (selectedStory.id != id) {
         dispatch(getSelectedStory(id));
+       
       } //else{
     } else {
       dispatch(getSelectedStory(id));
@@ -140,6 +142,17 @@ export default function OverviewStory({}) {
     // });
     //}
   }, []);
+
+
+  //Every time another story is selected then the data info of the process is loaded
+  useEffect(() =>{
+    //console.log("La STORY A CAMBIADO:")
+    if(selectedStory){
+      //console.log(selectedStory.coproductionprocess_cloneforpub_id)
+      dispatch(getProcessCatalogue(selectedStory.coproductionprocess_cloneforpub_id))
+    }
+    
+  },[selectedStory])
 
   return (
     <Box sx={{ pb: 3, justifyContent: "center" }}>

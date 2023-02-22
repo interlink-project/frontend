@@ -81,7 +81,7 @@ const SettingsTab = () => {
   const onCopy = () => {
     setIsCloning(true);
     coproductionProcessesApi
-      .copy(process.id)
+      .copy(process.id, "Copy of ")
       .then(() => navigate("/dashboard"));
   };
 
@@ -193,8 +193,6 @@ const SettingsTab = () => {
     track: {},
   })(Switch);
 
-
-
   const handleCapture = ({ target }) => {
     const fileReader = new FileReader();
     fileReader.readAsText(target.files[0]);
@@ -202,20 +200,23 @@ const SettingsTab = () => {
       //setJsonPropertiesFile( e.target.result);
       let extractedData1 = e.target.result;
       let extractedData = JSON.parse(extractedData1);
-      setJsonPropertiesFile(extractedData);
-      // console.log(objJson);
-       storiesApi.create(extractedData, process.id).then((res) => {
 
-        setStoriesList(storiesList => [...storiesList, res.data]);
-        
-        navigate(
-          "/dashboard/coproductionprocesses/" + process.id + "/settings" 
-        );
+      //Create a clone of the process:
+      coproductionProcessesApi.copy(process.id, "Catalogue Publication of ").then((res) => {
+        const clone_id=res;
+        setJsonPropertiesFile(extractedData);
+
+        // console.log(objJson);
+        storiesApi.create(extractedData, process.id,clone_id).then((res) => {
+          setStoriesList((storiesList) => [...storiesList, res.data]);
+
+          navigate(
+            "/dashboard/coproductionprocesses/" + process.id + "/settings"
+          );
+        });
       });
     };
   };
-
-
 
   useEffect(() => {
     storiesApi.getStoriesbyCopro(process.id).then((res) => {
@@ -657,7 +658,7 @@ const SettingsTab = () => {
                     onClick={onClick}
                     startIcon={<ContentCopy />}
                   >
-                    {t('Clone coproduction process')}
+                    {t("Clone coproduction process")}
                   </LoadingButton>
                 )}
                 ButtonComponent={({ onClick }) => (
@@ -676,33 +677,8 @@ const SettingsTab = () => {
               />
             }
           >
-            {t('The clonation of the coproduction process will create a new coproduction process with the same structure and resources.')}
-            
-          </Alert>
-        </Card>
-        {/* Reward */}
-        <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
-          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-            {t("Reward system")}
-          </Typography>
-          <Alert
-            severity="info"
-            sx={{ mt: 2 }}
-            action={
-              <>
-                <GoldSwitch
-                  checked={isIncentiveModuleActive}
-                  onChange={toggleIncentivesRewards}
-                  name="incentiveSwitch"
-                  inputProps={{ "aria-label": "secondary checkbox" }}
-                  disabled={!isAdministrator}
-                  color="secondary"
-                />
-              </>
-            }
-          >
             {t(
-              "If you disable the Reward system every data will be deleted, so if you want to enable again this option, you will not able to restore the old data."
+              "The clonation of the coproduction process will create a new coproduction process with the same structure and resources."
             )}
           </Alert>
         </Card>
@@ -730,6 +706,33 @@ const SettingsTab = () => {
           >
             {t(
               "The publication of the coproductions process will make the some information you choose visible in the catalogue of stories."
+            )}
+          </Alert>
+        </Card>
+
+        {/* Reward */}
+        <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
+          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+            {t("Reward system")}
+          </Typography>
+          <Alert
+            severity="info"
+            sx={{ mt: 2 }}
+            action={
+              <>
+                <GoldSwitch
+                  checked={isIncentiveModuleActive}
+                  onChange={toggleIncentivesRewards}
+                  name="incentiveSwitch"
+                  inputProps={{ "aria-label": "secondary checkbox" }}
+                  disabled={!isAdministrator}
+                  color="secondary"
+                />
+              </>
+            }
+          >
+            {t(
+              "If you disable the Reward system every data will be deleted, so if you want to enable again this option, you will not able to restore the old data."
             )}
           </Alert>
         </Card>
@@ -762,32 +765,26 @@ const SettingsTab = () => {
           {storiesList && (
             <List>
               <Typography variant="h6" sx={{ mt: 3 }}>
-                      Publications:
-                    </Typography>
+                Publications:
+              </Typography>
               {storiesList.map((story) => {
                 const fechaStoryDate = new Date(story.created_at);
                 let fechaStoryText = fechaStoryDate.toUTCString();
 
                 return (
                   <>
-                    
                     <ListItem disablePadding>
-                      <ListItemButton  onClick={(event) => {
+                      <ListItemButton
+                        onClick={(event) => {
+                          // storiesApi.getStoriesbyId(story.id).then((res) => {
+                          // res.data=JSON.parse(res.data_story)
+                          dispatch(getSelectedStory(story.id));
 
-                        
+                          navigate("/stories/" + story.id + "/overview");
 
-                        // storiesApi.getStoriesbyId(story.id).then((res) => {
-                        // res.data=JSON.parse(res.data_story)
-                        dispatch(getSelectedStory(story.id));
- 
-                        navigate(
-                          "/stories/" + story.id + "/overview"
-                        );
-
-                          
-                        // });
-                          
-                        }}>
+                          // });
+                        }}
+                      >
                         <ListItemIcon>
                           <AutoStories />
                         </ListItemIcon>
@@ -802,29 +799,29 @@ const SettingsTab = () => {
           )}
 
           {/* {storiesList && ( */}
-            <>
-              <Typography variant="h6" sx={{ mt: 3 }}>
-                New Publication of a Success Story
-              </Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={6} md={8}>
-                  <Typography variant="p" sx={{ mt: 3 }}>
-                    Include the source file with the publish information.
-                  </Typography>
-                </Grid>
-                <Grid item xs={6} md={4}>
-                  <Button sx={{ mt: 2 }} variant="contained" component="label">
-                    {t("Import from json")}
-                    <input
-                      type="file"
-                      accept=".json"
-                      hidden
-                      onChange={handleCapture}
-                    />
-                  </Button>
-                </Grid>
+          <>
+            <Typography variant="h6" sx={{ mt: 3 }}>
+              New Publication of a Success Story
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={6} md={8}>
+                <Typography variant="p" sx={{ mt: 3 }}>
+                  Include the source file with the publish information.
+                </Typography>
               </Grid>
-            </>
+              <Grid item xs={6} md={4}>
+                <Button sx={{ mt: 2 }} variant="contained" component="label">
+                  {t("Import from json")}
+                  <input
+                    type="file"
+                    accept=".json"
+                    hidden
+                    onChange={handleCapture}
+                  />
+                </Button>
+              </Grid>
+            </Grid>
+          </>
           {/* )} */}
         </DialogContent>
       </Dialog>

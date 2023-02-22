@@ -15,6 +15,7 @@ import { information_about_translations } from 'utils/someCommonTranslations';
 import * as Yup from 'yup';
 import { assetsApi, permissionsApi, assetsDataApi, coproductionprocessnotificationsApi, tasksApi } from '__api__';
 import NewAssetModal from 'components/dashboard/coproductionprocesses/NewAssetModal';
+import { useLocation } from 'react-router';
 
 const RightSide = ({ softwareInterlinkers }) => {
   const { process, isAdministrator, selectedTreeItem } = useSelector((state) => state.process);
@@ -38,26 +39,49 @@ const RightSide = ({ softwareInterlinkers }) => {
 
   const [permissions, setPermissions] = useState(null);
 
+  const location=useLocation();
+  const isLocationCatalogue=location.pathname.startsWith('/stories/');
+
   useEffect(() => {
-    setPermissions(null);
-    permissionsApi.for(selectedTreeItem.id).then((res) => {
-      setPermissions(res);
-      if (isTask && mounted.current && res && res.your_permissions && res.your_permissions.access_assets_permission) {
-        getAssets();
-      } else {
-        setAssets([])
+
+    if(isLocationCatalogue){
+      if (isTask && mounted.current){
+        getAssetsCatalogue();
       }
-    });
-    tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
-      if (isTask && mounted.current && res) {
-        setContributions(res.assetsWithContribution);
-      }
-    });
+      
+    }else{
+      setPermissions(null);
+      permissionsApi.for(selectedTreeItem.id).then((res) => {
+        setPermissions(res);
+        if (isTask && mounted.current && res && res.your_permissions && res.your_permissions.access_assets_permission) {
+          getAssets();
+        } else {
+          setAssets([])
+        }
+      });
+      tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
+        if (isTask && mounted.current && res) {
+          setContributions(res.assetsWithContribution);
+        }
+      });
+    }
+
+
   }, [selectedTreeItem]);
 
   const getAssets = async () => {
     setLoadingAssets(true);
     assetsApi.getMulti({ task_id: selectedTreeItem.id }).then((assets) => {
+      if (mounted.current) {
+        setAssets(assets);
+        setLoadingAssets(false);
+      }
+    });
+  };
+
+  const getAssetsCatalogue = async () => {
+    setLoadingAssets(true);
+    assetsApi.getMultiCatalogue({ task_id: selectedTreeItem.id }).then((assets) => {
       if (mounted.current) {
         setAssets(assets);
         setLoadingAssets(false);
@@ -335,10 +359,16 @@ const RightSide = ({ softwareInterlinkers }) => {
                 disabled={!isTask}
                 label={t('Resources') + (isTask ? ` (${loadingAssets ? '...' : assets.length})` : '')}
               />
+              {isLocationCatalogue ?(
+                <></>
+              ):(
               <Tab
-                value='permissions'
-                label={`${t('Permissions')} (${selectedTreeItem.permissions.length})`}
+              value='permissions'
+              label={`${t('Permissions')} (${selectedTreeItem.permissions.length})`}
               />
+              
+              )}
+              
               {isTask & isAdministrator && (
                 <Tab
                   value='contributions'
@@ -371,6 +401,18 @@ const RightSide = ({ softwareInterlinkers }) => {
             <>
               <Box>
                 <Box sx={{ mt: 2 }}>
+                {isLocationCatalogue ?(
+                  <>
+                <AssetsTable
+                          language={process.language}
+                          loading={loadingAssets}
+                          assets={assets}
+                          getActions={[]}
+                        />
+                
+                </>
+                ):(
+                  <>
                   {permissions && (
                     <>
                       {can.view ? (
@@ -383,6 +425,13 @@ const RightSide = ({ softwareInterlinkers }) => {
                       ) : <Alert severity='error'>{t('You do not have access to the resources of this task')}</Alert>}
                     </>
                   )}
+                  </>
+
+                )}
+
+
+
+                  
                   <Box sx={{ textAlign: 'center', width: '100%' }}>
                     <Stack spacing={2}>
                       <Button

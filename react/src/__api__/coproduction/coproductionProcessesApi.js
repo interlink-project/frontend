@@ -1,10 +1,23 @@
 import axiosInstance from 'axiosInstance';
 import GeneralApi from '../general';
 import { coproductionSchemasApi } from '../catalogue/coproductionSchemasApi';
+import { getLanguage } from 'translations/i18n';
 
 class CoproductionProcessesApi extends GeneralApi {
   constructor() {
     super('coproduction/api/v1/coproductionprocesses');
+  }
+
+  async getProcessCatalogue(id, language = getLanguage()) {
+    if (id) {
+      const res = await axiosInstance.get(`/${this.url}/${id}/catalogue`, {
+        headers: {
+          'Accept-Language': language
+        }
+      });
+      //console.log('get call', res.data, 'in', language);
+      return res.data;
+    }
   }
 
   async getAssets(id) {
@@ -40,6 +53,14 @@ class CoproductionProcessesApi extends GeneralApi {
     }
   }
 
+  async getTreeCatalogue(id) {
+    if (id) {
+      const res = await axiosInstance.get(`/${this.url}/${id}/tree/catalogue`);
+      //console.log('get tree', res.data);
+      return res.data;
+    }
+  }
+
   async setSchema(id, coproductionschema_id, language) {
     if (id) {
       const schema = await coproductionSchemasApi.get(coproductionschema_id, language);
@@ -58,11 +79,12 @@ class CoproductionProcessesApi extends GeneralApi {
   }
 
   // The timeout: 0 is needed to avoid the default timeout of 40s
-  async copy(id) {
+  async copy(id,label_name) {
+    //console.log(`/${this.url}/${id}/copy?label_name=${label_name}`);
     if (id) {
       const res = await axiosInstance.request({
         method: 'post',
-        url: `/${this.url}/${id}/copy`,
+        url: `/${this.url}/${id}/copy?label_name=${label_name}`,
         timeout: 0,
       });
       console.log('copy', res.data);

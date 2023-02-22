@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useParams } from 'react-router-dom';
 import OverviewStory from './Tabs/Overview';
+import { getProcess, setSelectedTreeItem } from 'slices/process';
+import Treeview from './Tabs/Treeview';
 //import { getStory } from 'slices/process';
 
 // import RoadMap from './Tabs/RoadMap';
@@ -95,8 +97,9 @@ const StoryProfile = () => {
   const dispatch = useDispatch();
   const mounted = useMounted();
   const { trackEvent } = useMatomo();
+  
+  const { process, hasSchema, loading } = useSelector((state) => state.process);
 
-  //const { process, hasSchema, loading } = useSelector((state) => state.process);
 
   const story={
     id:'1',
@@ -117,7 +120,14 @@ const StoryProfile = () => {
   const showMobileTabs = !useMediaQuery(theme.breakpoints.up('lg'));
   const navigate = useNavigate();
 
-  
+  const _setSelectedTreeItem = (item, callback) => {
+    trackEvent({
+      category: process.id,
+      action: 'tree-item-selected',
+      name: item.id
+    });
+    dispatch(setSelectedTreeItem(item, callback));
+  };
 
   // const getStory = useCallback(async () => {
   //   try {
@@ -183,8 +193,8 @@ const StoryProfile = () => {
                     index='resources'
                   >
                     <Card sx={{ ...style, mb: 3 }}>
-                      {/* <Resources setSelectedTreeItem={_setSelectedTreeItem} /> */}
-                    Resources Space
+                      <Treeview setSelectedTreeItem={_setSelectedTreeItem} /> 
+                                      
                     </Card>
                   </TabPanel>
                   <TabPanel
