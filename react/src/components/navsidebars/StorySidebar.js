@@ -108,7 +108,7 @@ const StorySidebar = (props) => {
             sx={{ textAlign: 'center', width: '100%' }}
             variant='h6'
           >
-            {selectedStory.name}
+            {selectedStory.data_story.title}
            {/*  {!loading && !updating && process ? process.name : <Skeleton />} */}
           </Typography>
 
