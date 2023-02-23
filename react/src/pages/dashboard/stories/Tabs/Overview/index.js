@@ -408,11 +408,11 @@ export default function OverviewStory({}) {
                       }
                       title={owner && owner.name}
                     />
-                    <CardContent>
+                    {/* <CardContent>
                       <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        {owner.link}
+                      
                       </Typography>
-                    </CardContent>
+                    </CardContent> */}
                     <CardActions>
                       <Button href={owner.link} size="small">
                         More

@@ -359,23 +359,23 @@ const RightSide = ({ softwareInterlinkers }) => {
                 disabled={!isTask}
                 label={t('Resources') + (isTask ? ` (${loadingAssets ? '...' : assets.length})` : '')}
               />
-              {isLocationCatalogue ?(
-                <></>
-              ):(
-              <>
+              
+              {!isLocationCatalogue &&
+              (
               <Tab
               value='permissions'
               label={`${t('Permissions')} (${selectedTreeItem.permissions.length})`}
               />
+              )}
               
-              {isTask & isAdministrator && (
-                <Tab
-                  value='contributions'
-                  label={`${t('Contributions')}`}
-                />
+              { (!isLocationCatalogue & isTask & isAdministrator) && (
+              <Tab
+                value='contributions'
+                label={`${t('Contributions')}`}
+              />
               )}
-              </>
-              )}
+              
+             
             </Tabs>
           </Paper>
 

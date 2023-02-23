@@ -6,13 +6,15 @@ import { getLanguage } from 'translations/i18n';
 import StoryBrowseFilter from './StoryBrowseFilter';
 import StoryResults from './StoryResults';
 
-// const initialDefaultFilters = {
-//   search: '',
-//   problemprofiles: [],
-//   nature: ['softwareinterlinker', 'knowledgeinterlinker', 'externalsoftwareinterlinker', 'externalknowledgeinterlinker'],
-//   rating: null,
-// };
-    const initialDefaultFilters = {};
+const initialDefaultFilters = {
+
+  //problemprofiles: [],
+  //nature: ['softwareinterlinker', 'knowledgeinterlinker', 'externalsoftwareinterlinker', 'externalknowledgeinterlinker'],
+  keyword: ['childcare'],
+  
+  rating: null,
+};
+   // const initialDefaultFilters = {};
 
 const StoryBrowse = ({ language = getLanguage(), initialFilters = {}, onStoryClick }) => {
   // const mounted = useMounted();

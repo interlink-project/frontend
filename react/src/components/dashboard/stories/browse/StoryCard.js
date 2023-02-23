@@ -142,13 +142,26 @@ const GridMode = ({ story, t, linkProps }) => (
   </Grid> */}
         <Grid item>
           <Typography color="textPrimary" variant="subtitle2" sx={{ mb: 1 }}>
-            {t("Nature")}
+            {t("Types")}
           </Typography>
           <Typography color="textPrimary" variant="subtitle2">
             {/* <NatureChip
                 t={t}
                 story={story}
               /> */}
+               {story.data.tags &&
+          story.data.tags.split(",").map((el) => {
+            console.log(el);
+            return (
+              <Chip
+                label={el}
+                key={el}
+                size="small"
+                variant="outlined"
+                sx={{ mr: 1 }}
+              />
+            );
+          })}
           </Typography>
         </Grid>
         <Grid item>
@@ -182,11 +195,17 @@ const GridMode = ({ story, t, linkProps }) => (
         variant="subtitle2"
         sx={{ mb: 1, textAlign: "center" }}
       >
-        {t("Keywords")}
+        {t("Topics")}
       </Typography>
 
-      {story.data.tags &&
-          story.data.tags.split(",").map((el) => {
+
+      <Typography
+        color="textPrimary"
+        variant="subtitle2"
+        sx={{ mb: 1, textAlign: "center" }}
+      >
+      {story.data.keywords &&
+          story.data.keywords.split(",").map((el) => {
             console.log(el);
             return (
               <Chip
@@ -198,6 +217,8 @@ const GridMode = ({ story, t, linkProps }) => (
               />
             );
           })}
+
+</Typography>
 
 
 {/* 
@@ -314,7 +335,7 @@ const ListMode = ({ story, t, linkProps }) => (
     >
       <Grid item xs={6} md={6} lg={3} xl={3}>
         <Typography color="textPrimary" variant="subtitle2" sx={{ mb: 1 }}>
-          {t("Keywords")}
+          {t("Topics")}
         </Typography>
         <Typography color="textPrimary" variant="subtitle2">
           {story.data.tags &&
@@ -344,7 +365,7 @@ const ListMode = ({ story, t, linkProps }) => (
           variant="subtitle2"
           sx={{ mb: 1, textAlign: "center" }}
         >
-          {t("Tags")}
+          {t("Type")}
         </Typography>
         {/*           {story.data.tags && story.tags.map(
              (el) => (

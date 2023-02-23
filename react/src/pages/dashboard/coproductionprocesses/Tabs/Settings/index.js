@@ -26,6 +26,7 @@ import {
   Typography,
 } from "@mui/material";
 import {
+  ViewList,
   AutoStories,
   Close,
   Delete,
@@ -86,7 +87,7 @@ const SettingsTab = () => {
   };
 
   const onPublish = () => {
-    setIsPublishing(true);
+    
     setPublishDialogOpen(true);
     //coproductionProcessesApi.copy(process.id).then(() => navigate('/dashboard'));
   };
@@ -197,13 +198,14 @@ const SettingsTab = () => {
     const fileReader = new FileReader();
     fileReader.readAsText(target.files[0]);
     fileReader.onload = (e) => {
+      setIsPublishing(true);
       //setJsonPropertiesFile( e.target.result);
       let extractedData1 = e.target.result;
       let extractedData = JSON.parse(extractedData1);
 
       //Create a clone of the process:
       coproductionProcessesApi
-        .copy(process.id, "Catalogue Publication of ")
+        .copy(process.id, "Catalogue Publication of_")
         .then((res) => {
           const clone_id = res;
           setJsonPropertiesFile(extractedData);
@@ -211,7 +213,7 @@ const SettingsTab = () => {
           // console.log(objJson);
           storiesApi.create(extractedData, process.id, clone_id).then((res) => {
             setStoriesList((storiesList) => [...storiesList, res.data]);
-
+            setIsPublishing(false);
             navigate(
               "/dashboard/coproductionprocesses/" + process.id + "/settings"
             );
@@ -850,19 +852,40 @@ const SettingsTab = () => {
             <Grid container spacing={2}>
               <Grid item xs={6} md={8}>
                 <Typography variant="p" sx={{ mt: 3 }}>
-                  Include the source file with the publish information.
+                  Include the source file (.json) with the publish information.
                 </Typography>
               </Grid>
               <Grid item xs={6} md={4}>
-                <Button sx={{ mt: 2 }} variant="contained" component="label">
-                  {t("Publish from json")}
+
+
+              <LoadingButton
+                    variant="contained"
+                    disabled={!isAdministrator}
+                    loading={isPublishing}
+                    //color="warning"
+                    //onClick={handleCapture}
+                    component="label"
+                    startIcon={<ViewList />}
+                    sx={{ mb: 3, justifyContent: "right", textAlign: "center" }}
+                  >
+                    {t("Publish from JSON")}
+                    <input
+                    type="file"
+                    accept=".json"
+                    hidden
+                    onChange={handleCapture}
+                  />
+                  </LoadingButton>
+
+                {/* <Button sx={{ mt: 2 }} variant="contained" component="label">
+                  {t("Publish from a File")}
                   <input
                     type="file"
                     accept=".json"
                     hidden
                     onChange={handleCapture}
                   />
-                </Button>
+                </Button> */}
               </Grid>
             </Grid>
           </>
