@@ -656,7 +656,7 @@ const SettingsTab = () => {
         {/* Cloning coprod */}
         <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
           <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-            {t("Copy coproduction process")}
+            {t("Clone coproduction process")}
           </Typography>
           <Alert
             severity="warning"
@@ -718,9 +718,7 @@ const SettingsTab = () => {
               </LoadingButton>
             }
           >
-            {t(
-              "The publication of the coproductions process will make the some information you choose visible in the catalogue of stories."
-            )}
+            {t("The publication of the coproduction process will make the some information you choose visible in the catalogue of stories.")}
           </Alert>
         </Card>
 
@@ -779,7 +777,7 @@ const SettingsTab = () => {
           {storiesList && (
             <List>
               <Typography variant="h6" sx={{ mt: 3 }}>
-                Publications:
+              {t("Publications")}:
               </Typography>
               {storiesList.map((story) => {
                 const fechaStoryDate = new Date(story.created_at);
@@ -847,12 +845,12 @@ const SettingsTab = () => {
           {/* {storiesList && ( */}
           <>
             <Typography variant="h6" sx={{ mt: 3 }}>
-              New Publication of a Success Story
+            {t("New Publication of a Success Story")}
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={6} md={8}>
                 <Typography variant="p" sx={{ mt: 3 }}>
-                  Include the source file (.json) with the publish information.
+                {t("Include the source file (.json) with the publish information.")}
                 </Typography>
               </Grid>
               <Grid item xs={6} md={4}>
@@ -868,7 +866,7 @@ const SettingsTab = () => {
                     startIcon={<ViewList />}
                     sx={{ mb: 3, justifyContent: "right", textAlign: "center" }}
                   >
-                    {t("Publish from JSON")}
+                    {t("Publish from file")}
                     <input
                     type="file"
                     accept=".json"

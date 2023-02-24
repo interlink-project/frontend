@@ -90,6 +90,8 @@ const Workplan = ({ setSelectedTreeItem }) => {
     const final = [];
 
     if (selectedPhaseTab) {
+
+      if(!selectedPhaseTab.is_disabled){
       final.push({
         id: selectedPhaseTab.id,
         name: selectedPhaseTab.name,
@@ -100,7 +102,11 @@ const Workplan = ({ setSelectedTreeItem }) => {
         custom_class: `gantt-phase${getClasses(selectedPhaseTab)}`,
         read_only: true
       });
+    }
+
       selectedPhaseTab.children.forEach((objective) => {
+
+        if(!objective.is_disabled){
         final.push({
           id: objective.id,
           name: objective.name,
@@ -112,7 +118,12 @@ const Workplan = ({ setSelectedTreeItem }) => {
           custom_class: `gantt-objective${getClasses(objective)}`,
           read_only: true
         });
+      }
+
         objective.children.forEach((task) => {
+          
+          
+          if(!task.is_disabled){
           final.push({
             id: task.id,
             name: task.name,
@@ -120,9 +131,11 @@ const Workplan = ({ setSelectedTreeItem }) => {
             start: task.start_date || objective.start_date || selectedPhaseTab.start_date || null,
             end: task.end_date,
             type: 'task',
+
             custom_class: `gantt-task${getClasses(task)}`,
             // read_only: true
           });
+        }
         });
       });
     }
@@ -190,6 +203,7 @@ const Workplan = ({ setSelectedTreeItem }) => {
             setSelectedTreeItem(treeitem);
           }}
         />
+        
         <ToggleButtonGroup
           color='primary'
           value={viewMode}
