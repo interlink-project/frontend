@@ -3,11 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import ContributionsTable from 'components/dashboard/tree/ContributionsTable';
 import { objectivesApi, phasesApi, tasksApi, usersApi } from '__api__';
 import useMounted from 'hooks/useMounted';
+import { useCustomTranslation } from 'hooks/useDependantTranslation';
 
 
 const ContributionsTabs = ({contributions}) => {
     const [rows, setRows] = useState([]);
-
+    const { process } = useSelector((state) => state.process);
+    const t = useCustomTranslation(process.language);
+   
     useEffect(() => {
         console.log(contributions);
         if (contributions.length === 0) {
@@ -38,7 +41,7 @@ const ContributionsTabs = ({contributions}) => {
 
     return (
         <>
-            <p> Contributions </p>
+            <p> {t("Contributions")} </p>
             <ContributionsTable
                 rows={rows}
                 assets={contributions}

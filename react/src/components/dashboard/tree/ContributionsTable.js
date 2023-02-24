@@ -7,6 +7,7 @@ import { getUserActivities } from "slices/general";
 import { useDispatch, useSelector } from 'react-redux';
 import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@mui/icons-material';
 import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
+import { useCustomTranslation } from 'hooks/useDependantTranslation';
 
 
 
@@ -17,6 +18,7 @@ export default function ContributionsTable({ rows, assets }) {
   const [activitiesDialogOpen, setactivitiesDialogOpen] = useState(false);
   const dispatch = useDispatch();
   const { process } = useSelector((state) => state.process);
+  const t = useCustomTranslation(process.language);
   // const [ userId, setUserId ] = useState(null);
 
   const handleClickHistory = (userId) => {
@@ -31,9 +33,9 @@ export default function ContributionsTable({ rows, assets }) {
   };
 
   const columns = [
-    { field: 'name', headerName: 'Name', flex: 0.5, editable: false },
+    { field: 'name', headerName: t('Name'), flex: 0.5, editable: false },
     {
-      field: 'activity', headerName: 'Activity', flex: 0.3, editable: false, headerAlign: 'center', align: 'center',
+      field: 'activity', headerName: t('Activity'), flex: 0.3, editable: false, headerAlign: 'center', align: 'center',
       renderCell: (params) => {
         const onClick = (e) => {
           e.stopPropagation();
@@ -43,12 +45,12 @@ export default function ContributionsTable({ rows, assets }) {
         };
         return (
           <Button variant="contained" onClick={onClick} color="primary">
-            Activities
+            {t("Activities")}
           </Button>)
       }
     },
     {
-      field: 'contribution', headerName: 'Contribution',
+      field: 'contribution', headerName: t('Contribution'),
       type: 'singleSelect',
       flex: 1,
       editable: true,
@@ -123,7 +125,7 @@ export default function ContributionsTable({ rows, assets }) {
             fontWeight: '600',
           },
           '& .super-app.average': {
-            color: '#ffe607',
+            color: '#077878',
             fontWeight: '600',
           },
           '& .super-app.high': {
