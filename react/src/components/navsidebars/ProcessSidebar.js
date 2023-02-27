@@ -29,8 +29,37 @@ const ProcessSidebar = (props) => {
     }
   }, [location.pathname]);
 
-  const sections = [
+  let sections = []
 
+  if(process){
+  if(process.is_part_of_publication){
+    sections=[
+      {
+        title: '',
+        items: [
+          {
+            title: t('Guide'),
+            path: `/dashboard/coproductionprocesses/${processId}/guide`,
+            icon: <AccountTree />,
+            disabled: !hasSchema
+          },
+          {
+            title: t('Team'),
+            path: `/dashboard/coproductionprocesses/${processId}/team`,
+            icon: <GroupIcon />,
+            disabled: !hasSchema
+          },
+          {
+            title: t('Settings'),
+            path: `/dashboard/coproductionprocesses/${processId}/settings`,
+            icon: <Settings />,
+            disabled: false
+          },
+        ]
+      },
+    ];
+  }else{
+    sections=[
     {
       title: '',
       items: [
@@ -50,7 +79,7 @@ const ProcessSidebar = (props) => {
           title: t('Workplan'),
           path: `/dashboard/coproductionprocesses/${processId}/workplan`,
           icon: <Timeline />,
-          disabled: !hasSchema
+          disabled: !hasSchema || process.is_part_of_publication
         },
         {
           title: t('Team'),
@@ -67,6 +96,8 @@ const ProcessSidebar = (props) => {
       ]
     },
   ];
+}
+  }
   const content = (
     <Box
       sx={{

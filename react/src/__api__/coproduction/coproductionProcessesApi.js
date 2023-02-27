@@ -79,12 +79,12 @@ class CoproductionProcessesApi extends GeneralApi {
   }
 
   // The timeout: 0 is needed to avoid the default timeout of 40s
-  async copy(id,label_name) {
-    //console.log(`/${this.url}/${id}/copy?label_name=${label_name}`);
+  async copy(id,label_name,from_view='settings') {
+    console.log(`/${this.url}/${id}/copy?label_name=${label_name}&from_view=${from_view}`);
     if (id) {
       const res = await axiosInstance.request({
         method: 'post',
-        url: `/${this.url}/${id}/copy?label_name=${label_name}`,
+        url: `/${this.url}/${id}/copy?label_name=${label_name}&from_view=${from_view}`,
         timeout: 0,
       });
       console.log('copy', res.data);

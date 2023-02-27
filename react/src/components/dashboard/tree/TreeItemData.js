@@ -594,7 +594,9 @@ const TreeItemData = ({ language, processId, element, assets }) => {
         </>
       )}
 
-      <Typography
+      {!process.is_part_of_publication && (
+        <>
+        <Typography
         variant='h6'
         sx={{ mt: 2 }}
       >
@@ -735,6 +737,11 @@ const TreeItemData = ({ language, processId, element, assets }) => {
           ) : <Alert severity='warning'>{t('Not set')}</Alert>}
         </Box>
       )}
+        
+        </>
+
+      )}
+      
 
       {editMode
         && (

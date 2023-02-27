@@ -368,7 +368,7 @@ const RightSide = ({ softwareInterlinkers }) => {
               />
               )}
               
-              { (!isLocationCatalogue & isTask & isAdministrator) && (
+              { (!isLocationCatalogue & isTask & isAdministrator & !process.is_part_of_publication) && (
               <Tab
                 value='contributions'
                 label={`${t('Contributions')}`}

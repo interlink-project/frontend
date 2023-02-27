@@ -1,6 +1,6 @@
 import { Grid, Avatar, Box, Button, Chip, Divider, Drawer, Skeleton, Stack, Typography, useMediaQuery, Rating } from '@mui/material';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { AccountTree, ArrowBack,AssistantDirection, PermMedia, Dashboard, Balcony, Folder, Group as GroupIcon, Settings, Timeline } from '@mui/icons-material';
+import { EmojiObjects,AccountTree, ArrowBack,AssistantDirection, PermMedia, Dashboard, Balcony, Folder, Group as GroupIcon, Settings, Timeline } from '@mui/icons-material';
 import { StatusChip } from 'components/Icons';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import PropTypes from 'prop-types';
@@ -11,7 +11,8 @@ import { useLocation } from 'react-router-dom';
 import { LANGUAGES } from 'translations/i18n';
 import NavSection from '../NavSection';
 import Scrollbar from '../Scrollbar';
-
+import ConfirmationButton from 'components/ConfirmationButton';
+import { coproductionProcessesApi, storiesApi } from "__api__";
 
 const StorySidebar = (props) => {
   const { onMobileClose, openMobile } = props;
@@ -61,6 +62,14 @@ const StorySidebar = (props) => {
       ]
     },
   ];
+
+  const onClone = () => {
+    coproductionProcessesApi
+      .copy(selectedStory.coproductionprocess_cloneforpub_id, "Clone of_ ","story")
+      .then(() => navigate("/dashboard"));
+    
+  };
+
   const content = (
     <Box
       sx={{
@@ -180,6 +189,7 @@ const StorySidebar = (props) => {
         <Divider />
         <Box sx={{ p: 2 }}>
            { sections.map((section) => (
+            <>
             <NavSection
               key={section.title}
               pathname={location.pathname}
@@ -191,6 +201,40 @@ const StorySidebar = (props) => {
               }}
               {...section}
             />
+            <Divider/>
+
+            <Box sx={{ textAlign: 'center', width: '100%',mt:3,mb:3 }}>
+
+            <ConfirmationButton
+                Actionator={({ onClick }) => (
+                  <Button
+                    variant="contained"
+                    //disabled={!isAdministrator}
+                    color="error"
+                    onClick={onClick}
+                    startIcon={<EmojiObjects />}
+                  >
+                    {t("Clone the Process")}
+                  </Button>
+                )}
+                ButtonComponent={({ onClick }) => (
+                  <Button
+                    sx={{ mt: 1 }}
+                    fullWidth
+                    variant="contained"
+                    color="error"
+                    onClick={onClick}
+                  >
+                    {t("Yes")}
+                  </Button>
+                )}
+                //onClick={onRemove}
+                onClick={onClone}
+                text={t("Are you sure?")}
+              />
+              </Box>
+
+            </>
           ))} 
         </Box>
       </Scrollbar>

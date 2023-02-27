@@ -653,6 +653,11 @@ const SettingsTab = () => {
           </Alert>
         </Card>
 
+        { !process.is_part_of_publication && (
+
+<>
+
+
         {/* Cloning coprod */}
         <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
           <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
@@ -748,6 +753,16 @@ const SettingsTab = () => {
             )}
           </Alert>
         </Card>
+
+</>
+
+
+
+
+        )
+        
+        }
+
       </Box>
 
       <Dialog

@@ -1,5 +1,5 @@
 import { Avatar, AvatarGroup, Box, Button, Chip, Container, Divider, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { Add, Folder } from '@mui/icons-material';
+import { Add, Folder,MenuBook  } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import AuthGuardSkeleton from 'components/guards/AuthGuardSkeleton';
 import useMounted from 'hooks/useMounted';
@@ -29,7 +29,11 @@ function ProcessRow({ process, t }) {
       onClick={() => navigate(`/dashboard/coproductionprocesses/${process.id}/overview`)}
     >
       <TableCell align='center'>
-        <Box style={{ justifyContent: 'center', display: 'flex', }}>
+        <Box style={{ justifyContent: 'center', display: 'flex' }}>
+         {process.is_part_of_publication && (
+            <MenuBook  sx={{mr:1}} />
+          )}
+
           {process.logotype_link ? (
             <Avatar
               sx={{ height: '25px', width: '25px' }}
@@ -37,6 +41,9 @@ function ProcessRow({ process, t }) {
               src={process.logotype_link}
             />
           ) : <Folder />}
+
+          
+
         </Box>
       </TableCell>
       <TableCell
