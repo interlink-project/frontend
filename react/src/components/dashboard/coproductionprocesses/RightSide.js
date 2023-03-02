@@ -110,24 +110,12 @@ const RightSide = ({ softwareInterlinkers }) => {
     setTabValue(newValue);
   };
 
-  const alreadydone=false;
+
 
   useEffect(() => {
-    if(selectedTreeItem){
-    if ( isTask &&  tabValue === 'data' ){
+    if (isTask  &&  tabValue === 'assets'){
+     
       dispatch(getAssetsList_byTask(selectedTreeItem.id));
-      alreadydone=true;
-    }
-  }
-  }, []);  
-
-  useEffect(() => {
-    if (isTask  &&  tabValue === 'data'){
-      //alert("Entra a recuperar la info de los assets:"+selectedTreeItem.id);
-      if(!alreadydone){
-        dispatch(getAssetsList_byTask(selectedTreeItem.id));
-      
-      }
       setLoadingAssets(false);
     
     }
@@ -140,13 +128,7 @@ const RightSide = ({ softwareInterlinkers }) => {
     }
   }, [selectedTreeItem, tabValue]);
 
-  useEffect(() => {
-    if ( isTask &&  tabValue !== 'data' ){
-//      setTabValue('data');
-    
-    }
-    
-  }, [selectedTreeItem]);  
+
 
   
 
@@ -457,7 +439,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                 <AssetsTable
                           language={process.language}
                           loading={loadingAssets}
-                          assets={assetsList}
+                          //assets={assetsList}
                           getActions={[]}
                         />
                 
@@ -470,7 +452,6 @@ const RightSide = ({ softwareInterlinkers }) => {
                         <AssetsTable
                           language={process.language}
                           loading={loadingAssets}
-                          assets={assetsList}
                           getActions={getAssetsActions}
                         />
                       ) : <Alert severity='error'>{t('You do not have access to the resources of this task')}</Alert>}

@@ -120,7 +120,6 @@ export default function Overview({ }) {
           <AssetsTable
             language={process.language}
             loading={loading}
-            assets={assetsList}
             getActions={getAssetsActions}
           />
         </Box>

@@ -430,13 +430,14 @@ function EnhancedTableHead(order, orderBy, onRequestSort) {
 }
 
 
-const Assets = ({ language, loading, assets, getActions = null }) => {
+const Assets = ({ language, loading,  getActions = null }) => {
   const [interlinkerDialogOpen, setInterlinkerDialogOpen] = useState(false);
   const [selectedInterlinker, setSelectedInterlinker] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('updated');
-
+  const { assetsList } = useSelector((state) => state.general);
+  
   const t = useCustomTranslation(language);
 
   const handleRequestSort = (event, property) => {
@@ -478,7 +479,7 @@ const Assets = ({ language, loading, assets, getActions = null }) => {
               onRequestSort={handleRequestSort}
             />
         <TableBody>
-          { assets.map((asset) => (
+          { assetsList.map((asset) => (
             <React.Fragment key={asset.id}>
               {isLocationCatalogue ?(
               <><AssetRow
@@ -503,7 +504,7 @@ const Assets = ({ language, loading, assets, getActions = null }) => {
           ))}
         </TableBody>
       </Table>
-      {assets.length === 0 && (
+      {assetsList.length === 0 && (
       <Alert
         severity='info'
         sx={{ my: 2 }}
