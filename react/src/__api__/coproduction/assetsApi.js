@@ -11,6 +11,24 @@ class AssetsApi extends GeneralApi {
     super('coproduction/api/v1/assets');
   }
 
+  
+
+  async getListAssetswithInternalInfo(params = {}, language = getLanguage()) {
+    //console.log(`/${this.url}/listAssetswithInternalInfo`+params);
+    //Get data of user_notifications
+    const res = await axiosInstance.get(
+      `/${this.url}/listAssetswithInternalInfo`, {
+        params: removeEmpty(params),
+        headers: {
+          'Accept-Language': language
+        }
+      }
+    );
+    //console.log('getMulti call', res.data, 'in', language);
+    return res.data;
+  }
+
+
   async getMultiCatalogue(params = {}, language = getLanguage()) {
     console.log(`/${this.url}/catalogue`+params);
     //Get data of user_notifications

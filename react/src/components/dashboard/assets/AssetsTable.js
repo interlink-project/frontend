@@ -70,8 +70,36 @@ const MyMenuItem = ({ onClick, text, icon, id, loading }) => (
 );
 
 const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog }) => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState('data');
+  //const [data, setData] = useState(null);
+  let data=asset
+  let dataExtra={}
+
+  //Add extra information needed:
+  const backend =asset['software_response']['backend'];
+  dataExtra['link']=backend+'/'+asset['external_asset_id'];
+
+  const api_path=asset['software_response']['api_path'];
+  dataExtra['internal_link']="http://"+backend+api_path+"/"+asset['external_asset_id'];
+
+  dataExtra['capabilities']={
+    "clone": asset['software_response']['clone'],
+    "view": asset['software_response']['view'],
+    "edit": asset['software_response']['edit'],
+    "delete": asset['software_response']['delete'],
+    "download": asset['software_response']['download'],
+}
+
+dataExtra['softwareinterlinker']=null
+  if(asset['software_response']){
+    dataExtra['softwareinterlinker']={
+      "id": asset['software_response']['id'],
+      "name": asset['software_response']['name'],
+      "description": asset['software_response']['description'],
+      "logotype_link": asset['software_response']['logotype_link'],
+  }
+  }
+  
+  //const [loading, setLoading] = useState('data');
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const mounted = useMounted();
@@ -79,7 +107,7 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
   const showInterlinkerId = data && (data.externalinterlinker_id || data.knowledgeinterlinker_id || data.softwareinterlinker_id);
   const isInternal = asset.type === 'internalasset';
   const [activitiesDialogOpen, setactivitiesDialogOpen] = useState(false);
-  const show = inputValue ? data ? data.name.toLowerCase().includes(inputValue) : false : true;
+  const show = inputValue ? data ? data.internalData.name.toLowerCase().includes(inputValue) : false : true;
   const dispatch = useDispatch();
   const { process } = useSelector((state) => state.process);
 
@@ -105,32 +133,32 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
   };
 
   useEffect(() => {
-    setLoading('info');
+    //setLoading('info');
     if (isInternal) {
 
-      if (isLocationCatalogue){
-        assetsApi.getInternalCatalogue(asset.id).then((res) => {
-          if (mounted.current) {
-            setData({ ...asset, ...res });
-            setLoading('');
-          }
-        });
+      // if (isLocationCatalogue){
+      //   assetsApi.getInternalCatalogue(asset.id).then((res) => {
+      //     if (mounted.current) {
+      //       setData({ ...asset, ...res });
+      //       setLoading('');
+      //     }
+      //   });
 
-      }else{
-        assetsApi.getInternal(asset.id).then((res) => {
-          if (mounted.current) {
-            setData({ ...asset, ...res });
-            setLoading('');
-          }
-        });
+      // }else{
+      //   assetsApi.getInternal(asset.id).then((res) => {
+      //     if (mounted.current) {
+      //       setData({ ...asset, ...res });
+      //       setLoading('');
+      //     }
+      //   });
 
-      }
+      // }
       
 
 
     } else if (mounted.current) {
-      setData({ ...asset });
-      setLoading('');
+      //setData({ ...asset });
+      //setLoading('');
     }
      }, [asset, mounted]);
 
@@ -138,14 +166,14 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
     event.stopPropagation();
     event.preventDefault();
     if (isInternal) {
-      window.open(`${data.link}/view`, '_blank');
+      window.open(`${dataExtra.link}/view`, '_blank');
     } else {
-      window.open(data.uri);
+      window.open(dataExtra.uri);
     }
   };
 
   const avatarSize = { height: '30px', width: '30px' };
-  console.log(actions);
+  //console.log(actions);
   
 
   return (
@@ -157,7 +185,7 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
         sx={{ display: !show && 'none', '&:last-child td, &:last-child th': { border: 0 }, '& > *': { borderBottom: 'unset' }, cursor: 'pointer' }}
         onClick={handleOpen}
       >
-        {data && loading !== 'info' ? (
+        {data ? (
           <>
             <TableCell
               width='5%'
@@ -165,10 +193,10 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
               scope='row'
             >
               <Avatar
-                src={data.icon}
+                src={data.internalData.icon}
                 sx={avatarSize}
               >
-                {!data.icon && <Article />}
+                {!data.internalData.icon && <Article />}
               </Avatar>
             </TableCell>
             <TableCell
@@ -179,7 +207,7 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
               <span
               id={'bt-'+asset.id}
               >
-              {data.name}
+              {data.internalData.name}
               </span>
               
             </TableCell>
@@ -188,7 +216,7 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
               width='15%'
               align='left'
             >
-              {moment(data.updated_at || data.created_at).fromNow()}
+              {moment(data.internalData.updated_at || data.internalData.created_at).fromNow()}
             </TableCell>
             <TableCell
               width='20%'
@@ -450,7 +478,7 @@ const Assets = ({ language, loading, assets, getActions = null }) => {
               onRequestSort={handleRequestSort}
             />
         <TableBody>
-          {!loading && assets.map((asset) => (
+          { assets.map((asset) => (
             <React.Fragment key={asset.id}>
               {isLocationCatalogue ?(
               <><AssetRow

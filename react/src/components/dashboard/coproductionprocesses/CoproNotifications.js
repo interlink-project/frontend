@@ -99,7 +99,8 @@ export default function CoproNotifications({ mode = "notification" }) {
     }
   });
 
-  let listAssets = [];
+  const { assetsList } = useSelector((state) => state.general);
+
 
   //This function will obtain and reeplace all paremeters
   // and replace in the text.
@@ -141,7 +142,32 @@ export default function CoproNotifications({ mode = "notification" }) {
           if (entidadName == "assetid") {
             //Obtain the asset name:
 
-            if (!listAssets.includes(entidadId)) {
+            //Busco si existe el asset en el listado temporal:
+            for (let i = 0; i < assetsList.length; i++) {
+              if(assetsList[i].id==entidadId){
+                const assetName=assetsList[i]['internalData']['name'];
+                const assetIcon=assetsList[i]['internalData']['icon'];
+
+                const nodes = document.getElementsByClassName(
+                  "lk_" + entidadId
+                );
+
+                for (let i = 0; i < nodes.length; i++) {
+                  nodes[i].innerHTML = assetName;
+                }
+
+                const nodes2 = document.getElementsByClassName(
+                  "im_" + entidadId
+                );
+                for (let i = 0; i < nodes.length; i++) {
+                  nodes2[i].src = assetIcon;
+                }
+                break;
+              }
+            }
+
+
+            /* if (!assetsList.includes(entidadId)) {
               //listAssets.push(entidadId);
               //alert('retrive the data');
               assetsApi.getInternal(entidadId).then((res) => {
@@ -165,7 +191,7 @@ export default function CoproNotifications({ mode = "notification" }) {
                   nodes2[i].src = assetdata.icon;
                 }
               });
-            }
+            } */
           }
         }
       }

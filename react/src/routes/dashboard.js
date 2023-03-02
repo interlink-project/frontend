@@ -33,6 +33,7 @@ const OrganizationProfile = Loadable(
   lazy(() => import('../components/dashboard/organizations/OrganizationProfile'))
 );
 const Workspace = Loadable(lazy(() => import('../pages/dashboard/workspace')));
+const WelcomeView = Loadable(lazy(() => import('../pages/dashboard/workspace/ProjectsOverview')));
 
 export const routes = [
   
@@ -71,6 +72,10 @@ export const routes = [
       {
         path: '',
         element: <Workspace />,
+      },
+      {
+        path: 'projects',
+        element: <WelcomeView />,
       },
       {
         path: 'settings',

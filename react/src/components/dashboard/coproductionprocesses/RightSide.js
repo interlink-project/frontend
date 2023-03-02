@@ -1,4 +1,4 @@
-import { Alert, Avatar, Box, Button, Dialog, DialogContent, Grid, IconButton, Menu, MenuItem, Paper, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
+import {  Alert, Avatar, Box, Button, Dialog, DialogContent, Grid, IconButton, Menu, MenuItem, Paper, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
 import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { AssetsTable } from 'components/dashboard/assets';
@@ -16,9 +16,11 @@ import * as Yup from 'yup';
 import { assetsApi, permissionsApi, assetsDataApi, coproductionprocessnotificationsApi, tasksApi } from '__api__';
 import NewAssetModal from 'components/dashboard/coproductionprocesses/NewAssetModal';
 import { useLocation } from 'react-router';
+import { getAssetsList_byTask } from 'slices/general';
 
 const RightSide = ({ softwareInterlinkers }) => {
   const { process, isAdministrator, selectedTreeItem } = useSelector((state) => state.process);
+  const { assetsList } = useSelector((state) => state.general);
   const isTask = selectedTreeItem && selectedTreeItem.type === 'task';
   const [step, setStep] = useState(0);
 
@@ -71,12 +73,15 @@ const RightSide = ({ softwareInterlinkers }) => {
 
   const getAssets = async () => {
     setLoadingAssets(true);
-    assetsApi.getMulti({ task_id: selectedTreeItem.id }).then((assets) => {
-      if (mounted.current) {
-        setAssets(assets);
-        setLoadingAssets(false);
-      }
-    });
+    // assetsApi.getMulti({ task_id: selectedTreeItem.id }).then((assets) => {
+    //   if (mounted.current) {
+    //     setAssets(assets);
+    //     setLoadingAssets(false);
+    //   }
+    // });
+    dispatch(getAssetsList_byTask(selectedTreeItem.id));
+    setAssets(assetsList);
+    setLoadingAssets(false);
   };
 
   const getAssetsCatalogue = async () => {
@@ -105,14 +110,46 @@ const RightSide = ({ softwareInterlinkers }) => {
     setTabValue(newValue);
   };
 
+  const alreadydone=false;
+
   useEffect(() => {
+    if(selectedTreeItem){
+    if ( isTask &&  tabValue === 'data' ){
+      dispatch(getAssetsList_byTask(selectedTreeItem.id));
+      alreadydone=true;
+    }
+  }
+  }, []);  
+
+  useEffect(() => {
+    if (isTask  &&  tabValue === 'data'){
+      //alert("Entra a recuperar la info de los assets:"+selectedTreeItem.id);
+      if(!alreadydone){
+        dispatch(getAssetsList_byTask(selectedTreeItem.id));
+      
+      }
+      setLoadingAssets(false);
+    
+    }
     if (!isTask && tabValue === 'assets') {
       setTabValue('data');
+      
     }
     if (!isTask && tabValue === 'contributions') {
       setTabValue('data');
     }
   }, [selectedTreeItem, tabValue]);
+
+  useEffect(() => {
+    if ( isTask &&  tabValue !== 'data' ){
+//      setTabValue('data');
+    
+    }
+    
+  }, [selectedTreeItem]);  
+
+  
+
 
   const can = {
     delete: isAdministrator || (permissions && permissions.your_permissions.delete_assets_permission),
@@ -194,8 +231,20 @@ const RightSide = ({ softwareInterlinkers }) => {
 
   const getAssetsActions = (asset) => {
     const actions = [];
-    if (asset.type === 'internalasset' && asset.capabilities) {
-      const { id, capabilities } = asset;
+
+    let dataExtra = {};
+    dataExtra['capabilities']={
+      "clone": asset['software_response']['clone'],
+      "view": asset['software_response']['view'],
+      "edit": asset['software_response']['edit'],
+      "delete": asset['software_response']['delete'],
+      "download": asset['software_response']['download'],
+    }
+
+    if (asset.type === 'internalasset' && dataExtra.capabilities) {
+      //const { id, capabilities } = asset;
+      const id= asset.id
+      const capabilities=dataExtra.capabilities;
 
       actions.push({
         id: `${id}-open-action`,
@@ -357,7 +406,7 @@ const RightSide = ({ softwareInterlinkers }) => {
               <Tab
                 value='assets'
                 disabled={!isTask}
-                label={t('Resources') + (isTask ? ` (${loadingAssets ? '...' : assets.length})` : '')}
+                label={t('Resources') + (isTask ? ` ${loadingAssets ? '(...)' : ''}` : '')}
               />
               
               {!isLocationCatalogue &&
@@ -379,6 +428,7 @@ const RightSide = ({ softwareInterlinkers }) => {
             </Tabs>
           </Paper>
 
+    
           {tabValue === 'data' && (
             <TreeItemData
               language={process.language}
@@ -407,7 +457,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                 <AssetsTable
                           language={process.language}
                           loading={loadingAssets}
-                          assets={assets}
+                          assets={assetsList}
                           getActions={[]}
                         />
                 
@@ -420,7 +470,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                         <AssetsTable
                           language={process.language}
                           loading={loadingAssets}
-                          assets={assets}
+                          assets={assetsList}
                           getActions={getAssetsActions}
                         />
                       ) : <Alert severity='error'>{t('You do not have access to the resources of this task')}</Alert>}
