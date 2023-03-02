@@ -1,6 +1,6 @@
 import {
   Alert, Avatar, LinearProgress, Menu, MenuItem, Paper, TextField, Button, Snackbar, IconButton, Dialog,
-DialogActions, DialogContent, DialogContentText, DialogTitle
+  DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material';
 import { Info } from '@mui/icons-material';
 import useDependantTranslation from 'hooks/useDependantTranslation';
@@ -10,7 +10,7 @@ import { usersApi } from '__api__';
 import Papa from 'papaparse';
 import { ExportToCsv } from 'export-to-csv';
 
-const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organization_id = null }) => {
+const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organization_id = null, alert = true, importCsv = true }) => {
   const [loading, setLoading] = useState(false);
   const mounted = useMounted();
   const [searchResults, setSearchResults] = useState([]);
@@ -31,9 +31,9 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
 
   const handleCloseParseMsn = (reason) => {
     if (reason === 'clickaway') {
+      setFileParsedMsn(false);
       return;
     }
-    setFileParsedMsn(false);
   };
 
   const handleOpenDialog = () => {
@@ -50,7 +50,7 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
       quoteStrings: '"',
       filename: 'example',
       useTextFile: false,
-      useBom: true,      
+      useBom: true,
     };
     const csvExporter = new ExportToCsv(options);
     const data = [
@@ -137,6 +137,7 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
         }
         if (rejected_users.length > 0) {
           setMailErrors(true)
+          console.log(rejected_users)
           csvExporter.generateCsv(rejected_users);
         }
         handleOpenParseMsn();
@@ -182,8 +183,8 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
           </Button>
         </DialogActions>
       </Dialog>
+      {alert && <Alert severity='warning'>{t('Only registered users can be added')}</Alert>}
 
-      <Alert severity='warning'>{t('Only registered users can be added')}</Alert>
       <TextField
         sx={{ mt: 1 }}
         variant='standard'
@@ -199,6 +200,7 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
         label={t('Type here to add users')}
       />
       {loading && <LinearProgress />}
+      { importCsv && <>
       <Button
         sx={{ mt: 2 }}
         variant="contained"
@@ -217,6 +219,7 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
         onClick={handleOpenDialog}>
         <Info />
       </IconButton>
+      </>}
       {open && (
         <Paper>
           <Menu

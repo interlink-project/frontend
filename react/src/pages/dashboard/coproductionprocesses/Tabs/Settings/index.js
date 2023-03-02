@@ -1,4 +1,4 @@
-import { Alert, Avatar, Box,Switch, Button, Card, CardHeader, Grid, IconButton, Input, Stack, TextField as MuiTextField, FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material';
+import { Alert, Avatar, Box, Switch, Button, Card, CardHeader, Grid, IconButton, Input, Stack, TextField as MuiTextField, FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material';
 import { Delete, Edit, Save } from '@mui/icons-material';
 import ConfirmationButton from 'components/ConfirmationButton';
 import { LoadingButton } from '@mui/lab';
@@ -17,12 +17,13 @@ import { coproductionProcessesApi, gamesApi } from '__api__';
 import { withStyles } from '@mui/styles';
 
 const SettingsTab = () => {
-  const[isCloning, setIsCloning] = useState(false);
+  const [isCloning, setIsCloning] = useState(false);
   const [editMode, setEditMode] = useState(false);
- 
-  const { process, hasSchema, isAdministrator } = useSelector((state) => state.process);
- 
-  const [isIncentiveModuleActive,setIsIncentiveModuleActive]= useState(process.incentive_and_rewards_state);
+  const [gameId, setGameId] = useState(null);
+
+  const { process, hasSchema, isAdministrator, tree } = useSelector((state) => state.process);
+
+  const [isIncentiveModuleActive, setIsIncentiveModuleActive] = useState(process.incentive_and_rewards_state);
   const [logotype, setLogotype] = useState(null);
   const mounted = useMounted();
   const t = useCustomTranslation(process.language);
@@ -68,6 +69,27 @@ const SettingsTab = () => {
     }
   };
 
+  const prepareGameTemplate = (tree) => {
+
+    const taskList = [];
+    for (const phase of tree) {
+      for (const objective of phase.children) {
+        for (const task of objective.children) {
+          if (task.type === 'task') {
+            taskList.push({
+              id: task.id,
+              management: task.management,
+              development: task.development,
+              exploitation: task.exploitation
+            });
+          }
+        }
+      }
+    }
+    return taskList;
+  };
+
+
   const TextField = (props) => (
     <>
       <Typography
@@ -92,35 +114,50 @@ const SettingsTab = () => {
     </>
   );
 
+  useEffect(() => {
+    if (gameId) {
+      dispatch(updateProcess({
+        id: process.id,
+        data: { game_id: gameId },
+        logotype: false,
+        onSuccess: false
+      }));
+    }
+  }, [gameId]);
+
   const toggleIncentivesRewards = () => {
     setIsIncentiveModuleActive((prev) => !prev);
-   
-      //Active the incentive and reguards
-      const values={incentive_and_rewards_state:!isIncentiveModuleActive};
-      console.log('La bandera es:')
-      console.log(isIncentiveModuleActive)
-      console.log(process.id);
-      gamesApi.getGame(process.id).then((res) => {
+
+    //Active the incentive and rewards
+    const values = { incentive_and_rewards_state: !isIncentiveModuleActive };
+    if (values.incentive_and_rewards_state) {
+      const taskList = prepareGameTemplate(tree);
+      gamesApi.setGame(process.id, taskList).then((res) => {
+        console.log('Game created');
         console.log(res);
+        gamesApi.getGame(process.id).then((res) => {
+          console.log('Game loaded');
+          setGameId(res[0].id);
+          console.log(gameId)
+        });
       });
-      try {
-        dispatch(updateProcess({
-          id: process.id,
-          data: values,
-          logotype,
-          onSuccess: () => {
-            if (mounted.current) {
-              gamesApi.getGame(process.id).then((res) => {
-                console.log(res);
-              });
-              //alert("se ha grabado la bandera")
-            }
+    }
+
+    try {
+      dispatch(updateProcess({
+        id: process.id,
+        data: values,
+        logotype,
+        onSuccess: () => {
+          if (mounted.current) {
+            console.log(process);
           }
-        }));
-      } catch (err) {
-        console.error(err);
-       
-      }
+        }
+      }));
+    } catch (err) {
+      console.error(err);
+
+    }
   };
 
   const GoldSwitch = withStyles({
@@ -226,23 +263,23 @@ const SettingsTab = () => {
 
 
       <Box sx={{ mx: 4 }}>
-      <Grid
-                container
-                direction='row'
-                justifyContent='right'
-                spacing={2}
-              >
-      {!editMode && isAdministrator && (
-          <Button
-            sx={{ mb: 3, justifyContent: 'right', textAlign: 'center' }}
-            variant='contained'
-            color='primary'
-            onClick={() => setEditMode(true)}
-            startIcon={<Edit />}
-          >
-            {t('Edit coproduction process')}
-          </Button>
-        )}
+        <Grid
+          container
+          direction='row'
+          justifyContent='right'
+          spacing={2}
+        >
+          {!editMode && isAdministrator && (
+            <Button
+              sx={{ mb: 3, justifyContent: 'right', textAlign: 'center' }}
+              variant='contained'
+              color='primary'
+              onClick={() => setEditMode(true)}
+              startIcon={<Edit />}
+            >
+              {t('Edit coproduction process')}
+            </Button>
+          )}
         </Grid>
 
         <Formik
@@ -310,37 +347,37 @@ const SettingsTab = () => {
                 justifyContent='right'
                 spacing={2}
               >
-              {editMode && (
-                <Stack
-                  direction='row'
-                  spacing={2}
-                  sx={{ justifyContent: 'right', mt: 3, mb: 2 }}
-                >
-                  <Button
-                    variant='contained'
-                    disabled={isSubmitting}
-                    color='warning'
-                    size='medium'
-                    startIcon={<Delete />}
-                    onClick={() => { setEditMode(false); resetForm(); setLogotype(null); }}
+                {editMode && (
+                  <Stack
+                    direction='row'
+                    spacing={2}
+                    sx={{ justifyContent: 'right', mt: 3, mb: 2 }}
                   >
-                    {t('Cancel')}
-                  </Button>
-                  <Button
-                    variant='contained'
-                    disabled={isSubmitting}
-                    color='success'
-                    size='large'
-                    startIcon={<Save />}
-                    onClick={submitForm}
-                    disabled={!isValid}
-                  >
-                    {t('Save')}
-                  </Button>
-                </Stack>
-              )}
+                    <Button
+                      variant='contained'
+                      disabled={isSubmitting}
+                      color='warning'
+                      size='medium'
+                      startIcon={<Delete />}
+                      onClick={() => { setEditMode(false); resetForm(); setLogotype(null); }}
+                    >
+                      {t('Cancel')}
+                    </Button>
+                    <Button
+                      variant='contained'
+                      disabled={isSubmitting}
+                      color='success'
+                      size='large'
+                      startIcon={<Save />}
+                      onClick={submitForm}
+                      disabled={!isValid}
+                    >
+                      {t('Save')}
+                    </Button>
+                  </Stack>
+                )}
               </Grid>
-              
+
 
 
               <Grid
@@ -481,13 +518,13 @@ const SettingsTab = () => {
                 </Grid>
 
               </Grid>
-              
+
             </Form>
           )}
         </Formik>
-        
+
         <Card sx={{ border: '1px solid red', p: 5, my: 4 }}>
-          <Typography variant='h5'  sx={{fontWeight: 'bold',mb:0}}>
+          <Typography variant='h5' sx={{ fontWeight: 'bold', mb: 0 }}>
             {t('Administrators of the coproduction process')}
           </Typography>
           <Alert
@@ -514,7 +551,7 @@ const SettingsTab = () => {
           />
         </Card>
         <Card sx={{ border: '1px solid red', p: 5, my: 4 }}>
-          <Typography variant='h5'  sx={{fontWeight: 'bold',mb:0}}>
+          <Typography variant='h5' sx={{ fontWeight: 'bold', mb: 0 }}>
             {t('Clear coproduction process tree')}
           </Typography>
           <Alert
@@ -556,7 +593,7 @@ const SettingsTab = () => {
           <Box sx={{ mt: 2 }} />
         </Card>
         <Card sx={{ border: '1px solid red', p: 5, my: 4 }}>
-          <Typography variant='h5'  sx={{fontWeight: 'bold',mb:0}}>
+          <Typography variant='h5' sx={{ fontWeight: 'bold', mb: 0 }}>
             {t('Delete coproduction process')}
           </Typography>
           <Alert
@@ -598,7 +635,7 @@ const SettingsTab = () => {
 
         {/* Cloning coprod */}
         <Card sx={{ border: '1px solid red', p: 5, my: 4 }}>
-          <Typography variant='h5'  sx={{fontWeight: 'bold',mb:0}}>
+          <Typography variant='h5' sx={{ fontWeight: 'bold', mb: 0 }}>
             {t('Clone coproduction process')}
           </Typography>
           <Alert
@@ -638,25 +675,25 @@ const SettingsTab = () => {
             {t('The clonation of the coproduction process will create a new coproduction process with the same structure and resources.')}
           </Alert>
         </Card>
-       {/* Cloning coprod */}
-       <Card  sx={{ border: '1px solid #b2b200', p: 5, my: 4 }}>
-          <Typography variant='h5'  sx={{fontWeight: 'bold',mb:0}}>
+        {/* Cloning coprod */}
+        <Card sx={{ border: '1px solid #b2b200', p: 5, my: 4 }}>
+          <Typography variant='h5' sx={{ fontWeight: 'bold', mb: 0 }}>
             {t('Reward system')}
           </Typography>
           <Alert
             severity='info'
-            sx={{ mt: 2}}
+            sx={{ mt: 2 }}
             action={(
               <>
-              <GoldSwitch
-                checked={isIncentiveModuleActive}
-                onChange={toggleIncentivesRewards}
-                name="incentiveSwitch"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-                disabled={!isAdministrator}
-                color="secondary"
-              />
-              
+                <GoldSwitch
+                  checked={isIncentiveModuleActive}
+                  onChange={toggleIncentivesRewards}
+                  name="incentiveSwitch"
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                  disabled={!isAdministrator}
+                  color="secondary"
+                />
+
               </>
             )}
           >

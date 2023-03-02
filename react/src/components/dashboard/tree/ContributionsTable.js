@@ -79,27 +79,6 @@ export default function ContributionsTable({ rows, assets }) {
     }
   }, [rows]);
 
-  // useEffect(() => {
-  //   console.log(contributors);
-  //   console.log(contributors.contributors);
-  //   let tmp_rows = [];
-  //   console.log(contributors.contributors.length);
-  //   if (contributors.contributors.length > 0) {
-  //     console.log("qljdhfqwefjkqwejfkqjñlkwefjklqwfjek");
-  //     for (let i = 0; i < contributors.contributors.length; i++) {
-  //       console.log(contributors.contributors[i].name);
-  //       tmp_rows.push({
-  //         id: contributors.contributors[i].id,
-  //         name: contributors.contributors[i].name,
-  //         contribution: 'Average',
-  //       });
-  //       // setRows([...rows, {id: contributors[i].id, name: contributors[i].name, contribution: 'Average'}]);
-  //     }
-  //   }
-  //   setRows(tmp_rows);
-
-  // }, [contributors]);
-
   return (
     <div style={{ height: 300, width: '100%' }}>
       <DataGrid
