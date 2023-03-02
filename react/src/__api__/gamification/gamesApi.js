@@ -24,6 +24,11 @@ class GamesApi extends GeneralApi {
     return res.data;
   }
 
+  async deleteGame(gameId) {
+    const res = await axiosInstance.delete(`${this.url}${gameId}`);
+    return res.data;
+  }
+
   async addClaim(gameId, taskId, userId, username) {
     const res = await axiosInstance.put(`${this.url}${gameId}/task/${taskId}/claim`, {
       id: userId,

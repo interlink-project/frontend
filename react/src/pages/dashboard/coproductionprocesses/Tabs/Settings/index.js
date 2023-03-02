@@ -114,16 +114,16 @@ const SettingsTab = () => {
     </>
   );
 
-  useEffect(() => {
-    if (gameId) {
-      dispatch(updateProcess({
-        id: process.id,
-        data: { game_id: gameId },
-        logotype: false,
-        onSuccess: false
-      }));
-    }
-  }, [gameId]);
+  // useEffect(() => {
+  //   if (gameId) {
+  //     dispatch(updateProcess({
+  //       id: process.id,
+  //       data: { game_id: gameId },
+  //       logotype: false,
+  //       onSuccess: false
+  //     }));
+  //   }
+  // }, [gameId]);
 
   const toggleIncentivesRewards = () => {
     setIsIncentiveModuleActive((prev) => !prev);
@@ -135,12 +135,24 @@ const SettingsTab = () => {
       gamesApi.setGame(process.id, taskList).then((res) => {
         console.log('Game created');
         console.log(res);
-        gamesApi.getGame(process.id).then((res) => {
-          console.log('Game loaded');
-          setGameId(res[0].id);
-          console.log(gameId)
-        });
+        dispatch(updateProcess({
+          id: process.id,
+          data: { game_id: res.id },
+          logotype: false,
+          onSuccess: false
+        }));
       });
+    } else {
+      gamesApi.deleteGame(process.game_id).then((res) => {
+        console.log(res);
+        dispatch(updateProcess({
+          id: process.id,
+          data: { game_id: null },
+          logotype: false,
+          onSuccess: false
+        }));
+
+      })
     }
 
     try {
@@ -675,7 +687,8 @@ const SettingsTab = () => {
             {t('The clonation of the coproduction process will create a new coproduction process with the same structure and resources.')}
           </Alert>
         </Card>
-        {/* Cloning coprod */}
+                  
+        {/* Gamification */}
         <Card sx={{ border: '1px solid #b2b200', p: 5, my: 4 }}>
           <Typography variant='h5' sx={{ fontWeight: 'bold', mb: 0 }}>
             {t('Reward system')}

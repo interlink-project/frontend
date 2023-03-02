@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import ContributionsTable from 'components/dashboard/tree/ContributionsTable';
 import { gamesApi, usersApi } from '__api__';
-import { Button, Dialog, DialogTitle, DialogContent, FormControl, Select, InputLabel, MenuItem, DialogActions, TextField } from '@mui/material';
+import { Alert, Button, Dialog, DialogTitle, DialogContent, FormControl, Select, InputLabel, MenuItem, DialogActions, TextField } from '@mui/material';
 import ConfirmationButton from 'components/ConfirmationButton';
 import UserSearch from '../coproductionprocesses/UserSearch';
 import { Delete, Edit, Save } from '@mui/icons-material';
@@ -15,6 +15,8 @@ const ContributionsTabs = ({ contributions }) => {
     // Data for new contributions 
     const [contributor, setContributor] = useState(null);
     const [contribution, setContribution] = useState(null);
+
+    const [errorUser, setErrorUser] = useState(false);
 
     const [taskClosed, setTaskClosed] = useState(false);
     
@@ -48,7 +50,11 @@ const ContributionsTabs = ({ contributions }) => {
     };
 
     const handleAddUser = (user) => {
-        setContributor(user);
+        if (rows.find((row) => user.id === row.id)) {
+            setErrorUser(true);
+        } else {
+            setContributor(user);
+        }
     };
 
     const handleCloseTask = async () => {
@@ -158,6 +164,7 @@ const ContributionsTabs = ({ contributions }) => {
                 <DialogContent sx={{ mt: 4 }}>
                     {!contributor ?
                         <UserSearch
+                            error={errorUser}
                             alert={false}
                             importCsv={false}
                             onClick={handleAddUser}
@@ -190,6 +197,7 @@ const ContributionsTabs = ({ contributions }) => {
                     </FormControl>
                     <DialogActions>
                         <Button
+                            disabled={contributor != "" || contribution != null}
                             variant="contained"
                             color="primary"
                             onClick={handleNewContributor}>

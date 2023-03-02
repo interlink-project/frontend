@@ -10,7 +10,7 @@ import { usersApi } from '__api__';
 import Papa from 'papaparse';
 import { ExportToCsv } from 'export-to-csv';
 
-const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organization_id = null, alert = true, importCsv = true }) => {
+const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organization_id = null, alert = true, importCsv = true, error = false }) => {
   const [loading, setLoading] = useState(false);
   const mounted = useMounted();
   const [searchResults, setSearchResults] = useState([]);
@@ -186,6 +186,7 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
       {alert && <Alert severity='warning'>{t('Only registered users can be added')}</Alert>}
 
       <TextField
+        error={error}
         sx={{ mt: 1 }}
         variant='standard'
         fullWidth
