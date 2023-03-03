@@ -29,7 +29,8 @@ const ContributionsTabs = ({contributions}) => {
             }
         }
 
-        for (let id in contribs) {
+        setRows([]);
+        for (let id in contribs) {        
             usersApi.get(id).then((res) => {
                 setRows(rows => [...rows, { id: id, name: res.full_name, contribution: "Average" }]);
             }).catch((err) => {

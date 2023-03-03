@@ -54,6 +54,10 @@ export default function Overview({ }) {
     }
   }, [tab]);
 
+  const notificationsList = useSelector((state) => {
+      return state.general.coproductionprocessnotifications;
+  });
+
   const getAssetsActions = (asset) => {
     const actions = [];
     actions.push({
@@ -108,7 +112,7 @@ export default function Overview({ }) {
               label={`${t("Resources")} (${ assetsList.length})`}
             />
             { !process.is_part_of_publication &&(
-            <Tab value="notifications" label={t("Notifications")} />
+            <Tab value="notifications" label={`${t("Notifications")} (${ notificationsList.length}) `} />
             )}
           </Tabs>
         </Paper>

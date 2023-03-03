@@ -58,7 +58,7 @@ const RightSide = ({ softwareInterlinkers }) => {
         if (isTask && mounted.current && res && res.your_permissions && res.your_permissions.access_assets_permission) {
           getAssets();
         } else {
-          setAssets([])
+          setAssets([]);
         }
       });
       tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
@@ -70,6 +70,22 @@ const RightSide = ({ softwareInterlinkers }) => {
 
 
   }, [selectedTreeItem]);
+
+  function obtenerNroContributions(contributions) {
+    let nroContribution=0;
+    if(contributions){
+      if(contributions.length!==0){
+
+      for (var j = 0; j < contributions.length; j++){
+        let asset=contributions[j];
+        nroContribution=nroContribution+asset['contributors'].length;
+        }
+
+    }
+  }
+
+    return nroContribution;
+  }
 
   const getAssets = async () => {
     setLoadingAssets(true);
@@ -388,7 +404,8 @@ const RightSide = ({ softwareInterlinkers }) => {
               <Tab
                 value='assets'
                 disabled={!isTask}
-                label={t('Resources') + (isTask ? ` ${loadingAssets ? '(...)' : ''}` : '')}
+                //label={t('Resources') + (isTask ? ` ${loadingAssets ? '(...)' : ''}` : '')}
+                label={t('Resources') + (isTask ? ` (${loadingAssets ? '...' : assetsList.length})` : '')}
               />
               
               {!isLocationCatalogue &&
@@ -398,11 +415,11 @@ const RightSide = ({ softwareInterlinkers }) => {
               label={`${t('Permissions')} (${selectedTreeItem.permissions.length})`}
               />
               )}
-              
+              contributions
               { (!isLocationCatalogue & isTask & isAdministrator & !process.is_part_of_publication) && (
               <Tab
                 value='contributions'
-                label={`${t('Contributions')}`}
+                label={`${t('Contributions')} (${obtenerNroContributions(contributions)})`}
               />
               )}
               
