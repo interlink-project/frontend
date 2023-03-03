@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import ContributionsTable from 'components/dashboard/tree/ContributionsTable';
 import { gamesApi, usersApi } from '__api__';
-import { Alert, Button, Dialog, DialogTitle, DialogContent, FormControl, Select, InputLabel, MenuItem, DialogActions, TextField } from '@mui/material';
+import { Alert, Button, Dialog, DialogTitle, DialogContent, FormControl, Select, InputLabel, MenuItem, DialogActions, TextField, Typography, Grid } from '@mui/material';
 import ConfirmationButton from 'components/ConfirmationButton';
 import UserSearch from '../coproductionprocesses/UserSearch';
 import { Delete, Edit, Save } from '@mui/icons-material';
@@ -19,7 +19,7 @@ const ContributionsTabs = ({ contributions }) => {
     const [errorUser, setErrorUser] = useState(false);
 
     const [taskClosed, setTaskClosed] = useState(false);
-    
+
     const { process, selectedTreeItem } = useSelector((state) => state.process);
     const t = useCustomTranslation(process.language);
 
@@ -110,19 +110,27 @@ const ContributionsTabs = ({ contributions }) => {
     return (
         <>
             {/* Header */}
-            <h3 sx={{
-                display: 'inline-block'
-            }}> Contributions </h3>
+            <Grid container sx={{ p: 2 }}>
+                <Grid item xs={6}>
 
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={handleAddRow}
-                sx={{
-                    display: 'inline-block'
-                }}>
-                Add a row
-            </Button>
+                    <Typography variant="h3" sx={{}}>
+                        Contributions
+                    </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleAddRow}
+                        sx={{
+                            // display: 'inline-block',
+                            float: 'right',
+                        }}>
+                        Add a row
+                    </Button>
+
+                </Grid>
+            </Grid>
             {/* Table */}
             <ContributionsTable
                 rows={rows}
@@ -130,16 +138,15 @@ const ContributionsTabs = ({ contributions }) => {
             />
             {/* Button for closing the task and giving the points */}
             <ConfirmationButton
-
                 Actionator={({ onClick }) => (
                     <Button
                         variant='contained'
                         // disabled={!isAdministrator}
-                        color='error'
+                        color='warning'
                         onClick={onClick}
                         startIcon={<Delete />}
                     >
-                        {t('Remove coproduction process')}
+                        {t('Close the task')}
                     </Button>
                 )}
                 ButtonComponent={({ onClick }) => (
@@ -147,10 +154,10 @@ const ContributionsTabs = ({ contributions }) => {
                         sx={{ mt: 1 }}
                         fullWidth
                         variant='contained'
-                        color='error'
+                        color='warning'
                         onClick={onClick}
                     >
-                        {t('Confirm deletion')}
+                        {t('Confirm closing the task')}
                     </Button>
                 )}
                 onClick={handleCloseTask}
@@ -197,7 +204,7 @@ const ContributionsTabs = ({ contributions }) => {
                     </FormControl>
                     <DialogActions>
                         <Button
-                            disabled={contributor != "" || contribution != null}
+                            disabled={contributor == "" || contribution == null}
                             variant="contained"
                             color="primary"
                             onClick={handleNewContributor}>

@@ -80,7 +80,7 @@ export default function ContributionsTable({ rows, assets }) {
   }, [rows]);
 
   return (
-    <div style={{ height: 300, width: '100%' }}>
+    <>
       <DataGrid
         autoHeight
         disableSelectionOnClick
@@ -91,12 +91,12 @@ export default function ContributionsTable({ rows, assets }) {
         columns={columns}
         experimentalFeatures={{ newEditingApi: true }}
         sx={{
-          boxShadow: 1,
-          border: 1,
-          borderColor: 'primary.light',
-          '& .MuiDataGrid-cell:hover': {
-            color: 'primary.main',
-          },
+          // boxShadow: 1,
+          // border: 1,
+          // borderColor: 'primary.light',
+          // '& .MuiDataGrid-cell:hover': {
+          //   color: 'primary.main',
+          // },
           '& .super-app.low': {
             color: '#f44336',
             fontWeight: '600',
@@ -109,6 +109,7 @@ export default function ContributionsTable({ rows, assets }) {
             color: '#44c949',
             fontWeight: '600',
           },
+          p:2
         }}
       />
       <Dialog
@@ -130,10 +131,10 @@ export default function ContributionsTable({ rows, assets }) {
 
         <DialogContent sx={{ p: 3 }}>
           <CoproNotifications
-          mode={'activity'} />
+            mode={'activity'} />
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }
 

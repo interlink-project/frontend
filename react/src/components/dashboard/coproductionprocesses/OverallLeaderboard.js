@@ -1,31 +1,83 @@
-import { AppBar, Box, Paper, Tab, Tabs, Grid, Card, CardContent, CardActions, Typography, CardMedia, Button, Divider } from '@mui/material';
+import { AppBar, Box, Paper, Tab, Tabs, Grid, Card, CardContent, Container, Typography, CardMedia, Button, Divider } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import UserAvatar from 'components/UserAvatar';
+import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 
 
 
 const OverallLeaderboard = ({ users }) => {
     const [orderedUsers, setOrderedUsers] = useState([]);
-
+    const [rows, setRows] = useState([]);
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 90 },
         {
-            field: 'firstName',
-            headerName: 'First name',
+            field: 'position',
+            width: 90,
+            renderHeader: () => (
+
+                <LeaderboardOutlinedIcon />
+
+            ),
+            sortable: false,
+            disableColumnMenu: true,
+            flex: 0.2
+        },
+        {
+            field: 'collab_name',
+            headerName: 'Collaborator name',
             width: 150,
-            editable: true,
+            sortable: false,
+            disableColumnMenu: true,
+            flex: 2
+        },
+        {
+            field: 'team',
+            headerName: 'Team',
+            sortable: false,
+            disableColumnMenu: true,
+            flex: 2
+        },
+        {
+            field: 'location',
+            headerName: 'Location',
+            sortable: false,
+            disableColumnMenu: true,
+            flex: 1
+        },
+        {
+            field: 'points',
+            headerName: 'Points',
+            sortable: false,
+            disableColumnMenu: true,
+            flex: 0.5
+        },
+    ];
+
+    const handleRows = () => {
+        let tmpRows = [];
+        console.log(users);
+        for (let i = 3; i < users.length; i++) {
+            tmpRows.push({
+                id: users[i].id,
+                position: i,
+                collab_name: users[i].name,
+                team: 'test',
+                location: 'test',
+                points: users[i].development,
+            });
         }
-    ];
-    const rows = [
-        { id: 1, firstName: 'Jon' }
-    ];
+        setRows(tmpRows);
+        console.log(rows);
+    };
 
     useEffect(() => {
         if (users.length > 0) {
             orderUsers();
+            if (users.length > 3) {
+                handleRows();
+            }
         }
     }, [users]);
 
@@ -68,7 +120,7 @@ const OverallLeaderboard = ({ users }) => {
                         />
                         <CardContent sx={{ textAlign: 'center' }}>
                             {users && users.length > 1 ? <UserAvatar
-                                id={users[1].id} /> : <></>}
+                                id={users[1].id} sx={{ margin: 'auto' }} /> : <></>}
 
                             <Typography gutterBottom variant="h5" component="div">
                                 {users && users.length > 1 ? users[1].name : "No users here... "}
@@ -92,7 +144,7 @@ const OverallLeaderboard = ({ users }) => {
                         />
                         <CardContent sx={{ textAlign: 'center' }}>
                             {users && users.length > 0 ? <UserAvatar
-                                id={users[0].id} /> : <></>}
+                                id={users[0].id} sx={{ margin: 'auto' }} /> : <></>}
 
                             <Typography gutterBottom variant="h5" component="div">
                                 {users && users.length > 0 ? users[0].name : "No users here... "}
@@ -117,7 +169,7 @@ const OverallLeaderboard = ({ users }) => {
                         />
                         <CardContent sx={{ textAlign: 'center' }}>
                             {users && users.length > 2 ? <UserAvatar
-                                id={users[2].id} /> : <></>}
+                                id={users[2].id} sx={{ margin: 'auto' }} /> : <></>}
 
                             <Typography gutterBottom variant="h5" component="div">
                                 {users && users.length > 2 ? users[2].name : "No users here... "}
@@ -132,17 +184,17 @@ const OverallLeaderboard = ({ users }) => {
                 </Grid>
             </Grid>
             {users && users.length > 3 ?
-                <Box sx={{ height: 400, width: '100%' }}>
+                <Container sx={{ width: '100%' }}>
                     <DataGrid
+                        autoHeight
                         rows={rows}
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
-                        checkboxSelection
                         disableSelectionOnClick
-                        experimentalFeatures={{ newEditingApi: true }}
                     />
-                </Box>
+                </Container>
+
                 : <></>
             }
         </>
