@@ -171,6 +171,10 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
                   t={t}
                 />
                 {objective.name}
+                {/* <br />
+                {'ID: '+objective.id}
+                <br />
+                {'Pre-req: '+objective.prerequisites_ids} */}
                 {objective.teams && (
                   <>
                   {isLocationCatalogue ?(
@@ -211,6 +215,10 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
                     t={t}
                   />
                   {task.name}
+                {/* <br />
+                {'ID: '+task.id}
+                <br />
+                {'Pre-req: '+task.prerequisites_ids} */}
                   {task.teams && (
 <>
 {isLocationCatalogue ?(
