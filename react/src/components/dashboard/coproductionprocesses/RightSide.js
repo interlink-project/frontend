@@ -1,4 +1,4 @@
-import { Alert, Avatar, Box, Button, Dialog, DialogContent, Grid, IconButton, Menu, MenuItem, Paper, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
+import {  Alert, Avatar, Box, Button, Dialog, DialogContent, Grid, IconButton, Menu, MenuItem, Paper, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
 import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { AssetsTable } from 'components/dashboard/assets';
@@ -15,10 +15,13 @@ import { information_about_translations } from 'utils/someCommonTranslations';
 import * as Yup from 'yup';
 import { assetsApi, permissionsApi, assetsDataApi, coproductionprocessnotificationsApi, tasksApi, gamesApi } from '__api__';
 import NewAssetModal from 'components/dashboard/coproductionprocesses/NewAssetModal';
+import { useLocation } from 'react-router';
+import { getAssetsList_byTask } from 'slices/general';
 import useAuth from 'hooks/useAuth';
 
 const RightSide = ({ softwareInterlinkers }) => {
   const { process, isAdministrator, selectedTreeItem } = useSelector((state) => state.process);
+  const { assetsList } = useSelector((state) => state.general);
   const { user } = useAuth();
   const isTask = selectedTreeItem && selectedTreeItem.type === 'task';
   const [step, setStep] = useState(0);
@@ -39,26 +42,68 @@ const RightSide = ({ softwareInterlinkers }) => {
 
   const [permissions, setPermissions] = useState(null);
 
+  const location=useLocation();
+  const isLocationCatalogue=location.pathname.startsWith('/stories/');
+
   useEffect(() => {
-    setPermissions(null);
-    permissionsApi.for(selectedTreeItem.id).then((res) => {
-      setPermissions(res);
-      if (isTask && mounted.current && res && res.your_permissions && res.your_permissions.access_assets_permission) {
-        getAssets();
-      } else {
-        setAssets([])
+
+    if(isLocationCatalogue){
+      if (isTask && mounted.current){
+        getAssetsCatalogue();
       }
-    });
-    tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
-      if (isTask && mounted.current && res) {
-        setContributions(res.assetsWithContribution);
-      }
-    });
+      
+    }else{
+      setPermissions(null);
+      permissionsApi.for(selectedTreeItem.id).then((res) => {
+        setPermissions(res);
+        if (isTask && mounted.current && res && res.your_permissions && res.your_permissions.access_assets_permission) {
+          getAssets();
+        } else {
+          setAssets([]);
+        }
+      });
+      tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
+        if (isTask && mounted.current && res) {
+          setContributions(res.assetsWithContribution);
+        }
+      });
+    }
+
+
   }, [selectedTreeItem]);
+
+  function obtenerNroContributions(contributions) {
+    let nroContribution=0;
+    if(contributions){
+      if(contributions.length!==0){
+
+      for (var j = 0; j < contributions.length; j++){
+        let asset=contributions[j];
+        nroContribution=nroContribution+asset['contributors'].length;
+        }
+
+    }
+  }
+
+    return nroContribution;
+  }
 
   const getAssets = async () => {
     setLoadingAssets(true);
-    assetsApi.getMulti({ task_id: selectedTreeItem.id }).then((assets) => {
+    // assetsApi.getMulti({ task_id: selectedTreeItem.id }).then((assets) => {
+    //   if (mounted.current) {
+    //     setAssets(assets);
+    //     setLoadingAssets(false);
+    //   }
+    // });
+    dispatch(getAssetsList_byTask(selectedTreeItem.id));
+    setAssets(assetsList);
+    setLoadingAssets(false);
+  };
+
+  const getAssetsCatalogue = async () => {
+    setLoadingAssets(true);
+    assetsApi.getMultiCatalogue({ task_id: selectedTreeItem.id }).then((assets) => {
       if (mounted.current) {
         setAssets(assets);
         setLoadingAssets(false);
@@ -82,14 +127,28 @@ const RightSide = ({ softwareInterlinkers }) => {
     setTabValue(newValue);
   };
 
+
+
   useEffect(() => {
+    if (isTask  &&  tabValue === 'assets'){
+     
+      dispatch(getAssetsList_byTask(selectedTreeItem.id));
+      setLoadingAssets(false);
+    
+    }
     if (!isTask && tabValue === 'assets') {
       setTabValue('data');
+      
     }
     if (!isTask && tabValue === 'contributions') {
       setTabValue('data');
     }
   }, [selectedTreeItem, tabValue]);
+
+
+
+  
+
 
   const can = {
     delete: isAdministrator || (permissions && permissions.your_permissions.delete_assets_permission),
@@ -171,8 +230,20 @@ const RightSide = ({ softwareInterlinkers }) => {
 
   const getAssetsActions = (asset) => {
     const actions = [];
-    if (asset.type === 'internalasset' && asset.capabilities) {
-      const { id, capabilities } = asset;
+
+    let dataExtra = {};
+    dataExtra['capabilities']={
+      "clone": asset['software_response']['clone'],
+      "view": asset['software_response']['view'],
+      "edit": asset['software_response']['edit'],
+      "delete": asset['software_response']['delete'],
+      "download": asset['software_response']['download'],
+    }
+
+    if (asset.type === 'internalasset' && dataExtra.capabilities) {
+      //const { id, capabilities } = asset;
+      const id= asset.id
+      const capabilities=dataExtra.capabilities;
 
       actions.push({
         id: `${id}-open-action`,
@@ -334,21 +405,30 @@ const RightSide = ({ softwareInterlinkers }) => {
               <Tab
                 value='assets'
                 disabled={!isTask}
-                label={t('Resources') + (isTask ? ` (${loadingAssets ? '...' : assets.length})` : '')}
+                //label={t('Resources') + (isTask ? ` ${loadingAssets ? '(...)' : ''}` : '')}
+                label={t('Resources') + (isTask ? ` (${loadingAssets ? '...' : assetsList.length})` : '')}
               />
+              
+              {!isLocationCatalogue &&
+              (
               <Tab
-                value='permissions'
-                label={`${t('Permissions')} (${selectedTreeItem.permissions.length})`}
+              value='permissions'
+              label={`${t('Permissions')} (${selectedTreeItem.permissions.length})`}
               />
-              {isTask & isAdministrator && (
-                <Tab
-                  value='contributions'
-                  label={`${t('Contributions')}`}
-                />
               )}
+              contributions
+              { (!isLocationCatalogue & isTask & isAdministrator & !process.is_part_of_publication) && (
+              <Tab
+                value='contributions'
+                label={`${t('Contributions')} (${obtenerNroContributions(contributions)})`}
+              />
+              )}
+              
+             
             </Tabs>
           </Paper>
 
+    
           {tabValue === 'data' && (
             <TreeItemData
               language={process.language}
@@ -372,19 +452,31 @@ const RightSide = ({ softwareInterlinkers }) => {
             <>
               <Box>
                 <Box sx={{ mt: 2 }}>
+                {isLocationCatalogue ?(
+                  <>
+                <AssetsTable
+                          language={process.language}
+                          loading={loadingAssets}
+                          //assets={assetsList}
+                          getActions={[]}
+                        />
+                
+                </>
+                ):(
+                  <>
                   {permissions && (
                     <>
                       {can.view ? (
                         <AssetsTable
                           language={process.language}
                           loading={loadingAssets}
-                          assets={assets}
                           getActions={getAssetsActions}
                         />
                       ) : <Alert severity='error'>{t('You do not have access to the resources of this task')}</Alert>}
                     </>
                   )}
-                  <Box sx={{ textAlign: 'center', width: '100%' }}>
+
+<Box sx={{ textAlign: 'center', width: '100%' }}>
                     <Stack spacing={2}>
                       <Button
                         id='basic-button'
@@ -412,6 +504,17 @@ const RightSide = ({ softwareInterlinkers }) => {
                       </Button>
                     </Stack>
                   </Box>
+                  </>
+                  
+
+                )}
+
+
+
+                  
+                  
+
+
                 </Box>
 
                 <Dialog
@@ -787,6 +890,7 @@ const RightSide = ({ softwareInterlinkers }) => {
           {tabValue === 'contributions' && (
             <ContributionsTabs
               contributions={contributions}
+              
             // element={selectedTreeItem}
             // your_permissions={permissions && permissions.your_permissions}
             // your_roles={permissions && permissions.your_roles}

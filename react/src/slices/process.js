@@ -153,6 +153,25 @@ export const getProcess = (processId, setLoading = true, selectedTreeItemId = nu
   if (setLoading) { dispatch(slice.actions.setLoading(false)); }
 };
 
+export const getProcessCatalogue = (processId, setLoading = true, selectedTreeItemId = null) => async (dispatch) => {
+  if (setLoading) { dispatch(slice.actions.setLoading(true)); }
+  try {
+    const data = await coproductionProcessesApi.getProcessCatalogue(processId);
+    dispatch(slice.actions.setProcess(data));
+    const treeData = await coproductionProcessesApi.getTreeCatalogue(processId) || [];
+    if(!selectedTreeItemId) {
+      treeData.setFirstPhaseAsSelectedTreeItem = true;
+    }
+    dispatch(slice.actions.setProcessTree(treeData));
+    selectedTreeItemId && dispatch(slice.actions.setSelectedTreeItemById(selectedTreeItemId));
+  } catch (err) {
+    // https://edupala.com/react-router-navigate-outside-component/
+    console.error(err);
+    // window.location.replace("/dashboard");
+  }
+  if (setLoading) { dispatch(slice.actions.setLoading(false)); }
+};
+
 export const setUpdatingTree = (val) => async (dispatch) => {
   dispatch(slice.actions.setUpdatingTree(val));
 };

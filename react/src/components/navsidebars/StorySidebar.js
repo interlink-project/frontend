@@ -1,6 +1,6 @@
-import { Avatar, Box, Button, Chip, Divider, Drawer, Skeleton, Stack, Typography, useMediaQuery, Rating } from '@mui/material';
+import { Grid, Avatar, Box, Button, Chip, Divider, Drawer, Skeleton, Stack, Typography, useMediaQuery, Rating } from '@mui/material';
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { AccountTree, ArrowBack,AssistantDirection, PermMedia, Dashboard, Balcony, Folder, Group as GroupIcon, Settings, Timeline } from '@mui/icons-material';
+import { EmojiObjects,AccountTree, ArrowBack,AssistantDirection, PermMedia, Dashboard, Balcony, Folder, Group as GroupIcon, Settings, Timeline } from '@mui/icons-material';
 import { StatusChip } from 'components/Icons';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import PropTypes from 'prop-types';
@@ -11,6 +11,8 @@ import { useLocation } from 'react-router-dom';
 import { LANGUAGES } from 'translations/i18n';
 import NavSection from '../NavSection';
 import Scrollbar from '../Scrollbar';
+import ConfirmationButton from 'components/ConfirmationButton';
+import { coproductionProcessesApi, storiesApi } from "__api__";
 
 const StorySidebar = (props) => {
   const { onMobileClose, openMobile } = props;
@@ -19,25 +21,12 @@ const StorySidebar = (props) => {
   const location = useLocation();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   //const processId = process && process.id;
- const storyId =  1 ;
 
- 
- const story={
-    id:'1',
-    title:'Families Share @ Work',
-    name:'Families Share @ Work',
-    description:'Story description is that it has a more-or-less normal distribution of letters, as opposed to using  making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-    isLiked:false,
-    likes:0,
-    logotype_link:'/coproduction/static/coproductionprocesses/47c40b06-2147-440b-8f08-fac9e976af38.png',
-    updated_at:'2021-08-23',
-    created_at:'2021-08-23',
-    rating:10,
-    tags:['salud','dinero','amor']
-
-};
-
-
+  const { selectedStory } = useSelector((state) => state.general);
+  let storyId=1;
+  if(selectedStory){
+    storyId=selectedStory.id;
+  }
   const { t } = useDependantTranslation();
 
   useEffect(() => {
@@ -57,21 +46,30 @@ const StorySidebar = (props) => {
           icon: <Balcony />,
           disabled: false
         },
-        {
-          title: t('RoadMap'),
-          path: `/stories/${storyId}/roadmap`,
-          icon: <AssistantDirection />,
-          //disabled: !hasSchema
-        },
+        
         {
           title: t('Resources'),
           path: `/stories/${storyId}/resources`,
           icon: <PermMedia />,
          // disabled: !hasSchema
         },
+        // {
+        //   title: t('RoadMap'),
+        //   path: `/stories/${storyId}/roadmap`,
+        //   icon: <AssistantDirection />,
+        //   //disabled: !hasSchema
+        // },
       ]
     },
   ];
+
+  const onClone = () => {
+    coproductionProcessesApi
+      .copy(selectedStory.coproductionprocess_cloneforpub_id, "Clone of_ ","story")
+      .then(() => navigate("/dashboard"));
+    
+  };
+
   const content = (
     <Box
       sx={{
@@ -90,7 +88,7 @@ const StorySidebar = (props) => {
           onClick={() => navigate('/dashboard')}
         />
         )}
-
+        {selectedStory && (
         <Stack
           direction='column'
           justifyContent='center'
@@ -104,10 +102,10 @@ const StorySidebar = (props) => {
             <Avatar
               variant='rounded'
               sx={{ width: '80px', height: '80px' }}
-              src={story && story.logotype_link}
+              src={selectedStory.data_story.logo}
             >
-              {(!story || !story.logotype_link) && <Folder />}
-              {' '}
+{/*               {(!selectedStory || !selectedStory.logo) && <Folder />}
+              {' '} */}
             </Avatar>
          {/*  ) : ( */}
             {/* <Skeleton
@@ -119,15 +117,57 @@ const StorySidebar = (props) => {
             sx={{ textAlign: 'center', width: '100%' }}
             variant='h6'
           >
-            {story.name}
+            {selectedStory.data_story.title}
            {/*  {!loading && !updating && process ? process.name : <Skeleton />} */}
           </Typography>
 
           <Rating
             readOnly
             size='small'
-            value={story.rating || 0}
+            value={selectedStory.rating || 0}
           />
+
+          
+
+
+        </Stack>
+        )}
+
+            <Divider/>
+            
+          <Typography
+            sx={{ textAlign: 'center', width: '100%',mt:3,mb:3 }}
+            variant='h6'
+          >
+            Topics
+           {/*  {!loading && !updating && process ? process.name : <Skeleton />} */}
+          </Typography>
+           
+           {selectedStory?(<>
+            {selectedStory.data_story.keywords != "" && (
+                <Grid item xs={6} md={6} lg={3} xl={3} sx={{ m: 3 }}>
+                  <Typography
+                    color="textPrimary"
+                    variant="subtitle2"
+                    align="center"
+                  >
+                    {selectedStory.data_story.keywords &&
+                      selectedStory.data_story.keywords
+                        .split(",")
+                        .map((el) => (
+                          <Chip
+                            label={el}
+                            key={el}
+                            size="small"
+                            variant="outlined"
+                            sx={{ mr: 1 }}
+                          />
+                        ))}
+                  </Typography>
+                </Grid>
+              )}
+           </>):(<></>)}
+           
          {/*  {!loading && !updating && process ? (
             <StatusChip
               t={t}
@@ -142,10 +182,14 @@ const StorySidebar = (props) => {
             />
           ) : <Skeleton sx={{ width: 80, height: 45, m: 0, p: 0 }} />} */}
 
-        </Stack>
+
+
+
+
         <Divider />
         <Box sx={{ p: 2 }}>
            { sections.map((section) => (
+            <>
             <NavSection
               key={section.title}
               pathname={location.pathname}
@@ -157,6 +201,40 @@ const StorySidebar = (props) => {
               }}
               {...section}
             />
+            <Divider/>
+
+            <Box sx={{ textAlign: 'center', width: '100%',mt:3,mb:3 }}>
+
+            <ConfirmationButton
+                Actionator={({ onClick }) => (
+                  <Button
+                    variant="contained"
+                    //disabled={!isAdministrator}
+                    color="error"
+                    onClick={onClick}
+                    startIcon={<EmojiObjects />}
+                  >
+                    {t("Clone the Process")}
+                  </Button>
+                )}
+                ButtonComponent={({ onClick }) => (
+                  <Button
+                    sx={{ mt: 1 }}
+                    fullWidth
+                    variant="contained"
+                    color="error"
+                    onClick={onClick}
+                  >
+                    {t("Yes")}
+                  </Button>
+                )}
+                //onClick={onRemove}
+                onClick={onClone}
+                text={t("Are you sure?")}
+              />
+              </Box>
+
+            </>
           ))} 
         </Box>
       </Scrollbar>

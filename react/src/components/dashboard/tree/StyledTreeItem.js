@@ -7,8 +7,12 @@ import {
 import { styled } from '@mui/styles';
 import clsx from 'clsx';
 import { forwardRef } from 'react';
+import { ArrowRight } from '@mui/icons-material';
+import { useLocation } from 'react-router';
 
 const CustomContent = forwardRef((props, ref) => {
+  const location=useLocation();
+  const isLocationCatalogue=location.pathname.startsWith('/stories/');
   const {
     classes,
     className,

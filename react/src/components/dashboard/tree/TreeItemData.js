@@ -21,7 +21,7 @@ import { tree_items_translations } from 'utils/someCommonTranslations';
 import { objectivesApi, phasesApi, tasksApi } from '__api__';
 import { AwaitingIcon, statusIcon, StatusText } from '../../Icons';
 import { coproductionprocessnotificationsApi } from '__api__';
-
+import { assetsApi } from "__api__";
 
 const apis = {
   task: tasksApi,
@@ -38,7 +38,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   //const [management, setManagement] = useState('');
   const [development, setDevelopment] = useState('');
   //const [exploitation, setExploitation] = useState('');
-  const [taskDataContributions, setTaskDataContributions] = useState(null);
+ // const [taskDataContributions, setTaskDataContributions] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const { process, updatingTree, treeitems, selectedTreeItem, isAdministrator } = useSelector((state) => state.process);
   const isTask = selectedTreeItem && selectedTreeItem.type === 'task';
@@ -47,6 +47,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   const dispatch = useDispatch();
   const t = useCustomTranslation(language);
   const { trackEvent } = useMatomo();
+
 
 
 
@@ -68,11 +69,11 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   useEffect(() => {
     setEditMode(false);
     restart(element);
-    if (element.type === 'task') {
-      tasksApi.getAssetsAndContributions(selectedTreeItem.id).then(datos => {
-        setTaskDataContributions(datos);
-      })
-    }
+    // if (element.type === 'task') {
+    //   tasksApi.getAssetsAndContributions(selectedTreeItem.id).then(datos => {
+    //     setTaskDataContributions(datos);
+    //   })
+    // }
   }, [element]);
 
   const saveData = () => {
@@ -152,7 +153,57 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   // console.log(assets);
 
   let listAssets = [];
+
+
   const includeObjectNames = (text) => {
+    //Search and reemplace que assetName and icon
+    const paramsPattern = /[^{}]+(?=})/g;
+    let extractParams = text.match(paramsPattern);
+    //Loop over each parameter value and replace in the text
+    if (extractParams) {
+      extractParams = [...new Set(extractParams)];
+      for (let i = 0; i < extractParams.length; i++) {
+        if (extractParams[i].includes(":")) {
+          // console.log('----->'+extractParams[i]);
+          const entidadName = extractParams[i].split(":")[0];
+          const entidadId = extractParams[i].split(":")[1];
+
+          if (entidadName == "assetid") {
+            //Obtain the asset name:
+
+            if (!listAssets.includes(entidadId)) {
+              listAssets.push(entidadId);
+              //alert('retrive the data');
+              assetsApi.getInternal(entidadId).then((res) => {
+                const assetdata = res;
+                const assetName = assetdata.name.replace(
+                  /(^\w{1})|(\s+\w{1})/g,
+                  (letter) => letter.toUpperCase()
+                );
+                const nodes = document.getElementsByClassName(
+                  "lk_" + entidadId
+                );
+
+                for (let i = 0; i < nodes.length; i++) {
+                  nodes[i].innerHTML = assetName;
+                }
+
+                const nodes2 = document.getElementsByClassName(
+                  "im_" + entidadId
+                );
+                for (let i = 0; i < nodes.length; i++) {
+                  nodes2[i].src = assetdata.icon;
+                }
+              });
+            }
+          }
+        }
+      }
+    }
+
+    return text;
+  };
+  /* const includeObjectNames = (text) => {
 
     //Search and reemplace que assetName and icon
     const paramsPattern = /[^{}]+(?=})/g;
@@ -224,7 +275,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     }
 
     return text;
-  };
+  }; */
 
 
   if (isTask) {
@@ -455,7 +506,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
 
       <>
 
-        <ul>
+{/*         <ul>
           {taskDataContributions && taskDataContributions['assetsWithContribution']?.map((asset) => {
             const hasContribution = asset.contributors.length;
             if (!hasContribution) {
@@ -524,7 +575,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
 
             );
           })}
-        </ul>
+        </ul> */}
       </>
 
 
@@ -543,7 +594,9 @@ const TreeItemData = ({ language, processId, element, assets }) => {
         </>
       )}
 
-      <Typography
+      {!process.is_part_of_publication && (
+        <>
+        <Typography
         variant='h6'
         sx={{ mt: 2 }}
       >
@@ -684,6 +737,11 @@ const TreeItemData = ({ language, processId, element, assets }) => {
           ) : <Alert severity='warning'>{t('Not set')}</Alert>}
         </Box>
       )}
+        
+        </>
+
+      )}
+      
 
       {editMode
         && (

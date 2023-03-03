@@ -11,7 +11,7 @@ class TasksApi extends GeneralApi {
     if (id) {
       //Get notification by coproductionprocessnotification id
       const res = await axiosInstance.get(`/${this.url}/${id}/listTaskAssetsContributions`);
-      console.log('get notifications data', res.data);
+      console.log('get notifications with contributions data', res.data);
       return res.data;
     }
   }

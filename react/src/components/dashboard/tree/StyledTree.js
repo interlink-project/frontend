@@ -1,11 +1,13 @@
 import { Avatar, AvatarGroup, Box, SvgIcon } from '@mui/material';
-import { People } from '@mui/icons-material';
+import { People,ArrowForwardIos,Circle,LastPage,PlayArrow } from '@mui/icons-material';
 import { TreeView } from '@mui/lab';
 import { statusIcon, TreeItemTypeChip } from 'components/Icons';
 import { StyledTreeItem } from 'components/dashboard/tree';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import { useEffect, useState } from 'react';
 import { getAllChildren } from 'slices/process';
+import { useLocation } from 'react-router';
+import { useSelector } from 'react-redux';
 
 const Avat = ({ team }) => (
   <Avatar
@@ -72,8 +74,15 @@ function CloseSquare(props) {
 }
 
 const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, showIcon = false }) => {
+  const { process } = useSelector((state) => state.process);
   const [all, setAll] = useState([]);
   const [expanded, setExpanded] = useState([]);
+
+  const location=useLocation();
+  const isLocationCatalogue=location.pathname.startsWith('/stories/');
+  if(isLocationCatalogue || process.is_part_of_publication){
+    showIcon=false;
+  }
 
   useEffect(() => {
     const allItems = getAllChildren([parent]);
@@ -96,7 +105,7 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
       expanded={expanded}
       defaultCollapseIcon={<MinusSquare />}
       defaultExpandIcon={<PlusSquare />}
-      defaultEndIcon={<CloseSquare />}
+      defaultEndIcon={<PlayArrow />}
       selected={selectedTreeItem ? selectedTreeItem.id : parent ? parent.id : null}
       sx={{ flexGrow: 1, overflowY: 'auto', width: '100%', height: '100%' }}
       onNodeSelect={(event, nodeIds, moreinfo) => {
@@ -121,6 +130,13 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
             />
             {parent.name}
             {parent.teams && (
+            
+            <>
+{isLocationCatalogue ?(
+  <></>
+
+  ):(  
+            
             <AvatarGroup
               spacing='medium'
               sx={{ mt: 1, justifyContent: 'left' }}
@@ -134,6 +150,7 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
                 />
               ))}
             </AvatarGroup>
+  )}</>
             )}
           </Box>
       )}
@@ -155,19 +172,28 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
                 />
                 {objective.name}
                 {objective.teams && (
-                <AvatarGroup
-                  spacing='medium'
-                  sx={{ mt: 1, justifyContent: 'left' }}
-                  variant='rounded'
-                  max={5}
-                >
-                  {arrayUnique(objective.teams.concat(parent.teams)).map((team) => (
-                    <Avat
-                      key={`${objective.id}-${team.id}`}
-                      team={team}
-                    />
-                  ))}
-                </AvatarGroup>
+                  <>
+                  {isLocationCatalogue ?(
+                    <></>
+
+                    ):(
+                      <AvatarGroup
+                      spacing='medium'
+                      sx={{ mt: 1, justifyContent: 'left' }}
+                      variant='rounded'
+                      max={5}
+                    >
+                      {arrayUnique(objective.teams.concat(parent.teams)).map((team) => (
+                        <Avat
+                          key={`${objective.id}-${team.id}`}
+                          team={team}
+                        />
+                      ))}
+                    </AvatarGroup>
+                    )}
+                </>
+
+
                 )}
               </Box>
           )}
@@ -186,6 +212,11 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
                   />
                   {task.name}
                   {task.teams && (
+<>
+{isLocationCatalogue ?(
+  <></>
+
+  ):(  
                   <AvatarGroup
                     spacing='medium'
                     sx={{ mt: 1, justifyContent: 'left' }}
@@ -199,6 +230,9 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
                       />
                     ))}
                   </AvatarGroup>
+
+  )}
+  </>
                   )}
                 </Box>
               )}

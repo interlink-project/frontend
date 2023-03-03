@@ -3,12 +3,12 @@ import { Search } from '@mui/icons-material';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import React, { useEffect, useState } from 'react';
-import { problemprofilesApi } from '__api__';
+//import { problemprofilesApi } from '__api__';
 import MultiSelect from '../../../MultiSelect';
 
 const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
   const [inputValue, setInputValue] = useState(filters.search);
-  const [loadingProblemProfiles, setLoadingProblemProfiles] = useState(true);
+  //const [loadingProblemProfiles, setLoadingProblemProfiles] = useState(true);
   const mounted = useMounted();
   const t = useCustomTranslation(language);
   const [problemProfiles, setProblemProfiles] = useState([]);
@@ -31,27 +31,31 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
 //     }))
 //   };
 
-//   const natureMultiselect = {
-//     label: t('Nature'),
-//     options: [
-//       {
-//         label: t('Internal software'),
-//         value: 'softwareinterlinker'
-//       },
-//       {
-//         label: t('External software'),
-//         value: 'externalsoftwareinterlinker'
-//       },
-//       {
-//         label: t('Internal knowledge'),
-//         value: 'knowledgeinterlinker'
-//       },
-//       {
-//         label: t('External knowledge'),
-//         value: 'externalknowledgeinterlinker'
-//       }
-//     ]
-//   };
+  const keywordMultiselect = {
+    label: t('Topic'),
+    options: [
+      {
+        label: t('Childcare'),
+        value: 'childcare'
+      },
+      {
+        label: t('Work-Life Balance'),
+        value: 'work-life'
+      },
+      {
+        label: t('Children'),
+        value: 'children'
+      },
+      {
+        label: t('Mobility'),
+        value: 'mobility'
+      },
+      {
+        label: t('School'),
+        value: 'school'
+      }
+    ]
+  };
 
   const changeFilter = (key, value) => {
     console.log('CHANGED', key, value);
@@ -111,31 +115,31 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
             flexWrap: 'wrap',
             p: 1
           }}
-        > Filter 1
-          {/* <MultiSelect
-            label={natureMultiselect.label}
-            onChange={(e) => changeFilter('nature', e)}
-            options={natureMultiselect.options}
-            value={filters.nature}
-          /> */}
-          <Divider
+        > 
+        
+          <MultiSelect
+            label={keywordMultiselect.label}
+            onChange={(e) => changeFilter('keyword', e)}
+            options={keywordMultiselect.options}
+            value={filters.keyword}
+          />  
+          {/* <Divider
             orientation='vertical'
             flexItem
             sx={{ mx: 2 }}
-          />
-          Filter 2
+          />  */}
+           
           {/* <MultiSelect
             label={problemprofilesMultiselect.label}
             onChange={(e) => changeFilter('problemprofiles', e)}
             options={problemprofilesMultiselect.options}
             value={filters.problemprofiles}
-          /> */}
+          />  */}
           <Divider
             orientation='vertical'
             flexItem
             sx={{ mx: 2 }}
-          />
-
+          />  
           <Typography
             variant='body2'
             sx={{ mx: 1 }}
@@ -175,14 +179,15 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
           onDelete={() => changeFilter('search', '')}
         />
         )}
-        {/* {filters.nature.map((nature) => (
+        {filters.keyword.map((keyword) => (
           <Chip
-            key={`active-filter-${nature}`}
+            key={`active-filter-${keyword}`}
             sx={{ mr: 1, mt: 1 }}
-            label={`${t('Nature')}: ${natureMultiselect.options.find((option) => option.value === nature).label}`}
-            onDelete={() => changeFilter('nature', filters.nature.filter((nt) => nt !== nature))}
+            label={`${t('Topic')}: ${keywordMultiselect.options.find((option) => option.value === keyword).label}`}
+            onDelete={() => changeFilter('keyword', filters.keyword.filter((nt) => nt !== keyword))}
           />
-        ))}
+        ))}  
+        {/*
         {filters.problemprofiles && filters.problemprofiles.map((pp) => (
           <Chip
             key={`active-filter-${pp}`}

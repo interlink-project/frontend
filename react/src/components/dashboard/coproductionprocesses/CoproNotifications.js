@@ -43,9 +43,8 @@ import ArticleIcon from "@mui/icons-material/Article";
 import { assetsApi } from "__api__";
 import { useEffect } from "react";
 import useMounted from "hooks/useMounted";
-import { useDispatch} from 'react-redux';
+import { useDispatch } from "react-redux";
 //import {  getCoproductionProcessNotifications } from "slices/general";
-
 
 const iconsMap = {
   group: GroupsIcon,
@@ -62,16 +61,16 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   root: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   button: {
     margin: theme.spacing(2),
   },
   placeholder: {
     height: 40,
-  }
+  },
 }));
 
 export default function CoproNotifications({ mode = "notification" }) {
@@ -92,8 +91,7 @@ export default function CoproNotifications({ mode = "notification" }) {
     setOpen(false);
   };
 
-  
-  const notificationsList = useSelector((state) =>{
+  const notificationsList = useSelector((state) => {
     if (mode === "notification") {
       return state.general.coproductionprocessnotifications;
     } else if (mode === "activity") {
@@ -101,11 +99,12 @@ export default function CoproNotifications({ mode = "notification" }) {
     }
   });
 
-  let listAssets = [];
+  const { assetsList } = useSelector((state) => state.general);
+
 
   //This function will obtain and reeplace all paremeters
   // and replace in the text.
-  const includeParametersValues = (text, parameters,process_id) => {
+  const includeParametersValues = (text, parameters, process_id) => {
     if (parameters) {
       //Obtain all parameters of the text
       const paramsPattern = /[^{}]+(?=})/g;
@@ -124,20 +123,17 @@ export default function CoproNotifications({ mode = "notification" }) {
       }
     }
 
-    
     return text;
   };
 
-
   const includeObjectNames = (text) => {
-    
     //Search and reemplace que assetName and icon
     const paramsPattern = /[^{}]+(?=})/g;
     let extractParams = text.match(paramsPattern);
     //Loop over each parameter value and replace in the text
     if (extractParams) {
-      
-      for (let i = 0; i < extractParams.length; i++) {       
+      extractParams = [...new Set(extractParams)];
+      for (let i = 0; i < extractParams.length; i++) {
         if (extractParams[i].includes(":")) {
           // console.log('----->'+extractParams[i]);
           const entidadName = extractParams[i].split(":")[0];
@@ -145,63 +141,69 @@ export default function CoproNotifications({ mode = "notification" }) {
 
           if (entidadName == "assetid") {
             //Obtain the asset name:
-            const xhr = new XMLHttpRequest();
 
-            if (!listAssets.includes(entidadId)) {
-              listAssets.push(entidadId);
-              xhr.open(
-                "GET",
-                `/coproduction/api/v1/assets/internal/${entidadId}`,
-                true
-              ); // `false` makes the request synchronous
-              xhr.onload = (e) => {
-                
-                if (xhr.readyState === 4) {
-                  if (xhr.status === 200) {
-                    const assetdata = JSON.parse(xhr.responseText);
-                    const assetName = assetdata.name.replace(
-                      /(^\w{1})|(\s+\w{1})/g,
-                      (letter) => letter.toUpperCase()
-                    );
-                    const nodes = document.getElementsByClassName(
-                      "lk_" + entidadId
-                    );
+            //Busco si existe el asset en el listado temporal:
+            for (let i = 0; i < assetsList.length; i++) {
+              if(assetsList[i].id==entidadId){
+                const assetName=assetsList[i]['internalData']['name'];
+                const assetIcon=assetsList[i]['internalData']['icon'];
 
-                    for (let i = 0; i < nodes.length; i++) {
-                      nodes[i].innerHTML = assetName;
-                    }
+                const nodes = document.getElementsByClassName(
+                  "lk_" + entidadId
+                );
 
-                    const nodes2 = document.getElementsByClassName(
-                      "im_" + entidadId
-                    );
-                    for (let i = 0; i < nodes.length; i++) {
-                      nodes2[i].src = assetdata.icon;
-                    }
-            
-                  } else {
-                    console.error(xhr.statusText);
-                  }
-                  
-                }             
-              };
-              xhr.onerror = (e) => {
-                console.error(xhr.statusText);
-              };
-              xhr.send(null);
+                for (let i = 0; i < nodes.length; i++) {
+                  nodes[i].innerHTML = assetName;
+                }
+
+                const nodes2 = document.getElementsByClassName(
+                  "im_" + entidadId
+                );
+                for (let i = 0; i < nodes.length; i++) {
+                  nodes2[i].src = assetIcon;
+                }
+                break;
+              }
             }
+
+
+            /* if (!assetsList.includes(entidadId)) {
+              //listAssets.push(entidadId);
+              //alert('retrive the data');
+              assetsApi.getInternal(entidadId).then((res) => {
+                const assetdata = res;
+                const assetName = assetdata.name.replace(
+                  /(^\w{1})|(\s+\w{1})/g,
+                  (letter) => letter.toUpperCase()
+                );
+                const nodes = document.getElementsByClassName(
+                  "lk_" + entidadId
+                );
+
+                for (let i = 0; i < nodes.length; i++) {
+                  nodes[i].innerHTML = assetName;
+                }
+
+                const nodes2 = document.getElementsByClassName(
+                  "im_" + entidadId
+                );
+                for (let i = 0; i < nodes.length; i++) {
+                  nodes2[i].src = assetdata.icon;
+                }
+              });
+            } */
           }
         }
       }
-      
-    } 
-    
+    }
+
     return text;
   };
 
   const compareDates = (d1, d2) => {
     let date1 = new Date(d1).getTime();
     let date2 = new Date(d2).getTime();
-  
+
     if (date1 < date2) {
       return false;
     } else if (date1 > date2) {
@@ -211,20 +213,16 @@ export default function CoproNotifications({ mode = "notification" }) {
     }
   };
 
-
-
   return (
     <Timeline position="alternate">
-      
       <>
         {notificationsList.map((copronotification) => {
           //Verify if the icon is defined:
           const Icon = copronotification.notification.icon
             ? iconsMap[copronotification.notification.icon]
             : iconsMap["defaulticon"];
-    
+
           return (
-            
             <TimelineItem
               key={"tln_" + copronotification.id}
               id={"tln_" + copronotification.id}
@@ -239,13 +237,22 @@ export default function CoproNotifications({ mode = "notification" }) {
                       )
                     ),
                   })}
-                  
                 </Typography>
-                
               </TimelineOppositeContent>
               <TimelineSeparator key={"tls_" + copronotification.id}>
-                <TimelineDot color={compareDates(copronotification.created_at,user.last_login)?"secondary":"primary"}  variant={compareDates(copronotification.created_at,user.last_login)?"filled":"outlined"}>
-                  <Icon /> 
+                <TimelineDot
+                  color={
+                    compareDates(copronotification.created_at, user.last_login)
+                      ? "secondary"
+                      : "primary"
+                  }
+                  variant={
+                    compareDates(copronotification.created_at, user.last_login)
+                      ? "filled"
+                      : "outlined"
+                  }
+                >
+                  <Icon />
                 </TimelineDot>
                 <TimelineConnector />
               </TimelineSeparator>
@@ -257,18 +264,22 @@ export default function CoproNotifications({ mode = "notification" }) {
                     copronotification.id
                   )}
                 </Typography>
-                
+
                 <Typography>
-                  <span key={"cont_" + copronotification.id} id={"text_" + copronotification.id} class="textNotification"
+                  <span
+                    key={"cont_" + copronotification.id}
+                    id={"text_" + copronotification.id}
+                    class="textNotification"
                     dangerouslySetInnerHTML={{
-                      __html: includeObjectNames(includeParametersValues(
-                        copronotification.notification.text,
-                        copronotification.parameters,
-                        copronotification.id
-                      )),
+                      __html: includeObjectNames(
+                        includeParametersValues(
+                          copronotification.notification.text,
+                          copronotification.parameters,
+                          copronotification.id
+                        )
+                      ),
                     }}
-                    
-                  /> 
+                  />
                 </Typography>
               </TimelineContent>
             </TimelineItem>

@@ -1,9 +1,47 @@
 import axiosInstance from 'axiosInstance';
 import GeneralApi from '../general';
+import { getLanguage } from 'translations/i18n';
+
+function removeEmpty(obj) {
+  return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null));
+}
 
 class AssetsApi extends GeneralApi {
   constructor() {
     super('coproduction/api/v1/assets');
+  }
+
+  
+
+  async getListAssetswithInternalInfo(params = {}, language = getLanguage()) {
+    //console.log(`/${this.url}/listAssetswithInternalInfo`+params);
+    //Get data of user_notifications
+    const res = await axiosInstance.get(
+      `/${this.url}/listAssetswithInternalInfo`, {
+        params: removeEmpty(params),
+        headers: {
+          'Accept-Language': language
+        }
+      }
+    );
+    //console.log('getMulti call', res.data, 'in', language);
+    return res.data;
+  }
+
+
+  async getMultiCatalogue(params = {}, language = getLanguage()) {
+    console.log(`/${this.url}/catalogue`+params);
+    //Get data of user_notifications
+    const res = await axiosInstance.get(
+      `/${this.url}/catalogue`, {
+        params: removeEmpty(params),
+        headers: {
+          'Accept-Language': language
+        }
+      }
+    );
+    //console.log('getMulti call', res.data, 'in', language);
+    return res.data;
   }
 
   async create_internal(task_id, softwareinterlinker_id, external_asset_id) {
@@ -48,6 +86,14 @@ class AssetsApi extends GeneralApi {
   async getInternal(id) {
     if (id) {
       const res = await axiosInstance.get(`/${this.url}/internal/${id}`);
+      console.log('get internal call', res.data);
+      return res.data;
+    }
+  }
+
+  async getInternalCatalogue(id) {
+    if (id) {
+      const res = await axiosInstance.get(`/${this.url}/internal/${id}/catalogue`);
       console.log('get internal call', res.data);
       return res.data;
     }

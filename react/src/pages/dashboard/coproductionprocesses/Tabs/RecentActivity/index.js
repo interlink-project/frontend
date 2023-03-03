@@ -31,7 +31,7 @@ const RecentActivityTab = ({ coproductionprocess, setSelectedTreeItem }) => {
       <AssetsTable
         loading={loadingAssets}
         language={process.language}
-        assets={assets}
+  
         actions={(asset) => (
           <Button
             variant='outlined'

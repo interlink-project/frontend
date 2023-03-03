@@ -11,7 +11,7 @@ import { setSelectedTreeItemById } from 'slices/process';
 import { coproductionProcessesApi } from '__api__';
 import TimeLine from 'components/dashboard/coproductionprocesses/TimeLine';
 import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
-import {  getCoproductionProcessNotifications } from 'slices/general';
+import {  getAssetsList_byCopro, getCoproductionProcessNotifications } from 'slices/general';
 import useAuth from 'hooks/useAuth';
 import { cleanProcess } from 'slices/process';
 import { defaultReduceAnimations } from '@mui/lab/CalendarPicker/CalendarPicker';
@@ -19,9 +19,10 @@ import { defaultReduceAnimations } from '@mui/lab/CalendarPicker/CalendarPicker'
 export default function Overview({ }) {
   const { process, isAdministrator, tree } = useSelector((state) => state.process);
   const t = useCustomTranslation(process.language);
-  const [tab, setTab] = useState(isAdministrator ? 'progress' : 'assets');
+  const [tab, setTab] = useState(isAdministrator & !process.is_part_of_publication ? 'progress' : 'assets');
   const [loading, setLoading] = React.useState(true);
-  const [assets, setAssets] = React.useState([]);
+  //const [assets, setAssets] = React.useState([]);
+  const { assetsList } = useSelector((state) => state.general);
   const mounted = useMounted();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,12 +33,17 @@ export default function Overview({ }) {
 
   React.useEffect(() => {
     setLoading(true);
-    coproductionProcessesApi.getAssets(process.id).then((res) => {
-      if (mounted.current) {
-        setAssets(res);
-        setLoading(false);
-      }
-    });
+    
+    
+    // coproductionProcessesApi.getAssets(process.id).then((res) => {
+    //   if (mounted.current) {
+    //     setAssets(res);
+    //     setLoading(false);
+    //   }
+    // });
+    dispatch(getAssetsList_byCopro(process.id));
+    setLoading(false);
+
   }, [process]);
 
   React.useEffect(() => {
@@ -47,6 +53,10 @@ export default function Overview({ }) {
 
     }
   }, [tab]);
+
+  const notificationsList = useSelector((state) => {
+      return state.general.coproductionprocessnotifications;
+  });
 
   const getAssetsActions = (asset) => {
     const actions = [];
@@ -94,25 +104,26 @@ export default function Overview({ }) {
             aria-label="overview-tabs"
             centered
           >
-            { isAdministrator &&(
+            { isAdministrator & !process.is_part_of_publication &&(
             <Tab value="progress" label={t("Progress")} />
             )}
             <Tab
               value="assets"
-              label={`${t("Resources")} (${loading ? "..." : assets.length})`}
+              label={`${t("Resources")} (${ assetsList.length})`}
             />
-            <Tab value="notifications" label={t("Notifications")} />
+            { !process.is_part_of_publication &&(
+            <Tab value="notifications" label={`${t("Notifications")} (${ notificationsList.length}) `} />
+            )}
           </Tabs>
         </Paper>
       )}
-      {tab === "progress" ? <TimeLine assets={assets} /> : <></>}
+      {tab === "progress" ? <TimeLine assets={assetsList} /> : <></>}
 
       {tab === "assets" ? (
         <Box sx={{ p: 3, justifyContent: "center" }}>
           <AssetsTable
             language={process.language}
             loading={loading}
-            assets={assets}
             getActions={getAssetsActions}
           />
         </Box>

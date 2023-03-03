@@ -7,19 +7,20 @@ import ConfirmationButton from 'components/ConfirmationButton';
 import UserSearch from '../coproductionprocesses/UserSearch';
 import { Delete, Edit, Save } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
+import { useCustomTranslation } from 'hooks/useDependantTranslation';
 
 const ContributionsTabs = ({ contributions }) => {
     const [rows, setRows] = useState([]);
     const [addRowDialogOpen, setAddRowDialogOpen] = useState(false);
-
+    
     // Data for new contributions 
     const [contributor, setContributor] = useState(null);
     const [contribution, setContribution] = useState(null);
-
+    
     const [errorUser, setErrorUser] = useState(false);
-
+    
     const [taskClosed, setTaskClosed] = useState(false);
-
+    
     const { process, selectedTreeItem } = useSelector((state) => state.process);
     const t = useCustomTranslation(process.language);
 
@@ -97,7 +98,8 @@ const ContributionsTabs = ({ contributions }) => {
             }
         }
 
-        for (let id in contribs) {
+        setRows([]);
+        for (let id in contribs) {        
             usersApi.get(id).then((res) => {
                 setRows(rows => [...rows, { id: id, name: res.full_name, contribution: "Average" }]);
             }).catch((err) => {

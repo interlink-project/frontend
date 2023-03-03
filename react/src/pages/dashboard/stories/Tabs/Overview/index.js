@@ -1,173 +1,501 @@
-import { AppBar, Box, Divider, Paper, Tab, Tabs, Typography } from '@mui/material';
-import { AccountTree, OpenInNew } from '@mui/icons-material';
+import {
+  Avatar,
+  IconButton,
+  Grid,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
+  Chip,
+  Button,
+  AppBar,
+  Box,
+  Divider,
+  Paper,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
+import {
+  AccountTree,
+  OpenInNew,
+  MoreVert,
+  YouTube,
+  ArrowForward,
+} from "@mui/icons-material";
 // import { ReviewsTable } from 'components/dashboard/reviews';
-import { useCustomTranslation } from 'hooks/useDependantTranslation';
-import useMounted from 'hooks/useMounted';
-import * as React from 'react';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useCustomTranslation } from "hooks/useDependantTranslation";
+import useMounted from "hooks/useMounted";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router";
+
 // import { setSelectedTreeItemById } from 'slices/process';
 // import { coproductionProcessesApi } from '__api__';
-import TimeLine from 'components/dashboard/coproductionprocesses/TimeLine';
+import TimeLine from "components/dashboard/coproductionprocesses/TimeLine";
 //import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
-import {  getCoproductionProcessNotifications } from 'slices/general';
-import useAuth from 'hooks/useAuth';
+import {
+  getCoproductionProcessNotifications,
+  getSelectedStory,
+} from "slices/general";
+import useAuth from "hooks/useAuth";
 // import { cleanProcess } from 'slices/process';
-import { defaultReduceAnimations } from '@mui/lab/CalendarPicker/CalendarPicker';
-import StoryReviews from 'components/dashboard/stories/profile/StoryReviews';
+import { defaultReduceAnimations } from "@mui/lab/CalendarPicker/CalendarPicker";
+import StoryReviews from "components/dashboard/stories/profile/StoryReviews";
+import { storiesApi } from "__api__";
 
-export default function OverviewStory({ }) {
-//   const { process, isAdministrator, tree } = useSelector((state) => state.process);
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/styles";
+import { getProcessCatalogue } from "slices/process";
 
-const story={
-    id:'1',
-    title:'Families Share @ Work',
-    name:'Families Share @ Work',
-    short_description:'Co-creation of childcare services within companies by exploiting the time-shift model experimented in the Families Share approach',
-    description:`Families Share @ Work  offers a bottom-up solution to work/life balance by supporting families with childcare, parenting advice and after-school activities. 
-    It has been co-produced within the EU funded project Families Share and already tested  in 3 European Cities. 
-    Families Share represents an innovative solution for work-life balance, and can constitute a valuable integration to the existing local public childcare offers, during holiday periods in particular but even beyond. Co-playing weeks or activities can be either set up as new services or integrate existing ones.
-    In addition, it lays the basis for establishing good neighbourhood relationships from which to start for a wide range of other possible initiatives based on mutual help and solidarity.
-    Last but not least, if under-utilized or unused public spaces are made available for the activities, Families Share can serve regeneration of urban common goods purposes too.
-    
-    The Families Share approach has already been tested and validated in several pilot case studies, in different European countries where different models have been explored. In the Italian Cities of Venice and Bologna and in the Dutch City of Kortrijk, Families Share has been exploited to integrate the existing local public childcare offers (during holiday periods for instance) thanks to  neighborhood relationships based on mutual help and solidarity.
-    Different legal and ethical regulations, as well as local financial support, might apply locally when the initiative is replicated in specific contexts.`,
-    isLiked:false,
-    likes:0,
-    logotype_link:'/static/coproductionprocesses/47c40b06-2147-440b-8f08-fac9e976af38.png',
-    updated_at:'2021-08-23',
-    created_at:'2021-08-23',
-    rating:10,
-    language:'en',
-    tags:['salud','dinero','amor']
+function TwoColumnsText(props) {
+  const { text, mobileDevice, largeDevice, xlargeDevice, ...other } = props;
+  const sentences = text.split(/([^\.!\?]+[\.!\?]+)|([^\.!\?]+$)/g);
+  return (
+    <>
+      {mobileDevice ? (
+        <Typography color="textSecondary" variant="body2" sx={{ m: 2 }}>
+          {text}
+        </Typography>
+      ) : (
+        <>
+          {(largeDevice || xlargeDevice) ? (
+            
+            <Typography color="textSecondary" variant="body2" sx={{ m: 5 }}>
+              <Grid container spacing={{ xs: 2, md: 3 }}>
+                <Grid item xs={6} sx={{ textAlign: "justify" }}>
+                  {sentences.slice(0, sentences.length / 2)}
+                </Grid>
+                <Grid item xs={6} sx={{ textAlign: "justify" }}>
+                  {sentences.slice(sentences.length / 2, sentences.length)}
+                </Grid>
+              </Grid>
+            </Typography>
 
-};
+          ) : (
+            <Typography color="textSecondary" variant="body2" sx={{ m: 5 }}>
+              <Grid container spacing={{ xs: 2, md: 3 }}>
+                <Grid item xs={4} sx={{ textAlign: "justify" }}>
+                  {sentences.slice(0, sentences.length / 3)}
+                </Grid>
+                <Grid item xs={4} sx={{ textAlign: "justify" }}>
+                  {sentences.slice(
+                    sentences.length / 3,
+                    sentences.length - sentences.length / 3
+                  )}
+                </Grid>
+                <Grid item xs={4} sx={{ textAlign: "justify" }}>
+                  {sentences.slice(
+                    sentences.length - sentences.length / 3,
+                    sentences.length
+                  )}
+                </Grid>
+              </Grid>
+            </Typography>          )}
+        </>
+      )}
+    </>
+  );
+}
 
-const t = useCustomTranslation(story.language);
-  const [tab, setTab] = useState('showcase');
+export default function OverviewStory({}) {
+  const theme = useTheme();
+  const mobileDevice = useMediaQuery(theme.breakpoints.down("sm"));
+  const largeDevice = useMediaQuery(theme.breakpoints.down("lg"));
+  const xlargeDevice = useMediaQuery(theme.breakpoints.down("xl"));
+
+  const { selectedStory } = useSelector((state) => state.general);
+
+  var userLang = navigator.language.substring(0, 2);
+
+  //const t = useCustomTranslation(selectedStory.story_language);
+
+  const t = useCustomTranslation(userLang);
+
+  const [tab, setTab] = useState("showcase");
+
   const [loading, setLoading] = React.useState(true);
-//   const [reviews, setReviews] = React.useState([]);
+  //   const [reviews, setReviews] = React.useState([]);
+
   const mounted = useMounted();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [searchValue, setSearchValue] = React.useState('');
+  const [searchValue, setSearchValue] = React.useState("");
 
 
-  const { user, isAuthenticated } = useAuth();
+  useEffect(() => {
+    const id = window.location.pathname.split("/")[2];
+    if (selectedStory) {
+      if (selectedStory.id != id) {
+        dispatch(getSelectedStory(id));
+       
+      } //else{
+    } else {
+      dispatch(getSelectedStory(id));
+    }
 
-//   React.useEffect(() => {
-//     setLoading(true);
-//     coproductionProcessesApi.getReviews(process.id).then((res) => {
-//       if (mounted.current) {
-//         setReviews(res);
-//         setLoading(false);
-//       }
-//     });
-//   }, [process]);
+    // storiesApi.getStoriesbyId(id).then((res) => {
+    //   res.data=JSON.parse(res.data_story)
+    //   selectedStory=res
 
-//   React.useEffect(() => {
-//     if(tab === "notifications"){
-//       //Load notifications when the tab change to notifications:
-//       dispatch(getCoproductionProcessNotifications({'coproductionprocess_id':process.id,'asset_id':''}));
+    // });
+    //}
+  }, []);
 
-//     }
-//   }, [tab]);
 
-//   const getReviewsActions = (asset) => {
-//     const actions = [];
-//     actions.push({
-//       id: `${asset.id}-open-action`,
-//       onClick: (closeMenuItem) => {
-//         window.open(`${asset.link}/view`, '_blank');
-//         closeMenuItem();
-//       },
-//       text: t('Open'),
-//       icon: <OpenInNew fontSize='small' />
-//     });
-//     actions.push({
-//       id: `${asset.id}-open-task-action`,
-//       onClick: (closeMenuItem) => {
-//         dispatch(setSelectedTreeItemById(asset.task_id, () => {
-//           navigate(`/dashboard/coproductionprocesses/${process.id}/guide`);
-//         }));
-//       },
-//       text: t('Go to the task'),
-//       icon: <AccountTree fontSize='small' />
-//     });
-//     return actions;
-//   };
-
-//   if (!process || !tree) {
-//     return;
-//   }
-
+  //Every time another story is selected then the data info of the process is loaded
+  useEffect(() =>{
+    //console.log("La STORY A CAMBIADO:")
+    if(selectedStory){
+      //console.log(selectedStory.coproductionprocess_cloneforpub_id)
+      dispatch(getProcessCatalogue(selectedStory.coproductionprocess_cloneforpub_id))
+    }
+    
+  },[selectedStory])
 
   return (
     <Box sx={{ pb: 3, justifyContent: "center" }}>
-      <AppBar sx={{ position: "relative" }}>
-        <Typography variant="h6" sx={{ p: 2 }}>
-          {t("Success Story Overview")}
-        </Typography>
-      </AppBar>
-      {  (
-        <Paper sx={{ bgcolor: "background.default" }}>
-          <Tabs
-            value={tab}
-            onChange={(event, newValue) => {
-              setTab(newValue);
-            }}
-            aria-label="overview-tabs"
-            centered
-          >
-            {/* { isAdministrator &&( */}
-            <Tab value="showcase" label={t("Showcase")} />
-            {/* )} */}
-            <Tab
-              value="reviews"
-              label={t("Reviews")}
-            />
-            
-          </Tabs>
-        </Paper>
-      )}
-      {tab === "showcase" ? (
-        <Box sx={{ p: 3, justifyContent: "center" }}>
-           <Typography
-                  color='textSecondary'
-                  variant='h5'
-                  align='center'
-                  sx={{mb:3}}
-                >
-{story.title}
+      {selectedStory && (
+        <>
+          <AppBar sx={{ position: "relative" }}>
+            <Typography variant="h6" sx={{ p: 2 }}>
+              {t("Success Story Overview")}
+            </Typography>
+          </AppBar>
+          {
+            <Paper sx={{ bgcolor: "background.default" }}>
+              <Tabs
+                value={tab}
+                onChange={(event, newValue) => {
+                  setTab(newValue);
+                }}
+                aria-label="overview-tabs"
+                centered
+              >
+                {/* { isAdministrator &&( */}
+                <Tab value="showcase" label={t("Showcase")} />
+                {/* )} */}
 
+                {/* <Tab value="reviews" label={t("Reviews")} /> */}
+              </Tabs>
+            </Paper>
+          }
+          {tab === "showcase" ? (
+            <Box sx={{ p: 3, justifyContent: "center", height: "100%" }}>
+              <Grid
+                container
+                spacing={1}
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Box
+                  component="img"
+                  sx={{
+                    height: "100px",
+                    width: "auto",
+                    maxHeight: { xs: 233, md: 167 },
+                    maxWidth: { xs: 350, md: 250 },
+                    mr: 2,
+                  }}
+                  alt={selectedStory.data_story.title}
+                  src={selectedStory.data_story.logo}
+                />
+
+                <Typography color="textSecondary" variant="h4">
+                  {selectedStory.data_story.title}
                 </Typography>
+              </Grid>
 
-                <Divider />
-           
-           <Typography
-                  color='textSecondary'
-                  variant='body2'
-                  sx={{mt:5}}
-                >
+             
 
-{story.description}
+              {selectedStory.data_story.tags != "" && (
+                <Grid item xs={6} md={6} lg={3} xl={3} sx={{ m: 3 }}>
+                  <Typography
+                    color="textPrimary"
+                    variant="subtitle2"
+                    align="center"
+                  >
+                    {selectedStory.data_story.tags &&
+                      selectedStory.data_story.tags
+                        .split(",")
+                        .map((el) => (
+                          <Chip
+                            label={el}
+                            key={el}
+                            size="small"
+                            variant="outlined"
+                            sx={{ mr: 1 }}
+                          />
+                        ))}
+                  </Typography>
+                </Grid>
+              )}
+
+              <Typography
+                color="textSecondary"
+                variant="h6"
+                align="center"
+                sx={{ mb: 3, mr: 3, ml: 3 }}
+              >
+                {selectedStory.data_story.short_description}
+              </Typography>
+
+
+              <Grid
+                container
+                spacing={3}
+                direction="column"
+                justifyContent="left"
+                alignItems="left"
+                sx={{ mt: 3,mb:3,ml:5 }}
+              >
+                <Typography color="textSecondary" variant="subtitle2">
+                  Start: {selectedStory.data_story.start_at}
                 </Typography>
+                <Typography color="textSecondary" variant="subtitle2">
+                  End: {selectedStory.data_story.end_at}
+                </Typography>
+              </Grid>
+
+              <Divider />
+
+              <TwoColumnsText
+                text={selectedStory.data_story.description}
+                mobileDevice={mobileDevice}
+                largeDevice={largeDevice}
+                xlargeDevice={xlargeDevice}
+              />
+
+              {selectedStory.data_story.objectives != "" && (
+                <>
+                  <Divider />
+                  <Typography
+                    color="textSecondary"
+                    variant="h6"
+                    sx={{ ml: 5, mt: 3 }}
+                  >
+                    Objectives
+                  </Typography>
+                  <TwoColumnsText
+                    text={selectedStory.data_story.objectives}
+                    mobileDevice={mobileDevice}
+                    largeDevice={largeDevice}
+                    xlargeDevice={xlargeDevice}
+                  />
+                </>
+              )}
+
+              {selectedStory.data_story.results != "" && (
+                <>
+                  <Divider />
+                  <Typography
+                    color="textSecondary"
+                    variant="h6"
+                    sx={{ ml: 5, mt: 3 }}
+                  >
+                    Results
+                  </Typography>
+                  <TwoColumnsText
+                    text={selectedStory.data_story.results}
+                    mobileDevice={mobileDevice}
+                    largeDevice={largeDevice}
+                    xlargeDevice={xlargeDevice}
+                  />
+                </>
+              )}
+
+              {selectedStory.data_story.lessons_learned != "" && (
+                <>
+                  <Divider />
+                  <Typography
+                    color="textSecondary"
+                    variant="h6"
+                    sx={{ ml: 5, mt: 3 }}
+                  >
+                    Lessons Learned
+                  </Typography>
+                  <TwoColumnsText
+                    text={selectedStory.data_story.lessons_learned}
+                    mobileDevice={mobileDevice}
+                    largeDevice={largeDevice}
+                    xlargeDevice={xlargeDevice}
+                  />
+                </>
+              )}
+
+              {selectedStory.data_story.incentives != "" && (
+                <>
+                  <Divider />
+                  <Typography
+                    color="textSecondary"
+                    variant="h6"
+                    sx={{ ml: 5, mt: 3 }}
+                  >
+                    Incentives
+                  </Typography>
+                  <TwoColumnsText
+                    text={selectedStory.data_story.incentives}
+                    mobileDevice={mobileDevice}
+                    largeDevice={largeDevice}
+                    xlargeDevice={xlargeDevice}
+                  />
+                </>
+              )}
+
+              <Divider />
+              <Typography color="textSecondary" variant="h6" sx={{ ml: 5,mt:3 }}>
+                Materials
+              </Typography>
+
+              <Grid
+                container
+                spacing={1}
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                direction="row"
+                justifyContent="center"
+                alignItems="stretch"
+                sx={{ m: 3 }}
+              >
+                {selectedStory.data_story.materials.map((material) => (
+                  <Card sx={{ minWidth: 275 }}>
+                    <CardHeader
+                      avatar={(() => {
+                        switch (material.type) {
+                          case "video_channel":
+                            return <YouTube />;
+                          //case "video_channel": return <Component2 />;
+                          default:
+                            null;
+                        }
+                      })()}
+                      title={material.name}
+                    />
+
+                    <CardActions>
+                      <Button href={material.link} size="small">
+                        View
+                      </Button>
+                    </CardActions>
+                  </Card>
+                ))}
+              </Grid>
+
+              <Divider />
+              <Typography color="textSecondary" variant="h6" sx={{ ml: 5,mt:3 }}>
+                Owners
+              </Typography>
+
+              <Grid
+                container
+                spacing={1}
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                direction="row"
+                justifyContent="center"
+                alignItems="stretch"
+              >
+                {selectedStory.data_story.owners.map((owner) => (
+                  <Card sx={{ minWidth: 275, m: 2 }}>
+                    <CardHeader
+                      avatar={
+                        <Avatar
+                          variant="rounded"
+                          sx={owner.logo}
+                          aria-label="recipe"
+                          src={owner.logo}
+                        ></Avatar>
+                      }
+                      title={owner && owner.name}
+                    />
+                    {/* <CardContent>
+                      <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                      
+                      </Typography>
+                    </CardContent> */}
+                    <CardActions>
+                      <Button href={owner.link} size="small">
+                        More
+                      </Button>
+                    </CardActions>
+                  </Card>
+                ))}
+              </Grid>
 
 
-        </Box>
-      ) : <></>}
+              
 
-      {tab === "reviews" ? (
-        <Box sx={{ p: 3, justifyContent: "center" }}>
-           Review Tab
-           <StoryReviews story={story} />
-        </Box>
-      ) : (
-        <></>
+
+
+              <Divider />
+              <Typography color="textSecondary" variant="h6" sx={{ ml: 5,mt:3 }}>
+                Licenses
+              </Typography>
+              <Grid
+                container
+                spacing={1}
+                direction="row"
+                justifyContent="center"
+                alignItems="stretch"
+              >
+                <Typography
+                  color="textSecondary"
+                  variant="body2"
+                  maxWidth={(theme) => theme.breakpoints.values.md}
+                  sx={{ m: 5, textAlign: "justify" }}
+                >
+                  {selectedStory.data_story.licenses}
+                </Typography>
+              </Grid>
+
+
+
+
+
+              <Divider />
+              <Typography color="textSecondary" variant="h6" sx={{ ml: 5,mt:3 }}>
+                Countries
+              </Typography>
+
+              <Grid
+                container
+                spacing={1}
+                columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                
+              >
+                {selectedStory.data_story.countries.split(',').map((country) => (
+                  <Card sx={{ minWidth: 275, m: 2 }}>
+                    
+                    <CardContent>
+                      <Typography variant="h6"  align='center' color="text.secondary">
+                        {country}
+                      </Typography>
+                    </CardContent>
+                   
+                  </Card>
+                ))}
+              </Grid>
+
+
+
+            </Box>
+          ) : (
+            <></>
+          )}
+
+          {tab === "reviews" ? (
+            <Box sx={{ p: 3, justifyContent: "center" }}>
+              Review Tab
+              <StoryReviews story={selectedStory} />
+            </Box>
+          ) : (
+            <></>
+          )}
+        </>
       )}
-      
-      
     </Box>
   );
 }
