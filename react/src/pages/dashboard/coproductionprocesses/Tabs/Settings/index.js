@@ -205,7 +205,7 @@ const SettingsTab = () => {
 
       //Create a clone of the process:
       coproductionProcessesApi
-        .copy(process.id, "Catalogue Publication of_")
+        .copy(process.id, "Catalogue Publication of_","for_publication")
         .then((res) => {
           const clone_id = res;
           setJsonPropertiesFile(extractedData);
