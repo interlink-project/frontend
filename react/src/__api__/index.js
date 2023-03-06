@@ -16,3 +16,4 @@ import { storiesApi } from './coproduction/storiesApi';
 import { usersApi } from './users';
 import { problemprofilesApi } from './catalogue/problemProfilesApi';
 export { storiesApi, problemprofilesApi, permissionsApi, organizationsApi, usernotificationsApi,coproductionprocessnotificationsApi, assetsApi, knowledgeInterlinkersApi, softwareInterlinkersApi, coproductionProcessesApi, coproductionSchemasApi, teamsApi, usersApi, tasksApi, phasesApi, objectivesApi, interlinkersApi };
+export { gamesApi } from './gamification/gamesApi';

@@ -8,18 +8,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@mui/icons-material';
 import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
+import { gamesApi } from '__api__';
 
 
 
-export default function ContributionsTable({ rows, assets }) {
+export default function ContributionsTable({ rows, assets, closedTask }) {
   const [stateRows, setRows] = useState([]);
   const [pageSize, setPageSize] = useState(5);
+
   const contribValues = ['Low', 'Average', 'High'];
+
   const [activitiesDialogOpen, setactivitiesDialogOpen] = useState(false);
+
   const dispatch = useDispatch();
-  const { process } = useSelector((state) => state.process);
+  const { process, selectedTreeItem } = useSelector((state) => state.process);
   const t = useCustomTranslation(process.language);
-  // const [ userId, setUserId ] = useState(null);
+
+  console.log(closedTask);
 
   const handleClickHistory = (userId) => {
     console.log("Selected user: " + userId);
@@ -53,7 +58,7 @@ export default function ContributionsTable({ rows, assets }) {
       field: 'contribution', headerName: t('Contribution'),
       type: 'singleSelect',
       flex: 1,
-      editable: true,
+      editable: !closedTask,
       valueOptions: contribValues,
       headerAlign: 'center',
       align: 'center',
@@ -79,32 +84,13 @@ export default function ContributionsTable({ rows, assets }) {
     } else {
       setRows([]);
     }
+
   }, [rows]);
 
-  // useEffect(() => {
-  //   console.log(contributors);
-  //   console.log(contributors.contributors);
-  //   let tmp_rows = [];
-  //   console.log(contributors.contributors.length);
-  //   if (contributors.contributors.length > 0) {
-  //     console.log("qljdhfqwefjkqwejfkqjñlkwefjklqwfjek");
-  //     for (let i = 0; i < contributors.contributors.length; i++) {
-  //       console.log(contributors.contributors[i].name);
-  //       tmp_rows.push({
-  //         id: contributors.contributors[i].id,
-  //         name: contributors.contributors[i].name,
-  //         contribution: 'Average',
-  //       });
-  //       // setRows([...rows, {id: contributors[i].id, name: contributors[i].name, contribution: 'Average'}]);
-  //     }
-  //   }
-  //   setRows(tmp_rows);
-
-  // }, [contributors]);
-
   return (
-    <div style={{ height: 300, width: '100%' }}>
+    <>
       <DataGrid
+        // loading={loading}
         autoHeight
         disableSelectionOnClick
         pageSize={pageSize}
@@ -115,7 +101,7 @@ export default function ContributionsTable({ rows, assets }) {
         experimentalFeatures={{ newEditingApi: true }}
         sx={{
           boxShadow: 1,
-          border: 1,
+          // border: 1,
           borderColor: 'primary.light',
           '& .MuiDataGrid-cell:hover': {
             color: 'primary.main',
@@ -132,6 +118,7 @@ export default function ContributionsTable({ rows, assets }) {
             color: '#44c949',
             fontWeight: '600',
           },
+          p: 2
         }}
       />
       <Dialog
@@ -153,10 +140,10 @@ export default function ContributionsTable({ rows, assets }) {
 
         <DialogContent sx={{ p: 3 }}>
           <CoproNotifications
-          mode={'activity'} />
+            mode={'activity'} />
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }
 
