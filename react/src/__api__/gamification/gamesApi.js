@@ -29,10 +29,11 @@ class GamesApi extends GeneralApi {
     return res.data;
   }
 
-  async addClaim(gameId, taskId, userId, username) {
+  async addClaim(gameId, taskId, userId, username, contrib_value) {
     const res = await axiosInstance.put(`${this.url}${gameId}/task/${taskId}/claim`, {
       id: userId,
-      name: username
+      name: username,
+      development: contrib_value
     });
     return res.data;
   }
@@ -42,6 +43,10 @@ class GamesApi extends GeneralApi {
     return res.data;
   }
 
+  async getTask(gameId, taskId) {
+    const res = await axiosInstance.get(`${this.url}${gameId}/task/${taskId}`);
+    return res.data;
+  }
 };
 
 export const gamesApi = new GamesApi();

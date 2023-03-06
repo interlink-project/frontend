@@ -126,7 +126,7 @@ const OverallLeaderboard = ({ users }) => {
                                 {users && users.length > 1 ? users[1].name : "No users here... "}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                {users && users.length > 1 ? users[1].name : "No users here... "}
+                                {users && users.length > 1 ? users[1].development + ' points' : "No users here... "}
                             </Typography>
 
                         </CardContent>
@@ -150,7 +150,7 @@ const OverallLeaderboard = ({ users }) => {
                                 {users && users.length > 0 ? users[0].name : "No users here... "}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                {users && users.length > 0 ? users[0].name : "No users here... "}
+                                {users && users.length > 0 ? users[0].development + ' points' : "No users here... "}
                             </Typography>
 
                         </CardContent>
@@ -175,7 +175,7 @@ const OverallLeaderboard = ({ users }) => {
                                 {users && users.length > 2 ? users[2].name : "No users here... "}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                {users && users.length > 2 ? users[2].name : "No users here... "}
+                                {users && users.length > 2 ? users[2].development + ' points' : "No users here... "}
                             </Typography>
 
                         </CardContent>

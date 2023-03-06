@@ -8,18 +8,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@mui/icons-material';
 import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
+import { gamesApi } from '__api__';
 
 
 
-export default function ContributionsTable({ rows, assets }) {
+export default function ContributionsTable({ rows, assets, closedTask }) {
   const [stateRows, setRows] = useState([]);
   const [pageSize, setPageSize] = useState(5);
+
   const contribValues = ['Low', 'Average', 'High'];
+
   const [activitiesDialogOpen, setactivitiesDialogOpen] = useState(false);
+
   const dispatch = useDispatch();
-  const { process } = useSelector((state) => state.process);
+  const { process, selectedTreeItem } = useSelector((state) => state.process);
   const t = useCustomTranslation(process.language);
-  // const [ userId, setUserId ] = useState(null);
+
+  console.log(closedTask);
 
   const handleClickHistory = (userId) => {
     console.log("Selected user: " + userId);
@@ -53,7 +58,7 @@ export default function ContributionsTable({ rows, assets }) {
       field: 'contribution', headerName: t('Contribution'),
       type: 'singleSelect',
       flex: 1,
-      editable: true,
+      editable: !closedTask,
       valueOptions: contribValues,
       headerAlign: 'center',
       align: 'center',
@@ -79,11 +84,13 @@ export default function ContributionsTable({ rows, assets }) {
     } else {
       setRows([]);
     }
+
   }, [rows]);
 
   return (
     <>
       <DataGrid
+        // loading={loading}
         autoHeight
         disableSelectionOnClick
         pageSize={pageSize}
@@ -93,12 +100,12 @@ export default function ContributionsTable({ rows, assets }) {
         columns={columns}
         experimentalFeatures={{ newEditingApi: true }}
         sx={{
-          // boxShadow: 1,
+          boxShadow: 1,
           // border: 1,
-          // borderColor: 'primary.light',
-          // '& .MuiDataGrid-cell:hover': {
-          //   color: 'primary.main',
-          // },
+          borderColor: 'primary.light',
+          '& .MuiDataGrid-cell:hover': {
+            color: 'primary.main',
+          },
           '& .super-app.low': {
             color: '#f44336',
             fontWeight: '600',
@@ -111,7 +118,7 @@ export default function ContributionsTable({ rows, assets }) {
             color: '#44c949',
             fontWeight: '600',
           },
-          p:2
+          p: 2
         }}
       />
       <Dialog
