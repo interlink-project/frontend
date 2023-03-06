@@ -30,6 +30,8 @@ import {
   AutoStories,
   Close,
   Delete,
+  Download,
+  Help,
   Public,
   CleaningServices,
   ContentCopy,
@@ -53,6 +55,7 @@ import { coproductionProcessesApi, storiesApi } from "__api__";
 import { withStyles } from "@mui/styles";
 import useAuth from "hooks/useAuth";
 import { getSelectedStory } from "slices/general";
+import { Link } from "react-router-dom";
 
 const SettingsTab = () => {
   const { user } = useAuth();
@@ -61,6 +64,8 @@ const SettingsTab = () => {
   const [storiesList, setStoriesList] = useState([]);
   const [jsonPropertiesFile, setJsonPropertiesFile] = useState(null);
   const [editMode, setEditMode] = useState(false);
+
+  const [dialogOpenPublicationExample, setDialogOpenPublicationExample] = useState(false);
 
   const { process, hasSchema, isAdministrator } = useSelector(
     (state) => state.process
@@ -131,6 +136,11 @@ const SettingsTab = () => {
         setLogotype(file);
       }
     }
+  };
+
+  const handleOpenPublicationExample = () => {
+    alert("Open Publication example!.");
+    setDialogOpenPublicationExample(true);
   };
 
   const TextField = (props) => (
@@ -780,8 +790,8 @@ const SettingsTab = () => {
           }}
           sx={{
             position: "absolute",
-            right: 8,
-            top: 8,
+            right: 4,
+            top: 4,
             color: (theme) => theme.palette.grey[500],
           }}
         >
@@ -865,12 +875,23 @@ const SettingsTab = () => {
             <Grid container spacing={2}>
               <Grid item xs={6} md={8}>
                 <Typography variant="p" sx={{ mt: 3 }}>
-                {t("Include the source file (.json) with the publish information.")}
+                {t("Include the source file (.json) with the publish information. ")}
                 </Typography>
+                
+                <Typography variant="p" sx={{ mt: 3 }}>
+                Example file:
+                
+                </Typography>
+                    
+                
+                <Link to="/coproduction/static/stories/ExampleTemplate.json" target="_blank" download><Download sx={{ml:1}} /> </Link>
+               
               </Grid>
+
+              
+
               <Grid item xs={6} md={4}>
-
-
+              <Stack direction="row" spacing={0}>
               <LoadingButton
                     variant="contained"
                     disabled={!isAdministrator}
@@ -889,6 +910,9 @@ const SettingsTab = () => {
                     onChange={handleCapture}
                   />
                   </LoadingButton>
+                  
+              </Stack>
+              
 
                 {/* <Button sx={{ mt: 2 }} variant="contained" component="label">
                   {t("Publish from a File")}
@@ -900,6 +924,8 @@ const SettingsTab = () => {
                   />
                 </Button> */}
               </Grid>
+
+              
             </Grid>
           </>
           {/* )} */}
