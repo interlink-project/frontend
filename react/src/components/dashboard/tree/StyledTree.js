@@ -1,5 +1,5 @@
 import { Avatar, AvatarGroup, Box, SvgIcon } from '@mui/material';
-import { People,ArrowForwardIos,Circle,LastPage,PlayArrow } from '@mui/icons-material';
+import { People, ArrowForwardIos, Circle, LastPage, PlayArrow } from '@mui/icons-material';
 import { TreeView } from '@mui/lab';
 import { statusIcon, TreeItemTypeChip } from 'components/Icons';
 import { StyledTreeItem } from 'components/dashboard/tree';
@@ -78,10 +78,10 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
   const [all, setAll] = useState([]);
   const [expanded, setExpanded] = useState([]);
 
-  const location=useLocation();
-  const isLocationCatalogue=location.pathname.startsWith('/stories/');
-  if(isLocationCatalogue || process.is_part_of_publication){
-    showIcon=false;
+  const location = useLocation();
+  const isLocationCatalogue = location.pathname.startsWith('/stories/');
+  if (isLocationCatalogue || process.is_part_of_publication) {
+    showIcon = false;
   }
 
   useEffect(() => {
@@ -116,139 +116,139 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
       }}
     >
       {parent && !parent.is_disabled && (
-      <StyledTreeItem
-        icon={showIcon && statusIcon(parent.status)}
-        key={parent.id}
-        nodeId={parent.id}
-        sx={{ backgroundColor: 'background.paper' }}
-        label={(
-          <Box sx={{ mt: 2, mb: 1 }}>
-            <TreeItemTypeChip
-              sx={{ mr: 1 }}
-              treeitem={parent}
-              t={t}
-            />
-            {parent.name}
-            {parent.teams && (
-            
-            <>
-{isLocationCatalogue ?(
-  <></>
+        <StyledTreeItem
+          icon={showIcon && statusIcon(parent.status)}
+          key={parent.id}
+          nodeId={parent.id}
+          sx={{ backgroundColor: 'background.paper' }}
+          label={(
+            <Box sx={{ mt: 2, mb: 1 }}>
+              <TreeItemTypeChip
+                sx={{ mr: 1 }}
+                treeitem={parent}
+                t={t}
+              />
+              {parent.name}
+              {parent.teams && (
 
-  ):(  
-            
-            <AvatarGroup
-              spacing='medium'
-              sx={{ mt: 1, justifyContent: 'left' }}
-              variant='rounded'
-              max={5}
-            >
-              {parent.teams.map((team) => (
-                <Avat
-                  key={`${parent.id}-${team.id}`}
-                  team={team}
-                />
-              ))}
-            </AvatarGroup>
-  )}</>
-            )}
-          </Box>
-      )}
-      >
-
-        {parent.children.map((objective) => !objective.is_disabled
-          && (
-          <StyledTreeItem
-            icon={showIcon && statusIcon(objective.status)}
-            key={objective.id}
-            nodeId={objective.id}
-            sx={{ backgroundColor: 'background.paper' }}
-            label={(
-              <Box sx={{ mt: 2, mb: 1 }}>
-                <TreeItemTypeChip
-                  sx={{ mr: 1 }}
-                  treeitem={objective}
-                  t={t}
-                />
-                {objective.name}
-                {/* <br />
-                {'ID: '+objective.id}
-                <br />
-                {'Pre-req: '+objective.prerequisites_ids} */}
-                {objective.teams && (
-                  <>
-                  {isLocationCatalogue ?(
+                <>
+                  {isLocationCatalogue ? (
                     <></>
 
-                    ):(
-                      <AvatarGroup
+                  ) : (
+
+                    <AvatarGroup
                       spacing='medium'
                       sx={{ mt: 1, justifyContent: 'left' }}
                       variant='rounded'
                       max={5}
                     >
-                      {arrayUnique(objective.teams.concat(parent.teams)).map((team) => (
+                      {parent.teams.map((team) => (
                         <Avat
-                          key={`${objective.id}-${team.id}`}
+                          key={`${parent.id}-${team.id}`}
                           team={team}
                         />
                       ))}
                     </AvatarGroup>
-                    )}
-                </>
-
-
-                )}
-              </Box>
+                  )}</>
+              )}
+            </Box>
           )}
-          >
-            {objective.children.map((task) => !task.is_disabled && (
-            <StyledTreeItem
-              icon={showIcon && statusIcon(task.status)}
-              key={task.id}
-              nodeId={task.id}
-              label={(
-                <Box sx={{ mt: 2, mb: 1 }}>
-                  <TreeItemTypeChip
-                    sx={{ mr: 1 }}
-                    treeitem={task}
-                    t={t}
-                  />
-                  {task.name}
-                {/* <br />
+        >
+
+          {parent.children.map((objective) => !objective.is_disabled
+            && (
+              <StyledTreeItem
+                icon={showIcon && statusIcon(objective.status)}
+                key={objective.id}
+                nodeId={objective.id}
+                sx={{ backgroundColor: 'background.paper' }}
+                label={(
+                  <Box sx={{ mt: 2, mb: 1 }}>
+                    <TreeItemTypeChip
+                      sx={{ mr: 1 }}
+                      treeitem={objective}
+                      t={t}
+                    />
+                    {objective.name}
+                    {/* <br />
+                {'ID: '+objective.id}
+                <br />
+                {'Pre-req: '+objective.prerequisites_ids} */}
+                    {objective.teams && (
+                      <>
+                        {isLocationCatalogue ? (
+                          <></>
+
+                        ) : (
+                          <AvatarGroup
+                            spacing='medium'
+                            sx={{ mt: 1, justifyContent: 'left' }}
+                            variant='rounded'
+                            max={5}
+                          >
+                            {arrayUnique(objective.teams.concat(parent.teams)).map((team) => (
+                              <Avat
+                                key={`${objective.id}-${team.id}`}
+                                team={team}
+                              />
+                            ))}
+                          </AvatarGroup>
+                        )}
+                      </>
+
+
+                    )}
+                  </Box>
+                )}
+              >
+                {objective.children.map((task) => !task.is_disabled && (
+                  <StyledTreeItem
+                    icon={showIcon && statusIcon(task.status)}
+                    key={task.id}
+                    nodeId={task.id}
+                    label={(
+                      <Box sx={{ mt: 2, mb: 1 }}>
+                        <TreeItemTypeChip
+                          sx={{ mr: 1 }}
+                          treeitem={task}
+                          t={t}
+                        />
+                        {task.name}
+                        {/* <br />
                 {'ID: '+task.id}
                 <br />
                 {'Pre-req: '+task.prerequisites_ids} */}
-                  {task.teams && (
-<>
-{isLocationCatalogue ?(
-  <></>
+                        {task.teams && (
+                          <>
+                            {isLocationCatalogue ? (
+                              <></>
 
-  ):(  
-                  <AvatarGroup
-                    spacing='medium'
-                    sx={{ mt: 1, justifyContent: 'left' }}
-                    variant='rounded'
-                    max={5}
-                  >
-                    {arrayUnique(task.teams.concat(objective.teams).concat(parent.teams)).map((team) => (
-                      <Avat
-                        key={`${task.id}-${team.id}`}
-                        team={team}
-                      />
-                    ))}
-                  </AvatarGroup>
+                            ) : (
+                              <AvatarGroup
+                                spacing='medium'
+                                sx={{ mt: 1, justifyContent: 'left' }}
+                                variant='rounded'
+                                max={5}
+                              >
+                                {arrayUnique(task.teams.concat(objective.teams).concat(parent.teams)).map((team) => (
+                                  <Avat
+                                    key={`${task.id}-${team.id}`}
+                                    team={team}
+                                  />
+                                ))}
+                              </AvatarGroup>
 
-  )}
-  </>
-                  )}
-                </Box>
-              )}
-            />
+                            )}
+                          </>
+                        )}
+                      </Box>
+                    )}
+                  />
+                ))}
+              </StyledTreeItem>
             ))}
-          </StyledTreeItem>
-          ))}
-      </StyledTreeItem>
+        </StyledTreeItem>
       )}
     </TreeView>
   );

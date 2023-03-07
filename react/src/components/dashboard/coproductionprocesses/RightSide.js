@@ -10,7 +10,7 @@ import useDependantTranslation from 'hooks/useDependantTranslation';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProcess, getTree } from 'slices/process';
+import { getProcess, getTree, setUpdatingTree } from 'slices/process';
 import { information_about_translations } from 'utils/someCommonTranslations';
 import * as Yup from 'yup';
 import { assetsApi, permissionsApi, assetsDataApi, coproductionprocessnotificationsApi, tasksApi, gamesApi } from '__api__';
@@ -165,6 +165,7 @@ const RightSide = ({ softwareInterlinkers }) => {
   };
 
   const handleDelete = (asset, callback) => {
+    dispatch(setUpdatingTree(true));
     setLoading('delete');
     //Obtain the name with the id
     const nombreAsset = document.getElementById('bt-' + asset.id).innerHTML;
@@ -172,7 +173,7 @@ const RightSide = ({ softwareInterlinkers }) => {
     localStorage.setItem('assetId', asset.id);
     const capitalizeAssetName = nombreAsset.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
     localStorage.setItem('assetName', capitalizeAssetName);
-
+    
 
 
     //Enviar el nombre a guardar
@@ -180,6 +181,8 @@ const RightSide = ({ softwareInterlinkers }) => {
       setLoading('');
       callback && callback();
       setAnchorEl(null);
+      dispatch(setUpdatingTree(false));
+
 
       //Update the dinamic name with a static name for the asset
       //on the coproduction notifications
@@ -202,7 +205,9 @@ const RightSide = ({ softwareInterlinkers }) => {
   };
 
   const handleClone = (asset, callback) => {
+    dispatch(setUpdatingTree(true));
     setLoading('clone');
+
     assetsApi.clone(asset.id).then(() => {
       setLoading('');
       callback && callback();
