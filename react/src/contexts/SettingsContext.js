@@ -46,6 +46,10 @@ const initialSettings = {
           contrastText: '#ffffff',
           main: '#ff9800'
         },
+        gold: {
+          contrastText: '#000000',
+          main: '#f7b50f'
+        },
         progressBarColor: '#d822a3'
       },
       dark: {
@@ -79,6 +83,10 @@ const initialSettings = {
           contrastText: '#ffffff',
           main: '#ff9800'
         },
+        gold: {
+          contrastText: '#000000',
+          main: '#f7b50f'
+        },
         progressBarColor: '#d822a3'
       }
     }
@@ -103,6 +111,7 @@ export const restoreSettings = () => {
           : THEMES.LIGHT.key,
       };
     }
+
   } catch (err) {
     console.error(err);
     // If stored data is not a strigified JSON this will fail,

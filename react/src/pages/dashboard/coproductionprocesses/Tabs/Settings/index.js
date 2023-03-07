@@ -185,34 +185,15 @@ const SettingsTab = () => {
     </>
   );
 
-  // useEffect(() => {
-  //   if (gameId) {
-  //     dispatch(updateProcess({
-  //       id: process.id,
-  //       data: { game_id: gameId },
-  //       logotype: false,
-  //       onSuccess: false
-  //     }));
-  //   }
-  // }, [gameId]);
-
-  const toggleIncentivesRewards = () => {
+  const toggleIncentivesRewards = async () => {
     setIsIncentiveModuleActive((prev) => !prev);
 
     //Active the incentive and rewards
     const values = { incentive_and_rewards_state: !isIncentiveModuleActive };
     if (values.incentive_and_rewards_state) {
       const taskList = prepareGameTemplate(tree);
-      gamesApi.setGame(process.id, taskList).then((res) => {
-        console.log('Game created');
-        console.log(res);
-        dispatch(updateProcess({
-          id: process.id,
-          data: { game_id: res.id },
-          logotype: false,
-          onSuccess: false
-        }));
-      });
+      let res = await gamesApi.setGame(process.id, taskList);
+      values["game_id"] = res.id;
     } else {
       gamesApi.deleteGame(process.game_id).then((res) => {
         console.log(res);

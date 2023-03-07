@@ -1,13 +1,13 @@
 {
-    "logos": {
-        "dashboard_navbar_light": "logo-light.svg",
-        "dashboard_navbar_dark": "logo-light.svg",
-        "home_light": "logo-dark.svg",
-        "home_dark": "logo-light.svg",
-        "landing_light": "logo-dark.svg",
-        "landing_dark": "logo-light.svg"
-    },
-    "palette": {
+	"logos": {
+		"dashboard_navbar_light": "logo-light.svg",
+		"dashboard_navbar_dark": "logo-light.svg",
+		"home_light": "logo-dark.svg",
+		"home_dark": "logo-light.svg",
+		"landing_light": "logo-dark.svg",
+		"landing_dark": "logo-light.svg"
+	},
+	"palette": {
 		"light": {
 			"action": {
 				"active": "#6b778c"
@@ -41,6 +41,10 @@
 				"contrastText": "#ffffff",
 				"main": "#ff9800"
 			},
+			"gold": {
+				"contrastText": "#000000",
+				"main": "#c7b50f"
+			},
 			"progressBarColor": "#d822a3"
 		},
 		"dark": {
@@ -73,6 +77,10 @@
 			"warning": {
 				"contrastText": "#ffffff",
 				"main": "#ff9800"
+			},
+			"gold": {
+				"contrastText": "#000000",
+				"main": "#c7b50f"
 			},
 			"progressBarColor": "#d822a3"
 		}

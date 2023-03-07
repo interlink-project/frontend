@@ -24,7 +24,6 @@ export default function ContributionsTable({ rows, assets, closedTask }) {
   const { process, selectedTreeItem } = useSelector((state) => state.process);
   const t = useCustomTranslation(process.language);
 
-  console.log(closedTask);
 
   const handleClickHistory = (userId) => {
     console.log("Selected user: " + userId);
