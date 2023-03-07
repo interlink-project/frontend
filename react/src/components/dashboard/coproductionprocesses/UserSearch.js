@@ -119,21 +119,24 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
       useBom: true,
       headers: ['mails']
     };
+
     let csvExporter = new ExportToCsv(options);
     let rejected_users = [];
     Papa.parse(evt.target.files[0], {
       header: false,
       skipEmptyLines: true,
       complete: async function (results) {
-        console.log(results.data)
-        for (let i = 0; i < results.data.length; i++) {
-          await usersApi.search(results.data[i]).then((res) => {
-            if (res.length > 0 && !exclude.includes(res[0].id)) {
-              onClick(res[0]);
-            } else {
-              rejected_users.push(results.data[i]);
-            }
-          });
+        let users_toadd = [];
+        for (let u of results.data) {
+          const res = await usersApi.search(u);
+          if (res.length > 0 && !exclude.includes(res[0].id)) {
+            users_toadd.push(res[0]);
+            exclude.push(res[0].id);
+          } else {
+            rejected_users.push(u);
+          }
+          onClick(users_toadd);
+
         }
         if (rejected_users.length > 0) {
           setMailErrors(true)
