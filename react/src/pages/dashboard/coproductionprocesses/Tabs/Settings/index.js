@@ -925,7 +925,7 @@ const SettingsTab = () => {
                     
                 
                 <Link to="/coproduction/static/stories/ExampleTemplate.json" target="_blank" download><Download sx={{ml:1}} /> </Link>
-               
+
               </Grid>
 
               
