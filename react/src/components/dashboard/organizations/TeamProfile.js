@@ -8,6 +8,8 @@ import { useEffect, useState } from 'react';
 import { teamsApi } from '__api__';
 import { ExportToCsv } from 'export-to-csv';
 import UsersList from './UsersList';
+import useAuth from 'hooks/useAuth';
+
 
 const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
   const [editMode, setEditMode] = useState(false);
@@ -16,6 +18,7 @@ const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
   const [logotype, setLogotype] = useState(null);
   const [loading, setLoading] = useState(true);
   const [team, setTeam] = useState({});
+  const { user } = useAuth();
 
   const mounted = useMounted();
   const { t } = useDependantTranslation();
@@ -156,6 +159,15 @@ const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
         setLogotype(file);
       }
     }
+  };
+
+  const handleApply = () => {
+    teamsApi.addAplication(teamId).then((res) => {
+      if (mounted.current) {
+        console.log(res);
+        update();
+      }
+    });
   };
 
   const team_trans = t('team');
@@ -365,6 +377,27 @@ const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
                         </Button>
 
                       )}
+                    </>
+                  )}
+                  {team.users.some(u => u.id === user.id) ? (
+                    <></>
+                  ) : (
+                    <>
+                      {team.appliers_ids.some(u => u === user.id) ? (
+                        <Button
+                          disabled
+                          variant="contained"
+                          startIcon={<Mail />}
+                          onClick={handleApply}>
+                          Already applied
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          startIcon={<Mail />}
+                          onClick={handleApply}>
+                          Apply to join the team
+                        </Button>)}
                     </>
                   )}
 

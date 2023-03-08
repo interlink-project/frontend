@@ -30,6 +30,15 @@ class TeamsApi extends GeneralApi {
     return res.data;
   }
 
+  async addAplication(id) {
+    const res = await axiosInstance.post(
+      `/${this.url}/${id}/apply`
+    );
+
+    console.log('add apply', res.data);
+    return res.data;
+  }
+
   // async getUsers(id) {
   //   const res = await axiosInstance.get(
   //     `/${this.url}/${id}`
