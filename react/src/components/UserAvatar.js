@@ -13,7 +13,7 @@ const UserAvatar = ({ id = null, user = null, sx = {} }) => {
     if (id && !user) {
       usersApi.get(id).then((res) => {
         if (mounted.current) {
-          setData(res.data);
+          setData(res);
         }
       });
     }

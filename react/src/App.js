@@ -169,7 +169,7 @@ const App = () => {
           }
 
         } else
-          if (event.includes("phase") || event.includes("objective") || event.includes("task")) {
+          if ((event.includes("phase") || event.includes("objective") || event.includes("task")) && selectedTreeItem) {
             if (event.includes("removed")) {
               dispatch(getTree(process.id, selectedTreeItem.prerequisites_ids[0]))
             } else {

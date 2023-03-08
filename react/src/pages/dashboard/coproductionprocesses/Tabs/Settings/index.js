@@ -51,7 +51,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { getProcess, updateProcess } from "slices/process";
 import * as Yup from "yup";
-import { coproductionProcessesApi, storiesApi } from "__api__";
+import { coproductionProcessesApi, storiesApi, gamesApi } from "__api__";
 import { withStyles } from "@mui/styles";
 import useAuth from "hooks/useAuth";
 import { getSelectedStory } from "slices/general";
@@ -59,21 +59,18 @@ import { Link } from "react-router-dom";
 
 const SettingsTab = () => {
   const { user } = useAuth();
-  const [isCloning, setIsCloning] = useState(false);
+  const  [isCloning, setIsCloning] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [storiesList, setStoriesList] = useState([]);
   const [jsonPropertiesFile, setJsonPropertiesFile] = useState(null);
   const [editMode, setEditMode] = useState(false);
 
   const [dialogOpenPublicationExample, setDialogOpenPublicationExample] = useState(false);
+  const [gameId, setGameId] = useState(null);
 
-  const { process, hasSchema, isAdministrator } = useSelector(
-    (state) => state.process
-  );
+  const { process, hasSchema, isAdministrator, tree } = useSelector((state) => state.process);
 
-  const [isIncentiveModuleActive, setIsIncentiveModuleActive] = useState(
-    process.incentive_and_rewards_state
-  );
+  const [isIncentiveModuleActive, setIsIncentiveModuleActive] = useState(process.incentive_and_rewards_state);
   const [logotype, setLogotype] = useState(null);
   const mounted = useMounted();
   const t = useCustomTranslation(process.language);
@@ -143,6 +140,27 @@ const SettingsTab = () => {
     setDialogOpenPublicationExample(true);
   };
 
+  const prepareGameTemplate = (tree) => {
+
+    const taskList = [];
+    for (const phase of tree) {
+      for (const objective of phase.children) {
+        for (const task of objective.children) {
+          if (task.type === 'task') {
+            taskList.push({
+              id: task.id,
+              management: task.management,
+              development: task.development,
+              exploitation: task.exploitation
+            });
+          }
+        }
+      }
+    }
+    return taskList;
+  };
+
+
   const TextField = (props) => (
     <>
       <Typography
@@ -167,26 +185,42 @@ const SettingsTab = () => {
     </>
   );
 
-  const toggleIncentivesRewards = () => {
+  const toggleIncentivesRewards = async () => {
     setIsIncentiveModuleActive((prev) => !prev);
 
-    //Active the incentive and reguards
+    //Active the incentive and rewards
     const values = { incentive_and_rewards_state: !isIncentiveModuleActive };
-    try {
-      dispatch(
-        updateProcess({
+    if (values.incentive_and_rewards_state) {
+      const taskList = prepareGameTemplate(tree);
+      let res = await gamesApi.setGame(process.id, taskList);
+      values["game_id"] = res.id;
+    } else {
+      gamesApi.deleteGame(process.game_id).then((res) => {
+        console.log(res);
+        dispatch(updateProcess({
           id: process.id,
-          data: values,
-          logotype,
-          onSuccess: () => {
-            if (mounted.current) {
-              //alert("se ha grabado la bandera")
-            }
-          },
-        })
-      );
+          data: { game_id: null },
+          logotype: false,
+          onSuccess: false
+        }));
+
+      })
+    }
+
+    try {
+      dispatch(updateProcess({
+        id: process.id,
+        data: values,
+        logotype,
+        onSuccess: () => {
+          if (mounted.current) {
+            console.log(process);
+          }
+        }
+      }));
     } catch (err) {
       console.error(err);
+
     }
   };
 
@@ -319,16 +353,21 @@ const SettingsTab = () => {
       />
 
       <Box sx={{ mx: 4 }}>
-        <Grid container direction="row" justifyContent="right" spacing={2}>
+        <Grid
+          container
+          direction='row'
+          justifyContent='right'
+          spacing={2}
+        >
           {!editMode && isAdministrator && (
             <Button
-              sx={{ mb: 3, justifyContent: "right", textAlign: "center" }}
-              variant="contained"
-              color="primary"
+              sx={{ mb: 3, justifyContent: 'right', textAlign: 'center' }}
+              variant='contained'
+              color='primary'
               onClick={() => setEditMode(true)}
               startIcon={<Edit />}
             >
-              {t("Edit coproduction process")}
+              {t('Edit coproduction process')}
             </Button>
           )}
         </Grid>
@@ -548,6 +587,7 @@ const SettingsTab = () => {
                   />
                 </Grid>
               </Grid>
+
             </Form>
           )}
         </Formik>

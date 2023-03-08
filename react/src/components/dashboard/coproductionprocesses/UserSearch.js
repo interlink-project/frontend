@@ -1,6 +1,6 @@
 import {
   Alert, Avatar, LinearProgress, Menu, MenuItem, Paper, TextField, Button, Snackbar, IconButton, Dialog,
-DialogActions, DialogContent, DialogContentText, DialogTitle
+  DialogActions, DialogContent, DialogContentText, DialogTitle
 } from '@mui/material';
 import { Info } from '@mui/icons-material';
 import useDependantTranslation from 'hooks/useDependantTranslation';
@@ -10,7 +10,7 @@ import { usersApi } from '__api__';
 import Papa from 'papaparse';
 import { ExportToCsv } from 'export-to-csv';
 
-const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organization_id = null }) => {
+const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organization_id = null, alert = true, importCsv = true, error = false }) => {
   const [loading, setLoading] = useState(false);
   const mounted = useMounted();
   const [searchResults, setSearchResults] = useState([]);
@@ -31,9 +31,9 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
 
   const handleCloseParseMsn = (reason) => {
     if (reason === 'clickaway') {
+      setFileParsedMsn(false);
       return;
     }
-    setFileParsedMsn(false);
   };
 
   const handleOpenDialog = () => {
@@ -50,7 +50,7 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
       quoteStrings: '"',
       filename: 'example',
       useTextFile: false,
-      useBom: true,      
+      useBom: true,
     };
     const csvExporter = new ExportToCsv(options);
     const data = [
@@ -119,24 +119,28 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
       useBom: true,
       headers: ['mails']
     };
+
     let csvExporter = new ExportToCsv(options);
     let rejected_users = [];
     Papa.parse(evt.target.files[0], {
       header: false,
       skipEmptyLines: true,
       complete: async function (results) {
-        console.log(results.data)
-        for (let i = 0; i < results.data.length; i++) {
-          await usersApi.search(results.data[i]).then((res) => {
-            if (res.length > 0 && !exclude.includes(res[0].id)) {
-              onClick(res[0]);
-            } else {
-              rejected_users.push(results.data[i]);
-            }
-          });
+        let users_toadd = [];
+        for (let u of results.data) {
+          const res = await usersApi.search(u);
+          if (res.length > 0 && !exclude.includes(res[0].id)) {
+            users_toadd.push(res[0]);
+            exclude.push(res[0].id);
+          } else {
+            rejected_users.push(u);
+          }
+          onClick(users_toadd);
+
         }
         if (rejected_users.length > 0) {
           setMailErrors(true)
+          console.log(rejected_users)
           csvExporter.generateCsv(rejected_users);
         }
         handleOpenParseMsn();
@@ -182,9 +186,10 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
           </Button>
         </DialogActions>
       </Dialog>
+      {alert && <Alert severity='warning'>{t('Only registered users can be added')}</Alert>}
 
-      <Alert severity='warning'>{t('Only registered users can be added')}</Alert>
       <TextField
+        error={error}
         sx={{ mt: 1 }}
         variant='standard'
         fullWidth
@@ -199,6 +204,7 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
         label={t('Type here to add users')}
       />
       {loading && <LinearProgress />}
+      { importCsv && <>
       <Button
         sx={{ mt: 2 }}
         variant="contained"
@@ -217,6 +223,7 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
         onClick={handleOpenDialog}>
         <Info />
       </IconButton>
+      </>}
       {open && (
         <Paper>
           <Menu

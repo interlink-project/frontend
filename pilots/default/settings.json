@@ -41,6 +41,10 @@
 				"contrastText": "#ffffff",
 				"main": "#ff9800"
 			},
+			"gold": {
+				"contrastText": "#000000",
+				"main": "#c7b50f"
+			},
 			"progressBarColor": "#d822a3"
 		},
 		"dark": {
@@ -73,6 +77,10 @@
 			"warning": {
 				"contrastText": "#ffffff",
 				"main": "#ff9800"
+			},
+			"gold": {
+				"contrastText": "#000000",
+				"main": "#c7b50f"
 			},
 			"progressBarColor": "#d822a3"
 		}

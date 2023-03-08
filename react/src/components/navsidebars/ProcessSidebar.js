@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Chip, Divider, Drawer, Skeleton, Stack, Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { AccountTree, ArrowBack, Dashboard, Folder, Group as GroupIcon, Settings, Timeline } from '@mui/icons-material';
+import { AccountTree, ArrowBack, Dashboard, Folder, Group as GroupIcon, Settings, Timeline, Leaderboard, MilitaryTech } from '@mui/icons-material';
 import { StatusChip } from 'components/Icons';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import PropTypes from 'prop-types';
@@ -19,7 +19,7 @@ const ProcessSidebar = (props) => {
   const location = useLocation();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
   const processId = process && process.id;
-
+  const game_id = process && process.game_id;
 
   const { t } = useDependantTranslation();
 
@@ -74,6 +74,12 @@ const ProcessSidebar = (props) => {
           path: `/dashboard/coproductionprocesses/${processId}/guide`,
           icon: <AccountTree />,
           disabled: !hasSchema
+        },
+        {
+          title: t('Leaderboard'),
+          path: `/dashboard/coproductionprocesses/${processId}/leaderboard`,
+          icon: <Leaderboard />,
+          disabled: !game_id
         },
         {
           title: t('Workplan'),
@@ -159,6 +165,14 @@ const ProcessSidebar = (props) => {
               label={LANGUAGES.find((el) => el.value === process.language).label}
             />
           ) : <Skeleton sx={{ width: 80, height: 45, m: 0, p: 0 }} />}
+          {!loading && !updating && game_id && 
+            <Chip
+              size='small'
+              color='gold'
+              label={'Incentives'}
+              icon={<MilitaryTech />}
+            />
+          }
 
         </Stack>
         <Divider />
