@@ -44,6 +44,11 @@ const Guide = ({ setSelectedTreeItem }) => {
     }
   };
 
+  let selectedPhaseTab_id=null;
+  if(selectedPhaseTab){
+    selectedPhaseTab_id=selectedPhaseTab.id;
+  }
+
   return (
     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
       <Grid container>
@@ -57,7 +62,7 @@ const Guide = ({ setSelectedTreeItem }) => {
           <ProcessPhaseTabs
             t={t}
             loading={updatingTree}
-            selectedId={showCoprod ? 'coproductionprocess' : selectedPhaseTab.id}
+            selectedId={showCoprod ? 'coproductionprocess' : selectedPhaseTab_id}
             phases={tree}
             onSelect={setNewPhaseTab}
           />
@@ -83,7 +88,10 @@ const Guide = ({ setSelectedTreeItem }) => {
                 showIcon
               />
             </Grid>
+            {selectedTreeItem &&
             <RightSide softwareInterlinkers={softwareInterlinkers} />
+            }
+              
           </>
         )}
       </Grid>

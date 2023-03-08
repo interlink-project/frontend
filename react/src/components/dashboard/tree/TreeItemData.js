@@ -124,8 +124,11 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   };
 
   const update = (selectedTreeItemId) => {
-    // dispatch(getTree(processId, selectedTreeItemId));
+    
+    dispatch(getTree(processId, selectedTreeItemId));
+    if(selectedTreeItemId){
     dispatch(setSelectedTreeItemById(selectedTreeItemId));
+    } 
   };
 
   const deleteTreeItem = () => {
@@ -137,14 +140,21 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     dispatch(setUpdatingTree(true));
     apis[element.type].delete(element.id).then(() => {
       let setSelectedTreeItem = null;
-      if (element.type === 'task') {
+      if (element.type === 'task') { 
         setSelectedTreeItem = element.objective_id;
       } else if (element.type === 'objective') {
         setSelectedTreeItem = element.phase_id;
       } else {
-        const nextPhase = treeitems.find((el) => el.id != element.id && el.type === 'phase');
-        setSelectedTreeItem = nextPhase.id;
+        //Change to the next possible phase that is not disabled
+        const nextPhase = treeitems.find((el) => el.id != element.id && el.type === 'phase' && el.is_disabled===false);
+        if(nextPhase){
+          setSelectedTreeItem = nextPhase.id;
+        }else{
+          setSelectedTreeItem=null;
+        }
       }
+      
+
       update(setSelectedTreeItem);
     });
   };

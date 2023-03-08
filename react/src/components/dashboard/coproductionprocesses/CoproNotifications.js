@@ -39,6 +39,7 @@ import { formatDistanceToNowStrict } from "date-fns";
 import GroupsIcon from "@mui/icons-material/Groups";
 import AddchartIcon from "@mui/icons-material/Addchart";
 import ArticleIcon from "@mui/icons-material/Article";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
 
 import { assetsApi } from "__api__";
 import { useEffect } from "react";
@@ -51,6 +52,7 @@ const iconsMap = {
   addresource: AddchartIcon,
   changeresource: ArticleIcon,
   defaulticon: LaptopMacIcon,
+  tree: AccountTreeIcon,
 };
 
 const useStyles = makeStyles((theme) => ({

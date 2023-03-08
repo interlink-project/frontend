@@ -61,11 +61,13 @@ const RightSide = ({ softwareInterlinkers }) => {
           setAssets([]);
         }
       });
-      tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
-        if (isTask && mounted.current && res) {
-          setContributions(res.assetsWithContribution);
-        }
-      });
+      if (isTask && mounted.current) {
+        tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
+          if(res){
+            setContributions(res.assetsWithContribution);
+          }  
+        });
+      }
     }
 
 

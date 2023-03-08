@@ -194,6 +194,7 @@ const Workplan = ({ setSelectedTreeItem }) => {
         item
         xs={12}
       >
+      {selectedPhaseTab && 
         <ProcessPhaseTabs
           t={t}
           selectedId={selectedPhaseTab.id}
@@ -203,7 +204,7 @@ const Workplan = ({ setSelectedTreeItem }) => {
             setSelectedTreeItem(treeitem);
           }}
         />
-        
+      }
         <ToggleButtonGroup
           color='primary'
           value={viewMode}

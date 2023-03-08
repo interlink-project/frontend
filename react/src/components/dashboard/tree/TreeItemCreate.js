@@ -57,11 +57,20 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
 
     const handleNext = async () => {
         setLoading(true)
-        var item = {
-            name,
-            description,
-            "prerequisites_ids": [prerequistes_id]
+        var item={}
+        if(prerequistes_id!=''){
+            item = {
+                name,
+                description,
+                "prerequisites_ids": [prerequistes_id]
+            }
+        }else{
+            item = {
+                name,
+                description
+            }
         }
+
 
         if (type === "phase") {
             item["coproductionprocess_id"] = process.id

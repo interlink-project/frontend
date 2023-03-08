@@ -155,7 +155,12 @@ const App = () => {
         if (event.includes("treeitem")) {
           if (event.includes("removed")) {
             if (selectedTreeItem.name === name) {
-              dispatch(getTree(process.id, selectedTreeItem.prerequisites_ids[0]))
+              if(selectedTreeItem.prerequisites_ids.length==0){
+                dispatch(getTree(process.id, selectedTreeItem.prerequisites_ids[0]))
+              }else{
+                dispatch(getTree(process.id))
+              }
+              
             } else {
               dispatch(getTree(process.id, selectedTreeItem.id))
             }
@@ -168,7 +173,13 @@ const App = () => {
             if (event.includes("removed")) {
               dispatch(getTree(process.id, selectedTreeItem.prerequisites_ids[0]))
             } else {
-              dispatch(getTree(process.id, selectedTreeItem.id))
+              if(selectedTreeItem){
+                dispatch(getTree(process.id, selectedTreeItem.id))
+              }else{
+                dispatch(getTree(process.id))
+              }
+
+              
             }
 
           } else if (event.includes("coproductionprocess_removed")) {

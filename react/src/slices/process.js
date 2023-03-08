@@ -96,7 +96,11 @@ const slice = createSlice({
     },
     setSelectedTreeItemById(state, action) {
       state.selectedTreeItem = state.treeitems.find((el) => el.id === action.payload);
+      if (state.selectedTreeItem){
       state.selectedPhaseTab = state.selectedTreeItem.type === 'phase' ? state.selectedTreeItem : state.treeitems.find((el) => el.id === state.selectedTreeItem.phase_id);
+      }else{
+        state.selectedPhaseTab =null;
+      }
     },
     setProcess(state, action) {
       state.process = action.payload;
@@ -180,7 +184,7 @@ export const getTree = (processId, selectedTreeItemId = null) => async (dispatch
   dispatch(slice.actions.setUpdatingTree(true));
   const treeData = await coproductionProcessesApi.getTree(processId) || [];
   dispatch(slice.actions.setProcessTree(treeData));
-  selectedTreeItemId && dispatch(slice.actions.setSelectedTreeItemById(selectedTreeItemId));
+  dispatch(slice.actions.setSelectedTreeItemById(selectedTreeItemId));
   dispatch(slice.actions.setUpdatingTree(false));
 };
 
