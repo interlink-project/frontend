@@ -1,5 +1,6 @@
 import {
   List,
+  Paper,
   ListItem,
   ListItemButton,
   ListItemIcon,
@@ -56,6 +57,8 @@ import { withStyles } from "@mui/styles";
 import useAuth from "hooks/useAuth";
 import { getSelectedStory } from "slices/general";
 import { Link } from "react-router-dom";
+import InterlinkAnimation from "components/home/InterlinkLoading";
+import { styled } from "@mui/material/styles";
 
 const SettingsTab = () => {
   const { user } = useAuth();
@@ -282,6 +285,20 @@ const SettingsTab = () => {
       navigate("/dashboard/coproductionprocesses/" + process.id + "/settings");
     });
   };
+
+  const logoStyle = {
+    width: "300px",
+    height: "auto",
+  };
+
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  }));
+
 
   return (
     <Box style={{ minHeight: "87vh", backgroundColor: "background.default" }}>
@@ -971,7 +988,79 @@ const SettingsTab = () => {
           {/* )} */}
         </DialogContent>
       </Dialog>
+
+      <Dialog
+        open={isPublishing}
+        onClose={() => setIsPublishing(false)}
+      >
+        <IconButton
+          aria-label="close"
+          onClick={() => setIsPublishing(false)}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <Close />
+        </IconButton>
+
+      <DialogContent sx={{ p: 2 }}>
+          <Stack spacing={2}>
+            <Item>
+              <div style={logoStyle}>
+                <InterlinkAnimation />
+              </div>
+            </Item>
+            <Item>
+              <div>Publishing the Story please wait.</div>
+            </Item>
+            <Item>
+              <div>The process could last some minutes.</div>
+            </Item>
+          </Stack>
+        </DialogContent>
+ </Dialog>
+
+ <Dialog
+        open={isCloning}
+        onClose={() => setIsCloning(false)}
+      >
+        <IconButton
+          aria-label="close"
+          onClick={() => setIsCloning(false)}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <Close />
+        </IconButton>
+
+      <DialogContent sx={{ p: 2 }}>
+          <Stack spacing={2}>
+            <Item>
+              <div style={logoStyle}>
+                <InterlinkAnimation />
+              </div>
+            </Item>
+            <Item>
+              <div>Cloning the project please wait.</div>
+            </Item>
+            <Item>
+              <div>The process could last some minutes.</div>
+            </Item>
+          </Stack>
+        </DialogContent>
+ </Dialog>
+
+
     </Box>
+
+
   );
 };
 
