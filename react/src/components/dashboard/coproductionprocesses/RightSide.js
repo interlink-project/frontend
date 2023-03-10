@@ -423,13 +423,12 @@ const RightSide = ({ softwareInterlinkers }) => {
               label={`${t('Permissions')} (${selectedTreeItem.permissions.length})`}
               />
               )}
-              contributions
-              { (!isLocationCatalogue & isTask & isAdministrator & !process.is_part_of_publication) && (
+              {/* { (!isLocationCatalogue && isTask && isAdministrator && !process.is_part_of_publication) && (
               <Tab
                 value='contributions'
                 label={`${t('Contributions')} (${obtenerNroContributions(contributions)})`}
               />
-              )}
+              )} */}
               
              
             </Tabs>

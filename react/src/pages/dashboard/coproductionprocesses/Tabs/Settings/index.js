@@ -795,7 +795,7 @@ const SettingsTab = () => {
         </Card>
 
         {/* Reward */}
-        <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
+        {/* <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
           <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
             {t("Reward system")}
           </Typography>
@@ -819,7 +819,7 @@ const SettingsTab = () => {
               "If you disable the Reward system every data will be deleted, so if you want to enable again this option, you will not able to restore the old data."
             )}
           </Alert>
-        </Card>
+        </Card> */}
 
 </>
 

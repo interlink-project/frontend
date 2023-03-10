@@ -56,9 +56,9 @@ const ContributionsTabs = ({ contributions }) => {
 
     const handleCloseTask = async () => {
         console.log("CLOSE TASK");
+        console.log(rows);
         for (let row of rows) {
-            // console.log(row);
-            // console.log(CONTRIBUTION_LEVELS[row.contribution]);
+            console.log(row);
             await gamesApi.addClaim(process.game_id,
                 selectedTreeItem.id,
                 row.id,
