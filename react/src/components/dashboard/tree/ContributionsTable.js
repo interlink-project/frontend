@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button, Dialog, IconButton, DialogContent } from '@mui/material';
 import { DataGrid, GridApi } from '@mui/x-data-grid';
 import clsx from 'clsx';
@@ -97,7 +97,9 @@ export default function ContributionsTable({ rows, assets, closedTask }) {
         rowsPerPageOptions={[5, 10, 20]}
         rows={stateRows}
         columns={columns}
-        experimentalFeatures={{ newEditingApi: true }}
+        onCellEditCommit={(props, event) => {
+          rows[rows.findIndex((row) => row.id === props.id)][props.field] = props.value;
+        }}
         sx={{
           boxShadow: 1,
           // border: 1,

@@ -180,9 +180,9 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={downloadExampleFile}>Download example</Button>
+          <Button onClick={downloadExampleFile}>{t('Download example')}</Button>
           <Button onClick={handleCloseDialog} autoFocus>
-            Okay
+            {t('Okay')}
           </Button>
         </DialogActions>
       </Dialog>
