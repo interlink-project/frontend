@@ -239,6 +239,8 @@ const RightSide = ({ softwareInterlinkers }) => {
     const actions = [];
 
     let dataExtra = {};
+
+    if (asset.type=='internalasset'){
     dataExtra['capabilities']={
       "clone": asset['software_response']['clone'],
       "view": asset['software_response']['view'],
@@ -246,6 +248,7 @@ const RightSide = ({ softwareInterlinkers }) => {
       "delete": asset['software_response']['delete'],
       "download": asset['software_response']['download'],
     }
+  }
 
     if (asset.type === 'internalasset' && dataExtra.capabilities) {
       //const { id, capabilities } = asset;
@@ -380,6 +383,19 @@ const RightSide = ({ softwareInterlinkers }) => {
           icon: <Delete fontSize='small' />
         });
       }
+
+      actions.push({
+        id: `${id}-claim-action`,
+        loading: loading === 'clain',
+        onClick: (closeMenuItem) => {
+          handleClaim(asset);
+          closeMenuItem();
+        },
+        text: t('Claim'),
+        icon: <RecordVoiceOver fontSize='small' />
+      });
+
+
     }
 
     return actions;

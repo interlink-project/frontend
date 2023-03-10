@@ -74,6 +74,9 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
   let data=asset
   let dataExtra={}
 
+  if(asset.type=='externalasset'){
+    
+  }else{
   //Add extra information needed:
   const backend =asset['software_response']['backend'];
   dataExtra['link']=backend+'/'+asset['external_asset_id'];
@@ -99,6 +102,8 @@ dataExtra['softwareinterlinker']=null
   }
   }
   
+}
+
   //const [loading, setLoading] = useState('data');
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -168,7 +173,7 @@ dataExtra['softwareinterlinker']=null
     if (isInternal) {
       window.open(`${dataExtra.link}/view`, '_blank');
     } else {
-      window.open(dataExtra.uri);
+      window.open(data.uri);
     }
   };
 
