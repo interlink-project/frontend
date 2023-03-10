@@ -128,11 +128,13 @@ export default function CoproNotifications({ mode = "notification" }) {
     return text;
   };
 
-  const includeObjectNames = (text) => {
+  const includeObjectNames = (text,subtitle) => {
+
     //Search and reemplace que assetName and icon
     const paramsPattern = /[^{}]+(?=})/g;
     let extractParams = text.match(paramsPattern);
     //Loop over each parameter value and replace in the text
+    
     if (extractParams) {
       extractParams = [...new Set(extractParams)];
       for (let i = 0; i < extractParams.length; i++) {
@@ -143,10 +145,12 @@ export default function CoproNotifications({ mode = "notification" }) {
 
           if (entidadName == "assetid") {
             //Obtain the asset name:
-
+            let hasAssetRights=false;
             //Busco si existe el asset en el listado temporal:
             for (let i = 0; i < assetsList.length; i++) {
               if(assetsList[i].id==entidadId){
+                hasAssetRights=true;
+
                 const assetName=assetsList[i]['internalData']['name'];
                 const assetIcon=assetsList[i]['internalData']['icon'];
 
@@ -168,32 +172,11 @@ export default function CoproNotifications({ mode = "notification" }) {
               }
             }
 
+            if (!hasAssetRights){
+              text= includeObjectNames(subtitle,'')
+              return text;
+            }
 
-            /* if (!assetsList.includes(entidadId)) {
-              //listAssets.push(entidadId);
-              //alert('retrive the data');
-              assetsApi.getInternal(entidadId).then((res) => {
-                const assetdata = res;
-                const assetName = assetdata.name.replace(
-                  /(^\w{1})|(\s+\w{1})/g,
-                  (letter) => letter.toUpperCase()
-                );
-                const nodes = document.getElementsByClassName(
-                  "lk_" + entidadId
-                );
-
-                for (let i = 0; i < nodes.length; i++) {
-                  nodes[i].innerHTML = assetName;
-                }
-
-                const nodes2 = document.getElementsByClassName(
-                  "im_" + entidadId
-                );
-                for (let i = 0; i < nodes.length; i++) {
-                  nodes2[i].src = assetdata.icon;
-                }
-              });
-            } */
           }
         }
       }
@@ -278,7 +261,12 @@ export default function CoproNotifications({ mode = "notification" }) {
                           copronotification.notification.text,
                           copronotification.parameters,
                           copronotification.id
-                        )
+                        ),
+                        includeParametersValues(
+                          copronotification.notification.subtitle,
+                          copronotification.parameters,
+                          copronotification.id
+                        ),
                       ),
                     }}
                   />
