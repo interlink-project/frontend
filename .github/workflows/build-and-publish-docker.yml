@@ -49,7 +49,7 @@ jobs:
           push: true
           tags: |
             interlinkproject/frontend-docs:${{ github.ref_name }}
-            interlinkproject/frontend-docs.${{ github.ref_name }}.${{ github.ref_name }}
+            interlinkproject/frontend-docs:${{ github.ref_name }}.${{ github.ref_name }}
           cache-from: type=registry,ref=interlinkproject/frontend-docs:buildcache
           cache-to: type=registry,ref=interlinkproject/frontend-docs:buildcache,mode=max
       - name: Trigger Dev Deployment
