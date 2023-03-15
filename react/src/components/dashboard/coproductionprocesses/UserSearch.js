@@ -29,11 +29,8 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
     setFileParsedMsn(true);
   };
 
-  const handleCloseParseMsn = (reason) => {
-    if (reason === 'clickaway') {
-      setFileParsedMsn(false);
-      return;
-    }
+  const handleCloseParseMsn = () => {
+    setFileParsedMsn(false);
   };
 
   const handleOpenDialog = () => {
