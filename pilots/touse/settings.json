@@ -41,10 +41,6 @@
 				"contrastText": "#ffffff",
 				"main": "#ff9800"
 			},
-			"gold": {
-				"contrastText": "#000000",
-				"main": "#c7b50f"
-			},
 			"high_contribution": {
 				"main": "#44C949",
 				"contrastText": "#000000"
@@ -89,10 +85,6 @@
 			"warning": {
 				"contrastText": "#ffffff",
 				"main": "#ff9800"
-			},
-			"gold": {
-				"contrastText": "#000000",
-				"main": "#c7b50f"
 			},
 			"high_contribution": {
 				"main": "#44C949",
