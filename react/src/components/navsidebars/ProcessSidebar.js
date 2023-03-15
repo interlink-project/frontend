@@ -168,7 +168,7 @@ const ProcessSidebar = (props) => {
           {!loading && !updating && game_id && 
             <Chip
               size='small'
-              color='default'
+              color='gold'
               label={'Incentives'}
               icon={<MilitaryTech />}
             />

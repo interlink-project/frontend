@@ -96,8 +96,10 @@ const initialSettings = {
           main: '#ff9800'
         },
         gold: {
-          contrastText: '#000000',
-          main: '#f7b50f'
+          light: '#f7b50f',
+          main: '#f7b50f',
+          dark: '#f7b50f',
+          contrastText: '#000',
         },
         high_contribution: {
           main: "#44C949",
