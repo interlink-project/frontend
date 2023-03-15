@@ -314,5 +314,6 @@
   "Anyone (the organization must be public)": "Anyone (the organization must be public)",
   "Import from csv": "Import from CSV",
   "Some of the users could not be added. Check the csv file with the rejected mails": "Some of the users could not be added. Check the csv file with the rejected mails",
-  "All the users have been added successfully": "All the users have been added successfully"
+  "All the users have been added successfully": "All the users have been added successfully",
+  "Level of contribution": "Level of contribution"
 }

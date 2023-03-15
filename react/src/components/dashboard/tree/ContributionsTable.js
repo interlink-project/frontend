@@ -89,7 +89,6 @@ export default function ContributionsTable({ rows, assets, closedTask }) {
   return (
     <>
       <DataGrid
-        // loading={loading}
         autoHeight
         disableSelectionOnClick
         pageSize={pageSize}

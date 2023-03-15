@@ -1,5 +1,5 @@
 import { Avatar, AvatarGroup, Box, SvgIcon } from '@mui/material';
-import { People, ArrowForwardIos, Circle, LastPage, PlayArrow } from '@mui/icons-material';
+import { People, ArrowForwardIos, Circle, LastPage, PlayArrow, WorkspacePremium } from '@mui/icons-material';
 import { TreeView } from '@mui/lab';
 import { statusIcon, TreeItemTypeChip } from 'components/Icons';
 import { StyledTreeItem } from 'components/dashboard/tree';
@@ -204,7 +204,8 @@ const StyledTree = ({ language, parent, selectedTreeItem, setSelectedTreeItem, s
               >
                 {objective.children.map((task) => !task.is_disabled && (
                   <StyledTreeItem
-                    icon={showIcon && statusIcon(task.status)}
+                    icon={                   
+                      showIcon && (task.status === 'finished' && process.game_id ? <WorkspacePremium /> : statusIcon(task.status))}
                     key={task.id}
                     nodeId={task.id}
                     label={(

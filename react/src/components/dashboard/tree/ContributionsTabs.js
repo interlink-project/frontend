@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import ContributionsTable from 'components/dashboard/tree/ContributionsTable';
-import { gamesApi, usersApi, coproductionprocessnotificationsApi } from '__api__';
+import { gamesApi, usersApi, coproductionprocessnotificationsApi, tasksApi } from '__api__';
 import { IconButton, Box, Button, Dialog, DialogTitle, DialogContent, Select, InputLabel, MenuItem, DialogActions, TextField, Typography, Grid } from '@mui/material';
 import ConfirmationButton from 'components/ConfirmationButton';
 import { LoadingButton } from '@mui/lab';
@@ -10,6 +10,7 @@ import { Delete, Edit, Save, Close } from '@mui/icons-material';
 import { useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import ContributionCard from './ContributionCard';
 
 
 
@@ -69,6 +70,10 @@ const ContributionsTabs = ({ contributions }) => {
             console.log(res);
             setClosedTask(true);
         });
+        tasksApi.update(selectedTreeItem.id, { "status": "finished" }).then((res) => {
+            console.log(res);
+        }
+        );
     };
 
     useEffect(() => {
@@ -110,300 +115,323 @@ const ContributionsTabs = ({ contributions }) => {
 
     return (
         <>
-            {/* Header */}
-            <Grid container sx={{ p: 2 }}>
-                <Grid item xs={6}>
+            {!closedTask ? (
+                <>
+                    {/* Header */}
+                    < Grid container sx={{ p: 2 }
+                    }>
+                        <Grid item xs={6}>
 
-                    <Typography variant="h3" sx={{}}>
-                        Contributions
-                    </Typography>
-                </Grid>
-                <Grid item xs={6} sx={{ position: "relative" }}>
-                    {!closedTask &&
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleAddRow}
+                            <Typography variant="h3" sx={{}}>
+                                Contributions
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={6} sx={{ position: "relative" }}>
+
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleAddRow}
+                                sx={{
+                                    position: "absolute",
+                                    bottom: 0,
+                                    right: 0,
+                                }}>
+                                Add a row
+                            </Button>
+
+                        </Grid>
+                    </Grid >
+                    {/* Table */}
+                    < ContributionsTable
+                        rows={rows}
+                        assets={contributions}
+                        closedTask={closedTask}
+                    />
+                    {/* Button for closing the task and giving the points */}
+                    <Box sx={{ p: 2, float: 'right' }}>
+                        <ConfirmationButton
+                            Actionator={({ onClick }) => (
+                                <Button
+                                    variant='contained'
+                                    // disabled={!isAdministrator}
+                                    color='warning'
+                                    onClick={onClick}
+                                    startIcon={<Delete />}
+                                >
+                                    {t('Award points')}
+                                </Button>
+                            )}
+                            ButtonComponent={({ onClick }) => (
+                                <Button
+                                    sx={{ mt: 1 }}
+                                    fullWidth
+                                    variant='contained'
+                                    color='warning'
+                                    onClick={onClick}
+                                >
+                                    {t('Confirm closing the task')}
+                                </Button>
+                            )}
+                            onClick={handleCloseTask}
+                            text={t('Are you sure?')}
+                        />
+                    </Box>
+
+
+                    <Dialog
+                        open={claimDialogOpen}
+                        onClose={handleCloseDialog}
+                    >
+                        <IconButton
+                            aria-label='close'
+                            onClick={() => handleCloseDialog}
                             sx={{
-                                position: "absolute",
-                                bottom: 0,
-                                right: 0,
-                            }}>
-                    Add a row
-                </Button>
-                    }
-            </Grid>
-        </Grid>
-            {/* Table */ }
-    <ContributionsTable
-        rows={rows}
-        assets={contributions}
-        closedTask={closedTask}
-    />
-    {/* Button for closing the task and giving the points */ }
-    {
-        !closedTask &&
-            <Box sx={{ p: 2, float: 'right' }}>
-                <ConfirmationButton
-                    Actionator={({ onClick }) => (
-                        <Button
-                            variant='contained'
-                            // disabled={!isAdministrator}
-                            color='warning'
-                            onClick={onClick}
-                            startIcon={<Delete />}
+                                position: 'absolute',
+                                right: 8,
+                                top: 8,
+                                color: (theme) => theme.palette.grey[500],
+                            }}
                         >
-                            {t('Close the task')}
-                        </Button>
-                    )}
-                    ButtonComponent={({ onClick }) => (
-                        <Button
-                            sx={{ mt: 1 }}
-                            fullWidth
-                            variant='contained'
-                            color='warning'
-                            onClick={onClick}
-                        >
-                            {t('Confirm closing the task')}
-                        </Button>
-                    )}
-                    onClick={handleCloseTask}
-                    text={t('Are you sure?')}
-                />
+                            <Close />
+                        </IconButton>
+
+                        <DialogContent sx={{ p: 2 }}>
+                            <Formik
+                                initialValues={{
+                                    user: '',
+                                    asset: '',
+                                    title: '',
+                                    description: '',
+                                }}
+                                validationSchema={Yup.object().shape({
+                                    title: Yup.string()
+                                        .min(3, 'Must be at least 3 characters')
+                                        .max(255)
+                                        .required('Required'),
+                                    description: Yup.string()
+                                        .min(3, 'Must be at least 3 characters')
+                                        .required('Required'),
+                                    user: Yup.object().required('Required'),
+                                    asset: Yup.object().required('Required'),
+
+                                })}
+                                onSubmit={(values, { setErrors, setStatus, setSubmitting }) => {
+                                    setSubmitting(true);
+
+                                    const selectedAsset = values.asset;
+
+                                    //Defino el link del asset
+                                    let selectedAssetLink = '';
+                                    let selectedAssetIcon = '';
+                                    let selectedShowIcon = '';
+                                    let selectedShowLink = '';
+                                    if (selectedAsset.type == 'externalasset') {
+                                        //Is external
+                                        selectedAssetLink = selectedAsset.uri;
+                                        selectedAssetIcon = selectedAsset.icon_path;
+                                        selectedShowIcon = '';
+                                        selectedShowLink = 'hidden';
+
+                                    } else {
+                                        //Is internal
+                                        selectedAssetLink = selectedAsset.link + '/view'
+                                        selectedShowIcon = '';
+                                        selectedShowLink = 'hidden';
+                                    }
+
+                                    const parametersList = {
+                                        assetId: selectedAsset.id,
+                                        assetName: '{assetid:' + selectedAsset.id + '}',
+                                        assetLink: selectedAssetLink,
+                                        assetIcon: selectedAssetIcon,
+                                        commentTitle: values.title,
+                                        commentDescription: values.description,
+                                        treeitem_id: selectedTreeItem.id,
+                                        treeItemName: selectedTreeItem.name,
+                                        copro_id: process.id,
+                                        showIcon: selectedShowIcon,
+                                        showLink: selectedShowLink
+                                    };
+                                    const paramListJson = JSON.stringify(parametersList)
+                                    const dataToSend = {
+                                        coproductionprocess_id: process.id,
+                                        notification_event: 'add_contribution_asset',
+                                        asset_id: selectedAsset.id,
+                                        parameters: paramListJson,
+                                        claim_type: 'Development',
+                                        user_id: values.user.id
+                                    };
+
+                                    coproductionprocessnotificationsApi.createbyEvent(dataToSend).then((res) => {
+                                        setStatus({ success: true });
+                                        setSubmitting(false);
+                                        // getAssets();
+                                        handleCloseDialog();
+
+                                    }).catch((err) => {
+                                        setStatus({ success: false });
+                                        setErrors({ submit: err });
+                                        console.log(err);
+                                        setSubmitting(false);
+                                    });
+
+
+                                }}
+                            >
+                                {({
+                                    errors,
+                                    handleBlur,
+                                    handleChange,
+                                    handleSubmit,
+                                    isSubmitting,
+                                    setFieldValue,
+                                    setFieldTouched,
+                                    touched,
+                                    values,
+                                }) => (
+                                    <form onSubmit={handleSubmit}>
+                                        <Box sx={{ mt: 3 }}>
+
+                                            <Typography variant="h6" component="h2">
+                                                Introduce the details of the contribution:
+                                            </Typography>
+                                            {!contributor ?
+                                                <Box sx={{ mt: 3 }}>
+                                                    <InputLabel id="resource-select-label" sx={{ mt: 2, mb: -1 }}>User</InputLabel>
+                                                    <UserSearch
+                                                        error={Boolean(touched.user && errors.user)}
+                                                        alert={false}
+                                                        importCsv={false}
+                                                        onClick={(user) => {
+                                                            setFieldValue('user', user);
+                                                            setFieldTouched('user');
+                                                            setContributor(user);
+                                                        }} />
+                                                </Box>
+                                                :
+                                                <Grid container>
+                                                    <Grid item xs={10}>
+                                                        <TextField
+                                                            fullWidth
+                                                            sx={{ mt: 2 }}
+                                                            id="outlined-disabled"
+                                                            label="User"
+                                                            value={values.user.full_name}
+                                                            InputProps={{
+                                                                readOnly: true,
+                                                            }}
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={2}>
+                                                        <IconButton
+                                                            aria-label='close'
+                                                            sx={{
+                                                                verticalAlign: 'center',
+                                                            }}
+                                                            onClick={() => {
+                                                                setContributor(null);
+                                                                setFieldValue('user', '');
+                                                            }}
+                                                        >
+                                                            <Close />
+                                                        </IconButton>
+                                                    </Grid>
+                                                </Grid>
+                                            }
+
+                                            <InputLabel id="resource-select-label" sx={{ mt: 2 }}>Resource</InputLabel>
+                                            <Select
+                                                required
+                                                error={Boolean(touched.asset && errors.asset)}
+                                                helperText={touched.asset && errors.asset}
+                                                onBlur={handleBlur}
+                                                labelId="resource-select-label"
+                                                id="resource-select"
+                                                value={values.asset}
+                                                name='asset'
+                                                onChange={handleChange}
+                                                onClick={() => setFieldTouched('asset')}
+                                                // onChange={(event) => {
+                                                //     setAsset(event.target.value);
+                                                // }}
+                                                sx={{ width: '100%', mt: 1 }}
+                                            >
+                                                {assetsList.map(el => <MenuItem key={el.id} value={el}>{el.internalData.name}</MenuItem>)}
+
+                                            </Select>
+
+                                            <Typography variant="h6" component="h5" sx={{ mt: 2 }}>
+                                                Contribution
+                                            </Typography>
+                                            <TextField
+                                                required
+                                                error={Boolean(touched.title && errors.title)}
+                                                fullWidth
+                                                helperText={touched.title && errors.title}
+                                                label='Title'
+                                                name='title'
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                onClick={() => setFieldTouched('title')}
+                                                value={values.title}
+                                                variant='outlined'
+                                                sx={{ mt: 1 }}
+                                            />
+                                            <TextField
+                                                required
+                                                sx={{ mt: 2 }}
+                                                rows={4}
+                                                multiline
+                                                error={Boolean(touched.description && errors.description)}
+                                                fullWidth
+                                                helperText={touched.description && errors.description}
+                                                label='Description'
+                                                name='description'
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                onClick={() => setFieldTouched('description')}
+                                                value={values.description}
+                                                variant='outlined'
+                                            />
+
+                                            <LoadingButton
+                                                sx={{ mt: 2 }}
+                                                variant='contained'
+                                                fullWidth
+                                                loading={isSubmitting}
+                                                onClick={handleSubmit}
+                                            >
+                                                {t('Claim')}
+                                            </LoadingButton>
+                                        </Box>
+                                    </form>
+                                )}
+                            </Formik>
+                        </DialogContent>
+                    </Dialog>
+                </>
+            ) : (<>
+            
+            <Typography variant="h3" component="h2">
+                {t("List of contributors")}
+            </Typography>
+
+            <Box sx={{ mt: 3 }}>
+                <Grid container spacing={2}>
+                    {rows.map((row) => (
+                        <Grid item xs={12} md={6} lg={4} key={row.id}>
+                            <ContributionCard 
+                            user_id={row.id}
+                            name={row.name}
+                            contribution_level={row.contribution} />
+                        </Grid>
+                    ))}
+                </Grid>
             </Box>
-    }
+            
 
-    <Dialog
-        open={claimDialogOpen}
-        onClose={handleCloseDialog}
-    >
-        <IconButton
-            aria-label='close'
-            onClick={() => handleCloseDialog}
-            sx={{
-                position: 'absolute',
-                right: 8,
-                top: 8,
-                color: (theme) => theme.palette.grey[500],
-            }}
-        >
-            <Close />
-        </IconButton>
-
-        <DialogContent sx={{ p: 2 }}>
-            <Formik
-                initialValues={{
-                    user: '',
-                    asset: '',
-                    title: '',
-                    description: '',
-                }}
-                validationSchema={Yup.object().shape({
-                    title: Yup.string()
-                        .min(3, 'Must be at least 3 characters')
-                        .max(255)
-                        .required('Required'),
-                    description: Yup.string()
-                        .min(3, 'Must be at least 3 characters')
-                        .required('Required'),
-                    user: Yup.object().required('Required'),
-                    asset: Yup.object().required('Required'),
-
-                })}
-                onSubmit={(values, { setErrors, setStatus, setSubmitting }) => {
-                    setSubmitting(true);
-
-                    const selectedAsset = values.asset;
-
-                    //Defino el link del asset
-                    let selectedAssetLink = '';
-                    let selectedAssetIcon = '';
-                    let selectedShowIcon = '';
-                    let selectedShowLink = '';
-                    if (selectedAsset.type == 'externalasset') {
-                        //Is external
-                        selectedAssetLink = selectedAsset.uri;
-                        selectedAssetIcon = selectedAsset.icon_path;
-                        selectedShowIcon = '';
-                        selectedShowLink = 'hidden';
-
-                    } else {
-                        //Is internal
-                        selectedAssetLink = selectedAsset.link + '/view'
-                        selectedShowIcon = '';
-                        selectedShowLink = 'hidden';
-                    }
-
-                    const parametersList = {
-                        assetId: selectedAsset.id,
-                        assetName: '{assetid:' + selectedAsset.id + '}',
-                        assetLink: selectedAssetLink,
-                        assetIcon: selectedAssetIcon,
-                        commentTitle: values.title,
-                        commentDescription: values.description,
-                        treeitem_id: selectedTreeItem.id,
-                        treeItemName: selectedTreeItem.name,
-                        copro_id: process.id,
-                        showIcon: selectedShowIcon,
-                        showLink: selectedShowLink
-                    };
-                    const paramListJson = JSON.stringify(parametersList)
-                    const dataToSend = {
-                        coproductionprocess_id: process.id,
-                        notification_event: 'add_contribution_asset',
-                        asset_id: selectedAsset.id,
-                        parameters: paramListJson,
-                        claim_type: 'Development',
-                        user_id: values.user.id
-                    };
-
-                    coproductionprocessnotificationsApi.createbyEvent(dataToSend).then((res) => {
-                        setStatus({ success: true });
-                        setSubmitting(false);
-                        // getAssets();
-                        handleCloseDialog();
-
-                    }).catch((err) => {
-                        setStatus({ success: false });
-                        setErrors({ submit: err });
-                        console.log(err);
-                        setSubmitting(false);
-                    });
-
-
-                }}
-            >
-                {({
-                    errors,
-                    handleBlur,
-                    handleChange,
-                    handleSubmit,
-                    isSubmitting,
-                    setFieldValue,
-                    setFieldTouched,
-                    touched,
-                    values,
-                }) => (
-                    <form onSubmit={handleSubmit}>
-                        <Box sx={{ mt: 3 }}>
-
-                            <Typography variant="h6" component="h2">
-                                Introduce the details of the contribution:
-                            </Typography>
-                            {!contributor ?
-                                <Box sx={{ mt: 3 }}>
-                                    <InputLabel id="resource-select-label" sx={{ mt: 2, mb: -1 }}>User</InputLabel>
-                                    <UserSearch
-                                        error={Boolean(touched.user && errors.user)}
-                                        alert={false}
-                                        importCsv={false}
-                                        onClick={(user) => {
-                                            setFieldValue('user', user);
-                                            setFieldTouched('user');
-                                            setContributor(user);
-                                        }} />
-                                </Box>
-                                :
-                                <Grid container>
-                                    <Grid item xs={10}>
-                                        <TextField
-                                            fullWidth
-                                            sx={{ mt: 2 }}
-                                            id="outlined-disabled"
-                                            label="User"
-                                            value={values.user.full_name}
-                                            InputProps={{
-                                                readOnly: true,
-                                            }}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={2}>
-                                        <IconButton
-                                            aria-label='close'
-                                            sx={{
-                                                verticalAlign: 'center',
-                                            }}
-                                            onClick={() => {
-                                                setContributor(null);
-                                                setFieldValue('user', '');
-                                            }}
-                                        >
-                                            <Close />
-                                        </IconButton>
-                                    </Grid>
-                                </Grid>
-                            }
-
-                            <InputLabel id="resource-select-label" sx={{ mt: 2 }}>Resource</InputLabel>
-                            <Select
-                                required
-                                error={Boolean(touched.asset && errors.asset)}
-                                helperText={touched.asset && errors.asset}
-                                onBlur={handleBlur}
-                                labelId="resource-select-label"
-                                id="resource-select"
-                                value={values.asset}
-                                name='asset'
-                                onChange={handleChange}
-                                onClick={() => setFieldTouched('asset')}
-                                // onChange={(event) => {
-                                //     setAsset(event.target.value);
-                                // }}
-                                sx={{ width: '100%', mt: 1 }}
-                            >
-                                {assetsList.map(el => <MenuItem key={el.id} value={el}>{el.internalData.name}</MenuItem>)}
-
-                            </Select>
-
-                            <Typography variant="h6" component="h5" sx={{ mt: 2 }}>
-                                Contribution
-                            </Typography>
-                            <TextField
-                                required
-                                error={Boolean(touched.title && errors.title)}
-                                fullWidth
-                                helperText={touched.title && errors.title}
-                                label='Title'
-                                name='title'
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                onClick={() => setFieldTouched('title')}
-                                value={values.title}
-                                variant='outlined'
-                                sx={{ mt: 1 }}
-                            />
-                            <TextField
-                                required
-                                sx={{ mt: 2 }}
-                                rows={4}
-                                multiline
-                                error={Boolean(touched.description && errors.description)}
-                                fullWidth
-                                helperText={touched.description && errors.description}
-                                label='Description'
-                                name='description'
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                onClick={() => setFieldTouched('description')}
-                                value={values.description}
-                                variant='outlined'
-                            />
-
-                            <LoadingButton
-                                sx={{ mt: 2 }}
-                                variant='contained'
-                                fullWidth
-                                loading={isSubmitting}
-                                onClick={handleSubmit}
-                            >
-                                {t('Claim')}
-                            </LoadingButton>
-                        </Box>
-                    </form>
-                )}
-            </Formik>
-        </DialogContent>
-    </Dialog>
+            </>)}
         </>
     );
 }
