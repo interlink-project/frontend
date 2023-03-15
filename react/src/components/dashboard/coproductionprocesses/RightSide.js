@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProcess, getTree, setUpdatingTree } from 'slices/process';
 import { information_about_translations } from 'utils/someCommonTranslations';
 import * as Yup from 'yup';
-import { assetsApi, permissionsApi, assetsDataApi, coproductionprocessnotificationsApi, tasksApi, gamesApi } from '__api__';
+import { assetsApi, permissionsApi, coproductionprocessnotificationsApi, tasksApi, gamesApi } from '__api__';
 import NewAssetModal from 'components/dashboard/coproductionprocesses/NewAssetModal';
 import { useLocation } from 'react-router';
 import { getAssetsList_byTask } from 'slices/general';
@@ -159,9 +159,16 @@ const RightSide = ({ softwareInterlinkers }) => {
   };
 
   const handleOpen = (asset) => {
+    console.log(asset);
     if (asset.type === 'internalasset') {
-      window.open(`${asset.link}/view`, '_blank');
+
+      const backend =asset['software_response']['backend'];
+      const linktoAsset =backend+'/'+asset['external_asset_id'];
+      
+
+      window.open(`${linktoAsset}/view`, '_blank');
     } else {
+      //alert('external',asset.uri);
       window.open(asset.uri);
     }
   };
