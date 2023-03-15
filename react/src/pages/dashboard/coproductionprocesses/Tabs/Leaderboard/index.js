@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { gamesApi } from '__api__';
+import { gamesApi, usersApi } from '__api__';
 import { AppBar, Box, Paper, Tab, Tabs, Grid, Typography } from '@mui/material';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import OverallLeaderboard from 'components/dashboard/coproductionprocesses/OverallLeaderboard';
@@ -32,22 +32,19 @@ const LeaderboardTab = ({ }) => {
     const [users, setUsers] = useState([]);
 
 
-    const handleGame = (game) => {
+    const handleLeaderboard = async (game) => {
         const users = [];
-        for (let task of game.taskList) {
-            for (let player of task.players) {
-                if (users.find((user) => user.id === player.id)) {
-                    users.find((user) => user.id === player.id).development += player.development;
-                } else {
-                    users.push({id: player.id, name: player.name, development: player.development});
-                    
-                }
-            }
+        for (let player of game.content) {
+            console.log(player.playerId);
+            let user = await usersApi.get(player.playerId);
+            console.log(user);
+            users.push({ id: player.playerId, name: user.full_name, score: player.score });
         }
         setUsers(users);
     };
 
-    
+
+
 
     const handleTabChange = (event, newValue) => {
         setValue(newValue);
@@ -56,8 +53,8 @@ const LeaderboardTab = ({ }) => {
 
 
     useEffect(() => {
-        gamesApi.getGame(process.id).then((res) => {
-            handleGame(res[0]);
+        gamesApi.getLeaderboard(process.game_id).then((res) => {
+            handleLeaderboard(res)
         });
     }, []);
 

@@ -65,7 +65,7 @@ const OverallLeaderboard = ({ users }) => {
                 collab_name: users[i].name,
                 team: 'test',
                 location: 'test',
-                points: users[i].development,
+                points: users[i].score,
             });
         }
         setRows(tmpRows);
@@ -75,6 +75,7 @@ const OverallLeaderboard = ({ users }) => {
     useEffect(() => {
         if (users.length > 0) {
             orderUsers();
+            console.log(users);
             if (users.length > 3) {
                 handleRows();
             }
@@ -83,7 +84,7 @@ const OverallLeaderboard = ({ users }) => {
 
 
     const orderUsers = () => {
-        setOrderedUsers(users.sort((a, b) => b.development > a.development));
+        setOrderedUsers(users.sort((a, b) => b.score > a.score));
     };
 
     return (
@@ -122,11 +123,11 @@ const OverallLeaderboard = ({ users }) => {
                             {users && users.length > 1 ? <UserAvatar
                                 id={users[1].id} sx={{ margin: 'auto' }} /> : <></>}
 
-                            <Typography gutterBottom variant="h5" component="div">
+                            <Typography gutterBottom variant="h5" component="div" sx={{mt:1}}>
                                 {users && users.length > 1 ? users[1].name : "No users here... "}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                {users && users.length > 1 ? users[1].development + ' points' : "No users here... "}
+                                {users && users.length > 1 ? users[1].score + ' points' : "No users here... "}
                             </Typography>
 
                         </CardContent>
@@ -146,11 +147,11 @@ const OverallLeaderboard = ({ users }) => {
                             {users && users.length > 0 ? <UserAvatar
                                 id={users[0].id} sx={{ margin: 'auto' }} /> : <></>}
 
-                            <Typography gutterBottom variant="h5" component="div">
+                            <Typography gutterBottom variant="h5" component="div" sx={{mt:1}}>
                                 {users && users.length > 0 ? users[0].name : "No users here... "}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                {users && users.length > 0 ? users[0].development + ' points' : "No users here... "}
+                                {users && users.length > 0 ? users[0].score + ' points' : "No users here... "}
                             </Typography>
 
                         </CardContent>
@@ -171,11 +172,11 @@ const OverallLeaderboard = ({ users }) => {
                             {users && users.length > 2 ? <UserAvatar
                                 id={users[2].id} sx={{ margin: 'auto' }} /> : <></>}
 
-                            <Typography gutterBottom variant="h5" component="div">
+                            <Typography gutterBottom variant="h5" component="div" sx={{mt:1}}>
                                 {users && users.length > 2 ? users[2].name : "No users here... "}
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
-                                {users && users.length > 2 ? users[2].development + ' points' : "No users here... "}
+                                {users && users.length > 2 ? users[2].score + ' points' : "No users here... "}
                             </Typography>
 
                         </CardContent>

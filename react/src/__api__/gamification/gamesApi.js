@@ -13,7 +13,7 @@ class GamesApi extends GeneralApi {
   }
 
   async setGame(processId, taskList) {
-  
+
     const res = await axiosInstance.post(`${this.url}processId/${processId}`, {
       _id: 'null',
       name: 'complexityGame',
@@ -47,6 +47,20 @@ class GamesApi extends GeneralApi {
     const res = await axiosInstance.get(`${this.url}${gameId}/task/${taskId}`);
     return res.data;
   }
+
+  async getLeaderboard(gameId, period = "global", activityType = "development") {
+    const res = await axiosInstance.get(`${this.url}${gameId}/player/search`, {
+      params: {
+        period: period,
+        activityType: activityType,
+        // sort: {
+        //   sorted: true,
+        // }
+      }
+    });
+    return res.data;
+  }
+
 };
 
 export const gamesApi = new GamesApi();

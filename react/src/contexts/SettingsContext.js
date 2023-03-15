@@ -56,11 +56,11 @@ const initialSettings = {
         },
         average_contribution: {
           main: "#FF7A00",
-          contrastText: "#000000"
+          contrastText: "#ffffff"
         },
         low_contribution: {
           main: "#F44336",
-          contrastText: "#000000"
+          contrastText: "#ffffff"
         },
         progressBarColor: '#d822a3'
       },
@@ -105,11 +105,11 @@ const initialSettings = {
         },
         average_contribution: {
           main: "#FF7A00",
-          contrastText: "#000000"
+          contrastText: "#ffffff"
         },
         low_contribution: {
           main: "#F44336",
-          contrastText: "#000000"
+          contrastText: "#ffffff"
         },
         progressBarColor: '#d822a3'
       }
