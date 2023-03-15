@@ -159,9 +159,16 @@ const RightSide = ({ softwareInterlinkers }) => {
   };
 
   const handleOpen = (asset) => {
+    console.log(asset);
     if (asset.type === 'internalasset') {
-      window.open(`${asset.link}/view`, '_blank');
+
+      const backend =asset['software_response']['backend'];
+      const linktoAsset =backend+'/'+asset['external_asset_id'];
+      
+
+      window.open(`${linktoAsset}/view`, '_blank');
     } else {
+      //alert('external',asset.uri);
       window.open(asset.uri);
     }
   };
