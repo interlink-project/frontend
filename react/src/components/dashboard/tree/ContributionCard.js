@@ -12,11 +12,11 @@ const ContributionCard = ({ user_id, name, contribution_level }) => {
     const handleColor = (level) => {
         switch (level) {
             case 'Low':
-                return 'low_contribution';
+                return 'error';
             case 'Average':
-                return 'average_contribution';
+                return 'warning';
             case 'High':
-                return 'high_contribution';
+                return 'success';
             default:
                 return 'warning';
         }
