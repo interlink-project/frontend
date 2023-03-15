@@ -99,7 +99,6 @@ const initialSettings = {
           contrastText: '#000000',
           main: '#f7b50f'
         },
-        ,
         high_contribution: {
           main: "#44C949",
           contrastText: "#000000"
