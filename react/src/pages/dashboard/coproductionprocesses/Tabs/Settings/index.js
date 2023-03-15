@@ -930,7 +930,7 @@ const SettingsTab = () => {
                 </Typography>
 
                 <Typography variant="p" sx={{ mt: 3 }}>
-                  Example file:
+                  {t("Example file:")}
 
                 </Typography>
 
@@ -1008,10 +1008,10 @@ const SettingsTab = () => {
               </div>
             </Item>
             <Item>
-              <div>Publishing the Story please wait.</div>
+              <div>{t("Publishing the Story please wait.")}</div>
             </Item>
             <Item>
-              <div>The process could last some minutes.</div>
+              <div>{t("The process could last some minutes.")}</div>
             </Item>
           </Stack>
         </DialogContent>
@@ -1042,10 +1042,10 @@ const SettingsTab = () => {
               </div>
             </Item>
             <Item>
-              <div>Cloning the project please wait.</div>
+              <div>{t("Cloning the project please wait.")}</div>
             </Item>
             <Item>
-              <div>The process could last some minutes.</div>
+              <div>{t("The process could last some minutes.")}</div>
             </Item>
           </Stack>
         </DialogContent>

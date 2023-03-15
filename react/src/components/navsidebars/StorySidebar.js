@@ -308,10 +308,10 @@ const StorySidebar = (props) => {
               </div>
             </Item>
             <Item>
-              <div>Cloning the Story please wait.</div>
+              <div>{t("Cloning the Story please wait.")}</div>
             </Item>
             <Item>
-              <div>The process could last some minutes.</div>
+              <div>{t("The process could last some minutes.")}</div>
             </Item>
           </Stack>
         </DialogContent>
