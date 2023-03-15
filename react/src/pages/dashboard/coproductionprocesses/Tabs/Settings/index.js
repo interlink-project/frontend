@@ -62,7 +62,7 @@ import { styled } from "@mui/material/styles";
 
 const SettingsTab = () => {
   const { user } = useAuth();
-  const  [isCloning, setIsCloning] = useState(false);
+  const [isCloning, setIsCloning] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [storiesList, setStoriesList] = useState([]);
   const [jsonPropertiesFile, setJsonPropertiesFile] = useState(null);
@@ -92,7 +92,7 @@ const SettingsTab = () => {
   };
 
   const onPublish = () => {
-    
+
     setPublishDialogOpen(true);
     //coproductionProcessesApi.copy(process.id).then(() => navigate('/dashboard'));
   };
@@ -252,7 +252,7 @@ const SettingsTab = () => {
 
       //Create a clone of the process:
       coproductionProcessesApi
-        .copy(process.id, "Catalogue Publication of_","for_publication")
+        .copy(process.id, "Catalogue Publication of_", "for_publication")
         .then((res) => {
           const clone_id = res;
           setJsonPropertiesFile(extractedData);
@@ -279,11 +279,11 @@ const SettingsTab = () => {
   const handleDeleteStory = (event, story_id) => {
     console.log("Delete story:" + story_id);
     storiesApi
-    .delete(story_id)
-    .then(() => {
-      setStoriesList((storiesList) => storiesList.filter((story) => story.id !== story_id));
-      navigate("/dashboard/coproductionprocesses/" + process.id + "/settings");
-    });
+      .delete(story_id)
+      .then(() => {
+        setStoriesList((storiesList) => storiesList.filter((story) => story.id !== story_id));
+        navigate("/dashboard/coproductionprocesses/" + process.id + "/settings");
+      });
   };
 
   const logoStyle = {
@@ -720,112 +720,109 @@ const SettingsTab = () => {
           </Alert>
         </Card>
 
-        { !process.is_part_of_publication && (
+        {!process.is_part_of_publication && (
 
-<>
+          <>
 
 
-        {/* Cloning coprod */}
-        <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
-          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-            {t("Clone coproduction process")}
-          </Typography>
-          <Alert
-            severity="warning"
-            sx={{ mt: 3 }}
-            action={
-              <ConfirmationButton
-                Actionator={({ onClick }) => (
+            {/* Cloning coprod */}
+            <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
+              <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+                {t("Clone coproduction process")}
+              </Typography>
+              <Alert
+                severity="warning"
+                sx={{ mt: 3 }}
+                action={
+                  <ConfirmationButton
+                    Actionator={({ onClick }) => (
+                      <LoadingButton
+                        variant="contained"
+                        disabled={!isAdministrator}
+                        loading={isCloning}
+                        color="warning"
+                        onClick={onClick}
+                        startIcon={<ContentCopy />}
+                      >
+                        {t("Clone coproduction process")}
+                      </LoadingButton>
+                    )}
+                    ButtonComponent={({ onClick }) => (
+                      <Button
+                        sx={{ mt: 1 }}
+                        fullWidth
+                        variant="contained"
+                        color="warning"
+                        onClick={onClick}
+                      >
+                        {t("Confirm clonation")}
+                      </Button>
+                    )}
+                    onClick={onCopy}
+                    text={t("Are you sure?")}
+                  />
+                }
+              >
+                {t(
+                  "The clonation of the coproduction process will create a new coproduction process with the same structure and resources."
+                )}
+              </Alert>
+            </Card>
+
+            {/* Publish Coproduction Process */}
+            <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
+              <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+                {t("Publish coproduction process")}
+              </Typography>
+              <Alert
+                severity="warning"
+                sx={{ mt: 3 }}
+                action={
                   <LoadingButton
                     variant="contained"
                     disabled={!isAdministrator}
-                    loading={isCloning}
+                    loading={isPublishing}
                     color="warning"
-                    onClick={onClick}
-                    startIcon={<ContentCopy />}
+                    onClick={onPublish}
+                    startIcon={<Public />}
                   >
-                    {t("Clone coproduction process")}
+                    {t("Publish coproduction process")}
                   </LoadingButton>
-                )}
-                ButtonComponent={({ onClick }) => (
-                  <Button
-                    sx={{ mt: 1 }}
-                    fullWidth
-                    variant="contained"
-                    color="warning"
-                    onClick={onClick}
-                  >
-                    {t("Confirm clonation")}
-                  </Button>
-                )}
-                onClick={onCopy}
-                text={t("Are you sure?")}
-              />
-            }
-          >
-            {t(
-              "The clonation of the coproduction process will create a new coproduction process with the same structure and resources."
-            )}
-          </Alert>
-        </Card>
-
-        {/* Publish Coproduction Process */}
-        <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
-          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-            {t("Publish coproduction process")}
-          </Typography>
-          <Alert
-            severity="warning"
-            sx={{ mt: 3 }}
-            action={
-              <LoadingButton
-                variant="contained"
-                disabled={!isAdministrator}
-                loading={isPublishing}
-                color="warning"
-                onClick={onPublish}
-                startIcon={<Public />}
+                }
               >
-                {t("Publish coproduction process")}
-              </LoadingButton>
-            }
-          >
-            {t("The publication of the coproduction process will make the some information you choose visible in the catalogue of stories.")}
-          </Alert>
-        </Card>
+                {t("The publication of the coproduction process will make the some information you choose visible in the catalogue of stories.")}
+              </Alert>
+            </Card>
 
-        {/* Reward */}
-        <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
-        <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
-          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-            {t("Reward system")}
-          </Typography>
-          <Alert
-            severity="info"
-            sx={{ mt: 2 }}
-            action={
-              <>
-                <GoldSwitch
-                  checked={isIncentiveModuleActive}
-                  onChange={toggleIncentivesRewards}
-                  name="incentiveSwitch"
-                  inputProps={{ "aria-label": "secondary checkbox" }}
-                  disabled={!isAdministrator}
-                  color="secondary"
-                />
-              </>
-            }
-          >
-            {t(
-              "If you disable the Reward system every data will be deleted, so if you want to enable again this option, you will not able to restore the old data."
-            )}
-          </Alert>
-        </Card>
+            {/* Reward */}
+            <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
+              <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+                {t("Reward system")}
+              </Typography>
+              <Alert
+                severity="info"
+                sx={{ mt: 2 }}
+                action={
+                  <>
+                    <GoldSwitch
+                      checked={isIncentiveModuleActive}
+                      onChange={toggleIncentivesRewards}
+                      name="incentiveSwitch"
+                      inputProps={{ "aria-label": "secondary checkbox" }}
+                      disabled={!isAdministrator}
+                      color="secondary"
+                    />
+                  </>
+                }
+              >
+                {t(
+                  "If you disable the Reward system every data will be deleted, so if you want to enable again this option, you will not able to restore the old data."
+                )}
+              </Alert>
+            </Card>
 
-</>
-        )
-        
-        }
+          </>
+        )}
 
       </Box>
 
@@ -856,7 +853,7 @@ const SettingsTab = () => {
           {storiesList && (
             <List>
               <Typography variant="h6" sx={{ mt: 3 }}>
-              {t("Publications")}:
+                {t("Publications")}:
               </Typography>
               {storiesList.map((story) => {
                 const fechaStoryDate = new Date(story.created_at);
@@ -881,7 +878,7 @@ const SettingsTab = () => {
                         </ListItemIcon>
                         <ListItemText primary={fechaStoryText} />
                       </ListItemButton>
-                      
+
 
                       <ConfirmationButton
                         Actionator={({ onClick }) => (
@@ -909,7 +906,7 @@ const SettingsTab = () => {
                         )}
                         onClick={(e) => {
                           handleDeleteStory(e, story.id);
-                       }}
+                        }}
                         text={t("Are you sure?")}
                       />
                     </ListItem>
@@ -924,29 +921,29 @@ const SettingsTab = () => {
           {/* {storiesList && ( */}
           <>
             <Typography variant="h6" sx={{ mt: 3 }}>
-            {t("New Publication of a Success Story")}
+              {t("New Publication of a Success Story")}
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={6} md={8}>
                 <Typography variant="p" sx={{ mt: 3 }}>
-                {t("Include the source file (.json) with the publish information. ")}
+                  {t("Include the source file (.json) with the publish information. ")}
                 </Typography>
-                
+
                 <Typography variant="p" sx={{ mt: 3 }}>
-                Example file:
-                
+                  Example file:
+
                 </Typography>
-                    
-                
-                <Link to="/coproduction/static/stories/ExampleTemplate.json" target="_blank" download><Download sx={{ml:1}} /> </Link>
+
+
+                <Link to="/coproduction/static/stories/ExampleTemplate.json" target="_blank" download><Download sx={{ ml: 1 }} /> </Link>
 
               </Grid>
 
-              
+
 
               <Grid item xs={6} md={4}>
-              <Stack direction="row" spacing={0}>
-              <LoadingButton
+                <Stack direction="row" spacing={0}>
+                  <LoadingButton
                     variant="contained"
                     disabled={!isAdministrator}
                     loading={isPublishing}
@@ -958,15 +955,15 @@ const SettingsTab = () => {
                   >
                     {t("Publish from file")}
                     <input
-                    type="file"
-                    accept=".json"
-                    hidden
-                    onChange={handleCapture}
-                  />
+                      type="file"
+                      accept=".json"
+                      hidden
+                      onChange={handleCapture}
+                    />
                   </LoadingButton>
-                  
-              </Stack>
-              
+
+                </Stack>
+
 
                 {/* <Button sx={{ mt: 2 }} variant="contained" component="label">
                   {t("Publish from a File")}
@@ -979,7 +976,7 @@ const SettingsTab = () => {
                 </Button> */}
               </Grid>
 
-              
+
             </Grid>
           </>
           {/* )} */}
@@ -1003,7 +1000,7 @@ const SettingsTab = () => {
           <Close />
         </IconButton>
 
-      <DialogContent sx={{ p: 2 }}>
+        <DialogContent sx={{ p: 2 }}>
           <Stack spacing={2}>
             <Item>
               <div style={logoStyle}>
@@ -1018,9 +1015,9 @@ const SettingsTab = () => {
             </Item>
           </Stack>
         </DialogContent>
- </Dialog>
+      </Dialog>
 
- <Dialog
+      <Dialog
         open={isCloning}
         onClose={() => setIsCloning(false)}
       >
@@ -1037,7 +1034,7 @@ const SettingsTab = () => {
           <Close />
         </IconButton>
 
-      <DialogContent sx={{ p: 2 }}>
+        <DialogContent sx={{ p: 2 }}>
           <Stack spacing={2}>
             <Item>
               <div style={logoStyle}>
@@ -1052,7 +1049,7 @@ const SettingsTab = () => {
             </Item>
           </Stack>
         </DialogContent>
- </Dialog>
+      </Dialog>
 
 
     </Box>
