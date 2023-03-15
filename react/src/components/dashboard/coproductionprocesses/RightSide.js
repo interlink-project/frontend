@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProcess, getTree, setUpdatingTree } from 'slices/process';
 import { information_about_translations } from 'utils/someCommonTranslations';
 import * as Yup from 'yup';
-import { assetsApi, permissionsApi, assetsDataApi, coproductionprocessnotificationsApi, tasksApi, gamesApi } from '__api__';
+import { assetsApi, permissionsApi, coproductionprocessnotificationsApi, tasksApi, gamesApi } from '__api__';
 import NewAssetModal from 'components/dashboard/coproductionprocesses/NewAssetModal';
 import { useLocation } from 'react-router';
 import { getAssetsList_byTask } from 'slices/general';
@@ -439,12 +439,12 @@ const RightSide = ({ softwareInterlinkers }) => {
               label={`${t('Permissions')} (${selectedTreeItem.permissions.length})`}
               />
               )}
-              {/* { (!isLocationCatalogue && isTask && isAdministrator && !process.is_part_of_publication) && (
+              { (!isLocationCatalogue && isTask && isAdministrator && !process.is_part_of_publication) && (
               <Tab
                 value='contributions'
                 label={`${t('Contributions')} (${obtenerNroContributions(contributions)})`}
               />
-              )} */}
+              )}
               
              
             </Tabs>

@@ -75,12 +75,12 @@ const ProcessSidebar = (props) => {
           icon: <AccountTree />,
           disabled: !hasSchema
         },
-        // {
-        //   title: t('Leaderboard'),
-        //   path: `/dashboard/coproductionprocesses/${processId}/leaderboard`,
-        //   icon: <Leaderboard />,
-        //   disabled: !game_id
-        // },
+        {
+          title: t('Leaderboard'),
+          path: `/dashboard/coproductionprocesses/${processId}/leaderboard`,
+          icon: <Leaderboard />,
+          disabled: !game_id
+        },
         {
           title: t('Workplan'),
           path: `/dashboard/coproductionprocesses/${processId}/workplan`,
