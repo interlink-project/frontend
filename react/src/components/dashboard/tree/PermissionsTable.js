@@ -163,7 +163,7 @@ const PermissionsTable = ({ your_permissions, your_roles, language, processId, o
           {t('Show all the permissions for this tree item, including those ones that do not affect you')}
         </Alert>
       )}
-      {isAdministrator && <Alert severity='info'>{t('Permissions set at lower levels prevail over others. That is, if you set a permission on a task, it will overwrite the permission, if any, assigned to the same team at higher levels (objectives and phases).')}</Alert>}
+      {isAdministrator && <Alert severity='info'>{t('Permissions set at lower levels prevail over others')}</Alert>}
       <Box sx={{ overflowX: 'scroll' }}>
         <Table
           aria-label='admins-table'

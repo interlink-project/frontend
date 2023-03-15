@@ -610,12 +610,12 @@ export default function TimeLine({ assets }) {
                 </Typography>
                 {dataFulfilled ? (
                   <Alert severity="success">
-                    {t("The coproduction process data has been defined.")}
+                    {t("The coproduction process data has been defined")}
                   </Alert>
                 ) : (
                   <Alert severity="info">
                     {t(
-                      "The co-production process data are a set of attributes that serve to define the process to be carried out."
+                      "The co-production process data"
                     )}
                   </Alert>
                 )}
@@ -645,7 +645,7 @@ export default function TimeLine({ assets }) {
                 {administratorsFulfilled ? (
                   <Alert severity="success">
                     {t(
-                      "The administrators of the coproduction process data has been defined."
+                      "The administrators of the coproduction process data has been defined"
                     )}{" "}
                     ({process.administrators_ids.length} {t("administrators")})
                   </Alert>
@@ -681,7 +681,7 @@ export default function TimeLine({ assets }) {
                 {hasSchema ? (
                   <Alert severity="success">
                     {t(
-                      "The schema has been selected. Now you can access the Guide and the Workplan sections. Nevertheless, you can undo this action (clear the coproduction tree) in the settings section."
+                      "The schema has been selected"
                     )}
                   </Alert>
                 ) : (
@@ -715,12 +715,12 @@ export default function TimeLine({ assets }) {
                 </Typography>
                 {permissionsFullfilled ? (
                   <Alert severity="success">
-                    {t("At least a permission has been created.")}
+                    {t("At least a permission has been created")}
                   </Alert>
                 ) : (
                   <Alert severity="info">
                     {t(
-                      "Now you can allow teams to work on the coproduction process. For that, associate permissions to teams by navigating to the Team view and adding permission for the whole coproduction process or go to Guide view and add new permissions for distinct tree items and teams."
+                      "Now you can allow teams to work on the coproduction"
                     )}
                   </Alert>
                 )}
@@ -750,12 +750,12 @@ export default function TimeLine({ assets }) {
                 </Typography>
                 {newAssetsFullfilled ? (
                   <Alert severity="success">
-                    {t("At least a resource has been created.")}
+                    {t("At least a resource has been created")}
                   </Alert>
                 ) : (
                   <Alert severity="info">
                     {t(
-                      "Now you can add resources to the tasks in the coproduction process. For that, navigate to the Guide section and add new resources in the Resources tab available in each task"
+                      "Now you can add resources to the tasks in the coproduction process"
                     )}
                   </Alert>
                 )}

@@ -230,7 +230,7 @@ const InterlinkerDetails = ({ language, interlinker }) => {
                 color='textPrimary'
                 variant='h5'
               >
-                {t('This resource cannot be displayed here. Instead...')}
+                {t('This resource cannot be displayed here')}
               </Typography>
             </Box>
             {softwareinterlinker.preview && (

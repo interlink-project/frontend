@@ -615,7 +615,7 @@ const SettingsTab = () => {
           </Typography>
           <Alert severity="error" sx={{ my: 2 }}>
             {t(
-              "Administrators of a co-production process can edit the co-production tree, assign new permissions to teams and even delete the co-production process. Be careful who you assign as an administrator."
+              "Administrators of a coproduction process can edit the coproduction tree"
             )}
           </Alert>
           <UsersList
@@ -672,7 +672,7 @@ const SettingsTab = () => {
             }
           >
             {t(
-              "The clearing of the co-production tree is irreversible. All resources created in it will disappear. However, the co-production process will not be deleted."
+              "The clearing of the co-production tree is irreversible"
             )}
           </Alert>
 
@@ -715,7 +715,7 @@ const SettingsTab = () => {
             }
           >
             {t(
-              "The deletion of the co-production process is irreversible. All resources created in it will disappear."
+              "The deletion of the coproduction process is irreversible"
             )}
           </Alert>
         </Card>
@@ -764,7 +764,7 @@ const SettingsTab = () => {
                 }
               >
                 {t(
-                  "The clonation of the coproduction process will create a new coproduction process with the same structure and resources."
+                  "The clonation of the coproduction process will create"
                 )}
               </Alert>
             </Card>
@@ -790,7 +790,7 @@ const SettingsTab = () => {
                   </LoadingButton>
                 }
               >
-                {t("The publication of the coproduction process will make the some information you choose visible in the catalogue of stories.")}
+                {t("The publication of the coproduction process will make")}
               </Alert>
             </Card>
 
@@ -816,7 +816,7 @@ const SettingsTab = () => {
                 }
               >
                 {t(
-                  "If you disable the Reward system every data will be deleted, so if you want to enable again this option, you will not able to restore the old data."
+                  "If you disable the Reward system every data will be deleted"
                 )}
               </Alert>
             </Card>
@@ -926,7 +926,7 @@ const SettingsTab = () => {
             <Grid container spacing={2}>
               <Grid item xs={6} md={8}>
                 <Typography variant="p" sx={{ mt: 3 }}>
-                  {t("Include the source file (.json) with the publish information. ")}
+                  {t("Include the source file to publish information")}
                 </Typography>
 
                 <Typography variant="p" sx={{ mt: 3 }}>

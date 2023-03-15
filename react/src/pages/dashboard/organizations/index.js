@@ -130,7 +130,7 @@ const Organizations = () => {
                   color='textSecondary'
                   variant='subtitle2'
                 >
-                  {t('Here you can find the different organizations that are working on the platform. In each organization teams are created to group the users.')}
+                  {t('Here you can find the different organizations that are working on the platform')}
                 </Typography>
               </Grid>
               <Grid item>

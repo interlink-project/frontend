@@ -250,7 +250,7 @@ export default function TeamsTab() {
           <Alert
             severity='warning'
           >
-            {t('There are no teams working on the coproduction process yet. To add a new team, navigate to the guide section, select a tree item and add a new permission.')}
+            {t('There are no teams working on the coproduction process yet')}
           </Alert>
         </>
       )}
