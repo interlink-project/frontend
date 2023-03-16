@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { getTree, setSelectedTreeItemById, setUpdatingTree } from 'slices/process';
 import { tree_items_translations } from 'utils/someCommonTranslations';
-import { objectivesApi, phasesApi, tasksApi } from '__api__';
+import { gamesApi, objectivesApi, phasesApi, tasksApi } from '__api__';
 import { AwaitingIcon, statusIcon, StatusText } from '../../Icons';
 import { coproductionprocessnotificationsApi } from '__api__';
 import { assetsApi } from "__api__";
@@ -103,6 +103,16 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     // }
     if (development !== element.development) {
       data.development = parseInt(development);
+      if (process.game_id){
+        let values = {
+          id: selectedTreeItem.id,
+          development: data.development,
+          subtaskList: []
+        }
+        gamesApi.updateTask(process.game_id, values).then((res) => {
+          console.log(res);
+        });
+      }
     }
     // if (exploitation !== element.exploitation) {
     //   data.exploitation = parseInt(exploitation);

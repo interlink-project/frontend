@@ -1,5 +1,6 @@
 import axiosInstance from 'axiosInstance';
 import GeneralApi from '../general';
+import axios from 'axios';
 
 class GamesApi extends GeneralApi {
   constructor() {
@@ -46,6 +47,14 @@ class GamesApi extends GeneralApi {
   async getTask(gameId, taskId) {
     const res = await axiosInstance.get(`${this.url}${gameId}/task/${taskId}`);
     return res.data;
+  }
+
+  async updateTask(gameId, data){
+    const res = await axiosInstance.put(`${this.url}${gameId}/task`, {
+      id: data.id,
+      development: data.development,
+      subtaskList: data.subtaskList
+    });
   }
 
   async getLeaderboard(gameId, period = "global", activityType = "development") {

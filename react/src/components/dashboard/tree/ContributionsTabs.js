@@ -123,7 +123,7 @@ const ContributionsTabs = ({ contributions }) => {
                         <Grid item xs={6}>
 
                             <Typography variant="h3" sx={{}}>
-                                Contributions
+                                {t("Contributions")}
                             </Typography>
                         </Grid>
                         <Grid item xs={6} sx={{ position: "relative" }}>
@@ -137,7 +137,7 @@ const ContributionsTabs = ({ contributions }) => {
                                     bottom: 0,
                                     right: 0,
                                 }}>
-                                Add a row
+                                {t("Add contributor")}
                             </Button>
 
                         </Grid>
@@ -294,11 +294,11 @@ const ContributionsTabs = ({ contributions }) => {
                                         <Box sx={{ mt: 3 }}>
 
                                             <Typography variant="h6" component="h2">
-                                                Introduce the details of the contribution:
+                                                {t("Introduce the details of the contribution")}
                                             </Typography>
                                             {!contributor ?
                                                 <Box sx={{ mt: 3 }}>
-                                                    <InputLabel id="resource-select-label" sx={{ mt: 2, mb: -1 }}>User</InputLabel>
+                                                    <InputLabel id="resource-select-label" sx={{ mt: 2, mb: -1 }}>{t("User")}</InputLabel>
                                                     <UserSearch
                                                         error={Boolean(touched.user && errors.user)}
                                                         alert={false}
@@ -340,7 +340,7 @@ const ContributionsTabs = ({ contributions }) => {
                                                 </Grid>
                                             }
 
-                                            <InputLabel id="resource-select-label" sx={{ mt: 2 }}>Resource</InputLabel>
+                                            <InputLabel id="resource-select-label" sx={{ mt: 2 }}>{t("Resource")}</InputLabel>
                                             <Select
                                                 required
                                                 error={Boolean(touched.asset && errors.asset)}
@@ -362,7 +362,7 @@ const ContributionsTabs = ({ contributions }) => {
                                             </Select>
 
                                             <Typography variant="h6" component="h5" sx={{ mt: 2 }}>
-                                                Contribution
+                                                {t("Contribution")}
                                             </Typography>
                                             <TextField
                                                 required
