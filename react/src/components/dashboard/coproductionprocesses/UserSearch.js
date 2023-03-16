@@ -123,16 +123,16 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
       header: false,
       skipEmptyLines: true,
       complete: async function (results) {
-        let users_toadd = [];
         for (let u of results.data) {
           const res = await usersApi.search(u);
+          console.log(res[0]);
           if (res.length > 0 && !exclude.includes(res[0].id)) {
-            users_toadd.push(res[0]);
+            
             exclude.push(res[0].id);
+            onClick(res[0]);
           } else {
             rejected_users.push(u);
           }
-          onClick(users_toadd);
 
         }
         if (rejected_users.length > 0) {

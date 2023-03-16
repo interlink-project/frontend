@@ -38,7 +38,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   //const [management, setManagement] = useState('');
   const [development, setDevelopment] = useState('');
   //const [exploitation, setExploitation] = useState('');
- // const [taskDataContributions, setTaskDataContributions] = useState(null);
+  // const [taskDataContributions, setTaskDataContributions] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const { process, updatingTree, treeitems, selectedTreeItem, isAdministrator } = useSelector((state) => state.process);
   const isTask = selectedTreeItem && selectedTreeItem.type === 'task';
@@ -103,14 +103,19 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     // }
     if (development !== element.development) {
       data.development = parseInt(development);
-      if (process.game_id){
+      if (process.game_id) {
         let values = {
           id: selectedTreeItem.id,
           development: data.development,
           subtaskList: []
         }
-        gamesApi.updateTask(process.game_id, values).then((res) => {
-          console.log(res);
+        // TODO: If we put the game in the slice the checking of the task status will be faster
+        gamesApi.getTask(process.game_id, selectedTreeItem.id).then((res) => {
+          if (!res.completed) {
+            gamesApi.updateTask(process.game_id, values).then((res) => {
+              console.log(res);
+            });
+          }
         });
       }
     }
@@ -134,11 +139,11 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   };
 
   const update = (selectedTreeItemId) => {
-    
+
     dispatch(getTree(processId, selectedTreeItemId));
-    if(selectedTreeItemId){
-    dispatch(setSelectedTreeItemById(selectedTreeItemId));
-    } 
+    if (selectedTreeItemId) {
+      dispatch(setSelectedTreeItemById(selectedTreeItemId));
+    }
   };
 
   const deleteTreeItem = () => {
@@ -150,20 +155,20 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     dispatch(setUpdatingTree(true));
     apis[element.type].delete(element.id).then(() => {
       let setSelectedTreeItem = null;
-      if (element.type === 'task') { 
+      if (element.type === 'task') {
         setSelectedTreeItem = element.objective_id;
       } else if (element.type === 'objective') {
         setSelectedTreeItem = element.phase_id;
       } else {
         //Change to the next possible phase that is not disabled
-        const nextPhase = treeitems.find((el) => el.id != element.id && el.type === 'phase' && el.is_disabled===false);
-        if(nextPhase){
+        const nextPhase = treeitems.find((el) => el.id != element.id && el.type === 'phase' && el.is_disabled === false);
+        if (nextPhase) {
           setSelectedTreeItem = nextPhase.id;
-        }else{
-          setSelectedTreeItem=null;
+        } else {
+          setSelectedTreeItem = null;
         }
       }
-      
+
 
       update(setSelectedTreeItem);
     });
@@ -437,22 +442,22 @@ const TreeItemData = ({ language, processId, element, assets }) => {
                 >
 
                   <MenuItem key='mi_d_1' value='0'>
-                    {t('none')}
+                    {t('None')}
                   </MenuItem>
                   <MenuItem key='mi_d_2' value='20'>
-                    {t('very low')}
+                    {t('Very low')}
                   </MenuItem>
                   <MenuItem key='mi_d_3' value='40'>
-                    {t('low')}
+                    {t('Low')}
                   </MenuItem>
-                  <MenuItem key='mi_d_3' value='60'>
-                    {t('medium')}
+                  <MenuItem key='mi_d_4' value='60'>
+                    {t('Medium')}
                   </MenuItem>
-                  <MenuItem key='mi_d_3' value='80'>
-                    {t('high')}
+                  <MenuItem key='mi_d_5' value='80'>
+                    {t('High')}
                   </MenuItem>
-                  <MenuItem key='mi_d_3' value='100'>
-                    {t('very high')}
+                  <MenuItem key='mi_d_6' value='100'>
+                    {t('Very high')}
                   </MenuItem>
 
                 </TextField>
@@ -526,7 +531,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
 
       <>
 
-{/*         <ul>
+        {/*         <ul>
           {taskDataContributions && taskDataContributions['assetsWithContribution']?.map((asset) => {
             const hasContribution = asset.contributors.length;
             if (!hasContribution) {
@@ -616,152 +621,152 @@ const TreeItemData = ({ language, processId, element, assets }) => {
 
       {!process.is_part_of_publication && (
         <>
-        <Typography
-        variant='h6'
-        sx={{ mt: 2 }}
-      >
-        <>{t('Current status')}</>
-      </Typography>
-      {editMode ? (
-        <>
-          {element.type === 'task' ? (
-            <ToggleButtonGroup
-              sx={{ mt: 1 }}
-              color={status === 'finished' ? 'success' : status === 'in_progress' ? 'warning' : 'primary'}
-              value={status}
-              exclusive
-              fullWidth
-              onChange={(event, newStatus) => {
-                setStatus(newStatus);
-              }}
-            >
-              <ToggleButton value='awaiting'>
-                <>
-                  {t('Awaiting')}
-                  <AwaitingIcon />
-                </>
-              </ToggleButton>
-              <ToggleButton value='in_progress'>
-                <>
-                  {t('In progress')}
-                  <InProgressIcon />
-                </>
-              </ToggleButton>
-              <ToggleButton value='finished'>
-                <>
-                  {t('Finished')}
-                  {' '}
-                  <FinishedIcon />
-                </>
-              </ToggleButton>
-            </ToggleButtonGroup>
-          ) : (
-            <Alert
-              severity='warning'
-              sx={{ mt: 1 }}
-            >
-              <>{t('Status can only be set for tasks')}</>
-            </Alert>
-          )}
-        </>
-      )
-
-        : (
-          <Stack
-            alignItems='center'
-            direction='row'
-            spacing={1}
+          <Typography
+            variant='h6'
+            sx={{ mt: 2 }}
           >
-            {statusIcon(status)}
-            <div>
-              <StatusText
-                status={status}
-                t={t}
-              />
-            </div>
-          </Stack>
-        )}
-      <Link
-        component='button'
-        variant='h6'
-        onClick={() => {
-          navigate(`/dashboard/coproductionprocesses/${processId}/workplan`);
-        }}
-        sx={{ mt: 2 }}
-        underline='none'
-      >
-        {t('Time planification')}
-        :
-      </Link>
-
-      {editMode ? (
-        <>
-          {element.type === 'task' ? (
-            <Box
-              justifyContent='center'
-              sx={{ mt: 2 }}
-            >
-              <LocalizationProvider
-                dateAdapter={AdapterDayjs}
-                localeText={{ start: 'Desktop start', end: 'Desktop end' }}
-              >
-
-                <DesktopDateRangePicker
-                  startText='Start date'
-                  endText='End date'
-                  value={dateRange}
-                  onChange={(newValue) => {
-                    setDateRange(newValue);
-                  }}
-
-                  renderInput={(startProps, endProps) => (
-                    <Stack
-                      spacing={3}
-                      direction='row'
-                      sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}
-                    >
-                      <TextField {...startProps} />
-                      <TextField {...endProps} />
-                    </Stack>
-                  )}
-                />
-              </LocalizationProvider>
-            </Box>
-          ) : (
-            <Alert
-              severity='warning'
-              sx={{ mt: 1 }}
-            >
-              {t('Start and end dates can only be set for tasks')}
-            </Alert>
-          )}
-        </>
-      ) : (
-        <Box sx={{ mt: 2 }}>
-          {dateRange[0] !== null ? (
+            <>{t('Current status')}</>
+          </Typography>
+          {editMode ? (
             <>
-              <b>
-                {t('Start')}
-                :
-                {' '}
-              </b>
-              {moment(dateRange[0]).format('LL')}
-              <br />
-              <b>
-                {t('End')}
-                :
-                {' '}
-              </b>
-              {moment(dateRange[1]).format('LL')}
+              {element.type === 'task' ? (
+                <ToggleButtonGroup
+                  sx={{ mt: 1 }}
+                  color={status === 'finished' ? 'success' : status === 'in_progress' ? 'warning' : 'primary'}
+                  value={status}
+                  exclusive
+                  fullWidth
+                  onChange={(event, newStatus) => {
+                    setStatus(newStatus);
+                  }}
+                >
+                  <ToggleButton value='awaiting'>
+                    <>
+                      {t('Awaiting')}
+                      <AwaitingIcon />
+                    </>
+                  </ToggleButton>
+                  <ToggleButton value='in_progress'>
+                    <>
+                      {t('In progress')}
+                      <InProgressIcon />
+                    </>
+                  </ToggleButton>
+                  <ToggleButton value='finished'>
+                    <>
+                      {t('Finished')}
+                      {' '}
+                      <FinishedIcon />
+                    </>
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              ) : (
+                <Alert
+                  severity='warning'
+                  sx={{ mt: 1 }}
+                >
+                  <>{t('Status can only be set for tasks')}</>
+                </Alert>
+              )}
             </>
-          ) : <Alert severity='warning'>{t('Not set')}</Alert>}
-        </Box>
-      )}
-        
+          )
+
+            : (
+              <Stack
+                alignItems='center'
+                direction='row'
+                spacing={1}
+              >
+                {statusIcon(status)}
+                <div>
+                  <StatusText
+                    status={status}
+                    t={t}
+                  />
+                </div>
+              </Stack>
+            )}
+          <Link
+            component='button'
+            variant='h6'
+            onClick={() => {
+              navigate(`/dashboard/coproductionprocesses/${processId}/workplan`);
+            }}
+            sx={{ mt: 2 }}
+            underline='none'
+          >
+            {t('Time planification')}
+            :
+          </Link>
+
+          {editMode ? (
+            <>
+              {element.type === 'task' ? (
+                <Box
+                  justifyContent='center'
+                  sx={{ mt: 2 }}
+                >
+                  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    localeText={{ start: 'Desktop start', end: 'Desktop end' }}
+                  >
+
+                    <DesktopDateRangePicker
+                      startText='Start date'
+                      endText='End date'
+                      value={dateRange}
+                      onChange={(newValue) => {
+                        setDateRange(newValue);
+                      }}
+
+                      renderInput={(startProps, endProps) => (
+                        <Stack
+                          spacing={3}
+                          direction='row'
+                          sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}
+                        >
+                          <TextField {...startProps} />
+                          <TextField {...endProps} />
+                        </Stack>
+                      )}
+                    />
+                  </LocalizationProvider>
+                </Box>
+              ) : (
+                <Alert
+                  severity='warning'
+                  sx={{ mt: 1 }}
+                >
+                  {t('Start and end dates can only be set for tasks')}
+                </Alert>
+              )}
+            </>
+          ) : (
+            <Box sx={{ mt: 2 }}>
+              {dateRange[0] !== null ? (
+                <>
+                  <b>
+                    {t('Start')}
+                    :
+                    {' '}
+                  </b>
+                  {moment(dateRange[0]).format('LL')}
+                  <br />
+                  <b>
+                    {t('End')}
+                    :
+                    {' '}
+                  </b>
+                  {moment(dateRange[1]).format('LL')}
+                </>
+              ) : <Alert severity='warning'>{t('Not set')}</Alert>}
+            </Box>
+          )}
+
         </>
 
       )}
-      
+
 
       {editMode
         && (
