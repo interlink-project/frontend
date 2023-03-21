@@ -59,13 +59,13 @@ const ContributionsTabs = ({ contributions }) => {
     const handleCloseTask = async () => {
         for (let row of rows) {
             console.log(row);
-            await gamesApi.addClaim(process.game_id,
+            await gamesApi.addClaim(process.id,
                 selectedTreeItem.id,
                 row.id,
                 row.name,
                 CONTRIBUTION_LEVELS[row.contribution]);
         }
-        gamesApi.completeTask(process.game_id, selectedTreeItem.id).then((res) => {
+        gamesApi.completeTask(process.id, selectedTreeItem.id).then((res) => {
             console.log(res);
             setClosedTask(true);
         });
@@ -76,7 +76,7 @@ const ContributionsTabs = ({ contributions }) => {
     };
 
     useEffect(async () => {
-        let task = await gamesApi.getTask(process.game_id, selectedTreeItem.id);
+        let task = await gamesApi.getTask(process.id, selectedTreeItem.id);
         if (task.completed){
             setRows([]);
             setClosedTask(task.completed);

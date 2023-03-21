@@ -53,7 +53,7 @@ const LeaderboardTab = ({ }) => {
 
 
     useEffect(() => {
-        gamesApi.getLeaderboard(process.game_id).then((res) => {
+        gamesApi.getLeaderboard(process.id).then((res) => {
             handleLeaderboard(res)
         });
     }, []);

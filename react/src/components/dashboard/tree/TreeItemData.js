@@ -110,9 +110,9 @@ const TreeItemData = ({ language, processId, element, assets }) => {
           subtaskList: []
         }
         // TODO: If we put the game in the slice the checking of the task status will be faster
-        gamesApi.getTask(process.game_id, selectedTreeItem.id).then((res) => {
+        gamesApi.getTask(process.id, selectedTreeItem.id).then((res) => {
           if (!res.completed) {
-            gamesApi.updateTask(process.game_id, values).then((res) => {
+            gamesApi.updateTask(process.id, values).then((res) => {
               console.log(res);
             });
           }
@@ -528,81 +528,6 @@ const TreeItemData = ({ language, processId, element, assets }) => {
           )}
         </>
       ) : (<></>)}
-
-      <>
-
-        {/*         <ul>
-          {taskDataContributions && taskDataContributions['assetsWithContribution']?.map((asset) => {
-            const hasContribution = asset.contributors.length;
-            if (!hasContribution) {
-              return (
-                <>
-                  <li>
-                    <Typography
-                      variant='h6'
-                      sx={{ mt: 2 }}
-
-                    >
-                      Asset:
-                      <Box
-
-                        class={"lk_" + asset.id}
-                        component="span">
-                        {includeObjectNames('{assetid:' + asset.id + '}')}
-
-                      </Box>
-
-                    </Typography>
-
-                  </li>
-
-                </>
-
-              );
-            }
-
-            return (
-              <>
-
-                <li>
-
-                  <Typography
-                    variant='h6'
-                    sx={{ mt: 2 }}
-
-                  >
-                    Asset:
-                    <Box
-
-                      class={"lk_" + asset.id}
-
-                      component="span">
-                      {includeObjectNames(' {assetid:' + asset.id + '}')}
-
-                    </Box>
-
-                  </Typography>
-
-
-                </li>
-                Contributions:{asset.contributors.parameters}
-                <ol>
-                  {asset.contributors && asset.contributors?.map((contribution) => (
-                    <li>
-                      The user '{JSON.parse(contribution.parameters).userName}' made a ({contribution.claim_type}) claim: {JSON.parse(contribution.parameters).commentTitle}
-                    </li>
-                  ))}
-                </ol>
-
-
-              </>
-
-
-            );
-          })}
-        </ul> */}
-      </>
-
 
       {false && element.problemprofiles && (
         <>
