@@ -314,6 +314,53 @@ const columns = [
   }
 ];
 
+
+
+function EnhancedTableHead(order, orderBy, onRequestSort) {
+  const location = useLocation();
+  const isLocationCatalogue = location.pathname.startsWith('/stories/');
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property);
+  };
+
+
+  let cabeceras = columns;
+
+  if (isLocationCatalogue) {
+    //Skip the heads of History and Actions (no needed for the catalogue)
+    cabeceras = columns.slice(0, -2);
+  }
+
+
+  return (
+    <TableHead>
+      <TableRow>
+        {cabeceras.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? 'right' : 'left'}
+            padding={headCell.disablePadding ? 'none' : 'normal'}
+            sortDirection={orderBy === headCell.id ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : 'asc'}
+              onClick={createSortHandler(headCell.id)}
+            >
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </Box>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+}
+
 const rows = [
   { id: 1, icon: 'Icon', name: 'Crown', updated: '2 days ago', interlinker: '123456', history: 'History', actions: 'Actions' },
 ]

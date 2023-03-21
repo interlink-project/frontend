@@ -4,68 +4,55 @@ import axios from 'axios';
 
 class GamesApi extends GeneralApi {
   constructor() {
-    // Review the creation of gamification apis by /<variableName>
-    super('interlink-gamification/interlink/game/');
+    super('coproduction/api/v1/games');
   }
 
   async getGame(processId) {
-    const res = await axiosInstance.get(`${this.url}processId/${processId}`);
+    const res = await axiosInstance.get(`/${this.url}/${processId}`);
     return res.data;
   }
 
   async setGame(processId, taskList) {
 
-    const res = await axiosInstance.post(`${this.url}processId/${processId}`, {
-      _id: 'null',
-      name: 'complexityGame',
-      filename: 'game_1.json',
-      tagList: ['process1', 'process3'],
+    const res = await axiosInstance.post(`/${this.url}/${processId}`, {
       taskList
     });
     return res.data;
   }
 
-  async deleteGame(gameId) {
-    const res = await axiosInstance.delete(`${this.url}${gameId}`);
+  async deleteGame(processId) {
+    const res = await axiosInstance.delete(`/${this.url}/${processId}`);
     return res.data;
   }
 
-  async addClaim(gameId, taskId, userId, username, contrib_value) {
-    const res = await axiosInstance.put(`${this.url}${gameId}/task/${taskId}/claim`, {
-      id: userId,
-      name: username,
-      development: contrib_value
+  async addClaim(processId, taskId, userId, username, contrib_value) {
+    const res = await axiosInstance.put(`/${this.url}/${processId}/${taskId}/claim`, {
+      user_id: userId,
+      username: username,
+      contrib_value: contrib_value
     });
     return res.data;
   }
 
-  async completeTask(gameId, taskId) {
-    const res = await axiosInstance.put(`${this.url}${gameId}/task/${taskId}/complete`);
+  async completeTask(processId, taskId) {
+    const res = await axiosInstance.put(`/${this.url}/${processId}/${taskId}/complete`);
     return res.data;
   }
 
-  async getTask(gameId, taskId) {
-    const res = await axiosInstance.get(`${this.url}${gameId}/task/${taskId}`);
+  async getTask(processId, taskId) {
+    const res = await axiosInstance.get(`/${this.url}/${processId}/${taskId}`);
     return res.data;
   }
 
-  async updateTask(gameId, data){
-    const res = await axiosInstance.put(`${this.url}${gameId}/task`, {
-      id: data.id,
-      development: data.development,
-      subtaskList: data.subtaskList
+  async updateTask(processId, taskId, data){
+    const res = await axiosInstance.put(`/${this.url}/${processId}/${taskId}`, {
+      data: data,
     });
+    return res.data;
   }
 
-  async getLeaderboard(gameId, period = "global", activityType = "development") {
-    const res = await axiosInstance.get(`${this.url}${gameId}/player/search`, {
-      params: {
-        period: period,
-        activityType: activityType,
-        // sort: {
-        //   sorted: true,
-        // }
-      }
+  async getLeaderboard(processId, period = "global", activityType = "development") {
+    const res = await axiosInstance.get(`/${this.url}/${processId}/leaderboard`, {
     });
     return res.data;
   }

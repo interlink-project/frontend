@@ -198,7 +198,7 @@ const SettingsTab = () => {
       let res = await gamesApi.setGame(process.id, taskList);
       values["game_id"] = res.id;
     } else {
-      gamesApi.deleteGame(process.game_id).then((res) => {
+      gamesApi.deleteGame(process.id).then((res) => {
         console.log(res);
         dispatch(updateProcess({
           id: process.id,
