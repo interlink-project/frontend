@@ -104,15 +104,10 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     if (development !== element.development) {
       data.development = parseInt(development);
       if (process.game_id) {
-        let values = {
-          id: selectedTreeItem.id,
-          development: data.development,
-          subtaskList: []
-        }
         // TODO: If we put the game in the slice the checking of the task status will be faster
         gamesApi.getTask(process.id, selectedTreeItem.id).then((res) => {
           if (!res.completed) {
-            gamesApi.updateTask(process.id, values).then((res) => {
+            gamesApi.updateTask(process.id, selectedTreeItem.id, data.development).then((res) => {
               console.log(res);
             });
           }

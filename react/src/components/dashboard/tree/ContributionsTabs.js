@@ -77,6 +77,7 @@ const ContributionsTabs = ({ contributions }) => {
 
     useEffect(async () => {
         let task = await gamesApi.getTask(process.id, selectedTreeItem.id);
+        console.log(contributions);
         if (task.completed){
             setRows([]);
             setClosedTask(task.completed);
