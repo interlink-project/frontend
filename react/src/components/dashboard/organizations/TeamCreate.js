@@ -253,6 +253,7 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
               <UserSearch
                 exclude={selectedUsers.map(se => se.id)}
                 organization_id={organization.id}
+                onBulk={true}
                 onClick={(us) => {
                   if (us instanceof Array) {
                     setSelectedUsers(selectedUsers.concat(us))

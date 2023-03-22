@@ -9,8 +9,9 @@ import { useEffect, useRef, useState } from 'react';
 import { usersApi } from '__api__';
 import Papa from 'papaparse';
 import { ExportToCsv } from 'export-to-csv';
+import wait from 'utils/wait';
 
-const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organization_id = null, alert = true, importCsv = true, error = false }) => {
+const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organization_id = null, alert = true, importCsv = true, error = false, onBulk = false }) => {
   const [loading, setLoading] = useState(false);
   const mounted = useMounted();
   const [searchResults, setSearchResults] = useState([]);
@@ -123,18 +124,27 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
       header: false,
       skipEmptyLines: true,
       complete: async function (results) {
+        let new_users = [];
         for (let u of results.data) {
           const res = await usersApi.search(u);
-          console.log(res[0]);
-          if (res.length > 0 && !exclude.includes(res[0].id)) {
-            
-            exclude.push(res[0].id);
-            onClick(res[0]);
+
+          if (res.length > 0) {
+            if (!exclude.includes(res[0].id)) {
+              exclude.push(res[0].id);
+              if (!onBulk) {
+                onClick(res[0]);
+              } else {
+                new_users.push(res[0]);
+              }
+            }
           } else {
             rejected_users.push(u);
           }
-
         }
+        if (onBulk) {
+          onClick(new_users);
+        }
+
         if (rejected_users.length > 0) {
           setMailErrors(true)
           console.log(rejected_users)
@@ -201,25 +211,25 @@ const UserSearch = ({ exclude = [], onClick, showTemporalMessage = null, organiz
         label={t('Type here to add users')}
       />
       {loading && <LinearProgress />}
-      { importCsv && <>
-      <Button
-        sx={{ mt: 2 }}
-        variant="contained"
-        component="label">
-        {t('Import from csv')}
-        <input
-          type="file"
-          accept=".csv"
-          hidden
-          onChange={parseFile}
-        />
-      </Button>
-      <IconButton
-        sx={{ mt: 2 }}
-        color="primary"
-        onClick={handleOpenDialog}>
-        <Info />
-      </IconButton>
+      {importCsv && <>
+        <Button
+          sx={{ mt: 2 }}
+          variant="contained"
+          component="label">
+          {t('Import from csv')}
+          <input
+            type="file"
+            accept=".csv"
+            hidden
+            onChange={parseFile}
+          />
+        </Button>
+        <IconButton
+          sx={{ mt: 2 }}
+          color="primary"
+          onClick={handleOpenDialog}>
+          <Info />
+        </IconButton>
       </>}
       {open && (
         <Paper>
