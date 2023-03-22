@@ -171,6 +171,7 @@ const RightSide = ({ softwareInterlinkers }) => {
       //alert('external',asset.uri);
       window.open(asset.uri);
     }
+    setAnchorEl(null);
   };
 
   const handleDelete = (asset, callback) => {
@@ -238,7 +239,14 @@ const RightSide = ({ softwareInterlinkers }) => {
   };
 
   const handleEdit = (asset) => {
-    window.open(`${asset.link}/edit`, '_blank');
+
+    const backend =asset['software_response']['backend'];
+    const linktoAsset =backend+'/'+asset['external_asset_id'];
+    
+
+    window.open(`${linktoAsset}/edit`, '_blank');
+
+
     setAnchorEl(null);
   };
 
@@ -272,7 +280,7 @@ const RightSide = ({ softwareInterlinkers }) => {
         text: t('Open'),
         icon: <OpenInNew fontSize='small' />
       });
-
+      
       if (capabilities.edit) {
         actions.push({
           id: `${id}-edit-action`,
@@ -286,6 +294,7 @@ const RightSide = ({ softwareInterlinkers }) => {
           icon: <Edit fontSize='small' />
         });
       }
+
       if (capabilities.clone && can.create) {
         actions.push({
           id: `${id}-clone-action`,
