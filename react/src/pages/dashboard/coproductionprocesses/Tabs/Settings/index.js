@@ -109,13 +109,18 @@ const SettingsTab = () => {
   };
 
   const handleAdministratorAdd = (user) => {
+    if (typeof user !== 'undefined') {
+      user instanceof Array ? user = user[0] : null;
+    
     coproductionProcessesApi
       .addAdministrator(process.id, user.id)
       .then((res) => {
+        console.log(res);
         if (mounted.current) {
           dispatch(getProcess(process.id, false));
         }
       });
+    }
   };
   const handleAdministratorRemove = (user) => {
     coproductionProcessesApi
