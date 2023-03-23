@@ -9,7 +9,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "translations": "i18next --fail-on-warnings"
+    "translations": "i18next --fail-on-warnings",
+    "cypress:open:localhost": "cypress open --config baseUrl='http://localhost'",
+    "cypress:open:dev": "cypress open --config baseUrl='https://dev.interlink-project.eu'",
+    "cypress:open:demo": "cypress open --config baseUrl='https://demo.interlink-project.eu'",
+    "cypress:run:localhost": "cypress run --e2e --headless --config baseUrl='http://localhost'",
+    "cypress:run:dev": "cypress run --e2e --headless --config baseUrl='https://dev.interlink-project.eu'",
+    "cypress:run:demo": "cypress run --e2e --headless --config baseUrl='https://demo.interlink-project.eu'"
   },
   "eslintConfig": {
     "extends": [
