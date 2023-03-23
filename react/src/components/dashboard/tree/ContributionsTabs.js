@@ -55,18 +55,17 @@ const ContributionsTabs = ({ contributions }) => {
         setClaimDialogOpen(true);
     };
 
+
     const handleCloseTask = async () => {
-        console.log("CLOSE TASK");
-        console.log(rows);
         for (let row of rows) {
             console.log(row);
-            await gamesApi.addClaim(process.game_id,
+            await gamesApi.addClaim(process.id,
                 selectedTreeItem.id,
                 row.id,
                 row.name,
                 CONTRIBUTION_LEVELS[row.contribution]);
         }
-        gamesApi.completeTask(process.game_id, selectedTreeItem.id).then((res) => {
+        gamesApi.completeTask(process.id, selectedTreeItem.id).then((res) => {
             console.log(res);
             setClosedTask(true);
         });
@@ -76,39 +75,47 @@ const ContributionsTabs = ({ contributions }) => {
         );
     };
 
-    useEffect(() => {
-        gamesApi.getTask(process.game_id, selectedTreeItem.id).then((res) => {
-            if (res) {
-                setClosedTask(res.completed);
-            }
-        });
-
+    useEffect(async () => {
+        let task = await gamesApi.getTask(process.id, selectedTreeItem.id);
         console.log(contributions);
-        if (contributions.length === 0) {
-            console.log("NO CONTRIBUTIONS");
+        if (task.completed){
             setRows([]);
-            return;
-        }
-        let total_contribs = 0;
-        let contribs = {};
-        for (let i = 0; i < contributions.length; i++) {
-            for (let j = 0; j < contributions[i].contributors.length; j++) {
-                if (!contribs[contributions[i].contributors[j].user_id]) {
-                    contribs[contributions[i].contributors[j].user_id] = 1;
-                } else {
-                    contribs[contributions[i].contributors[j].user_id] += 1;
-                }
-                total_contribs += 1;
+            setClosedTask(task.completed);
+            console.log(task);
+            let r = [];
+            for (let player of task.players) {
+                r.push({ id: player.id, name: player.name, contribution: Object.keys(CONTRIBUTION_LEVELS).find(key => CONTRIBUTION_LEVELS[key] === player.development), contrib_value: player.development });
+            };
+            setRows(r);
+            
+        } else {
+            setClosedTask(task.completed);
+            if (contributions.length === 0) {
+                console.log("NO CONTRIBUTIONS");
+                setRows([]);
+                return;
             }
-        }
-
-        setRows([]);
-        for (let id in contribs) {
-            usersApi.get(id).then((res) => {
-                setRows(rows => [...rows, { id: id, name: res.full_name, contribution: mapContributions(total_contribs, contribs[id]), contrib_value: contribs[id] }]);
-            }).catch((err) => {
-                console.log(err);
-            });
+            let total_contribs = 0;
+            let contribs = {};
+            for (let i = 0; i < contributions.length; i++) {
+                for (let j = 0; j < contributions[i].contributors.length; j++) {
+                    if (!contribs[contributions[i].contributors[j].user_id]) {
+                        contribs[contributions[i].contributors[j].user_id] = 1;
+                    } else {
+                        contribs[contributions[i].contributors[j].user_id] += 1;
+                    }
+                    total_contribs += 1;
+                }
+            }
+    
+            setRows([]);
+            for (let id in contribs) {
+                usersApi.get(id).then((res) => {
+                    setRows(rows => [...rows, { id: id, name: res.full_name, contribution: mapContributions(total_contribs, contribs[id]), contrib_value: contribs[id] }]);
+                }).catch((err) => {
+                    console.log(err);
+                });
+            }
         }
 
     }, [contributions]);

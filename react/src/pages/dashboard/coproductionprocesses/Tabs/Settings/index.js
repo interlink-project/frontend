@@ -149,12 +149,11 @@ const SettingsTab = () => {
   };
 
   const prepareGameTemplate = (tree) => {
-
     const taskList = [];
     for (const phase of tree) {
       for (const objective of phase.children) {
         for (const task of objective.children) {
-          if (task.type === 'task') {
+          if (task.type === 'task' && task.is_disabled === false) {
             taskList.push({
               id: task.id,
               management: task.management,
@@ -203,7 +202,7 @@ const SettingsTab = () => {
       let res = await gamesApi.setGame(process.id, taskList);
       values["game_id"] = res.id;
     } else {
-      gamesApi.deleteGame(process.game_id).then((res) => {
+      gamesApi.deleteGame(process.id).then((res) => {
         console.log(res);
         dispatch(updateProcess({
           id: process.id,
