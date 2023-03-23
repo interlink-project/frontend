@@ -716,6 +716,8 @@ const RightSide = ({ softwareInterlinkers }) => {
                         let selectedAssetIcon = '';
                         let selectedShowIcon = '';
                         let selectedShowLink = '';
+
+
                         if (selectedAsset.type == 'externalasset') {
                           //Is external
                           selectedAssetLink = selectedAsset.uri;
@@ -724,10 +726,34 @@ const RightSide = ({ softwareInterlinkers }) => {
                           selectedShowLink = 'hidden';
 
                         } else {
-                          //Is internal
+
+                          if(selectedAsset.link){
+                            //Is internal
                           selectedAssetLink = selectedAsset.link + '/view'
+
+
+                          }else{
+                        
+                            const backend= selectedAsset['software_response']['backend'];
+                            const linkAsset=backend+'/'+selectedAsset['external_asset_id']+'/view';
+                            selectedAssetLink=linkAsset;
+                            selectedAssetIcon=selectedAsset['internalData']['icon'];
+
+                          }
                           selectedShowIcon = '';
                           selectedShowLink = 'hidden';
+
+
+                          
+                        }
+
+                        function escape(htmlStr) {
+                          return htmlStr.replace(/&/g, "&amp;")
+                                .replace(/</g, "&lt;")
+                                .replace(/>/g, "&gt;")
+                                .replace(/"/g, "&quot;")
+                                .replace(/'/g, "&#39;");        
+                       
                         }
 
                         const parametersList = {
@@ -735,14 +761,16 @@ const RightSide = ({ softwareInterlinkers }) => {
                           assetName: '{assetid:' + selectedAsset.id + '}',
                           assetLink: selectedAssetLink,
                           assetIcon: selectedAssetIcon,
-                          commentTitle: values.title,
-                          commentDescription: values.description,
+                          commentTitle: escape(values.title),
+                          commentDescription: escape(values.description),
                           treeitem_id: selectedTreeItem.id,
-                          treeItemName: selectedTreeItem.name,
+                          treeItemName: escape(selectedTreeItem.name),
                           copro_id: process.id,
                           showIcon: selectedShowIcon,
                           showLink: selectedShowLink
                         };
+                        
+                        
                         const paramListJson = JSON.stringify(parametersList)
                         // console.log(parametersList)
                         const dataToSend = {
