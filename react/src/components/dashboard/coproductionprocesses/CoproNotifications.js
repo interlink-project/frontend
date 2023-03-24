@@ -115,10 +115,11 @@ export default function CoproNotifications({ mode = "notification" }) {
       if (extractParams) {
         for (let i = 0; i < extractParams.length; i++) {
           //console.log(extractParams[i]);
-          if (JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]) {
+          const listParameters=JSON.parse(parameters.replace(/'/g, '"'));
+          if (listParameters[extractParams[i]]!=null) {
             text = text.replace(
               "{" + extractParams[i] + "}",
-              JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]
+              listParameters[extractParams[i]]
             );
           }
         }
@@ -165,9 +166,11 @@ export default function CoproNotifications({ mode = "notification" }) {
                 const nodes2 = document.getElementsByClassName(
                   "im_" + entidadId
                 );
-                for (let i = 0; i < nodes.length; i++) {
-                  nodes2[i].src = assetIcon;
-                }
+                if(assetIcon!=''){
+                  for (let i = 0; i < nodes.length; i++) {
+                      nodes2[i].src = assetIcon;
+                  }
+              }
                 break;
               }
             }

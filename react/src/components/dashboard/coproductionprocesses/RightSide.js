@@ -721,7 +721,13 @@ const RightSide = ({ softwareInterlinkers }) => {
                         if (selectedAsset.type == 'externalasset') {
                           //Is external
                           selectedAssetLink = selectedAsset.uri;
-                          selectedAssetIcon = selectedAsset.icon_path;
+
+                          if(selectedAsset.icon_path){
+                            selectedAssetIcon = selectedAsset.icon_path;
+                          }else{
+                            selectedAssetIcon ="/coproduction/static/assets/external_link.svg";
+                          }
+
                           selectedShowIcon = '';
                           selectedShowLink = 'hidden';
 
