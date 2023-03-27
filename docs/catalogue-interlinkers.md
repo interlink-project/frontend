@@ -1,7 +1,9 @@
 # Catalogue of INTERLINKERs
 The [INTERLINKER catalogue](https://demo.interlink-project.eu/catal) provides a one-stop-shop for know-how enabling co-production. It has been populated with knowledge and software INTERLINKERs leveraging resources generated in previous EU projects, social innovation initiatives, and service design best practices like: [WeLive](https://cordis.europa.eu/project/id/645845), [Silearning.eu](https://www.silearning.eu/), [servicedesigntools.org](https://servicedesigntools.org/), [DesignersItalia](https://designers.italia.it/),  [IDEO](https://www.ideo.com/eu) or [Engage2020](http://www.engage2020.eu/). 
 
-Some resources have been adapted to the specific needs of co-production; others are being created from scratch based on project research results. 
+Some resources have been adapted to the specific needs of co-production; others are being created from scratch based on project research results. This explains that under "Nature" filter we can encounter "Internal" and "External" INTERLINKERs. Besides, some are "software" INTERLINKERs, i.e. they are reusable software libraries and/or microservices, whilst others are "knowledge" INTERLINKERs which are capabilities that can be leveraged to carry out some tasks within a co-production process. 
+
+Notice as well that INTERLINKERs are associated to "Problem profiles". A "proble profile" is defined in INTERLINK as a specification that describes a particular topic, the required functionalities and features corresponding to that topic, and relates it to the existing EU standards and/or specifications. In other words, it defines a "problem area" which may be addressed by INTERLINKERs. 
 
 You may access the INTERLINK catalogue by clicking on CATALOGUE top menu option. This will give you access to a new screen where you can perform browsing, filtering and selection of INTERLINKERs.
 
