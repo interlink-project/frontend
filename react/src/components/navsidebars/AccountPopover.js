@@ -3,14 +3,15 @@ import {
   Box,
   Button,
   ButtonBase,
-  Divider, Popover,
-  Typography
-} from '@mui/material';
-import { Login } from '@mui/icons-material';
-import { useRef, useState } from 'react';
-import toast from 'react-hot-toast';
-import { useTranslation } from 'react-i18next';
-import useAuth from '../../hooks/useAuth';
+  Divider,
+  Popover,
+  Typography,
+} from "@mui/material";
+import { Login } from "@mui/icons-material";
+import { useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import useAuth from "../../hooks/useAuth";
 
 const AccountPopover = () => {
   const anchorRef = useRef(null);
@@ -33,7 +34,7 @@ const AccountPopover = () => {
       auth.logout();
     } catch (err) {
       console.error(err);
-      toast.error('Unable to logout.');
+      toast.error("Unable to logout.");
     }
   };
 
@@ -44,8 +45,8 @@ const AccountPopover = () => {
         onClick={handleOpen}
         ref={anchorRef}
         sx={{
-          alignItems: 'center',
-          display: 'flex',
+          alignItems: "center",
+          display: "flex",
         }}
       >
         <Avatar
@@ -54,13 +55,14 @@ const AccountPopover = () => {
             height: 32,
             width: 32,
           }}
+          data-cy="account-avatar"
         />
       </Box>
       <Popover
         anchorEl={anchorRef.current}
         anchorOrigin={{
-          horizontal: 'center',
-          vertical: 'bottom',
+          horizontal: "center",
+          vertical: "bottom",
         }}
         keepMounted
         onClose={handleClose}
@@ -68,12 +70,10 @@ const AccountPopover = () => {
         PaperProps={{
           sx: { width: 240 },
         }}
+        data-cy="account-popover"
       >
         <Box sx={{ p: 2 }}>
-          <Typography
-            color='textPrimary'
-            variant='subtitle2'
-          >
+          <Typography color="textPrimary" variant="subtitle2">
             {user.full_name}
           </Typography>
         </Box>
@@ -118,12 +118,13 @@ const AccountPopover = () => {
               </Box> */}
         <Box sx={{ p: 2 }}>
           <Button
-            color='primary'
+            color="primary"
             fullWidth
             onClick={handleLogout}
-            variant='outlined'
+            variant="outlined"
+            data-cy="logout-button"
           >
-            {t('Logout')}
+            {t("Logout")}
           </Button>
         </Box>
       </Popover>
@@ -132,16 +133,13 @@ const AccountPopover = () => {
     <Box
       component={ButtonBase}
       sx={{
-        alignItems: 'center',
-        display: 'flex',
+        alignItems: "center",
+        display: "flex",
       }}
       onClick={() => auth.signinRedirect()}
     >
-      <Typography
-        sx={{ mr: 1 }}
-        variant='overline'
-      >
-        {t('Login')}
+      <Typography sx={{ mr: 1 }} variant="overline">
+        {t("Login")}
       </Typography>
       <Login />
     </Box>

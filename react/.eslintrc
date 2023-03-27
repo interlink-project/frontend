@@ -12,7 +12,8 @@
    }
   },
   "extends": [
-    "airbnb"
+    "airbnb",
+    "plugin:cypress/recommended"
   ],
   "plugins": [
     "only-warn"

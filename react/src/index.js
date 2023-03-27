@@ -34,6 +34,7 @@ if (environment) {
     integrations: [new BrowserTracing()],
     tracesSampleRate: 1.0,
     environment,
+    ignoreErrors: ["ResizeObserver loop limit exceeded"],
   });
 }
 

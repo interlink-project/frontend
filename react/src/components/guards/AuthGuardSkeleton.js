@@ -1,74 +1,73 @@
-import { Paper, Button, Typography, Box, Card, CardContent, useMediaQuery } from '@mui/material';
-import PropTypes from 'prop-types';
-import useAuth from '../../hooks/useAuth';
-import { styled } from '@mui/styles';
-import { useTheme } from '@mui/styles';
-import { Link as RouterLink } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { Button, Typography, Box, useMediaQuery } from "@mui/material";
+import PropTypes from "prop-types";
+import useAuth from "../../hooks/useAuth";
+import { useTheme } from "@mui/styles";
+import { useTranslation } from "react-i18next";
 
-const AuthGuardSkeleton = ({ children, width = '100%', height = '100%' }) => {
+const AuthGuardSkeleton = ({ children, width = "100%", height = "100%" }) => {
   const auth = useAuth();
   const theme = useTheme();
-  const mobileDevice = useMediaQuery(theme.breakpoints.down('sm'));
+  const mobileDevice = useMediaQuery(theme.breakpoints.down("sm"));
   const { t } = useTranslation();
 
   if (!auth.isAuthenticated) {
     return (
       <Box
         style={{
-          bgcolor: 'background.paper',
-          position: 'absolute',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)'
+          bgcolor: "background.paper",
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
         }}
       >
         <Typography
-          align='center'
-          color='textPrimary'
-          variant={mobileDevice ? 'h4' : 'h2'}
+          align="center"
+          color="textPrimary"
+          variant={mobileDevice ? "h4" : "h2"}
+          data-cy="login-required"
         >
-          {t('login-required')}
+          {t("login-required")}
         </Typography>
         <Typography
-          align='center'
-          color='textSecondary'
+          align="center"
+          color="textSecondary"
           sx={{ mt: 0.5 }}
-          variant='subtitle2'
+          variant="subtitle2"
         >
-          {t('login-required-description')}
-
+          {t("login-required-description")}
         </Typography>
         <Box
           sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            mt: 6
+            display: "flex",
+            justifyContent: "center",
+            mt: 6,
           }}
         >
           <Box
-            component='img'
+            component="img"
             src={`/static/error/error401_${theme.palette.mode}.svg`}
             sx={{
-              height: 'auto',
-              maxWidth: '100%',
-              width: 200
+              height: "auto",
+              maxWidth: "100%",
+              width: 200,
             }}
           />
         </Box>
         <Box
           sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            mt: 6
+            display: "flex",
+            justifyContent: "center",
+            mt: 6,
           }}
         >
           <Button
-            color='primary'
+            color="primary"
             onClick={() => auth.signinRedirect()}
-            variant='outlined'
+            variant="outlined"
+            data-cy="Login"
           >
-            {t('Login')}
+            {t("Login")}
           </Button>
         </Box>
       </Box>
@@ -78,7 +77,7 @@ const AuthGuardSkeleton = ({ children, width = '100%', height = '100%' }) => {
 };
 
 AuthGuardSkeleton.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 export default AuthGuardSkeleton;

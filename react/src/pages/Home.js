@@ -53,6 +53,7 @@ const Home = () => {
                 variant="contained"
                 sx={{ fontSize: "20px" }}
                 endIcon={<ChevronRight />}
+                data-cy="home-1-2"
               >
                 {t("home-1-2")}
               </Button>

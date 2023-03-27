@@ -27,3 +27,4 @@ APIKEY.txt
 node_modules
 /react/cypress/videos
 /react/cypress/screenshots
+.secrets.json
