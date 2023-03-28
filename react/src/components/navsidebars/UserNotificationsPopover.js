@@ -63,7 +63,7 @@ const UserNotificationsPopover = () => {
 
 
   const includeParametersValues = (text, parameters) => {
-    text=htmlDecode(text)
+    
     if(parameters){
       //Obtain all parameters of the text
       const paramsPattern = /[^{}]+(?=})/g;
@@ -77,6 +77,7 @@ const UserNotificationsPopover = () => {
       }
       
     }
+    text=htmlDecode(text)
     return text;
   }
 
