@@ -385,7 +385,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
             variant='h6'
             sx={{ mt: 2 }}
           >
-            {t('Complexity Levels')}
+            {t('Complexity Level')}
           </Typography>
 
 
