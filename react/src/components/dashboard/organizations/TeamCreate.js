@@ -106,8 +106,8 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
     }, 1000);
   };
 
-  const deleteUserFromList = (sub) => {
-    setSelectedUsers(selectedUsers.filter((user) => user.sub !== sub));
+  const deleteUserFromList = (id) => {
+    setSelectedUsers(selectedUsers.filter((user) => user.id !== id));
   };
 
   const isDisabled = () => {
@@ -237,7 +237,7 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
                             <IconButton
                               edge='end'
                               aria-label='delete'
-                              onClick={() => deleteUserFromList(se.sub)}
+                              onClick={() => deleteUserFromList(se.id)}
                             >
                               <Delete />
                             </IconButton>
