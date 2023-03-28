@@ -1,3 +1,5 @@
+import "cypress-file-upload";
+
 Cypress.Commands.add("LoginWithEmail", () => {
   const url = Cypress.config().baseUrl;
   cy.visit(url, {
@@ -13,7 +15,15 @@ Cypress.Commands.add("LoginWithEmail", () => {
   cy.get('[data-cy="Login"]').click();
 
   cy.get("#username").type(Cypress.env("cypress_email_login"));
-  cy.get("#password").type(Cypress.env("cypress_email_password"));
+  cy.get("#password").type(Cypress.env("cypress_email_password"), {
+    sensitive: true,
+  });
   cy.get(".row > .btn").contains("Sign In").click();
   cy.reload();
+});
+
+Cypress.Commands.add("login", (username, password) => {
+  cy.session({}, () => {
+    cy.LoginWithEmail();
+  });
 });
