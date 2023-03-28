@@ -56,7 +56,14 @@ const UserNotificationsPopover = () => {
   const { user } = useAuth();
   const dispatch = useDispatch();
 
+  function htmlDecode(str) {
+    const doc = new DOMParser().parseFromString(str, "text/html");
+    return doc.documentElement.textContent;
+  }
+
+
   const includeParametersValues = (text, parameters) => {
+    text=htmlDecode(text)
     if(parameters){
       //Obtain all parameters of the text
       const paramsPattern = /[^{}]+(?=})/g;
@@ -222,7 +229,7 @@ const UserNotificationsPopover = () => {
                             variant='subtitle2'
                 
                           >
-                            { includeParametersValues(decodeURI(usernotification.notification.subtitle),usernotification.parameters) }
+                            { includeParametersValues(usernotification.notification.subtitle,usernotification.parameters) }
                            
                           </Link>
                         )}
