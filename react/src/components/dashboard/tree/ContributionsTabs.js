@@ -77,6 +77,7 @@ const ContributionsTabs = ({ contributions }) => {
 
     useEffect(async () => {
         let task = await gamesApi.getTask(process.id, selectedTreeItem.id);
+        console.log(contributions);
         if (task.completed){
             setRows([]);
             setClosedTask(task.completed);
@@ -240,21 +241,41 @@ const ContributionsTabs = ({ contributions }) => {
                                         selectedShowLink = 'hidden';
 
                                     } else {
-                                        //Is internal
-                                        selectedAssetLink = selectedAsset.link + '/view'
-                                        selectedShowIcon = '';
-                                        selectedShowLink = 'hidden';
+
+                                        if(selectedAsset.link){
+                                            //Is internal
+                                          selectedAssetLink = selectedAsset.link + '/view'
+                                          selectedShowIcon = '';
+                                          selectedShowLink = 'hidden';
+                
+                                          }else{
+                                            
+                                            const backend= selectedAsset['software_response']['backend'];
+                                            const linkAsset=backend+'/'+selectedAsset['external_asset_id']+'/view';
+                                            selectedAssetLink=linkAsset;
+                                          }
+
+                                       
                                     }
+
+                                    function escape(htmlStr) {
+                                        return htmlStr.replace(/&/g, "&amp;")
+                                              .replace(/</g, "&lt;")
+                                              .replace(/>/g, "&gt;")
+                                              .replace(/"/g, "&quot;")
+                                              .replace(/'/g, "&#39;");        
+                                     
+                                      }
 
                                     const parametersList = {
                                         assetId: selectedAsset.id,
                                         assetName: '{assetid:' + selectedAsset.id + '}',
                                         assetLink: selectedAssetLink,
                                         assetIcon: selectedAssetIcon,
-                                        commentTitle: values.title,
-                                        commentDescription: values.description,
+                                        commentTitle: escape(values.title),
+                                        commentDescription: escape(values.description),
                                         treeitem_id: selectedTreeItem.id,
-                                        treeItemName: selectedTreeItem.name,
+                                        treeItemName: escape(selectedTreeItem.name),
                                         copro_id: process.id,
                                         showIcon: selectedShowIcon,
                                         showLink: selectedShowLink

@@ -109,13 +109,18 @@ const SettingsTab = () => {
   };
 
   const handleAdministratorAdd = (user) => {
+    if (typeof user !== 'undefined') {
+      user instanceof Array ? user = user[0] : null;
+    
     coproductionProcessesApi
       .addAdministrator(process.id, user.id)
       .then((res) => {
+        console.log(res);
         if (mounted.current) {
           dispatch(getProcess(process.id, false));
         }
       });
+    }
   };
   const handleAdministratorRemove = (user) => {
     coproductionProcessesApi
@@ -144,12 +149,11 @@ const SettingsTab = () => {
   };
 
   const prepareGameTemplate = (tree) => {
-
     const taskList = [];
     for (const phase of tree) {
       for (const objective of phase.children) {
         for (const task of objective.children) {
-          if (task.type === 'task') {
+          if (task.type === 'task' && task.is_disabled === false) {
             taskList.push({
               id: task.id,
               management: task.management,
@@ -795,7 +799,7 @@ const SettingsTab = () => {
             </Card>
 
             {/* Reward */}
-            {/* <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
+            <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
               <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
                 {t("Reward system")}
               </Typography>
@@ -819,7 +823,7 @@ const SettingsTab = () => {
                   "If you disable the Reward system every data will be deleted"
                 )}
               </Alert>
-            </Card> */}
+            </Card>
 
           </>
         )}

@@ -171,6 +171,7 @@ const RightSide = ({ softwareInterlinkers }) => {
       //alert('external',asset.uri);
       window.open(asset.uri);
     }
+    setAnchorEl(null);
   };
 
   const handleDelete = (asset, callback) => {
@@ -238,7 +239,14 @@ const RightSide = ({ softwareInterlinkers }) => {
   };
 
   const handleEdit = (asset) => {
-    window.open(`${asset.link}/edit`, '_blank');
+
+    const backend =asset['software_response']['backend'];
+    const linktoAsset =backend+'/'+asset['external_asset_id'];
+    
+
+    window.open(`${linktoAsset}/edit`, '_blank');
+
+
     setAnchorEl(null);
   };
 
@@ -272,7 +280,7 @@ const RightSide = ({ softwareInterlinkers }) => {
         text: t('Open'),
         icon: <OpenInNew fontSize='small' />
       });
-
+      
       if (capabilities.edit) {
         actions.push({
           id: `${id}-edit-action`,
@@ -286,6 +294,7 @@ const RightSide = ({ softwareInterlinkers }) => {
           icon: <Edit fontSize='small' />
         });
       }
+
       if (capabilities.clone && can.create) {
         actions.push({
           id: `${id}-clone-action`,
@@ -415,8 +424,9 @@ const RightSide = ({ softwareInterlinkers }) => {
         item
         xl={8}
         lg={8}
-        md={6}
+        md={9}
         xs={12}
+
       >
         <Box sx={{ p: 2 }}>
           <Paper sx={{ bgcolor: 'background.default' }}>
@@ -446,12 +456,12 @@ const RightSide = ({ softwareInterlinkers }) => {
               label={`${t('Permissions')} (${selectedTreeItem.permissions.length})`}
               />
               )}
-              {/* { (!isLocationCatalogue && isTask && isAdministrator && !process.is_part_of_publication) && (
+              { (!isLocationCatalogue && isTask && isAdministrator && !process.is_part_of_publication) && (
               <Tab
                 value='contributions'
                 label={`${t('Contributions')} (${obtenerNroContributions(contributions)})`}
               />
-              )} */}
+              )}
               
              
             </Tabs>
@@ -707,18 +717,50 @@ const RightSide = ({ softwareInterlinkers }) => {
                         let selectedAssetIcon = '';
                         let selectedShowIcon = '';
                         let selectedShowLink = '';
+
+
                         if (selectedAsset.type == 'externalasset') {
                           //Is external
                           selectedAssetLink = selectedAsset.uri;
-                          selectedAssetIcon = selectedAsset.icon_path;
+
+                          if(selectedAsset.icon_path){
+                            selectedAssetIcon = selectedAsset.icon_path;
+                          }else{
+                            selectedAssetIcon ="/coproduction/static/assets/external_link.svg";
+                          }
+
                           selectedShowIcon = '';
                           selectedShowLink = 'hidden';
 
                         } else {
-                          //Is internal
+
+                          if(selectedAsset.link){
+                            //Is internal
                           selectedAssetLink = selectedAsset.link + '/view'
+
+
+                          }else{
+                        
+                            const backend= selectedAsset['software_response']['backend'];
+                            const linkAsset=backend+'/'+selectedAsset['external_asset_id']+'/view';
+                            selectedAssetLink=linkAsset;
+                            selectedAssetIcon=selectedAsset['internalData']['icon'];
+
+                          }
                           selectedShowIcon = '';
                           selectedShowLink = 'hidden';
+
+
+                          
+                        }
+
+                        function escape(htmlStr) {
+                          return htmlStr.replace(/&/g, "&amp;")
+                                .replace(/</g, "&lt;")
+                                .replace(/>/g, "&gt;")
+                                .replace(/"/g, "&quot;")
+                                .replace(/'/g, "&#39;");        
+                       
                         }
 
                         const parametersList = {
@@ -726,14 +768,16 @@ const RightSide = ({ softwareInterlinkers }) => {
                           assetName: '{assetid:' + selectedAsset.id + '}',
                           assetLink: selectedAssetLink,
                           assetIcon: selectedAssetIcon,
-                          commentTitle: values.title,
-                          commentDescription: values.description,
+                          commentTitle: escape(values.title),
+                          commentDescription: escape(values.description),
                           treeitem_id: selectedTreeItem.id,
-                          treeItemName: selectedTreeItem.name,
+                          treeItemName: escape(selectedTreeItem.name),
                           copro_id: process.id,
                           showIcon: selectedShowIcon,
                           showLink: selectedShowLink
                         };
+                        
+                        
                         const paramListJson = JSON.stringify(parametersList)
                         // console.log(parametersList)
                         const dataToSend = {

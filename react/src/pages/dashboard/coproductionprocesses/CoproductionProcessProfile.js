@@ -137,7 +137,7 @@ const CoproductionProcessProfile = () => {
   const tabs = [
     { label: t('Overview'), value: 'overview' },
     { label: t('Guide'), value: 'guide', disabled: !hasSchema },
-    // { label: t('Leaderboard'), value: 'leaderboard', disabled: !hasSchema },
+    { label: t('Leaderboard'), value: 'leaderboard', disabled: !hasSchema },
     { label: t('Workplan'), value: 'workplan', disabled: !hasSchema },
     { label: t('Team'), value: 'team', disabled: !hasSchema },
     { label: t('Settings'), value: 'settings' },
@@ -190,14 +190,14 @@ const CoproductionProcessProfile = () => {
                       <Guide setSelectedTreeItem={_setSelectedTreeItem} />
                     </Card>
                   </TabPanel>
-                  {/* <TabPanel
+                  <TabPanel
                     value={tab}
                     index='leaderboard'
                   >
                     <Card sx={{ ...style, mb: 3 }}>
                       <LeaderboardTab/>
                     </Card>
-                  </TabPanel> */}
+                  </TabPanel>
                   <TabPanel
                     value={tab}
                     index='team'

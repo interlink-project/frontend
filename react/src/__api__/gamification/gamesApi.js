@@ -28,9 +28,9 @@ class GamesApi extends GeneralApi {
 
   async addClaim(processId, taskId, userId, username, contrib_value) {
     const res = await axiosInstance.put(`/${this.url}/${processId}/${taskId}/claim`, {
-      user_id: userId,
-      username: username,
-      contrib_value: contrib_value
+      id: userId,
+      name: username,
+      development: contrib_value
     });
     return res.data;
   }
@@ -45,16 +45,15 @@ class GamesApi extends GeneralApi {
     return res.data;
   }
 
-  async updateTask(processId, taskId, data){
+  async updateTask(processId, taskId, development) {
     const res = await axiosInstance.put(`/${this.url}/${processId}/${taskId}`, {
-      data: data,
+      development: development,
     });
     return res.data;
   }
 
   async getLeaderboard(processId, period = "global", activityType = "development") {
-    const res = await axiosInstance.get(`/${this.url}/${processId}/leaderboard`, {
-    });
+    const res = await axiosInstance.get(`/${this.url}/${processId}/leaderboard`);
     return res.data;
   }
 
