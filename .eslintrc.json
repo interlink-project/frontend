@@ -1,40 +1,51 @@
 {
-  "extends": [
-    "eslint:recommended",
-    "plugin:prettier/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:cypress/recommended"
-  ],
-  "plugins": ["prettier", "@typescript-eslint"],
-  "rules": {
-    "eqeqeq": "error",
-    "no-console": "warn",
-    "no-undef": "warn",
-    "no-unused-vars": "off",
-    "prettier/prettier": "error",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/no-unused-vars": "warn",
-    "@typescript-eslint/no-var-requires": "off",
-    "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/no-empty-interface": "off",
-    "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/no-inferrable-types": "off",
-    "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/no-namespace": "off"
-  },
-
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module"
-  },
+  "root": true,
   "env": {
-    "browser": true,
-    "node": true,
     "es6": true,
-    "jest": true
+    "browser": true
   },
-  "ignorePatterns": ["node_modules", "build", "dist", "public"]
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false,
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
+    }
+  },
+  "extends": ["airbnb", "plugin:cypress/recommended"],
+  "plugins": ["only-warn"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "rules": {
+    "jsx-quotes": [2, "prefer-single"],
+    "class-methods-use-this": "off",
+    "comma-dangle": "off",
+    "import/no-cycle": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/order": "off",
+    "import/prefer-default-export": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "max-len": "off",
+    "no-console": "off",
+    "no-param-reassign": "off",
+    "no-plusplus": "off",
+    "no-return-assign": "off",
+    "object-curly-newline": "off",
+    "react/forbid-prop-types": "off",
+    "react/jsx-filename-extension": "off",
+    "react/jsx-max-props-per-line": [
+      1,
+      {
+        "when": "always"
+      }
+    ],
+    "react/jsx-props-no-spreading": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/require-default-props": "off"
+  }
 }
