@@ -222,7 +222,7 @@ const UserNotificationsPopover = () => {
                             variant='subtitle2'
                 
                           >
-                            { includeParametersValues(usernotification.notification.subtitle,usernotification.parameters) }
+                            { includeParametersValues(decodeURI(usernotification.notification.subtitle),usernotification.parameters) }
                            
                           </Link>
                         )}
