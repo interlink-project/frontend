@@ -77,7 +77,7 @@ const UserNotificationsPopover = () => {
       }
       
     }
-    text=htmlDecode(text)
+    text=htmlDecode(text);
     return text;
   }
 
