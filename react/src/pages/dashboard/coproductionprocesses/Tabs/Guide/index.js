@@ -77,7 +77,7 @@ const Guide = ({ setSelectedTreeItem }) => {
               item
               xl={4}
               lg={4}
-              md={6}
+              md={3}
               xs={12}
             >
               <StyledTree

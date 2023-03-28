@@ -424,8 +424,9 @@ const RightSide = ({ softwareInterlinkers }) => {
         item
         xl={8}
         lg={8}
-        md={6}
+        md={9}
         xs={12}
+
       >
         <Box sx={{ p: 2 }}>
           <Paper sx={{ bgcolor: 'background.default' }}>
