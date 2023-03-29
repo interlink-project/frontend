@@ -16,6 +16,8 @@ import { SettingsProvider } from "./contexts/SettingsContext";
 import store from "./store";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
+// import secrets from ".secrets.json"
+import secrets from "./.secrets.json";
 
 let environment = undefined;
 if (REACT_APP_COMPLETE_DOMAIN.includes("localhost")) {
@@ -30,7 +32,7 @@ if (REACT_APP_COMPLETE_DOMAIN.includes("demo")) {
 
 if (environment) {
   Sentry.init({
-    dsn: "https://9c2c4ae5750343deb167d2bdee365657@o4504881526669312.ingest.sentry.io/4504881531256832",
+    dsn: secrets?.sentry_dsn,
     integrations: [new BrowserTracing()],
     tracesSampleRate: 1.0,
     environment,

@@ -1,6 +1,6 @@
 const { defineConfig } = require("cypress");
 const { GoogleSocialLogin } = require("cypress-social-logins").plugins;
-const secrets = require("../.secrets.json");
+const secrets = require("./src/.secrets.json");
 
 module.exports = defineConfig({
   viewportWidth: 1100,
