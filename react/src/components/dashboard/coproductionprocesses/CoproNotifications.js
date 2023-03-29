@@ -115,8 +115,8 @@ export default function CoproNotifications({ mode = "notification" }) {
       if (extractParams) {
         for (let i = 0; i < extractParams.length; i++) {
           //console.log(extractParams[i]);
-          const listParameters=JSON.parse(parameters.replace(/'/g, '"'));
-          if (listParameters[extractParams[i]]!=null) {
+          const listParameters = JSON.parse(parameters.replace(/'/g, '"'));
+          if (listParameters[extractParams[i]] != null) {
             text = text.replace(
               "{" + extractParams[i] + "}",
               listParameters[extractParams[i]]
@@ -129,13 +129,13 @@ export default function CoproNotifications({ mode = "notification" }) {
     return text;
   };
 
-  const includeObjectNames = (text,subtitle) => {
+  const includeObjectNames = (text, subtitle) => {
 
     //Search and reemplace que assetName and icon
     const paramsPattern = /[^{}]+(?=})/g;
     let extractParams = text.match(paramsPattern);
     //Loop over each parameter value and replace in the text
-    
+
     if (extractParams) {
       extractParams = [...new Set(extractParams)];
       for (let i = 0; i < extractParams.length; i++) {
@@ -146,14 +146,14 @@ export default function CoproNotifications({ mode = "notification" }) {
 
           if (entidadName == "assetid") {
             //Obtain the asset name:
-            let hasAssetRights=false;
+            let hasAssetRights = false;
             //Busco si existe el asset en el listado temporal:
             for (let i = 0; i < assetsList.length; i++) {
-              if(assetsList[i].id==entidadId){
-                hasAssetRights=true;
+              if (assetsList[i].id == entidadId) {
+                hasAssetRights = true;
 
-                const assetName=assetsList[i]['internalData']['name'];
-                const assetIcon=assetsList[i]['internalData']['icon'];
+                const assetName = assetsList[i]['internalData']['name'];
+                const assetIcon = assetsList[i]['internalData']['icon'];
 
                 const nodes = document.getElementsByClassName(
                   "lk_" + entidadId
@@ -166,17 +166,17 @@ export default function CoproNotifications({ mode = "notification" }) {
                 const nodes2 = document.getElementsByClassName(
                   "im_" + entidadId
                 );
-                if(assetIcon!=''){
+                if (assetIcon != '') {
                   for (let i = 0; i < nodes.length; i++) {
-                      nodes2[i].src = assetIcon;
+                    nodes2[i].src = assetIcon;
                   }
-              }
+                }
                 break;
               }
             }
 
-            if (!hasAssetRights){
-              text= includeObjectNames(subtitle,'')
+            if (!hasAssetRights) {
+              text = includeObjectNames(subtitle, '')
               return text;
             }
 
@@ -221,7 +221,7 @@ export default function CoproNotifications({ mode = "notification" }) {
                     when: formatDistanceToNowStrict(
                       new Date(
                         copronotification.updated_at ||
-                          copronotification.created_at
+                        copronotification.created_at
                       )
                     ),
                   })}
@@ -257,6 +257,7 @@ export default function CoproNotifications({ mode = "notification" }) {
                   <span
                     key={"cont_" + copronotification.id}
                     id={"text_" + copronotification.id}
+                    // TODO: Using class triggers an error in the console we should remove it
                     class="textNotification"
                     dangerouslySetInnerHTML={{
                       __html: includeObjectNames(

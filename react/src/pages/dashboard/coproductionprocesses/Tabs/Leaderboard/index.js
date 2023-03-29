@@ -26,21 +26,21 @@ function TabPanel(props) {
 }
 
 const LeaderboardTab = ({ }) => {
-    const { process, hasSchema, loading } = useSelector((state) => state.process);
+    const { process } = useSelector((state) => state.process);
     const t = useCustomTranslation(process.language);
     const [value, setValue] = useState(0);
     const [users, setUsers] = useState([]);
-
+    const [loading, setLoading] = useState(true);
 
     const handleLeaderboard = async (game) => {
-        const users = [];
+        setLoading(true);
+        const us = [];
         for (let player of game.content) {
-            console.log(player.playerId);
             let user = await usersApi.get(player.playerId);
-            console.log(user);
-            users.push({ id: player.playerId, name: user.full_name, score: player.score });
+            us.push({ id: player.playerId, name: user.full_name, score: player.score });
         }
-        setUsers(users);
+        setUsers(us);
+        setLoading(false);
     };
 
 
@@ -92,7 +92,8 @@ const LeaderboardTab = ({ }) => {
 
                     <TabPanel value={value} index={0}>
                         <OverallLeaderboard
-                            users={users} />
+                            users={users}
+                            loading={loading} />
                     </TabPanel>
 
 
