@@ -281,119 +281,127 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
   );
 };
 
-const columns = [
-  {
-    field: 'icon',
-    headerName: '',
-    flex: 0.1,
-  },
-  {
-    field: 'name',
-    headerName: 'Name',
-    flex: 0.3,
-  },
-  {
-    field: 'updated',
-    disablePadding: false,
-    headerName: 'Updated',
-  },
-  {
-    field: 'interlinker',
-    disablePadding: false,
-    headerName: 'INTERLINKER',
-  },
-  {
-    field: 'history',
-    disablePadding: false,
-    headerName: 'History',
-  },
-  {
-    field: 'actions',
-    disablePadding: false,
-    headerName: 'Actions',
-  }
-];
 
-const rows = [
-  { id: 1, icon: 'Icon', name: 'Crown', updated: '2 days ago', interlinker: '123456', history: 'History', actions: 'Actions' },
-]
+
 
 
 const Assets = ({ language, loading, getActions = null }) => {
   const [interlinkerDialogOpen, setInterlinkerDialogOpen] = useState(false);
   const [selectedInterlinker, setSelectedInterlinker] = useState(false);
+  // const [rows, setRows] = useState([]);
+  const [activitiesDialogOpen, setactivitiesDialogOpen] = useState(false);
+  const dispatch = useDispatch();
+
   const [inputValue, setInputValue] = useState('');
+  const { process } = useSelector((state) => state.process);
   const { assetsList } = useSelector((state) => state.general);
+
+  const handleClickHistory = (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setactivitiesDialogOpen(true);
+
+    dispatch(getCoproductionProcessNotifications({ 'coproductionprocess_id': process.id, 'asset_id': asset.id }))
+  };
 
   const t = useCustomTranslation(language);
 
+  const columns = [
+    {
+      field: 'icon',
+      headerName: '',
+      flex: 0.05,
+    },
+    {
+      field: 'name',
+      headerName: 'Name',
+      flex: 0.3,
+    },
+    {
+      field: 'updated',
+      disablePadding: false,
+      headerName: 'Updated',
+    },
+    {
+      field: 'interlinker',
+      disablePadding: false,
+      headerName: 'INTERLINKER',
+    },
+    {
+      field: 'history',
+      headerName: t('History'),
+      flex: 2,
+      align: 'center',
+      headerAlign: 'center',
+      renderCell: (params) => {
+        const onClick = (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          return handleClickHistory(params.row.id);
+        };
+        return (
+          <Button variant="contained" onClick={onClick} color="primary">
+            {t("Activities")}
+          </Button>)
+      }
+    },
+    {
+      field: 'actions',
+      disablePadding: false,
+      headerName: 'Actions',
+    }
+  ];
+
+  const rows = assetsList.map((asset) => {
+    console.log(asset);
+    return {
+      id: asset.id,
+      icon: asset.internalData.icon,
+      name: asset.internalData.name,
+      updated: asset.updated_at,
+      interlinker: null, //TODO:,
+      actions: getActions && getActions(asset)
+    }
+
+  });
+  console.log(rows);
 
   const location = useLocation();
   const isLocationCatalogue = location.pathname.startsWith('/stories/');
 
   return (
     <>
-      <InterlinkerDialog
-        language={language}
-        open={interlinkerDialogOpen}
-        setOpen={setInterlinkerDialogOpen}
-        interlinker={selectedInterlinker}
-      />
-      <Box sx={{ my: 2, mx: 10 }}>
-        <SearchBox
-          size='small'
-          language={language}
-          loading={loading}
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-        />
-      </Box>
-      <Box sx={{ my: 2, mx: 10, height: 400 }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSizeOptions={[5]}
-        disableRowSelectionOnClick
-        />
-        </Box>
-
-      {/* <Table
-        sx={{ minWidth: 300 }}
-        aria-label='resources table'
-        size='small'
-      >
-        
-        <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
+      {!loading ? (
+        <>
+          <InterlinkerDialog
+            language={language}
+            open={interlinkerDialogOpen}
+            setOpen={setInterlinkerDialogOpen}
+            interlinker={selectedInterlinker}
+          />
+          <Box sx={{ my: 2, mx: 10 }}>
+            <SearchBox
+              size='small'
+              language={language}
+              loading={loading}
+              inputValue={inputValue}
+              setInputValue={setInputValue}
             />
-        <TableBody>
-          { assetsList.map((asset) => (
-            <React.Fragment key={asset.id}>
-              {isLocationCatalogue ?(
-              <><AssetRow
-                inputValue={inputValue}
-                language={language}
-                openInterlinkerDialog={(id) => { setInterlinkerDialogOpen(true); setSelectedInterlinker(id); }}
-                asset={asset}
-                actions={[]}
-              /></>
-              ):(
-              <AssetRow
-                inputValue={inputValue}
-                language={language}
-                openInterlinkerDialog={(id) => { setInterlinkerDialogOpen(true); setSelectedInterlinker(id); }}
-                asset={asset}
-                actions={getActions && getActions(asset)}
-              />
+          </Box>
+          <Box sx={{ my: 2, mx: 10, height: 400 }}>
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              pageSizeOptions={[5]}
+              disableRowSelectionOnClick
+            />
+          </Box>
+        </>
+      ) : (
+        <CircularProgress />
+      )}
 
-              )}
-              
-            </React.Fragment>
-          ))}
-        </TableBody>
-      </Table> */}
+
       {assetsList.length === 0 && (
         <Alert
           severity='info'
@@ -402,6 +410,28 @@ const Assets = ({ language, loading, getActions = null }) => {
           {t('No resources yet')}
         </Alert>
       )}
+
+      <Dialog
+        open={activitiesDialogOpen}
+        onClose={() => setactivitiesDialogOpen(false)}
+      >
+        <IconButton
+          aria-label='close'
+          onClick={() => setactivitiesDialogOpen(false)}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <Close />
+        </IconButton>
+
+        <DialogContent sx={{ p: 3 }}>
+          <CoproNotifications />
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
