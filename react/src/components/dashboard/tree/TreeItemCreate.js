@@ -73,22 +73,23 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
 
 
         if (type === "phase") {
-            item["coproductionprocess_id"] = process.id
-            item["is_part_of_codelivery"] = true
+            item["coproductionprocess_id"] = process.id;
+            item["is_part_of_codelivery"] = true;
         }else if (type === "objective"){
-            item["phase_id"] = parentid
+            item["phase_id"] = parentid;
         }else if (type === "task"){
-            item["objective_id"] = parentid
+            item["objective_id"] = parentid;
         }
         console.log(item);
         apis[type].create(
             item
         ).then(res => {
-            sendOnCreate(res.data)
+            console.log(res);
+            sendOnCreate(res.data);
         }).catch(err => {
-            console.log(err)
-            setLoading(false)
-            alert("You don't have enought permissions to make this action. (You must have administrator role)")
+            console.log(err);
+            setLoading(false);
+            alert("You don't have enought permissions to make this action. (You must have administrator role)");
 
         })
     };
