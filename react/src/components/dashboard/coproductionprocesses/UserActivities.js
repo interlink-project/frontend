@@ -101,7 +101,7 @@ export default function CoproNotifications() {
 
   //This function will obtain and reeplace all paremeters
   // and replace in the text.
-  const includeParametersValues = (text, parameters,process_id) => {
+  const includeParametersValues = (text, parameters,notification_id) => {
     if (parameters) {
       //Obtain all parameters of the text
       const paramsPattern = /[^{}]+(?=})/g;
@@ -110,14 +110,17 @@ export default function CoproNotifications() {
       if (extractParams) {
         for (let i = 0; i < extractParams.length; i++) {
           //console.log(extractParams[i]);
-          if (JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]) {
+          const listParameters=JSON.parse(parameters.replace(/'/g, '"'));
+          if (listParameters[extractParams[i]]!=null) {
             text = text.replace(
               "{" + extractParams[i] + "}",
-              JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]
+              listParameters[extractParams[i]]
             );
           }
         }
       }
+      // Add notification Id
+      text=text.replace("{notificationId}",notification_id);
     }
 
     

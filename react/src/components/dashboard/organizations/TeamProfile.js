@@ -11,6 +11,7 @@ import UsersList from './UsersList';
 import useAuth from 'hooks/useAuth';
 
 
+
 const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
   const [editMode, setEditMode] = useState(false);
   const [name, setName] = useState('');
@@ -19,6 +20,8 @@ const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
   const [loading, setLoading] = useState(true);
   const [team, setTeam] = useState({});
   const { user } = useAuth();
+
+
 
   const mounted = useMounted();
   const { t } = useDependantTranslation();

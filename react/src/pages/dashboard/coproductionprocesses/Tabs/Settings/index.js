@@ -109,13 +109,18 @@ const SettingsTab = () => {
   };
 
   const handleAdministratorAdd = (user) => {
+    if (typeof user !== 'undefined') {
+      user instanceof Array ? user = user[0] : null;
+    
     coproductionProcessesApi
       .addAdministrator(process.id, user.id)
       .then((res) => {
+        console.log(res);
         if (mounted.current) {
           dispatch(getProcess(process.id, false));
         }
       });
+    }
   };
   const handleAdministratorRemove = (user) => {
     coproductionProcessesApi
@@ -144,12 +149,11 @@ const SettingsTab = () => {
   };
 
   const prepareGameTemplate = (tree) => {
-
     const taskList = [];
     for (const phase of tree) {
       for (const objective of phase.children) {
         for (const task of objective.children) {
-          if (task.type === 'task') {
+          if (task.type === 'task' && task.is_disabled === false) {
             taskList.push({
               id: task.id,
               management: task.management,

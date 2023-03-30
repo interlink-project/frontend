@@ -85,6 +85,18 @@ export default function CoproNotifications({ mode = "notification" }) {
   const dispatch = useDispatch();
   const mounted = useMounted();
 
+ 
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = "/coproduction/static/assets/showDialogScript.js";
+    script.async = true;
+    document.body.appendChild(script);
+  return () => {
+      document.body.removeChild(script);
+    }
+  }, []);
+
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -106,7 +118,7 @@ export default function CoproNotifications({ mode = "notification" }) {
 
   //This function will obtain and reeplace all paremeters
   // and replace in the text.
-  const includeParametersValues = (text, parameters, process_id) => {
+  const includeParametersValues = (text, parameters, notification_id) => {
     if (parameters) {
       //Obtain all parameters of the text
       const paramsPattern = /[^{}]+(?=})/g;
@@ -115,26 +127,31 @@ export default function CoproNotifications({ mode = "notification" }) {
       if (extractParams) {
         for (let i = 0; i < extractParams.length; i++) {
           //console.log(extractParams[i]);
-          if (JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]) {
+          const listParameters = JSON.parse(parameters.replace(/'/g, '"'));
+          if (listParameters[extractParams[i]] != null) {
             text = text.replace(
               "{" + extractParams[i] + "}",
-              JSON.parse(parameters.replace(/'/g, '"'))[extractParams[i]]
+              listParameters[extractParams[i]]
             );
           }
         }
+        // Add notification Id
+        text=text.replaceAll("{notificationId}",notification_id);
       }
+
+
     }
 
     return text;
   };
 
-  const includeObjectNames = (text,subtitle) => {
+  const includeObjectNames = (text, subtitle) => {
 
     //Search and reemplace que assetName and icon
     const paramsPattern = /[^{}]+(?=})/g;
     let extractParams = text.match(paramsPattern);
     //Loop over each parameter value and replace in the text
-    
+
     if (extractParams) {
       extractParams = [...new Set(extractParams)];
       for (let i = 0; i < extractParams.length; i++) {
@@ -145,14 +162,14 @@ export default function CoproNotifications({ mode = "notification" }) {
 
           if (entidadName == "assetid") {
             //Obtain the asset name:
-            let hasAssetRights=false;
+            let hasAssetRights = false;
             //Busco si existe el asset en el listado temporal:
             for (let i = 0; i < assetsList.length; i++) {
-              if(assetsList[i].id==entidadId){
-                hasAssetRights=true;
+              if (assetsList[i].id == entidadId) {
+                hasAssetRights = true;
 
-                const assetName=assetsList[i]['internalData']['name'];
-                const assetIcon=assetsList[i]['internalData']['icon'];
+                const assetName = assetsList[i]['internalData']['name'];
+                const assetIcon = assetsList[i]['internalData']['icon'];
 
                 const nodes = document.getElementsByClassName(
                   "lk_" + entidadId
@@ -165,15 +182,17 @@ export default function CoproNotifications({ mode = "notification" }) {
                 const nodes2 = document.getElementsByClassName(
                   "im_" + entidadId
                 );
-                for (let i = 0; i < nodes.length; i++) {
-                  nodes2[i].src = assetIcon;
+                if (assetIcon != '') {
+                  for (let i = 0; i < nodes.length; i++) {
+                    nodes2[i].src = assetIcon;
+                  }
                 }
                 break;
               }
             }
 
-            if (!hasAssetRights){
-              text= includeObjectNames(subtitle,'')
+            if (!hasAssetRights) {
+              text = includeObjectNames(subtitle, '')
               return text;
             }
 
@@ -218,7 +237,7 @@ export default function CoproNotifications({ mode = "notification" }) {
                     when: formatDistanceToNowStrict(
                       new Date(
                         copronotification.updated_at ||
-                          copronotification.created_at
+                        copronotification.created_at
                       )
                     ),
                   })}
@@ -246,7 +265,7 @@ export default function CoproNotifications({ mode = "notification" }) {
                   {includeParametersValues(
                     copronotification.notification.title,
                     copronotification.parameters,
-                    copronotification.id
+                    copronotification.id,
                   )}
                 </Typography>
 
@@ -254,6 +273,7 @@ export default function CoproNotifications({ mode = "notification" }) {
                   <span
                     key={"cont_" + copronotification.id}
                     id={"text_" + copronotification.id}
+                    // TODO: Using class triggers an error in the console we should remove it
                     class="textNotification"
                     dangerouslySetInnerHTML={{
                       __html: includeObjectNames(

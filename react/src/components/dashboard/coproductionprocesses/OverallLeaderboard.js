@@ -1,15 +1,26 @@
-import { AppBar, Box, Paper, Tab, Tabs, Grid, Card, CardContent, Container, Typography, CardMedia, Button, Divider } from '@mui/material';
+import { Dialog, Box, DialogContent, IconButton, Grid, Card, CardContent, Container, Typography, CardMedia, Button, Divider, Link, CircularProgress } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import UserAvatar from 'components/UserAvatar';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
+import { useCustomTranslation } from 'hooks/useDependantTranslation';
+import { Close, ViewTimeline } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserActivities } from "slices/general";
+import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
 
 
 
-const OverallLeaderboard = ({ users }) => {
-    const [orderedUsers, setOrderedUsers] = useState([]);
+const OverallLeaderboard = ({ users, loading }) => {
     const [rows, setRows] = useState([]);
+    const [activitiesDialogOpen, setactivitiesDialogOpen] = useState(false);
+
+    const { process } = useSelector((state) => state.process);
+    const { assetsList } = useSelector((state) => state.general);
+
+    const dispatch = useDispatch();
+    const t = useCustomTranslation(process.language);
 
     const columns = [
         {
@@ -22,7 +33,9 @@ const OverallLeaderboard = ({ users }) => {
             ),
             sortable: false,
             disableColumnMenu: true,
-            flex: 0.2
+            flex: 0.2,
+            align: 'center',
+            headerAlign: 'center'
         },
         {
             field: 'collab_name',
@@ -33,59 +46,71 @@ const OverallLeaderboard = ({ users }) => {
             flex: 2
         },
         {
-            field: 'team',
-            headerName: 'Team',
+            field: 'activity',
+            headerName: t('Activity'),
             sortable: false,
             disableColumnMenu: true,
-            flex: 2
-        },
-        {
-            field: 'location',
-            headerName: 'Location',
-            sortable: false,
-            disableColumnMenu: true,
-            flex: 1
+            flex: 2,
+            align: 'center',
+            headerAlign: 'center',
+            renderCell: (params) => {
+                const onClick = (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    return handleClickHistory(params.row.id);
+                };
+                return (
+                    <Button variant="contained" onClick={onClick} color="primary">
+                        {t("Activities")}
+                    </Button>)
+            }
         },
         {
             field: 'points',
             headerName: 'Points',
             sortable: false,
             disableColumnMenu: true,
-            flex: 0.5
+            flex: 0.5,
+            align: 'center',
+            headerAlign: 'center'
         },
     ];
 
+    const handleClickHistory = (userId) => {
+        console.log("Selected user: " + userId);
+        if (userId == null) {
+            return;
+        }
+        setactivitiesDialogOpen(true);
+        dispatch(getUserActivities({
+            'coproductionprocess_id': process.id, 'assets': assetsList, 'user_id': userId
+        }));
+    };
+
+
     const handleRows = () => {
         let tmpRows = [];
-        console.log(users);
+        
         for (let i = 3; i < users.length; i++) {
             tmpRows.push({
                 id: users[i].id,
-                position: i,
+                position: i + 1,
                 collab_name: users[i].name,
-                team: 'test',
-                location: 'test',
                 points: users[i].score,
             });
         }
         setRows(tmpRows);
-        console.log(rows);
+        
     };
 
     useEffect(() => {
         if (users.length > 0) {
-            orderUsers();
-            console.log(users);
             if (users.length > 3) {
                 handleRows();
             }
         }
     }, [users]);
 
-
-    const orderUsers = () => {
-        setOrderedUsers(users.sort((a, b) => b.score > a.score));
-    };
 
     return (
         <>
@@ -107,85 +132,131 @@ const OverallLeaderboard = ({ users }) => {
                     />
                 </Grid>
             </Grid>
+           
             <Divider variant="middle" sx={{ m: 3 }} />
-            <Grid container spacing={2} >
-                {/* Second position */}
-                <Grid item xs={12} md={4} lg={4}>
-                    <Card>
-                        <CardMedia
-                            component="img"
-                            height="40"
-                            sx={{
-                                background: "#9CB8BE",
-                            }}
-                        />
-                        <CardContent sx={{ textAlign: 'center' }}>
-                            {users && users.length > 1 ? <UserAvatar
-                                id={users[1].id} sx={{ margin: 'auto' }} /> : <></>}
+           
+            {users && !loading ? (
+                <Grid container spacing={2} >
+                    {/* Second position */}
+                    <Grid item xs={12} md={4} lg={4}>
+                        {users.length > 1 &&
+                            <Card>
+                                <CardMedia
+                                    component="img"
+                                    height="40"
+                                    sx={{
+                                        background: "#9CB8BE",
+                                    }}
+                                />
+                                <CardContent sx={{ textAlign: 'center' }}>
+                                    <UserAvatar
+                                        id={users[1].id}
+                                        sx={{ margin: 'auto' }} />
+                                    <Typography gutterBottom variant="h5" component="div" sx={{ mt: 1 }}>
+                                        {users[1].name}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {users[1].score + ' points'}
+                                        <IconButton color="primary" aria-label="upload picture" component="label"
+                                            onClick={
+                                                (e) => {
+                                                    e.stopPropagation();
+                                                    e.preventDefault();
+                                                    handleClickHistory(users[1].id);
+                                                }
+                                            }>
+                                            <ViewTimeline />
+                                        </IconButton>
+                                    </Typography>
 
-                            <Typography gutterBottom variant="h5" component="div" sx={{mt:1}}>
-                                {users && users.length > 1 ? users[1].name : "No users here... "}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                {users && users.length > 1 ? users[1].score + ' points' : "No users here... "}
-                            </Typography>
+                                </CardContent>
+                            </Card>
+                        }
+                    </Grid>
+                    {/* First position */}
+                    <Grid item xs={12} md={4} lg={4}>
+                        {users.length > 0 &&
+                            <Card>
+                                <CardMedia
+                                    component="img"
+                                    height="40"
+                                    sx={{
+                                        background: "#FDD41F",
+                                    }}
+                                />
+                                <CardContent sx={{ textAlign: 'center' }}>
+                                    <UserAvatar
+                                        id={users[0].id}
+                                        sx={{ margin: 'auto' }} />
 
-                        </CardContent>
-                    </Card>
+                                    <Typography gutterBottom variant="h5" component="div" sx={{ mt: 1 }}>
+                                        {users[0].name}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {users[0].score + ' points'}
+                                        <IconButton color="primary" aria-label="upload picture" component="label"
+                                            onClick={
+                                                (e) => {
+                                                    e.stopPropagation();
+                                                    e.preventDefault();
+                                                    handleClickHistory(users[0].id);
+                                                }
+                                            }>
+                                            <ViewTimeline />
+                                        </IconButton>
+                                    </Typography>
+
+                                </CardContent>
+
+                            </Card>
+                        }
+                    </Grid>
+                    {/* Third position */}
+                    <Grid item xs={12} md={4} lg={4}>
+                        {users.length > 2 &&
+                            <Card>
+                                <CardMedia
+                                    component="img"
+                                    height="40"
+                                    sx={{
+                                        background: "#DB803D",
+                                    }}
+                                />
+                                <CardContent sx={{ textAlign: 'center' }}>
+                                    <UserAvatar
+                                        id={users[2].id}
+                                        sx={{ margin: 'auto' }} />
+                                    <Typography gutterBottom variant="h5" component="div" sx={{ mt: 1 }}>
+                                        {users[2].name}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {users[2].score + ' points'}
+                                        <IconButton color="primary" aria-label="upload picture" component="label"
+                                            onClick={
+                                                (e) => {
+                                                    e.stopPropagation();
+                                                    e.preventDefault();
+                                                    handleClickHistory(users[2].id);
+                                                }
+                                            }>
+                                            <ViewTimeline />
+                                        </IconButton>
+                                    </Typography>
+
+                                </CardContent>
+
+                            </Card>
+                        }
+                    </Grid>
                 </Grid>
-                {/* First position */}
-                <Grid item xs={12} md={4} lg={4}>
-                    <Card>
-                        <CardMedia
-                            component="img"
-                            height="40"
-                            sx={{
-                                background: "#FDD41F",
-                            }}
-                        />
-                        <CardContent sx={{ textAlign: 'center' }}>
-                            {users && users.length > 0 ? <UserAvatar
-                                id={users[0].id} sx={{ margin: 'auto' }} /> : <></>}
-
-                            <Typography gutterBottom variant="h5" component="div" sx={{mt:1}}>
-                                {users && users.length > 0 ? users[0].name : "No users here... "}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                {users && users.length > 0 ? users[0].score + ' points' : "No users here... "}
-                            </Typography>
-
-                        </CardContent>
-
-                    </Card>
-                </Grid>
-                {/* Third position */}
-                <Grid item xs={12} md={4} lg={4}>
-                    <Card>
-                        <CardMedia
-                            component="img"
-                            height="40"
-                            sx={{
-                                background: "#DB803D",
-                            }}
-                        />
-                        <CardContent sx={{ textAlign: 'center' }}>
-                            {users && users.length > 2 ? <UserAvatar
-                                id={users[2].id} sx={{ margin: 'auto' }} /> : <></>}
-
-                            <Typography gutterBottom variant="h5" component="div" sx={{mt:1}}>
-                                {users && users.length > 2 ? users[2].name : "No users here... "}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                {users && users.length > 2 ? users[2].score + ' points' : "No users here... "}
-                            </Typography>
-
-                        </CardContent>
-
-                    </Card>
-                </Grid>
-            </Grid>
-            {users && users.length > 3 ?
-                <Container sx={{ width: '100%' }}>
+            ) : (
+                <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center'  }}>
+                    <CircularProgress />
+                </Box>
+            )
+            }
+            {users && users.length > 3 &&
+                <Container sx={{ width: '100%', mt: 2 }}>
                     <DataGrid
                         autoHeight
                         rows={rows}
@@ -195,9 +266,29 @@ const OverallLeaderboard = ({ users }) => {
                         disableSelectionOnClick
                     />
                 </Container>
-
-                : <></>
             }
+            <Dialog
+                open={activitiesDialogOpen}
+                onClose={() => setactivitiesDialogOpen(false)}
+            >
+                <IconButton
+                    aria-label='close'
+                    onClick={() => setactivitiesDialogOpen(false)}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <Close />
+                </IconButton>
+
+                <DialogContent sx={{ p: 3 }}>
+                    <CoproNotifications
+                        mode={'activity'} />
+                </DialogContent>
+            </Dialog>
         </>
     )
 }

@@ -59,13 +59,13 @@ const ContributionsTabs = ({ contributions }) => {
     const handleCloseTask = async () => {
         for (let row of rows) {
             console.log(row);
-            await gamesApi.addClaim(process.game_id,
+            await gamesApi.addClaim(process.id,
                 selectedTreeItem.id,
                 row.id,
                 row.name,
                 CONTRIBUTION_LEVELS[row.contribution]);
         }
-        gamesApi.completeTask(process.game_id, selectedTreeItem.id).then((res) => {
+        gamesApi.completeTask(process.id, selectedTreeItem.id).then((res) => {
             console.log(res);
             setClosedTask(true);
         });
@@ -76,8 +76,13 @@ const ContributionsTabs = ({ contributions }) => {
     };
 
     useEffect(async () => {
-        let task = await gamesApi.getTask(process.game_id, selectedTreeItem.id);
-        if (task.completed){
+        let task;
+
+        try { task = await gamesApi.getTask(process.id, selectedTreeItem.id); } catch (e) { console.error(e); }
+        console.log(contributions);
+        console.log(task);
+        if (typeof task !== 'undefined' && task.completed) {
+
             setRows([]);
             setClosedTask(task.completed);
             console.log(task);
@@ -86,9 +91,9 @@ const ContributionsTabs = ({ contributions }) => {
                 r.push({ id: player.id, name: player.name, contribution: Object.keys(CONTRIBUTION_LEVELS).find(key => CONTRIBUTION_LEVELS[key] === player.development), contrib_value: player.development });
             };
             setRows(r);
-            
+
         } else {
-            setClosedTask(task.completed);
+            // setClosedTask(task.completed);
             if (contributions.length === 0) {
                 console.log("NO CONTRIBUTIONS");
                 setRows([]);
@@ -106,7 +111,7 @@ const ContributionsTabs = ({ contributions }) => {
                     total_contribs += 1;
                 }
             }
-    
+
             setRows([]);
             for (let id in contribs) {
                 usersApi.get(id).then((res) => {
@@ -132,21 +137,23 @@ const ContributionsTabs = ({ contributions }) => {
                                 {t("Contributions")}
                             </Typography>
                         </Grid>
-                        <Grid item xs={6} sx={{ position: "relative" }}>
+                        {process.game_id ? (
 
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleAddRow}
-                                sx={{
-                                    position: "absolute",
-                                    bottom: 0,
-                                    right: 0,
-                                }}>
-                                {t("Add contributor")}
-                            </Button>
+                            <Grid item xs={6} sx={{ position: "relative" }}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleAddRow}
+                                    sx={{
+                                        position: "absolute",
+                                        bottom: 0,
+                                        right: 0,
+                                    }}>
+                                    {t("Add contributor")}
+                                </Button>
 
-                        </Grid>
+                            </Grid>
+                        ) : null}
                     </Grid >
                     {/* Table */}
                     < ContributionsTable
@@ -155,6 +162,7 @@ const ContributionsTabs = ({ contributions }) => {
                         closedTask={closedTask}
                     />
                     {/* Button for closing the task and giving the points */}
+                    {process.game_id ? (
                     <Box sx={{ p: 2, float: 'right' }}>
                         <ConfirmationButton
                             Actionator={({ onClick }) => (
@@ -183,6 +191,7 @@ const ContributionsTabs = ({ contributions }) => {
                             text={t('Are you sure?')}
                         />
                     </Box>
+                    ) : null}
 
 
                     <Dialog
@@ -240,10 +249,30 @@ const ContributionsTabs = ({ contributions }) => {
                                         selectedShowLink = 'hidden';
 
                                     } else {
-                                        //Is internal
-                                        selectedAssetLink = selectedAsset.link + '/view'
-                                        selectedShowIcon = '';
-                                        selectedShowLink = 'hidden';
+
+                                        if (selectedAsset.link) {
+                                            //Is internal
+                                            selectedAssetLink = selectedAsset.link + '/view'
+                                            selectedShowIcon = '';
+                                            selectedShowLink = 'hidden';
+
+                                        } else {
+
+                                            const backend = selectedAsset['software_response']['backend'];
+                                            const linkAsset = backend + '/' + selectedAsset['external_asset_id'] + '/view';
+                                            selectedAssetLink = linkAsset;
+                                        }
+
+
+                                    }
+
+                                    function escape(htmlStr) {
+                                        return htmlStr.replace(/&/g, "&amp;")
+                                            .replace(/</g, "&lt;")
+                                            .replace(/>/g, "&gt;")
+                                            .replace(/"/g, "&quot;")
+                                            .replace(/'/g, "&#39;");
+
                                     }
 
                                     const parametersList = {
@@ -251,10 +280,10 @@ const ContributionsTabs = ({ contributions }) => {
                                         assetName: '{assetid:' + selectedAsset.id + '}',
                                         assetLink: selectedAssetLink,
                                         assetIcon: selectedAssetIcon,
-                                        commentTitle: values.title,
-                                        commentDescription: values.description,
+                                        commentTitle: escape(values.title),
+                                        commentDescription: escape(values.description),
                                         treeitem_id: selectedTreeItem.id,
-                                        treeItemName: selectedTreeItem.name,
+                                        treeItemName: escape(selectedTreeItem.name),
                                         copro_id: process.id,
                                         showIcon: selectedShowIcon,
                                         showLink: selectedShowLink
@@ -418,24 +447,24 @@ const ContributionsTabs = ({ contributions }) => {
                     </Dialog>
                 </>
             ) : (<>
-            
-            <Typography variant="h3" component="h2">
-                {t("List of contributors")}
-            </Typography>
 
-            <Box sx={{ mt: 3 }}>
-                <Grid container spacing={2}>
-                    {rows.map((row) => (
-                        <Grid item xs={12} md={6} lg={4} key={row.id}>
-                            <ContributionCard 
-                            user_id={row.id}
-                            name={row.name}
-                            contribution_level={row.contribution} />
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
-            
+                <Typography variant="h3" component="h2">
+                    {t("List of contributors")}
+                </Typography>
+
+                <Box sx={{ mt: 3 }}>
+                    <Grid container spacing={2}>
+                        {rows.map((row) => (
+                            <Grid item xs={12} md={6} lg={4} key={row.id}>
+                                <ContributionCard
+                                    user_id={row.id}
+                                    name={row.name}
+                                    contribution_level={row.contribution} />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+
 
             </>)}
         </>

@@ -82,19 +82,24 @@ function ColorlibStepIcon(props) {
   )
 }
 
-const steps = ["1", "2", "3", "4", "5", "6", "7", "8"]
+//const steps = [false, false, false, false, false, false, false, false]
 
-export default function CustomizedSteppers() {
+export default function CustomizedSteppers(props) {
+  
+  const steps=props.completeStates
+  const activeStep=props.selectedStateIndex
   return (
     <Stack sx={{ width: "100%" }} spacing={4}>
       <Stepper
         alternativeLabel
-        activeStep={5}
+        activeStep={activeStep}
         connector={<ColorlibConnector />}
       >
-        {steps.map(label => (
-          <Step key={label}>
-            <StepLabel StepIconComponent={ColorlibStepIcon}></StepLabel>
+
+
+        {steps.map((label,index) => (
+          <Step completed={label} key={index.toString()} >
+            <StepLabel StepIconComponent={ColorlibStepIcon}   ></StepLabel>
           </Step>
         ))}
       </Stepper>
