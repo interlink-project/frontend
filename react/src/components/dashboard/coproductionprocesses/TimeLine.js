@@ -26,6 +26,8 @@ import StepConnector, {
   stepConnectorClasses
 } from "@mui/material/StepConnector"
 import { relativeTimeRounding } from "moment";
+import SelectTypeCoproProcess from "./SelectTypeCoproProcess";
+import SelectGovernanceModel from "./SelectGovernanceModel";
 
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
@@ -75,6 +77,7 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   }
 
   return (
+    <React.Fragment>
     <Step
       completed={!!dataFulfilled}
       sx={{
@@ -130,6 +133,7 @@ const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
         </Grid>
       </StepLabel>
     </Step>
+    </React.Fragment>
   );
 } */
 
@@ -139,12 +143,22 @@ export default function TimeLine({ assets }) {
   const t = useCustomTranslation(process.language);
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
+  
+
+  const [selectorTypeOpen,setSelectorTypeOpen] = React.useState(false);
+  const [selectorTypeLoading,setSelectorTypeLoading] = React.useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
+    alert('Open Schema Selector');
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const openGSelector = () => {
+    setOpenGovernanceSelector(true);
   };
 
   const dataFulfilled = process.aim || process.idea || process.challenges;
@@ -171,7 +185,7 @@ export default function TimeLine({ assets }) {
 
   return (
     <>
-      {/* <Box sx={{ justifyContent: "center", position: "sticky" }}>
+       <Box id='section_0' sx={{ justifyContent: "center", position: "sticky" }}>
         <Grid
           container
           spacing={0}
@@ -191,7 +205,7 @@ export default function TimeLine({ assets }) {
             />
           </Grid>
         </Grid>
-      </Box> */}
+      </Box> 
       <Box sx={{ mt: 1, p: 2, justifyContent: "center" }}>
         <Stepper
           nonLinear
@@ -212,7 +226,7 @@ export default function TimeLine({ assets }) {
             pictureSize="450px"
           /> */}
 
-{/*           <Step
+           <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -276,10 +290,10 @@ export default function TimeLine({ assets }) {
                 </Grid>
               </Grid>
             </StepLabel>
-          </Step> */}
+          </Step> 
 
           {/* Step 2 */}
-          {/* <Step
+           <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -347,10 +361,10 @@ export default function TimeLine({ assets }) {
                 </Grid>
               </Grid>
             </StepLabel>
-          </Step> */}
+          </Step> 
 
           {/* Step 3 */}
-          {/* <Step
+           <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -379,9 +393,9 @@ export default function TimeLine({ assets }) {
 
                     <Button
                       onClick={() =>
-                        navigate(
-                          `/dashboard/coproductionprocesses/${process.id}/settings`
-                        )
+                        {
+                          setSelectorTypeOpen(true);
+                        }
                       }
                       size="small"
                       variant="contained"
@@ -418,10 +432,10 @@ export default function TimeLine({ assets }) {
                 </Grid>
               </Grid>
             </StepLabel>
-          </Step> */}
+          </Step> 
 
           {/* Step 4 */}
-         {/*  <Step
+           <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -447,19 +461,27 @@ export default function TimeLine({ assets }) {
                         "The schemas give to the user some directives on how to proceed in the overall process. Phases, objectives and tasks of the co-production process. Click on the button and search for the optimal coproduction schema for your process. Nevertheless, you can undo this action (clear the coproduction tree) in the settings section."
                       )}
                     </Typography>
+                      
+                    {hasSchema ? (
+                  <Alert severity="success">
+                    {t("The schema has been selected")}
+                  </Alert>
+                ) : (
+                  <></>
+                )}
+                {!hasSchema && (
+                  <Button
+                    disabled={process.creator_id !== user.id}
+                    onClick={handleClickOpen}
+                    size="small"
+                    variant="contained"
+                    sx={{ maxWidth: "200px" }}
+                  >
+                    {t("Select an schema")}
+                  </Button>
+                )}
 
-                    <Button
-                      onClick={() =>
-                        navigate(
-                          `/dashboard/coproductionprocesses/${process.id}/settings`
-                        )
-                      }
-                      size="small"
-                      variant="contained"
-                      sx={{ maxWidth: "200px" }}
-                    >
-                      {t("Select a Schema")}
-                    </Button>
+                   
                   </Stack>
                 </Grid>
                 <Grid item xs={6}>
@@ -489,10 +511,10 @@ export default function TimeLine({ assets }) {
                 </Grid>
               </Grid>
             </StepLabel>
-          </Step> */}
+          </Step> 
 
           {/* Step 5 */}
-         {/*  <Step
+           <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -560,10 +582,10 @@ export default function TimeLine({ assets }) {
                 </Grid>
               </Grid>
             </StepLabel>
-          </Step> */}
+          </Step> 
 
           {/* Step 6 */}
-          {/* <Step
+           <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -581,19 +603,19 @@ export default function TimeLine({ assets }) {
                 <Grid item xs={6} sx={{ minHeight: "55vh" }}>
                   <Stack spacing={1}>
                     <Typography variant="h6">
-                      {t("Set coproduction data and administrator")}
+                      {t("Grant permissions to Teams over the process")}
                     </Typography>
 
                     <Typography variant="subtitle1">
                       {t(
-                        "The coproduction process data are a set of attributes that serve to define the process to be carried out. At this point you will describe the aim of the project, challenges,which is the organization of the project etc. Than you can also set others administrators for the project [OPTIONAL]. They can update the co-production process information, add permissions to the tree items or add new administrators."
+                        "Now you can allow teams to work on the coproduction process. For that, associate permissions to teams by navigating to the Team section and adding permission for the whole coproduction process. Otherwise you can go to Guide section and add new permissions for distinct tree items (objectives, tasks)."
                       )}
                     </Typography>
-
+                 
                     <Button
                       onClick={() =>
                         navigate(
-                          `/dashboard/coproductionprocesses/${process.id}/settings`
+                          `/dashboard/coproductionprocesses/${process.id}/team`
                         )
                       }
                       size="small"
@@ -631,10 +653,10 @@ export default function TimeLine({ assets }) {
                 </Grid>
               </Grid>
             </StepLabel>
-          </Step> */}
+          </Step> 
 
           {/* Step 7 */}
-          {/* <Step
+           <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -652,27 +674,36 @@ export default function TimeLine({ assets }) {
                 <Grid item xs={6} sx={{ minHeight: "55vh" }}>
                   <Stack spacing={1}>
                     <Typography variant="h6">
-                      {t("Set coproduction data and administrator")}
+                      {t("Your Interlinkers/Resources")}
                     </Typography>
 
                     <Typography variant="subtitle1">
                       {t(
-                        "The coproduction process data are a set of attributes that serve to define the process to be carried out. At this point you will describe the aim of the project, challenges,which is the organization of the project etc. Than you can also set others administrators for the project [OPTIONAL]. They can update the co-production process information, add permissions to the tree items or add new administrators."
+                        "Once you add a resource to a tree element, it will be visible into the Resources section. You will see the tree element from which it came and some useful infos abouts the resources."
                       )}
                     </Typography>
 
-                    <Button
-                      onClick={() =>
-                        navigate(
-                          `/dashboard/coproductionprocesses/${process.id}/settings`
-                        )
-                      }
-                      size="small"
-                      variant="contained"
-                      sx={{ maxWidth: "200px" }}
-                    >
-                      {t("Go to Resources section")}
-                    </Button>
+                    {dataFulfilled ? (
+                  <Alert severity="success">
+                    {t("The coproduction process data has been defined")}
+                  </Alert>
+                ) : (
+                  <></>
+                )}
+                <Button
+                  onClick={() =>
+                    navigate(
+                      `/dashboard/coproductionprocesses/${process.id}/resources`
+                    )
+                  }
+                  size="small"
+                  variant="contained"
+                  sx={{ maxWidth: "200px" }}
+                >
+                  {t("Go to Resources section")}
+                </Button>
+
+                   
                   </Stack>
                 </Grid>
                 <Grid   item xs={6} >
@@ -702,10 +733,10 @@ export default function TimeLine({ assets }) {
                 </Grid>
               </Grid>
             </StepLabel>
-          </Step> */}
+          </Step> 
 
           {/* Step 8 */}
-         {/*  <Step
+           <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -751,7 +782,7 @@ export default function TimeLine({ assets }) {
                 </Grid>
 
                 <IconButton
-                  onClick={() => nextSect("section_1")}
+                  onClick={() => nextSect("section_0")}
                   color="primary"
                   sx={{ border: "1px" }}
                   variant="outlined"
@@ -760,9 +791,9 @@ export default function TimeLine({ assets }) {
                 </IconButton>
               </Grid>
             </StepLabel>
-          </Step> */}
+          </Step> 
 
-          <Step active completed={!!dataFulfilled}>
+          {/* <Step active completed={!!dataFulfilled}>
             <StepLabel>
               <Stack spacing={1}>
                 <Typography variant="subtitle1">
@@ -930,7 +961,7 @@ export default function TimeLine({ assets }) {
                 )}
               </Stack>
             </StepLabel>
-          </Step>
+          </Step> */}
         </Stepper>
 
         {!hasSchema && process.creator_id === user.id && (
@@ -941,6 +972,15 @@ export default function TimeLine({ assets }) {
           </Dialog>
         )}
       </Box>
+
+      <SelectTypeCoproProcess
+                open={selectorTypeOpen}
+                setOpen={setSelectorTypeOpen}
+                loading={selectorTypeLoading}
+                setLoading={setSelectorTypeLoading}
+                
+              />
+      
     </>
   );
 }

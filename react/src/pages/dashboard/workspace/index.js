@@ -18,82 +18,9 @@ import HelpAlert from 'components/HelpAlert';
 import SearchBox from 'components/SearchBox';
 import moment from 'moment';
 import TeamAvatar from 'components/TeamAvatar';
+import AuthorizationRequired from 'pages/AuthorizationRequired';
 
-function ProcessRow({ process, t }) {
-  const navigate = useNavigate();
-  return (
-    <TableRow
-      key={process.id}
-      hover
-      sx={{ '& > *': { borderBottom: 'unset' }, cursor: 'pointer' }}
-      onClick={() => navigate(`/dashboard/coproductionprocesses/${process.id}/overview`)}
-    >
-      <TableCell align='center'>
-        <Box style={{ justifyContent: 'center', display: 'flex' }}>
-         {process.is_part_of_publication && (
-            <MenuBook  sx={{mr:1}} />
-          )}
-
-          {process.logotype_link ? (
-            <Avatar
-              sx={{ height: '25px', width: '25px' }}
-              variant='rounded'
-              src={process.logotype_link}
-            />
-          ) : <Folder />}
-
-          
-
-        </Box>
-      </TableCell>
-      <TableCell
-        align='center'
-        component='th'
-        scope='row'
-      >
-        <b>{process.name}</b>
-      </TableCell>
-      <TableCell align='center'>{moment(process.created_at).fromNow()}</TableCell>
-      <TableCell align='center'>
-        <StatusChip
-          t={t}
-          status={process.status}
-        />
-      </TableCell>
-      <TableCell align='center'>
-        <AvatarGroup
-          max={5}
-          variant='rounded'
-        >
-          {process.enabled_teams.length > 0 ? process.enabled_teams.map((team) => (
-            <TeamAvatar
-              sx={{ height: 25, width: 25 }}
-              key={team.id}
-              team={team}
-            />
-          )) : (
-            <Stack
-              direction='row'
-              alignItems='center'
-            >
-              <WarningIcon />
-              <Typography sx={{ ml: 2 }}>{t('No teams')}</Typography>
-            </Stack>
-          )}
-        </AvatarGroup>
-      </TableCell>
-      <TableCell align='center'>
-        {process.current_user_participation.map((p) => (
-          <Chip
-            key={p}
-            label={p}
-          />
-        ))}
-      </TableCell>
-    </TableRow>
-  );
-}
-const ProjectsOverview = () => {
+const MyWorkspace = () => {
   const { processes, loadingProcesses } = useSelector((state) => state.general);
   const [coproductionProcessCreatorOpen, setCoproductionProcessCreatorOpen] = React.useState(false);
   const [coproductionProcessLoading, setCoproductionProcessLoading] = React.useState(false);
@@ -187,18 +114,15 @@ const ProjectsOverview = () => {
                 justifyContent='space-between'
                 spacing={3}
                 item
-                xs={12}
+
+                columns={{ xs: 4, sm: 8, md: 12 }}
+                
               >
-                <Grid item>
-                  <Typography
-                    color='textSecondary'
-                    variant='overline'
-                  >
-                    {t('Workspace')}
-                  </Typography>
+                <Grid item xs={6}>
+                  
                   <Typography
                     color='textPrimary'
-                    variant='h5'
+                    variant='h3'
                   >
                     {t('Welcome', {
                       name: user ? user.given_name : ''
@@ -207,96 +131,107 @@ const ProjectsOverview = () => {
                   <Typography
                     color='textSecondary'
                     variant='subtitle2'
+                    sx={{mt:2}}
+                    align='justify'
                   >
-                    {t('workspace-subtitle')}
+                    {t('Welcome to the INTERLINK platform, a collaborative enviroment where PAs, citizens, and other actors can collaborate to develop their projects, which we will call co-production processes.')}
                   </Typography>
-                </Grid>
-                <Grid item>
-                  <LoadingButton
-                    onClick={() => setCoproductionProcessCreatorOpen(true)}
-                    loading={loadingProcesses}
-                    fullWidth
-                    variant='contained'
-                    sx={{ textAlign: 'center', mt: 1, mb: 2 }}
-                    startIcon={<Add />}
-                    size='small'
+
+                  <Typography
+                    color='textSecondary'
+                    variant='h6'
+                    sx={{mt:3}}
                   >
-                    {t('add-process')}
-                  </LoadingButton>
+                    {t('1. Have you been invited to a process that hasn’t started yet?')}
+                  </Typography>
+
+                  <Typography
+                    color='textSecondary'
+                    variant='body1'
+                    sx={{mt:2,mb:2}}
+                    align='justify'
+                  >
+                    {t('During the waiting, Check our video tutorial to discover the platform functionalities.')}
+                  </Typography>
+                  
+                  <Button sx={{minWidth: '200px'}} href="docs/en/" variant="contained">Check tutorials</Button>
+
+                  <Typography
+                    color='textSecondary'
+                    variant='h6'
+                    sx={{mt:3}}
+                  >
+                    {t('2. Do you want to see your projects ?')}
+                  </Typography>
+
+                  <Typography
+                    color='textSecondary'
+                    variant='body1'
+                    sx={{mt:2,mb:2}}
+                    align='justify'
+                  >
+                    {t('If you just created your project or you have been invited to a project, check to your co-production processes list.')}
+                  </Typography>
+                  
+                  
+                  <Button sx={{minWidth: '200px'}} variant="contained" href="dashboard/projects">Go to processes list</Button>
+
+                  <Typography
+                    color='textSecondary'
+                    variant='h6'
+                    sx={{mt:3}}
+                  >
+                    {t('3. Do you want to create your own process?')}
+                  </Typography>
+
+                  <Typography
+                    color='textSecondary'
+                    variant='body1'
+                    sx={{mt:2,mb:2}}
+                  >
+                    {t('We will guide you helping to manage your group. You will find an archive dedicated to shared resources, a structured schema for the process, etc.')}
+                  </Typography>
+                  
+                  <Button sx={{minWidth: '200px'}} onClick={() => setCoproductionProcessCreatorOpen(true)} variant="contained">Start here your guide</Button>
+
                 </Grid>
+
+                <Grid item xs={6} >
+                  
+                <Box
+        component="img"
+         sx={{
+          //height: 233,
+          //width: 350,
+          //maxHeight: { xs: 233, md: 167 },
+          //maxWidth: 100%,
+          minWidth:'500',
+          width:'100vh',
+        }} 
+        alt="welcome graph."
+        src="/coproduction/static/coproductionprocesses/Illustration.png"
+      />
+                 
+                  
+                 
+                 
+                </Grid>
+                
               </Grid>
             </Grid>
-            <Box sx={{ mt: 4 }}>
-              <Box sx={{ mb: 2 }}>
-                <SearchBox
-                  loading={loadingProcesses}
-                  inputValue={searchValue}
-                  setInputValue={setSearchValue}
-                />
-              </Box>
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align='center' />
-                      <TableCell align='center'>{t('Name')}</TableCell>
-                      <TableCell align='center'>{t('Created')}</TableCell>
-                      <TableCell align='center'>{t('Status')}</TableCell>
-                      <TableCell align='center'>{t('Teams')}</TableCell>
-                      <TableCell align='center'>{t('Your participation in the process')}</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {processes.length > 0 && processes.map((process) => (
-                      <React.Fragment key={process.id}>
-                        <ProcessRow
-                          process={process}
-                          t={t}
-                        />
-                      </React.Fragment>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              {processes.length === 0 && (
-              <>
-                {loadingProcesses ? <CentricCircularProgress /> : (
-                  <Paper sx={{ p: 2, textAlign: 'center', minHeight: '50vh' }}>
-                    <Box style={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}>
-                      <Typography
-                        sx={{ my: 2 }}
-                        variant='h5'
-                      >
-                        {t('Empty')}
-                      </Typography>
-                      <Button
-                        onClick={() => setCoproductionProcessCreatorOpen(true)}
-                        sx={{ my: 3, width: 400 }}
-                        variant='contained'
-                        size='small'
-                      >
-                        {t('Create a new co-production process')}
-                      </Button>
-
-                    </Box>
-                  </Paper>
-                )}
-
-              </>
-              )}
-              <CoproductionprocessCreate
+            
+          </AuthGuardSkeleton>
+        </Container>
+        <CoproductionprocessCreate
                 open={coproductionProcessCreatorOpen}
                 setOpen={setCoproductionProcessCreatorOpen}
                 loading={coproductionProcessLoading}
                 setLoading={setCoproductionProcessLoading}
                 onCreate={onProcessCreate}
               />
-            </Box>
-          </AuthGuardSkeleton>
-        </Container>
       </Box>
     </>
   );
 };
 
-export default ProjectsOverview;
+export default MyWorkspace;

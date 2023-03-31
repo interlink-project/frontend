@@ -16,7 +16,7 @@ import useAuth from 'hooks/useAuth';
 import { cleanProcess } from 'slices/process';
 import { defaultReduceAnimations } from '@mui/lab/CalendarPicker/CalendarPicker';
 
-export default function Overview({ }) {
+export default function Resources({ }) {
   const { process, isAdministrator, tree } = useSelector((state) => state.process);
   const t = useCustomTranslation(process.language);
   const [tab, setTab] = useState(isAdministrator & !process.is_part_of_publication ? 'progress' : 'assets');
@@ -91,32 +91,11 @@ export default function Overview({ }) {
     <Box sx={{ pb: 3, justifyContent: "center" }}>
       <AppBar sx={{ position: "relative" }}>
         <Typography variant="h6" sx={{ p: 2 }}>
-          {t("Coproduction process overview")}
+          {t("Resources")}
         </Typography>
       </AppBar>
-      {  (
-        <Paper sx={{ bgcolor: "background.default" }}>
-          <Tabs
-            value={tab}
-            onChange={(event, newValue) => {
-              setTab(newValue);
-            }}
-            aria-label="overview-tabs"
-            centered
-          >
-            { isAdministrator & !process.is_part_of_publication &&(
-            <Tab value="progress" label={t("Progress")} />
-            )}
             
-            { !process.is_part_of_publication &&(
-            <Tab value="notifications" label={`${t("Notifications")} (${ notificationsList.length}) `} />
-            )}
-          </Tabs>
-        </Paper>
-      )}
-      {tab === "progress" ? <TimeLine assets={assetsList} /> : <></>}
-
-      {tab === "assets" ? (
+      
         <Box sx={{ p: 3, justifyContent: "center" }}>
           <AssetsTable
             language={process.language}
@@ -124,11 +103,8 @@ export default function Overview({ }) {
             getActions={getAssetsActions}
           />
         </Box>
-      ) : (
-        <></>
-      )}
+   
       
-      {tab === "notifications" ? <CoproNotifications /> : <></>}
     </Box>
   );
 }
