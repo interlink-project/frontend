@@ -20,6 +20,8 @@ Cypress.Commands.add("LoginWithEmail", () => {
   });
   cy.get(".row > .btn").contains("Sign In").click();
   cy.reload();
+  cy.get('[data-cy="Welcome"').contains("interlink-tester");
+  cy.get('[data-cy="Welcome"').contains("interlink-tester");
 });
 
 Cypress.Commands.add("login", (username, password) => {

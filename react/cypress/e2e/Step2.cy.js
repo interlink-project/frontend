@@ -6,18 +6,6 @@ const tester1 = "tester.interlink%2B1@gmail.com";
 const tester2 = "tester.interlink%2B2@gmail.com";
 
 describe("Team management to initiate co-production process", () => {
-  /*
-    after(() => {
-    // Delete the organization
-    cy.login();
-    cy.visit("/dashboard/organizations");
-    cy.get(`[data-cy="Open-${organizationName}"]`).click();
-    cy.get('[data-cy="edit-organization-button"]').click();
-    cy.get('[data-cy="delete-organization-button"]').click();
-    cy.get('[data-cy="confirm-delete-organization-button"]').click();
-  });
-  */
-
   it("1 - Create a new organization	", () => {
     cy.login();
     cy.visit("/dashboard/organizations");
@@ -36,7 +24,7 @@ describe("Team management to initiate co-production process", () => {
 
     //
   });
-  /*
+
   it("2 - Create a new team", () => {
     cy.login();
     cy.visit("/dashboard/organizations");
@@ -55,15 +43,13 @@ describe("Team management to initiate co-production process", () => {
     cy.get('[data-cy="team-create-next"]').click();
     cy.get('[data-cy="add-user-input"]').type("tester.interlink%2B2@gmail.com");
     const userToSelect = `add-user-${tester2.replace("%2B", "+")}`;
-    cy.wait(1000);
-    cy.get(`[data-cy="${userToSelect}"]`).click();
+    cy.get(`[data-cy="${userToSelect}"]`, { timeout: 20000 }).click();
     cy.get('[data-cy="team-create-next"]').click();
     // Usually takes 20 seconds to create a team
-    cy.wait(25000);
     const teamToSelect = `cell-team-name-${teamName}`;
-    cy.get(`[data-cy="${teamToSelect}"]`).should("exist");
+    cy.get(`[data-cy="${teamToSelect}"]`, { timeout: 35000 }).should("exist");
   });
-*/
+
   it("3 - Create a new team via import from CSV", () => {
     cy.login();
     cy.visit("/dashboard/organizations");
@@ -84,5 +70,50 @@ describe("Team management to initiate co-production process", () => {
     cy.get("input[type=file]").selectFile(fixtureFileCSV, {
       force: true,
     });
+    cy.get('[data-cy="member-data-item"]').should("have.length", 3);
+    cy.get('[data-cy="team-create-next"]').click();
+    const teamToSelect = `cell-team-name-${teamName}`;
+    cy.get(`[data-cy="${teamToSelect}"]`, { timeout: 55000 }).should("exist");
+    cy.get('[data-cy="team-create-next"]').click();
+    cy.wait(10000);
+  });
+  it("4 - Add a new Admin", () => {
+    cy.login();
+    cy.visit("/dashboard/organizations");
+    cy.get(`[data-cy="Open-${organizationName}"]`, { timeout: 6000 }).click();
+    cy.get('[data-cy="organization-administrators-tab"]').click();
+    cy.get('[data-cy="add-user-input"]', { timeout: 8000 }).type(
+      "tester.interlink%2B2@gmail.com"
+    );
+    const userToSelect = `add-user-${tester2.replace("%2B", "+")}`;
+    cy.get(`[data-cy="${userToSelect}"]`, { timeout: 7000 }).click();
+    cy.wait(1000);
+    cy.get('[data-cy="alert-success-userList-modified"]').should("exist");
+  });
+});
+
+describe("Manage existing team", () => {
+  after(() => {
+    // Delete the organization
+    cy.login();
+    cy.visit("/dashboard/organizations");
+    cy.get(`[data-cy="Open-${organizationName}"]`).click();
+    cy.get('[data-cy="edit-organization-button"]').click();
+    cy.get('[data-cy="delete-organization-button"]').click();
+    cy.get('[data-cy="confirm-delete-organization-button"]').click();
+  });
+
+  it("1 - Edit team	", () => {
+    cy.login();
+    cy.visit("/dashboard/organizations");
+    cy.get(`[data-cy="Open-${organizationName}"]`, { timeout: 15000 }).click();
+    const teamToSelect = `cell-team-name-${teamName}`;
+    cy.get(`[data-cy="${teamToSelect}"]`, { timeout: 35000 }).click();
+    cy.get('[data-cy="table-body-userList"]')
+      .contains("test 2")
+      .should("exist");
+    cy.get('[data-cy="table-body-userList"]')
+      .contains("test 2")
+      .should("exist");
   });
 });

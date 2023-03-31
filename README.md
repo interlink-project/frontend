@@ -106,7 +106,9 @@ If you're running your projects in containers, then you'll want Cypress in the c
 
 ### Run test
 
-First in all, you should define de the secrets `react/src/.secrets.json` used to do the testing and error tracking with sentry. The example of this file is located in `react/src/.secrets.json.example`
+First in all, you should define de the secrets `.secrets` used to do the testing and error tracking with sentry. The example of this file is located in `.secrets.example`
+
+###### Note: the ´CYPRESS_EMAIL_LOGIN´ and ´CYPRESS_EMAIL_PASS´ aren't mandatory in production
 
 #### Graphical interface
 

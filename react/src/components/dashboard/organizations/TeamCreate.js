@@ -246,7 +246,7 @@ const TeamCreate = ({
           {activeStep === 1 && (
             <>
               <List dense>
-                <TransitionGroup>
+                <TransitionGroup data-cy="team-creation-members">
                   {selectedUsers.map((se) => {
                     let name = se.full_name;
                     const you = se.id === user.id;
@@ -255,11 +255,14 @@ const TeamCreate = ({
                     }
                     return (
                       <Collapse key={se.id}>
-                        <ListItem>
+                        <ListItem data-cy="member-data-item">
                           <ListItemAvatar>
                             <Avatar src={se.picture} />
                           </ListItemAvatar>
-                          <ListItemText primary={name} />
+                          <ListItemText
+                            data-cy={`member-name-${name}`}
+                            primary={name}
+                          />
                           <ListItemSecondaryAction>
                             <IconButton
                               edge="end"

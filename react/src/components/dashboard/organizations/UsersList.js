@@ -77,7 +77,11 @@ const UsersList = ({
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         key={"bottom" + "center"}
       >
-        <Alert onClose={handleCloseShowUserMsn} severity="success">
+        <Alert
+          onClose={handleCloseShowUserMsn}
+          severity="success"
+          data-cy="alert-success-userList-modified"
+        >
           {t(
             "The users list has been modified, please wait a couple of minutes for the changes to take effect."
           )}

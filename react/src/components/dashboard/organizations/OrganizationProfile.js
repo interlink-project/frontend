@@ -475,12 +475,22 @@ const OrganizationProfile = ({
               <Tab
                 value="teams"
                 label={`${t("Teams")} (${organization.teams_ids.length})`}
+                data-cy={
+                  organization.administrators_ids?.length === 0
+                    ? "organization-teams-tab-0"
+                    : "organization-teams-tab"
+                }
               />
               <Tab
                 value="administrators"
                 label={`${t("Administrators")} (${
-                  organization.administrators_ids.length
+                  organization.administrators_ids?.length
                 })`}
+                data-cy={
+                  organization.administrators_ids?.length === 0
+                    ? "organization-administrators-tab-0"
+                    : "organization-administrators-tab"
+                }
               />
             </Tabs>
             <TeamCreate

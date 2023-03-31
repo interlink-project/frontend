@@ -224,7 +224,7 @@ const UserSearch = ({
         </DialogActions>
       </Dialog>
       {alert && (
-        <Alert severity="warning">
+        <Alert severity="warning" data-cy="warning-userSearch-only-registered">
           {t("Only registered users can be added")}
         </Alert>
       )}

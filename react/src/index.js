@@ -2,7 +2,11 @@ import { createInstance, MatomoProvider } from "@datapunt/matomo-tracker-react";
 import StyledEngineProvider from "@mui/material/StyledEngineProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { REACT_APP_COMPLETE_DOMAIN, REACT_APP_MATOMO_ID } from "configuration";
+import {
+  REACT_APP_COMPLETE_DOMAIN,
+  REACT_APP_MATOMO_ID,
+  SENTRY_DSN,
+} from "configuration";
 import "nprogress/nprogress.css";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom";
@@ -16,8 +20,6 @@ import { SettingsProvider } from "./contexts/SettingsContext";
 import store from "./store";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
-// import secrets from ".secrets.json"
-import secrets from "./.secrets.json";
 
 let environment = undefined;
 if (REACT_APP_COMPLETE_DOMAIN.includes("localhost")) {
@@ -32,7 +34,7 @@ if (REACT_APP_COMPLETE_DOMAIN.includes("demo")) {
 
 if (environment) {
   Sentry.init({
-    dsn: secrets?.sentry_dsn,
+    dsn: SENTRY_DSN || "",
     integrations: [new BrowserTracing()],
     tracesSampleRate: 1.0,
     environment,
