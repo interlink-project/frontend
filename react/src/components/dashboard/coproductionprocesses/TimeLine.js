@@ -5,6 +5,8 @@ import {
   Box,
   Button,
   Dialog,
+  Link,
+  Divider,
   Stack,
   Step,
   StepLabel,
@@ -19,43 +21,43 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import useAuth from "hooks/useAuth";
 import { useCustomTranslation } from "hooks/useDependantTranslation";
 import * as React from "react";
-import { useSelector } from "react-redux";
+
 import { useNavigate } from "react-router";
-import { styled } from "@mui/material/styles"
+import { styled } from "@mui/material/styles";
 import StepConnector, {
-  stepConnectorClasses
-} from "@mui/material/StepConnector"
+  stepConnectorClasses,
+} from "@mui/material/StepConnector";
 import { relativeTimeRounding } from "moment";
 import SelectTypeCoproProcess from "./SelectTypeCoproProcess";
 import SelectGovernanceModel from "./SelectGovernanceModel";
-
+import { getProcess, updateProcess } from "slices/process";
+import { useDispatch, useSelector } from "react-redux";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
-    top: 1
+    top: 1,
   },
   [`&.${stepConnectorClasses.active}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      background: "#187595"
-    }
+      background: "#187595",
+    },
   },
   [`&.${stepConnectorClasses.completed}`]: {
     [`& .${stepConnectorClasses.line}`]: {
-      background: "#0f97c7"
-    }
+      background: "#0f97c7",
+    },
   },
   [`& .${stepConnectorClasses.line}`]: {
     height: "160px",
-    width:2,
-    position:"relative",
-    top:"-350px",
+    width: 2,
+    position: "relative",
+    top: "-350px",
     border: 0,
     backgroundColor:
       theme.palette.mode === "dark" ? theme.palette.grey[800] : "#eaeaf0",
-    borderRadius: 1
-  }
-}))
-
+    borderRadius: 1,
+  },
+}));
 
 /* function MyStepSection({
   dataFulfilled,
@@ -142,15 +144,15 @@ export default function TimeLine({ assets }) {
   const { user } = useAuth();
   const t = useCustomTranslation(process.language);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
-  
 
-  const [selectorTypeOpen,setSelectorTypeOpen] = React.useState(false);
-  const [selectorTypeLoading,setSelectorTypeLoading] = React.useState(false);
+  const [selectorTypeOpen, setSelectorTypeOpen] = React.useState(false);
+  const [selectorTypeLoading, setSelectorTypeLoading] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
-    alert('Open Schema Selector');
+    //alert("Open Schema Selector");
   };
 
   const handleClose = () => {
@@ -166,26 +168,78 @@ export default function TimeLine({ assets }) {
   const permissionsFullfilled = process.enabled_permissions.length >= 1;
   const newAssetsFullfilled = assets.length >= 1;
 
+  
   function nextSect(nextSectionNum) {
     const section = document.querySelector("#" + nextSectionNum);
     section.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  const completeStates = [
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
+  const setHasAddAnOrganization = async () => {
+
+    const values = { hasAddAnOrganization: true };
+    try {
+      dispatch(updateProcess({
+        id: process.id,
+        data: values,
+        logotype: false,
+        onSuccess: false
+      }));
+    } catch (err) {
+      console.error(err);
+    }
+  
+  }; 
+
+  const setSkipResourcesStep = async () => {
+
+    const values = { skipResourcesStep: true };
+    try {
+      dispatch(updateProcess({
+        id: process.id,
+        data: values,
+        logotype: false,
+        onSuccess: false
+      }));
+    } catch (err) {
+      console.error(err);
+    }
+  
+  }; 
+
+  
+  const temp_completeStates = [
+    process.hasAddAnOrganization,//Has Organizations? He decide!.
+    !!dataFulfilled|| administratorsFulfilled,
+    process.hasDecideSchema || hasSchema,//Did you decide the type (If has a schema it means it has a type)
+    hasSchema,
+    process.incentive_and_rewards_state,//Have you active the rewards?
+    permissionsFullfilled,//Have you grant permissions to a team in all process?
+    process.skipResourcesStep ||newAssetsFullfilled
   ];
-  const selectedStepIndex = 1;
+
+  let checker = arr => arr.every(v => v === true);
+  const hasCompletedAll=checker(temp_completeStates);
+
+
+  const completeStates = [
+    process.hasAddAnOrganization,//Has Organizations? He decide!.
+    !!dataFulfilled|| administratorsFulfilled,
+    process.hasDecideSchema || hasSchema,//Did you decide the type (If has a schema it means it has a type)
+    hasSchema,
+    process.incentive_and_rewards_state,//Have you active the rewards?
+    permissionsFullfilled,//Have you grant permissions to a team in all process?
+    process.skipResourcesStep ||newAssetsFullfilled,
+    hasCompletedAll,//Has Finish
+  ];
+
+  
+  
+
+  const selectedStepIndex = null;
 
   return (
     <>
-       <Box id='section_0' sx={{ justifyContent: "center", position: "sticky" }}>
+      <Box id="section_0" sx={{ justifyContent: "center", position: "sticky" }}>
         <Grid
           container
           spacing={0}
@@ -205,7 +259,7 @@ export default function TimeLine({ assets }) {
             />
           </Grid>
         </Grid>
-      </Box> 
+      </Box>
       <Box sx={{ mt: 1, p: 2, justifyContent: "center" }}>
         <Stepper
           nonLinear
@@ -226,7 +280,7 @@ export default function TimeLine({ assets }) {
             pictureSize="450px"
           /> */}
 
-           <Step
+          <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -252,15 +306,23 @@ export default function TimeLine({ assets }) {
                         "Ok firstly, if you haven't done so before, create your own organization and teams for your project. take into account that if you select your organization as public, it will be visible to all users of the platform. So once you created your organization, you will find inside it a button to create teams."
                       )}
                     </Typography>
-
-                    <Button
-                      onClick={() => navigate(`/dashboard/organizations`)}
-                      size="small"
-                      variant="contained"
-                      sx={{ maxWidth: "200px" }}
+                    <Stack
+                      direction="row"
+                      justifyContent="left"
+                      alignItems="center"
+                      divider={<Divider orientation="vertical" flexItem />}
+                      spacing={2}
                     >
-                      {t("Go to organizations")}
-                    </Button>
+                      <Button
+                        onClick={() => navigate(`/dashboard/organizations`)}
+                        size="small"
+                        variant="contained"
+                        sx={{ maxWidth: "200px" }}
+                      >
+                        {t("Go to organizations")}
+                      </Button>
+                      <Link href="#" onClick={setHasAddAnOrganization}>already done</Link>
+                    </Stack>
                   </Stack>
                 </Grid>
                 <Grid item xs={6}>
@@ -290,10 +352,10 @@ export default function TimeLine({ assets }) {
                 </Grid>
               </Grid>
             </StepLabel>
-          </Step> 
+          </Step>
 
           {/* Step 2 */}
-           <Step
+          <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -361,10 +423,10 @@ export default function TimeLine({ assets }) {
                 </Grid>
               </Grid>
             </StepLabel>
-          </Step> 
+          </Step>
 
           {/* Step 3 */}
-           <Step
+          <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -392,11 +454,9 @@ export default function TimeLine({ assets }) {
                     </Typography>
 
                     <Button
-                      onClick={() =>
-                        {
-                          setSelectorTypeOpen(true);
-                        }
-                      }
+                      onClick={() => {
+                        setSelectorTypeOpen(true);
+                      }}
                       size="small"
                       variant="contained"
                       sx={{ maxWidth: "200px" }}
@@ -432,10 +492,10 @@ export default function TimeLine({ assets }) {
                 </Grid>
               </Grid>
             </StepLabel>
-          </Step> 
+          </Step>
 
           {/* Step 4 */}
-           <Step
+          <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -461,27 +521,27 @@ export default function TimeLine({ assets }) {
                         "The schemas give to the user some directives on how to proceed in the overall process. Phases, objectives and tasks of the co-production process. Click on the button and search for the optimal coproduction schema for your process. Nevertheless, you can undo this action (clear the coproduction tree) in the settings section."
                       )}
                     </Typography>
-                      
-                    {hasSchema ? (
-                  <Alert severity="success">
-                    {t("The schema has been selected")}
-                  </Alert>
-                ) : (
-                  <></>
-                )}
-                {!hasSchema && (
-                  <Button
-                    disabled={process.creator_id !== user.id}
-                    onClick={handleClickOpen}
-                    size="small"
-                    variant="contained"
-                    sx={{ maxWidth: "200px" }}
-                  >
-                    {t("Select an schema")}
-                  </Button>
-                )}
 
-                   
+                    {hasSchema ? (
+                      <Alert severity="success">
+                        {t(
+                          "The schema has already been selected for this process"
+                        )}
+                      </Alert>
+                    ) : (
+                      <></>
+                    )}
+                    {!hasSchema && (
+                      <Button
+                        disabled={process.creator_id !== user.id}
+                        onClick={handleClickOpen}
+                        size="small"
+                        variant="contained"
+                        sx={{ maxWidth: "200px" }}
+                      >
+                        {t("Select an schema")}
+                      </Button>
+                    )}
                   </Stack>
                 </Grid>
                 <Grid item xs={6}>
@@ -511,10 +571,10 @@ export default function TimeLine({ assets }) {
                 </Grid>
               </Grid>
             </StepLabel>
-          </Step> 
+          </Step>
 
           {/* Step 5 */}
-           <Step
+          <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -582,10 +642,10 @@ export default function TimeLine({ assets }) {
                 </Grid>
               </Grid>
             </StepLabel>
-          </Step> 
+          </Step>
 
           {/* Step 6 */}
-           <Step
+          <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -611,7 +671,7 @@ export default function TimeLine({ assets }) {
                         "Now you can allow teams to work on the coproduction process. For that, associate permissions to teams by navigating to the Team section and adding permission for the whole coproduction process. Otherwise you can go to Guide section and add new permissions for distinct tree items (objectives, tasks)."
                       )}
                     </Typography>
-                 
+
                     <Button
                       onClick={() =>
                         navigate(
@@ -622,7 +682,9 @@ export default function TimeLine({ assets }) {
                       variant="contained"
                       sx={{ maxWidth: "200px" }}
                     >
-                      {t("Grant permissions to the overall process in the Team section")}
+                      {t(
+                        "Grant permissions to the overall process in the Team section"
+                      )}
                     </Button>
                   </Stack>
                 </Grid>
@@ -653,10 +715,10 @@ export default function TimeLine({ assets }) {
                 </Grid>
               </Grid>
             </StepLabel>
-          </Step> 
+          </Step>
 
           {/* Step 7 */}
-           <Step
+          <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -684,29 +746,37 @@ export default function TimeLine({ assets }) {
                     </Typography>
 
                     {dataFulfilled ? (
-                  <Alert severity="success">
-                    {t("The coproduction process data has been defined")}
-                  </Alert>
-                ) : (
-                  <></>
-                )}
-                <Button
-                  onClick={() =>
-                    navigate(
-                      `/dashboard/coproductionprocesses/${process.id}/resources`
-                    )
-                  }
-                  size="small"
-                  variant="contained"
-                  sx={{ maxWidth: "200px" }}
-                >
-                  {t("Go to Resources section")}
-                </Button>
+                      <Alert severity="success">
+                        {t("The coproduction process data has been defined")}
+                      </Alert>
+                    ) : (
+                      <></>
+                    )}
 
-                   
+                    <Stack
+                      direction="row"
+                      justifyContent="left"
+                      alignItems="center"
+                      divider={<Divider orientation="vertical" flexItem />}
+                      spacing={2}
+                    >
+                      <Button
+                        onClick={() =>
+                          navigate(
+                            `/dashboard/coproductionprocesses/${process.id}/resources`
+                          )
+                        }
+                        size="small"
+                        variant="contained"
+                        sx={{ maxWidth: "200px" }}
+                      >
+                        {t("Go to Resources section")}
+                      </Button>
+                      <Link href="#" onClick={setSkipResourcesStep} >or just skip</Link>
+                    </Stack>
                   </Stack>
                 </Grid>
-                <Grid   item xs={6} >
+                <Grid item xs={6}>
                   <img
                     src="/coproduction/static/images/overview_step7.svg"
                     height="450vw"
@@ -733,10 +803,10 @@ export default function TimeLine({ assets }) {
                 </Grid>
               </Grid>
             </StepLabel>
-          </Step> 
+          </Step>
 
           {/* Step 8 */}
-           <Step
+          <Step
             active
             completed={!!dataFulfilled}
             sx={{
@@ -757,11 +827,11 @@ export default function TimeLine({ assets }) {
                 justifyContent="center"
               >
                 <Grid item>
-                  <Typography variant="h3" >
+                  <Typography variant="h3">
                     {t("Well done! You're ready to start")}
                   </Typography>
 
-                  <Typography variant="subtitle1" >
+                  <Typography variant="subtitle1">
                     {t(
                       "You completed all the preliminar phases and now you're ready to start your job using the Guide section."
                     )}
@@ -771,8 +841,6 @@ export default function TimeLine({ assets }) {
                       "Good luck for your process and remember, work inclusive."
                     )}
                   </Typography>
-
-                  
                 </Grid>
                 <Grid item>
                   <img
@@ -791,7 +859,7 @@ export default function TimeLine({ assets }) {
                 </IconButton>
               </Grid>
             </StepLabel>
-          </Step> 
+          </Step>
 
           {/* <Step active completed={!!dataFulfilled}>
             <StepLabel>
@@ -974,13 +1042,11 @@ export default function TimeLine({ assets }) {
       </Box>
 
       <SelectTypeCoproProcess
-                open={selectorTypeOpen}
-                setOpen={setSelectorTypeOpen}
-                loading={selectorTypeLoading}
-                setLoading={setSelectorTypeLoading}
-                
-              />
-      
+        open={selectorTypeOpen}
+        setOpen={setSelectorTypeOpen}
+        loading={selectorTypeLoading}
+        setLoading={setSelectorTypeLoading}
+      />
     </>
   );
 }
