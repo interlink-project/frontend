@@ -85,6 +85,18 @@ export default function CoproNotifications({ mode = "notification" }) {
   const dispatch = useDispatch();
   const mounted = useMounted();
 
+ 
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = "/coproduction/static/assets/showDialogScript.js";
+    script.async = true;
+    document.body.appendChild(script);
+  return () => {
+      document.body.removeChild(script);
+    }
+  }, []);
+
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -106,7 +118,7 @@ export default function CoproNotifications({ mode = "notification" }) {
 
   //This function will obtain and reeplace all paremeters
   // and replace in the text.
-  const includeParametersValues = (text, parameters, process_id) => {
+  const includeParametersValues = (text, parameters, notification_id) => {
     if (parameters) {
       //Obtain all parameters of the text
       const paramsPattern = /[^{}]+(?=})/g;
@@ -123,7 +135,11 @@ export default function CoproNotifications({ mode = "notification" }) {
             );
           }
         }
+        // Add notification Id
+        text=text.replaceAll("{notificationId}",notification_id);
       }
+
+
     }
 
     return text;
@@ -249,7 +265,7 @@ export default function CoproNotifications({ mode = "notification" }) {
                   {includeParametersValues(
                     copronotification.notification.title,
                     copronotification.parameters,
-                    copronotification.id
+                    copronotification.id,
                   )}
                 </Typography>
 

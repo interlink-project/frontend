@@ -221,7 +221,7 @@ const StoryProfile = () => {
                     index='overview'
                   >
                     <Card sx={style}>
-                        <OverviewStory /> 
+                        <OverviewStory />
                      
                     </Card>
                   </TabPanel>
