@@ -5,7 +5,6 @@ import {
   Button,
   Chip,
   Container,
-  Divider,
   Grid,
   Paper,
   Stack,
@@ -225,6 +224,7 @@ const ProjectsOverview = () => {
                     sx={{ textAlign: "center", mt: 1, mb: 2 }}
                     startIcon={<Add />}
                     size="small"
+                    data-cy="add-process"
                   >
                     {t("add-process")}
                   </LoadingButton>

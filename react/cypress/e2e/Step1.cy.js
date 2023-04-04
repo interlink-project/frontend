@@ -27,7 +27,8 @@ describe("Verify that users can log in and/or register to access the Collaborati
     cy.log("✅ First criteria is OK - Team management");
     cy.get('[datacy="Workspace-page"]').should("not.be.disabled");
     cy.get('[datacy="Workspace-page"]').click();
-    cy.get('[data-cy="create-new-process"]').should("exist");
+    cy.get('[data-cy="go-to-processes-list"]').click();
+    cy.get('[data-cy="add-process"]').should("exist");
     cy.log("✅ Second criteria is OK - Co-production project management");
     cy.get('[datacy="Catalogue-page"]').should("not.be.disabled");
     cy.get('[datacy="Catalogue-page"]').click();
