@@ -1,6 +1,6 @@
 describe("Verify that users can log in and/or register to access the Collaborative", () => {
   it("STEP1 A: Verify that users can log in with a Google's Button (Until see de Google's Button)", () => {
-    const url = Cypress.config().baseUrl;
+    const url = Cypress.config().baseUrl || "http://localhost";
     cy.visit(url, {
       headers: {
         "user-agent":
@@ -21,16 +21,17 @@ describe("Verify that users can log in and/or register to access the Collaborati
   it("STEP1 B: Verify that users can log in with an email and password", () => {
     cy.LoginWithEmail();
     cy.get('[data-cy="Welcome"]').should("exist");
-    cy.get('[datacy="Organizations-page"]').should("not.be.disabled");
-    cy.get('[datacy="Organizations-page"]').click();
+    cy.get('[data-cy="Organizations-page"]').should("not.be.disabled");
+    cy.get('[data-cy="Organizations-page"]').click();
     cy.get('[data-cy="create-new-organization"]').should("exist");
     cy.log("✅ First criteria is OK - Team management");
-    cy.get('[datacy="Workspace-page"]').should("not.be.disabled");
-    cy.get('[datacy="Workspace-page"]').click();
-    cy.get('[data-cy="create-new-process"]').should("exist");
+    cy.get('[data-cy="Workspace-page"]').should("not.be.disabled");
+    cy.get('[data-cy="Workspace-page"]').click();
+    cy.get('[data-cy="go-to-processes-list"]').click();
+    cy.get('[data-cy="add-process"]').should("exist");
     cy.log("✅ Second criteria is OK - Co-production project management");
-    cy.get('[datacy="Catalogue-page"]').should("not.be.disabled");
-    cy.get('[datacy="Catalogue-page"]').click();
+    cy.get('[data-cy="Catalogue-page"]').should("not.be.disabled");
+    cy.get('[data-cy="Catalogue-page"]').click();
     cy.get('[data-cy="interlinkers-catalogue-title"]').should("exist");
     cy.wait(1000);
     cy.get('[data-cy="interlinkers-catalogue-title"]').should(

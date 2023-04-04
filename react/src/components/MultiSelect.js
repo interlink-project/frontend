@@ -1,10 +1,19 @@
-import { useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import { Button, Checkbox, FormControlLabel, Menu, MenuItem } from '@mui/material';
-import ChevronDownIcon from '../icons/ChevronDown';
+import { useRef, useState } from "react";
+import PropTypes from "prop-types";
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import ChevronDownIcon from "../icons/ChevronDown";
 
-const MultiSelect = (props) => {
-  const { label, onChange, options, value, ...other } = props;
+const MultiSelect = (
+  /** @type {{ [x: string]: any; label: any; onChange: any; options: any; value: any; datacy?:string; datacyOption?:string; }} */ props
+) => {
+  const { label, onChange, options, value, datacy, datacyOption, ...other } =
+    props;
   const anchorRef = useRef(null);
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -33,11 +42,12 @@ const MultiSelect = (props) => {
   return (
     <>
       <Button
-        color='inherit'
-        endIcon={<ChevronDownIcon fontSize='small' />}
+        color="inherit"
+        endIcon={<ChevronDownIcon fontSize="small" />}
         onClick={handleMenuOpen}
         ref={anchorRef}
-        variant='text'
+        variant="text"
+        data-cy={datacy}
         {...other}
       >
         {label}
@@ -51,14 +61,15 @@ const MultiSelect = (props) => {
         {options.map((option) => (
           <MenuItem key={option.value}>
             <FormControlLabel
-              control={(
+              control={
                 <Checkbox
                   checked={value.indexOf(option.value) > -1}
-                  color='primary'
+                  color="primary"
                   onChange={handleOptionToggle}
                   value={option.value}
+                  data-cy={datacyOption && `${datacyOption}-${option.value}`}
                 />
-              )}
+              }
               label={option.label}
             />
           </MenuItem>
@@ -72,7 +83,7 @@ MultiSelect.propTypes = {
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   options: PropTypes.array.isRequired,
-  value: PropTypes.array.isRequired
+  value: PropTypes.array.isRequired,
 };
 
 export default MultiSelect;

@@ -244,6 +244,7 @@ const OrganizationProfile = ({
                           height: "100px",
                           position: "absolute",
                         }}
+                        data-cy="organization-logotype-editMode"
                       />
                       <Edit
                         style={{
@@ -253,6 +254,7 @@ const OrganizationProfile = ({
                           top: "50%",
                           transform: "translateY(-50%)",
                         }}
+                        data-cy="organization-logotype-editMode-icon"
                       />
                     </div>
                   </IconButton>
@@ -266,6 +268,7 @@ const OrganizationProfile = ({
                       width: "100px",
                       height: "100px",
                     }}
+                    data-cy="organization-logotype"
                   />
                 </IconButton>
               )}
@@ -285,7 +288,7 @@ const OrganizationProfile = ({
                 />
               )}
               {!editMode ? (
-                <Typography variant="body1">
+                <Typography variant="body1" data-cy="organization-description">
                   {organization.description}
                 </Typography>
               ) : (
@@ -300,6 +303,7 @@ const OrganizationProfile = ({
                   multiline
                   rows={4}
                   variant="standard"
+                  data-cy="organization-description-editMode"
                 />
               )}
               {!editMode ? (
@@ -315,6 +319,7 @@ const OrganizationProfile = ({
                   <Switch
                     checked={isPublic}
                     onChange={(event) => setPublic(event.target.checked)}
+                    data-cy="organization-public-editMode"
                   />
                 </Stack>
               )}
@@ -323,7 +328,7 @@ const OrganizationProfile = ({
                   <Typography variant="overline">
                     {t("Who can create teams in this organization?")}
                   </Typography>
-                  <Typography variant="body1">
+                  <Typography variant="body1" data-cy="organizat">
                     {
                       teamCreationPermissionTranslations(t)[
                         organization.team_creation_permission

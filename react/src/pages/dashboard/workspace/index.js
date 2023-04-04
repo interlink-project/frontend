@@ -76,7 +76,7 @@ const MyWorkspace = () => {
     if (mounted.current) {
       delayDebounceFn = setTimeout(
         () => {
-          getUnseenUserNotificationsData({ user_id: user.id });
+          getUnseenUserNotificationsData({ user_id: user?.id });
         },
         searchValue ? 800 : 0
       );
@@ -116,7 +116,11 @@ const MyWorkspace = () => {
                 columns={{ xs: 4, sm: 8, md: 12 }}
               >
                 <Grid item xs={6}>
-                  <Typography color="textPrimary" variant="h3">
+                  <Typography
+                    color="textPrimary"
+                    variant="h3"
+                    data-cy="Welcome"
+                  >
                     {t("Welcome", {
                       name: user ? user.given_name : "",
                     })}
@@ -126,13 +130,19 @@ const MyWorkspace = () => {
                     variant="subtitle2"
                     sx={{ mt: 2 }}
                     align="justify"
+                    data-cy="Welcome-description"
                   >
                     {t(
                       "Welcome to the INTERLINK platform, a collaborative enviroment where PAs, citizens, and other actors can collaborate to develop their projects, which we will call co-production processes."
                     )}
                   </Typography>
 
-                  <Typography color="textSecondary" variant="h6" sx={{ mt: 3 }}>
+                  <Typography
+                    color="textSecondary"
+                    variant="h6"
+                    sx={{ mt: 3 }}
+                    data-cy="first-question-title"
+                  >
                     {t(
                       "1. Have you been invited to a process that hasn’t started yet?"
                     )}
@@ -143,6 +153,7 @@ const MyWorkspace = () => {
                     variant="body1"
                     sx={{ mt: 2, mb: 2 }}
                     align="justify"
+                    data-cy="first-question-description"
                   >
                     {t(
                       "During the waiting, Check our video tutorial to discover the platform functionalities."
@@ -153,11 +164,17 @@ const MyWorkspace = () => {
                     sx={{ minWidth: "200px" }}
                     href="docs/en/"
                     variant="contained"
+                    data-cy="check-tutorials"
                   >
                     Check tutorials
                   </Button>
 
-                  <Typography color="textSecondary" variant="h6" sx={{ mt: 3 }}>
+                  <Typography
+                    color="textSecondary"
+                    variant="h6"
+                    sx={{ mt: 3 }}
+                    data-cy="second-question-title"
+                  >
                     {t("2. Do you want to see your projects ?")}
                   </Typography>
 
@@ -166,6 +183,7 @@ const MyWorkspace = () => {
                     variant="body1"
                     sx={{ mt: 2, mb: 2 }}
                     align="justify"
+                    data-cy="second-question-description"
                   >
                     {t(
                       "If you just created your project or you have been invited to a project, check to your co-production processes list."
@@ -176,11 +194,17 @@ const MyWorkspace = () => {
                     sx={{ minWidth: "200px" }}
                     variant="contained"
                     href="dashboard/projects"
+                    data-cy="go-to-processes-list"
                   >
                     Go to processes list
                   </Button>
 
-                  <Typography color="textSecondary" variant="h6" sx={{ mt: 3 }}>
+                  <Typography
+                    color="textSecondary"
+                    variant="h6"
+                    sx={{ mt: 3 }}
+                    data-cy="third-question-title"
+                  >
                     {t("3. Do you want to create your own process?")}
                   </Typography>
 
@@ -188,6 +212,7 @@ const MyWorkspace = () => {
                     color="textSecondary"
                     variant="body1"
                     sx={{ mt: 2, mb: 2 }}
+                    data-cy="third-question-description"
                   >
                     {t(
                       "We will guide you helping to manage your group. You will find an archive dedicated to shared resources, a structured schema for the process, etc."
@@ -198,6 +223,7 @@ const MyWorkspace = () => {
                     sx={{ minWidth: "200px" }}
                     onClick={() => setCoproductionProcessCreatorOpen(true)}
                     variant="contained"
+                    data-cy="start-here-your-guide"
                   >
                     Start here your guide
                   </Button>
@@ -215,6 +241,7 @@ const MyWorkspace = () => {
                       width: "100vh",
                     }}
                     alt="welcome graph."
+                    data-cy="welcome-dashboard-illustration"
                     src="/coproduction/static/coproductionprocesses/Illustration.png"
                   />
                 </Grid>

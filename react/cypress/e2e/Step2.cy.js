@@ -20,7 +20,9 @@ describe("Team management to initiate co-production process", () => {
     cy.get('[data-cy="create-organization-default-team-type"]').click();
     cy.get('.MuiList-root > [tabindex="0"]').click();
     cy.get('[data-cy="create-organization-button"]').click();
-    cy.get(".MuiTableRow-hover").contains(organizationName).should("exist");
+    cy.get(".MuiTableRow-hover", { timeout: 20000 })
+      .contains(organizationName)
+      .should("exist");
 
     //
   });
@@ -103,7 +105,7 @@ describe("Manage existing team", () => {
     cy.get('[data-cy="confirm-delete-organization-button"]').click();
   });
 
-  it("1 - Edit team	", () => {
+  it("1 - window shows up, displaying team details, including its members	", () => {
     cy.login();
     cy.visit("/dashboard/organizations");
     cy.get(`[data-cy="Open-${organizationName}"]`, { timeout: 15000 }).click();

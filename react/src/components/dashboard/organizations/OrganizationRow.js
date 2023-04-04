@@ -29,6 +29,7 @@ function OrganizationRow({ organization, collapseElement }) {
         onClick={() => {
           setOpen(!open);
         }}
+        data-cy={`org-row-${organization?.name}`}
       >
         <TableCell align="center" component="th" scope="row">
           <Stack alignItems="center" direction="row" spacing={1}>
@@ -41,14 +42,23 @@ function OrganizationRow({ organization, collapseElement }) {
             ) : (
               <People />
             )}
-            <b data-cy={`org-name-${organization.name}`}>{organization.name}</b>
+            <b data-cy={`org-name-${organization?.name}`}>
+              {organization.name}
+            </b>
           </Stack>
         </TableCell>
-        <TableCell align="center" component="th" scope="row">
+        <TableCell
+          align="center"
+          component="th"
+          scope="row"
+          data-cy={`org-public${organization?.name}`}
+        >
           {organization.public && <Check />}
         </TableCell>
         <TableCell align="center" component="th" scope="row">
-          <AvatarGroup>
+          <AvatarGroup
+            data-cy={`org-admin-len-${organization?.administrators?.length}`}
+          >
             {organization.administrators.map((admin) => (
               <UserAvatar
                 key={admin.id}
@@ -58,10 +68,18 @@ function OrganizationRow({ organization, collapseElement }) {
             ))}
           </AvatarGroup>
         </TableCell>
-        <TableCell align="center">
+        <TableCell
+          align="center"
+          data-cy={`org-createdDate-${organization?.created_at}`}
+        >
           {moment(organization.created_at).fromNow()}
         </TableCell>
-        <TableCell align="center">{organization.teams_ids.length}</TableCell>
+        <TableCell
+          align="center"
+          data-cy={`org-team-length-${organization?.teams_ids?.length}`}
+        >
+          {organization.teams_ids.length}
+        </TableCell>
         <TableCell align="center">
           {organization.current_user_participation.length > 0 ? (
             organization.current_user_participation.map((p) => (
@@ -71,6 +89,7 @@ function OrganizationRow({ organization, collapseElement }) {
                 key={organization.id + p}
                 variant={p === "administrator" ? "contained" : "outlined"}
                 label={p}
+                data-cy={`org-participation-${p}`}
               />
             ))
           ) : (

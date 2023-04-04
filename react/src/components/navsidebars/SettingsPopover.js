@@ -1,18 +1,22 @@
 import {
   Box,
-  Button, IconButton, Popover, TextField, Tooltip
-} from '@mui/material';
-import { Settings } from '@mui/icons-material';
-import { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { getLanguage, LANGUAGES } from 'translations/i18n';
-import { THEMES } from '../../constants';
-import useSettings from '../../hooks/useSettings';
+  Button,
+  IconButton,
+  Popover,
+  TextField,
+  Tooltip,
+} from "@mui/material";
+import { Settings } from "@mui/icons-material";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { getLanguage, LANGUAGES } from "translations/i18n";
+import { THEMES } from "../../constants";
+import useSettings from "../../hooks/useSettings";
 
 const getValues = (settings) => ({
   // direction: settings.direction,
   theme: settings.theme,
-  language: getLanguage()
+  language: getLanguage(),
 });
 
 const SettingsPopover = () => {
@@ -51,27 +55,27 @@ const SettingsPopover = () => {
   };
 
   const onLoad = function () {
-    console.log('Iframe refreshed', openDialog, this);
+    console.log("Iframe refreshed", openDialog, this);
   };
 
   return (
     <>
-      {' '}
-      <Tooltip title={t('Settings')}>
+      {" "}
+      <Tooltip title={t("Settings")}>
         <IconButton
-          color='inherit'
+          color="inherit"
           ref={anchorRef}
           onClick={handleOpen}
+          data-cy="settings-popover"
         >
-          <Settings fontSize='small' />
+          <Settings fontSize="small" />
         </IconButton>
-      </Tooltip>
-      {' '}
+      </Tooltip>{" "}
       <Popover
         anchorEl={anchorRef.current}
         anchorOrigin={{
-          horizontal: 'center',
-          vertical: 'bottom',
+          horizontal: "center",
+          vertical: "bottom",
         }}
         keepMounted
         onClose={handleClose}
@@ -80,7 +84,7 @@ const SettingsPopover = () => {
           sx: { width: 320 },
         }}
       >
-        {' '}
+        {" "}
         <Box
           sx={{
             p: 2,
@@ -88,52 +92,57 @@ const SettingsPopover = () => {
         >
           <TextField
             fullWidth
-            label={t('Theme')}
-            name='theme'
-            onChange={(event) => handleChange('theme', event.target.value)}
+            label={t("Theme")}
+            name="theme"
+            onChange={(event) => handleChange("theme", event.target.value)}
             select
             SelectProps={{
               native: true,
             }}
             value={values.theme}
-            variant='outlined'
+            variant="outlined"
+            data-cy="settings-theme"
           >
             {Object.keys(THEMES).map((key) => (
               <option
                 key={key}
                 value={key}
+                data-cy={`settings_theme_option_${
+                  THEMES[key].label()[0] +
+                  THEMES[key].label().substr(1).toLowerCase()
+                }`}
               >
-                {THEMES[key].label()[0]
-                  + THEMES[key].label().substr(1).toLowerCase()}
+                {THEMES[key].label()[0] +
+                  THEMES[key].label().substr(1).toLowerCase()}
               </option>
             ))}
           </TextField>
-        </Box>
-        {' '}
+        </Box>{" "}
         <Box sx={{ p: 2 }}>
-          {' '}
+          {" "}
           <TextField
             fullWidth
-            label={t('Language')}
-            name='language'
-            onChange={(event) => handleChange('language', event.target.value)}
+            label={t("Language")}
+            name="language"
+            onChange={(event) => handleChange("language", event.target.value)}
             select
             SelectProps={{
               native: true,
             }}
             value={values.language}
-            variant='outlined'
+            variant="outlined"
+            data-cy="settings-language"
           >
             {LANGUAGES.map((lang) => (
               <option
                 key={lang.value}
                 value={lang.value}
+                data-cy={`settings_language_${lang?.label}`}
               >
-                {lang.label} 
+                {lang.label}
               </option>
             ))}
-          </TextField>
-          {' '}
+          </TextField>{" "}
         </Box>
         <Box
           sx={{
@@ -141,15 +150,15 @@ const SettingsPopover = () => {
           }}
         >
           <Button
-            color='primary'
+            color="primary"
             fullWidth
             onClick={handleSave}
-            variant='contained'
+            variant="contained"
+            data-cy="settings-save"
           >
-            {t('Save')}
+            {t("Save")}
           </Button>
-        </Box>
-        {' '}
+        </Box>{" "}
       </Popover>
     </>
   );

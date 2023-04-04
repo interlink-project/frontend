@@ -1,7 +1,7 @@
 import "cypress-file-upload";
 
 Cypress.Commands.add("LoginWithEmail", () => {
-  const url = Cypress.config().baseUrl;
+  const url = Cypress.config().baseUrl || "http://localhost";
   cy.visit(url, {
     headers: {
       "user-agent":

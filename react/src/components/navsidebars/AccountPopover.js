@@ -48,6 +48,7 @@ const AccountPopover = () => {
           alignItems: "center",
           display: "flex",
         }}
+        data-cy="account-button"
       >
         <Avatar
           src={user.picture}
@@ -73,7 +74,11 @@ const AccountPopover = () => {
         data-cy="account-popover"
       >
         <Box sx={{ p: 2 }}>
-          <Typography color="textPrimary" variant="subtitle2">
+          <Typography
+            color="textPrimary"
+            variant="subtitle2"
+            data-cy="account-popover-name"
+          >
             {user.full_name}
           </Typography>
         </Box>
@@ -137,6 +142,7 @@ const AccountPopover = () => {
         display: "flex",
       }}
       onClick={() => auth.signinRedirect()}
+      data-cy="login-button"
     >
       <Typography sx={{ mr: 1 }} variant="overline">
         {t("Login")}
