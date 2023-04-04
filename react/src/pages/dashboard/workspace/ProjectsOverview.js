@@ -5,7 +5,6 @@ import {
   Button,
   Chip,
   Container,
-  Divider,
   Grid,
   Paper,
   Stack,
@@ -204,15 +203,27 @@ const ProjectsOverview = () => {
                 xs={12}
               >
                 <Grid item>
-                  <Typography color="textSecondary" variant="overline">
+                  <Typography
+                    color="textSecondary"
+                    variant="overline"
+                    data-cy="workspace-title"
+                  >
                     {t("Workspace")}
                   </Typography>
-                  <Typography color="textPrimary" variant="h5">
+                  <Typography
+                    color="textPrimary"
+                    variant="h5"
+                    data-cy="welcome-to-user"
+                  >
                     {t("Welcome", {
                       name: user ? user.given_name : "",
                     })}
                   </Typography>
-                  <Typography color="textSecondary" variant="subtitle2">
+                  <Typography
+                    color="textSecondary"
+                    variant="subtitle2"
+                    data-cy="workspace-subtitle"
+                  >
                     {t("workspace-subtitle")}
                   </Typography>
                 </Grid>
@@ -225,6 +236,7 @@ const ProjectsOverview = () => {
                     sx={{ textAlign: "center", mt: 1, mb: 2 }}
                     startIcon={<Add />}
                     size="small"
+                    data-cy="add-process"
                   >
                     {t("add-process")}
                   </LoadingButton>
@@ -237,9 +249,10 @@ const ProjectsOverview = () => {
                   loading={loadingProcesses}
                   inputValue={searchValue}
                   setInputValue={setSearchValue}
+                  datacy={"search-process"}
                 />
               </Box>
-              <TableContainer component={Paper}>
+              <TableContainer component={Paper} data-cy="table-process-header">
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -266,7 +279,7 @@ const ProjectsOverview = () => {
               {processes.length === 0 && (
                 <>
                   {loadingProcesses ? (
-                    <CentricCircularProgress />
+                    <CentricCircularProgress datacy="table-process-body" />
                   ) : (
                     <Paper
                       sx={{ p: 2, textAlign: "center", minHeight: "50vh" }}
@@ -279,7 +292,11 @@ const ProjectsOverview = () => {
                           transform: "translate(-50%, -50%)",
                         }}
                       >
-                        <Typography sx={{ my: 2 }} variant="h5">
+                        <Typography
+                          sx={{ my: 2 }}
+                          variant="h5"
+                          data-cy="empty-process-list"
+                        >
                           {t("Empty")}
                         </Typography>
                         <Button
@@ -289,6 +306,7 @@ const ProjectsOverview = () => {
                           sx={{ my: 3, width: 400 }}
                           variant="contained"
                           size="small"
+                          data-cy="create-process-button"
                         >
                           {t("Create a new co-production process")}
                         </Button>
