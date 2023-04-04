@@ -1,6 +1,6 @@
 describe("Verify that users can log in and/or register to access the Collaborative", () => {
   it("STEP1 A: Verify that users can log in with a Google's Button (Until see de Google's Button)", () => {
-    const url = Cypress.config().baseUrl;
+    const url = Cypress.config().baseUrl || "http://localhost";
     cy.visit(url, {
       headers: {
         "user-agent":

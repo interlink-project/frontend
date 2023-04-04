@@ -76,7 +76,7 @@ const MyWorkspace = () => {
     if (mounted.current) {
       delayDebounceFn = setTimeout(
         () => {
-          getUnseenUserNotificationsData({ user_id: user.id });
+          getUnseenUserNotificationsData({ user_id: user?.id });
         },
         searchValue ? 800 : 0
       );
