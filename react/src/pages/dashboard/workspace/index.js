@@ -116,7 +116,11 @@ const MyWorkspace = () => {
                 columns={{ xs: 4, sm: 8, md: 12 }}
               >
                 <Grid item xs={6}>
-                  <Typography color="textPrimary" variant="h3">
+                  <Typography
+                    color="textPrimary"
+                    variant="h3"
+                    data-cy="Welcome"
+                  >
                     {t("Welcome", {
                       name: user ? user.given_name : "",
                     })}
@@ -176,6 +180,7 @@ const MyWorkspace = () => {
                     sx={{ minWidth: "200px" }}
                     variant="contained"
                     href="dashboard/projects"
+                    data-cy="go-to-processes-list"
                   >
                     Go to processes list
                   </Button>
