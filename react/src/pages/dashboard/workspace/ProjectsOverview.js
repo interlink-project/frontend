@@ -163,11 +163,7 @@ const ProjectsOverview = () => {
     if (mounted.current) {
       delayDebounceFn = setTimeout(
         () => {
-<<<<<<< HEAD
           getUnseenUserNotificationsData({ user_id: user?.id });
-=======
-          getUnseenUserNotificationsData({ user_id: user.id });
->>>>>>> 7978d980d3d6e6cddb35995edd7c867e573ca17a
         },
         searchValue ? 800 : 0
       );
