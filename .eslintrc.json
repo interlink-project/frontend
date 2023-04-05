@@ -9,15 +9,10 @@
     "requireConfigFile": false,
     "babelOptions": {
       "presets": ["@babel/preset-react"]
-   }
+    }
   },
-  "extends": [
-    "airbnb",
-    "plugin:cypress/recommended"
-  ],
-  "plugins": [
-    "only-warn"
-  ],
+  "extends": ["airbnb", "plugin:cypress/recommended"],
+  "plugins": ["only-warn"],
   "settings": {
     "import/resolver": {
       "node": {
@@ -25,7 +20,7 @@
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     }
-  }, 
+  },
   "rules": {
     "jsx-quotes": [2, "prefer-single"],
     "class-methods-use-this": "off",

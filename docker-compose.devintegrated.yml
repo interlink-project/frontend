@@ -1,8 +1,7 @@
 version: "3.7"
 services:
-
   frontend:
-    image: 'frontenddev'
+    image: "frontenddev"
     container_name: frontend-integrated
     build:
       context: ./react
@@ -19,6 +18,7 @@ services:
       - REACT_APP_DEFAULT_LANGUAGE=${DEFAULT_LANGUAGE}
       - REACT_APP_ALLOWED_LANGUAGES=${ALLOWED_LANGUAGES}
       - REACT_APP_MATOMO_ID=1
+      - SENTRY_DSN=${SENTRY_DSN}
     stdin_open: true
     labels:
       - traefik.enable=true
@@ -43,7 +43,7 @@ services:
       - traefik.http.routers.frontend-docs.rule=Host(`${DOMAIN}`) && PathPrefix(`/docs`)
       - traefik.http.routers.frontend-docs.middlewares=frontend-docs-stripprefix
       - traefik.http.middlewares.frontend-docs-stripprefix.stripprefix.prefixes=/docs
-  
+
   mariadb:
     image: mariadb
     command: --max-allowed-packet=64MB
@@ -79,8 +79,7 @@ services:
 volumes:
   matomo-data:
   mariadb-data:
-  
+
 networks:
   traefik-public:
     external: true
-

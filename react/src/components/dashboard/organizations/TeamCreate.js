@@ -1,30 +1,59 @@
 import {
-  Avatar, Box, Button, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, IconButton, Input,
+  Avatar,
+  Box,
+  Button,
+  Collapse,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  FormControl,
+  IconButton,
+  Input,
   InputLabel,
   List,
   ListItem,
-  ListItemAvatar, ListItemSecondaryAction, ListItemText, MenuItem, MobileStepper, Select, TextField, Typography, useTheme
-} from '@mui/material';
-import { Close, Delete, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material';
-import { LoadingButton } from '@mui/lab';
-import { TEAM_TYPES } from '../../../constants';
-import useAuth from 'hooks/useAuth';
-import { useCustomTranslation } from 'hooks/useDependantTranslation';
-import { useEffect, useState } from 'react';
-import { TransitionGroup } from 'react-transition-group';
-import { getLanguage } from 'translations/i18n';
-import { teamsApi } from '__api__';
-import UserSearch from 'components/dashboard/coproductionprocesses/UserSearch';
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
+  MenuItem,
+  MobileStepper,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
+import {
+  Close,
+  Delete,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+} from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
+import { TEAM_TYPES } from "../../../constants";
+import useAuth from "hooks/useAuth";
+import { useCustomTranslation } from "hooks/useDependantTranslation";
+import { useEffect, useState } from "react";
+import { TransitionGroup } from "react-transition-group";
+import { getLanguage } from "translations/i18n";
+import { teamsApi } from "__api__";
+import UserSearch from "components/dashboard/coproductionprocesses/UserSearch";
 
-
-
-const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOpen, onCreate, organization }) => {
-  const { user } = useAuth()
+const TeamCreate = ({
+  language = getLanguage(),
+  loading,
+  setLoading,
+  open,
+  setOpen,
+  onCreate,
+  organization,
+}) => {
+  const { user } = useAuth();
   const [_loading, _setLoading] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([user]);
-  const [name, setName] = useState('');
-  const [type, setType] = useState('');
-  const [description, setDescription] = useState('');
+  const [name, setName] = useState("");
+  const [type, setType] = useState("");
+  const [description, setDescription] = useState("");
   const [logotype, setLogotype] = useState(null);
 
   const t = useCustomTranslation(language);
@@ -40,8 +69,8 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
   }, [organization]);
 
   const clean = () => {
-    setName('');
-    setDescription('');
+    setName("");
+    setDescription("");
     setLogotype(null);
     setSelectedUsers([user]);
     setActiveStep(0);
@@ -58,29 +87,36 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     } else {
       final_set_loading(true);
-      teamsApi.create({
-        name,
-        description,
-        type,
-        user_ids: selectedUsers.map((user) => user.id),
-        organization_id: organization ? organization.id : null
-      }).then((res) => {
-        if (!logotype) {
-          sendOnCreate(res.data);
-          final_set_loading(false);
-        } else {
-          teamsApi.setFile(res.data.id, 'logotype', logotype).then((res2) => {
-            sendOnCreate(res2.data);
-          }).catch(() => {
+      teamsApi
+        .create({
+          name,
+          description,
+          type,
+          user_ids: selectedUsers.map((user) => user.id),
+          organization_id: organization ? organization.id : null,
+        })
+        .then((res) => {
+          if (!logotype) {
             sendOnCreate(res.data);
-          }).finally(() => {
             final_set_loading(false);
-          });
-        }
-      }).catch((err) => {
-        console.log(err);
-        final_set_loading(false);
-      });
+          } else {
+            teamsApi
+              .setFile(res.data.id, "logotype", logotype)
+              .then((res2) => {
+                sendOnCreate(res2.data);
+              })
+              .catch(() => {
+                sendOnCreate(res.data);
+              })
+              .finally(() => {
+                final_set_loading(false);
+              });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          final_set_loading(false);
+        });
     }
   };
 
@@ -118,45 +154,42 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
 
   return (
     <>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        maxWidth='xs'
-        fullWidth
-      >
-        <DialogTitle>{t('team-create-title')}</DialogTitle>
+      <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
+        <DialogTitle>{t("team-create-title")}</DialogTitle>
         <DialogContent>
           {activeStep === 0 && (
             <>
-              <Box sx={{ textAlign: 'center' }}>
-                <label htmlFor='contained-button-file'>
+              <Box sx={{ textAlign: "center" }}>
+                <label htmlFor="contained-button-file">
                   <Input
-                    inputProps={{ accept: 'image/*' }}
-                    id='contained-button-file'
-                    type='file'
-                    sx={{ display: 'none' }}
+                    inputProps={{ accept: "image/*" }}
+                    id="contained-button-file"
+                    type="file"
+                    sx={{ display: "none" }}
                     onChange={handleFileSelected}
+                    data-cy="team-create-logotype"
                   />
-                  <IconButton component='span'>
+                  <IconButton component="span">
                     <Avatar
                       src={logotype && logotype.path}
                       style={{
-                        margin: '10px',
-                        width: '60px',
-                        height: '60px',
+                        margin: "10px",
+                        width: "60px",
+                        height: "60px",
                       }}
                     />
                     {!logotype && (
-                      <Typography variant='body1'>
-                        {t('Click here to add a logo')}
+                      <Typography variant="body1">
+                        {t("Click here to add a logo")}
                       </Typography>
                     )}
                   </IconButton>
                 </label>
                 {logotype && (
-                  <IconButton onClick={(event) => {
-                    setLogotype(null);
-                  }}
+                  <IconButton
+                    onClick={(event) => {
+                      setLogotype(null);
+                    }}
                   >
                     <Close />
                   </IconButton>
@@ -164,48 +197,44 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
               </Box>
               <TextField
                 autoFocus
-                margin='dense'
-                id='name'
-                label={t('Name')}
+                margin="dense"
+                id="name"
+                label={t("Name")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                type='text'
+                type="text"
                 fullWidth
-                variant='standard'
+                variant="standard"
+                data-cy="team-create-name"
               />
               <TextField
-                margin='dense'
-                id='description'
-                label={t('Description')}
-                type='text'
+                margin="dense"
+                id="description"
+                label={t("Description")}
+                type="text"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 fullWidth
                 multiline
                 rows={4}
-                variant='standard'
+                variant="standard"
+                data-cy="team-create-description"
               />
-              <FormControl
-                variant='standard'
-                fullWidth
-                sx={{ mt: 2 }}
-              >
-                <InputLabel id='select-type'>{t('Type')}</InputLabel>
+              <FormControl variant="standard" fullWidth sx={{ mt: 2 }}>
+                <InputLabel id="select-type">{t("Type")}</InputLabel>
                 <Select
                   fullWidth
-                  labelId='select-type-label'
-                  id='select-type'
+                  labelId="select-type-label"
+                  id="select-type"
                   value={type}
                   onChange={(event) => {
                     setType(event.target.value);
                   }}
-                  label={t('Organization type')}
+                  label={t("Organization type")}
+                  data-cy="team-create-type"
                 >
                   {ORG_OPTIONS.map((lan) => (
-                    <MenuItem
-                      key={lan.value}
-                      value={lan.value}
-                    >
+                    <MenuItem key={lan.value} value={lan.value}>
                       {lan.label}
                     </MenuItem>
                   ))}
@@ -217,26 +246,27 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
           {activeStep === 1 && (
             <>
               <List dense>
-                <TransitionGroup>
+                <TransitionGroup data-cy="team-creation-members">
                   {selectedUsers.map((se) => {
                     let name = se.full_name;
                     const you = se.id === user.id;
                     if (you) {
-                      name += ` (${t('you')})`;
+                      name += ` (${t("you")})`;
                     }
                     return (
                       <Collapse key={se.id}>
-                        <ListItem>
+                        <ListItem data-cy="member-data-item">
                           <ListItemAvatar>
                             <Avatar src={se.picture} />
                           </ListItemAvatar>
                           <ListItemText
+                            data-cy={`member-name-${name}`}
                             primary={name}
                           />
                           <ListItemSecondaryAction>
                             <IconButton
-                              edge='end'
-                              aria-label='delete'
+                              edge="end"
+                              aria-label="delete"
                               onClick={() => deleteUserFromList(se.id)}
                             >
                               <Delete />
@@ -247,57 +277,55 @@ const TeamCreate = ({ language = getLanguage(), loading, setLoading, open, setOp
                     );
                   })}
                 </TransitionGroup>
-
               </List>
               <Divider sx={{ my: 3 }} />
               <UserSearch
-                exclude={selectedUsers.map(se => se.id)}
+                exclude={selectedUsers.map((se) => se.id)}
                 organization_id={organization.id}
                 onBulk={true}
                 onClick={(us) => {
                   if (us instanceof Array) {
-                    setSelectedUsers(selectedUsers.concat(us))
+                    setSelectedUsers(selectedUsers.concat(us));
                   } else {
-                    setSelectedUsers([...selectedUsers, us])
+                    setSelectedUsers([...selectedUsers, us]);
                   }
                 }}
 
-              // us => setSelectedUsers([...selectedUsers, us])}
+                // us => setSelectedUsers([...selectedUsers, us])}
               />
             </>
           )}
-
         </DialogContent>
         <DialogActions>
           <MobileStepper
-            variant='dots'
+            variant="dots"
             steps={2}
-            position='static'
+            position="static"
             activeStep={activeStep}
             sx={{ flexGrow: 1 }}
-            nextButton={(
+            nextButton={
               <LoadingButton
-                size='small'
+                size="small"
                 onClick={handleNext}
                 disabled={isDisabled()}
                 loading={final_loading}
+                data-cy="team-create-next"
               >
-                {activeStep === 1 ? t('Create') : t('Next')}
+                {activeStep === 1 ? t("Create") : t("Next")}
                 <KeyboardArrowRight />
               </LoadingButton>
-            )}
-            backButton={(
+            }
+            backButton={
               <Button
-                size='small'
+                size="small"
                 onClick={handleBack}
                 disabled={activeStep === 0}
               >
                 <KeyboardArrowLeft />
-                {t('Back')}
+                {t("Back")}
               </Button>
-            )}
+            }
           />
-
         </DialogActions>
       </Dialog>
     </>

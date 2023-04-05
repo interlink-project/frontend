@@ -1,10 +1,10 @@
-import { Box, Button, Container, Fade, Typography } from '@mui/material';
-import { ChevronRight } from '@mui/icons-material';
-import { HomeRow } from 'components/home';
-import { HomeLogo } from 'components/Logo';
-import { Helmet } from 'react-helmet-async';
-import { useTranslation } from 'react-i18next';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Box, Button, Container, Fade, Typography } from "@mui/material";
+import { ChevronRight } from "@mui/icons-material";
+import { HomeRow } from "components/home";
+import { HomeLogo } from "components/Logo";
+import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -19,42 +19,43 @@ const Home = () => {
         <Fade in>
           <Box
             sx={{
-              backgroundColor: 'background.paper',
+              backgroundColor: "background.paper",
               pt: 6,
-              pb: 4
+              pb: 4,
             }}
           >
             <Container
-              maxWidth='md'
+              maxWidth="md"
               sx={{
-                alignItems: 'center',
-                display: 'flex',
-                flexDirection: 'column',
+                alignItems: "center",
+                display: "flex",
+                flexDirection: "column",
                 px: {
-                  md: '130px !important',
+                  md: "130px !important",
                 },
-                py: 5
+                py: 5,
               }}
             >
-              <HomeLogo style={{ width: '90%', height: 'auto' }} />
+              <HomeLogo style={{ width: "90%", height: "auto" }} />
               <Typography
-                align='center'
-                variant='h5'
+                align="center"
+                variant="h5"
                 sx={{ my: 5 }}
+                data-cy="home-1-1"
               >
-                {t('home-1-1')}
+                {t("home-1-1")}
               </Typography>
               <Button
-                color='primary'
+                color="primary"
                 component={RouterLink}
-                size='large'
-                to='/dashboard'
-                variant='contained'
-                sx={{ fontSize: '20px' }}
+                size="large"
+                to="/dashboard"
+                variant="contained"
+                sx={{ fontSize: "20px" }}
                 endIcon={<ChevronRight />}
+                data-cy="home-1-2"
               >
-                {t('home-1-2')}
-
+                {t("home-1-2")}
               </Button>
             </Container>
           </Box>
@@ -62,156 +63,142 @@ const Home = () => {
 
         <HomeRow
           light={false}
-          graphic={(
+          graphic={
             <iframe
               style={{
-                minHeight: '300px',
-                width: '100%'
+                minHeight: "300px",
+                width: "100%",
               }}
-              src='https://www.youtube.com/embed/oCPz7dxN2Hk'
-              title='YouTube video player'
-              frameBorder='0'
-              allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+              src="https://www.youtube.com/embed/oCPz7dxN2Hk"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
-)}
-          right={(
+          }
+          right={
             <div>
-              <Typography variant='h4'>
-                {t('home-2-1')}
-
-              </Typography>
+              <Typography variant="h4">{t("home-2-1")}</Typography>
               <Typography
-                color='textSecondary'
-                sx={{ my: 3, textAlign: 'justify' }}
-                variant='subtitle1'
+                color="textSecondary"
+                sx={{ my: 3, textAlign: "justify" }}
+                variant="subtitle1"
               >
-                {t('home-2-2')}
-
+                {t("home-2-2")}
               </Typography>
             </div>
-)}
+          }
         />
         <HomeRow
-          graphic={(
+          graphic={
             <img
-              style={{ width: '100%', height: 'auto' }}
-              src='/static/graphics/figure7.png'
+              style={{ width: "100%", height: "auto" }}
+              src="/static/graphics/figure7.png"
             />
-)}
-          right={(
+          }
+          right={
             <>
-              <Typography variant='h3'>
-                {t('home-3-1')}
-
-              </Typography>
+              <Typography variant="h3">{t("home-3-1")}</Typography>
               <Typography
-                color='textSecondary'
+                color="textSecondary"
                 sx={{ my: 3 }}
-                variant='subtitle1'
+                variant="subtitle1"
               >
-                {t('home-3-2')}
+                {t("home-3-2")}
               </Typography>
               <Box
                 sx={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  m: -1
+                  display: "flex",
+                  flexWrap: "wrap",
+                  m: -1,
                 }}
               >
                 <Button
-                  onClick={() => navigate('/coprod')}
-                  size='large'
+                  onClick={() => navigate("/coprod")}
+                  size="large"
                   sx={{ m: 1 }}
-                  variant='outlined'
+                  variant="outlined"
                 >
-                  {t('home-3-3')}
+                  {t("home-3-3")}
                 </Button>
               </Box>
             </>
-)}
+          }
         />
 
         <HomeRow
-          graphic={(
+          graphic={
             <img
-              style={{ width: '100%', height: 'auto' }}
-              src='/static/graphics/wordcloud-white.png'
+              style={{ width: "100%", height: "auto" }}
+              src="/static/graphics/wordcloud-white.png"
             />
-)}
+          }
           light={false}
-          right={(
+          right={
             <>
-              <Typography variant='h3'>
-                {t('home-4-1')}
-
-              </Typography>
+              <Typography variant="h3">{t("home-4-1")}</Typography>
               <Typography
-                color='textSecondary'
+                color="textSecondary"
                 sx={{ my: 3 }}
-                variant='subtitle1'
+                variant="subtitle1"
               >
-                {t('home-4-2')}
+                {t("home-4-2")}
               </Typography>
               <Box
                 sx={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  m: -1
+                  display: "flex",
+                  flexWrap: "wrap",
+                  m: -1,
                 }}
               >
                 <Button
-                  onClick={() => navigate('/catal')}
-                  size='large'
+                  onClick={() => navigate("/catal")}
+                  size="large"
                   sx={{ m: 1 }}
-                  variant='outlined'
+                  variant="outlined"
                 >
-                  {t('home-4-3')}
-
+                  {t("home-4-3")}
                 </Button>
               </Box>
             </>
-)}
+          }
         />
         <HomeRow
-          graphic={(
+          graphic={
             <img
-              style={{ width: '100%', height: 'auto' }}
-              src='/static/graphics/map2.png'
+              style={{ width: "100%", height: "auto" }}
+              src="/static/graphics/map2.png"
             />
-)}
-          right={(
+          }
+          right={
             <>
-              <Typography variant='h3'>
-                {t('home-5-1')}
-
-              </Typography>
+              <Typography variant="h3">{t("home-5-1")}</Typography>
               <Typography
-                color='textSecondary'
+                color="textSecondary"
                 sx={{ my: 3 }}
-                variant='subtitle1'
+                variant="subtitle1"
               >
-                {t('home-5-2')}
+                {t("home-5-2")}
               </Typography>
 
               <Box
                 sx={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  m: -1
+                  display: "flex",
+                  flexWrap: "wrap",
+                  m: -1,
                 }}
               >
                 <Button
-                  onClick={() => navigate('/dashboard')}
-                  size='large'
+                  onClick={() => navigate("/dashboard")}
+                  size="large"
                   sx={{ m: 1 }}
-                  variant='outlined'
+                  variant="outlined"
                 >
-                  {t('home-5-3')}
+                  {t("home-5-3")}
                 </Button>
               </Box>
             </>
-)}
+          }
         />
       </div>
     </>

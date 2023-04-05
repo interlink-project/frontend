@@ -1,30 +1,25 @@
-import { Avatar, AvatarGroup, Box, Button, Chip, Container, Divider, Grid, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { Add, Folder,MenuBook  } from '@mui/icons-material';
-import { LoadingButton } from '@mui/lab';
-import AuthGuardSkeleton from 'components/guards/AuthGuardSkeleton';
-import useMounted from 'hooks/useMounted';
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
-import { getCoproductionProcesses, getUnseenUserNotifications } from 'slices/general';
-import { cleanProcess } from 'slices/process';
-import useAuth from '../../../hooks/useAuth';
-import CoproductionprocessCreate from './CoproductionProcessCreate';
-import CentricCircularProgress from 'components/CentricCircularProgress';
-import { StatusChip, WarningIcon } from 'components/Icons';
-import HelpAlert from 'components/HelpAlert';
-import SearchBox from 'components/SearchBox';
-import moment from 'moment';
-import TeamAvatar from 'components/TeamAvatar';
-import AuthorizationRequired from 'pages/AuthorizationRequired';
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import AuthGuardSkeleton from "components/guards/AuthGuardSkeleton";
+import useMounted from "hooks/useMounted";
+import React from "react";
+import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import {
+  getCoproductionProcesses,
+  getUnseenUserNotifications,
+} from "slices/general";
+import { cleanProcess } from "slices/process";
+import useAuth from "../../../hooks/useAuth";
+import CoproductionprocessCreate from "./CoproductionProcessCreate";
 
 const MyWorkspace = () => {
-  const { processes, loadingProcesses } = useSelector((state) => state.general);
-  const [coproductionProcessCreatorOpen, setCoproductionProcessCreatorOpen] = React.useState(false);
-  const [coproductionProcessLoading, setCoproductionProcessLoading] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState('');
+  const [coproductionProcessCreatorOpen, setCoproductionProcessCreatorOpen] =
+    React.useState(false);
+  const [coproductionProcessLoading, setCoproductionProcessLoading] =
+    React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
 
   const navigate = useNavigate();
 
@@ -33,21 +28,26 @@ const MyWorkspace = () => {
   const mounted = useMounted();
   const { user, isAuthenticated } = useAuth();
 
-  const getCoproductionProcessesData = React.useCallback(async (search) => {
-    if (isAuthenticated) {
-      dispatch(cleanProcess());
-      dispatch(getCoproductionProcesses(search));
-    }
-  }, [isAuthenticated, mounted]);
+  const getCoproductionProcessesData = React.useCallback(
+    async (search) => {
+      if (isAuthenticated) {
+        dispatch(cleanProcess());
+        dispatch(getCoproductionProcesses(search));
+      }
+    },
+    [isAuthenticated, mounted]
+  );
 
-  const getUnseenUserNotificationsData = React.useCallback(async (search) => {
-    if (isAuthenticated) {
-      dispatch(cleanProcess());
-      dispatch(getUnseenUserNotifications(search));
-      //dispatch(getUnseenUserNotifications({'user_id':user.id}));
-    
-    }
-  }, [isAuthenticated, mounted]);
+  const getUnseenUserNotificationsData = React.useCallback(
+    async (search) => {
+      if (isAuthenticated) {
+        dispatch(cleanProcess());
+        dispatch(getUnseenUserNotifications(search));
+        //dispatch(getUnseenUserNotifications({'user_id':user.id}));
+      }
+    },
+    [isAuthenticated, mounted]
+  );
 
   // if (mounted.current) {
   //   dispatch(cleanProcess());
@@ -57,9 +57,12 @@ const MyWorkspace = () => {
   React.useEffect(() => {
     let delayDebounceFn;
     if (mounted.current) {
-      delayDebounceFn = setTimeout(() => {
-        getCoproductionProcessesData(searchValue);
-      }, searchValue ? 800 : 0);
+      delayDebounceFn = setTimeout(
+        () => {
+          getCoproductionProcessesData(searchValue);
+        },
+        searchValue ? 800 : 0
+      );
     }
     return () => {
       if (delayDebounceFn) {
@@ -68,13 +71,15 @@ const MyWorkspace = () => {
     };
   }, [getCoproductionProcessesData, searchValue]);
 
-  
   React.useEffect(() => {
     let delayDebounceFn;
     if (mounted.current) {
-      delayDebounceFn = setTimeout(() => {
-        getUnseenUserNotificationsData({'user_id':user.id});
-      }, searchValue ? 800 : 0);
+      delayDebounceFn = setTimeout(
+        () => {
+          getUnseenUserNotificationsData({ user_id: user?.id });
+        },
+        searchValue ? 800 : 0
+      );
     }
     return () => {
       if (delayDebounceFn) {
@@ -89,146 +94,141 @@ const MyWorkspace = () => {
   return (
     <>
       <Helmet>
-        <title>{t('workspace-title')}</title>
+        <title>{t("workspace-title")}</title>
       </Helmet>
       <Box
         sx={{
-          backgroundColor: 'background.default',
-          minHeight: '100%',
+          backgroundColor: "background.default",
+          minHeight: "100%",
           py: 5,
           px: 1,
         }}
       >
-        <Container maxWidth='lg'>
-          <AuthGuardSkeleton
-            height='60vh'
-            width='100%'
-          >
-            <Grid
-              container
-              spacing={3}
-            >
+        <Container maxWidth="lg">
+          <AuthGuardSkeleton height="60vh" width="100%">
+            <Grid container spacing={3}>
               <Grid
-                alignItems='center'
+                alignItems="center"
                 container
-                justifyContent='space-between'
+                justifyContent="space-between"
                 spacing={3}
                 item
-
                 columns={{ xs: 4, sm: 8, md: 12 }}
-                
               >
                 <Grid item xs={6}>
-                  
-                  <Typography
-                    color='textPrimary'
-                    variant='h3'
-                  >
-                    {t('Welcome', {
-                      name: user ? user.given_name : ''
+                  <Typography color="textPrimary" variant="h3">
+                    {t("Welcome", {
+                      name: user ? user.given_name : "",
                     })}
                   </Typography>
                   <Typography
-                    color='textSecondary'
-                    variant='subtitle2'
-                    sx={{mt:2}}
-                    align='justify'
+                    color="textSecondary"
+                    variant="subtitle2"
+                    sx={{ mt: 2 }}
+                    align="justify"
                   >
-                    {t('Welcome to the INTERLINK platform, a collaborative enviroment where PAs, citizens, and other actors can collaborate to develop their projects, which we will call co-production processes.')}
+                    {t(
+                      "Welcome to the INTERLINK platform, a collaborative enviroment where PAs, citizens, and other actors can collaborate to develop their projects, which we will call co-production processes."
+                    )}
+                  </Typography>
+
+                  <Typography color="textSecondary" variant="h6" sx={{ mt: 3 }}>
+                    {t(
+                      "1. Have you been invited to a process that hasn’t started yet?"
+                    )}
                   </Typography>
 
                   <Typography
-                    color='textSecondary'
-                    variant='h6'
-                    sx={{mt:3}}
+                    color="textSecondary"
+                    variant="body1"
+                    sx={{ mt: 2, mb: 2 }}
+                    align="justify"
                   >
-                    {t('1. Have you been invited to a process that hasn’t started yet?')}
+                    {t(
+                      "During the waiting, Check our video tutorial to discover the platform functionalities."
+                    )}
+                  </Typography>
+
+                  <Button
+                    sx={{ minWidth: "200px" }}
+                    href="docs/en/"
+                    variant="contained"
+                  >
+                    Check tutorials
+                  </Button>
+
+                  <Typography color="textSecondary" variant="h6" sx={{ mt: 3 }}>
+                    {t("2. Do you want to see your projects ?")}
                   </Typography>
 
                   <Typography
-                    color='textSecondary'
-                    variant='body1'
-                    sx={{mt:2,mb:2}}
-                    align='justify'
+                    color="textSecondary"
+                    variant="body1"
+                    sx={{ mt: 2, mb: 2 }}
+                    align="justify"
                   >
-                    {t('During the waiting, Check our video tutorial to discover the platform functionalities.')}
-                  </Typography>
-                  
-                  <Button sx={{minWidth: '200px'}} href="docs/en/" variant="contained">Check tutorials</Button>
-
-                  <Typography
-                    color='textSecondary'
-                    variant='h6'
-                    sx={{mt:3}}
-                  >
-                    {t('2. Do you want to see your projects ?')}
+                    {t(
+                      "If you just created your project or you have been invited to a project, check to your co-production processes list."
+                    )}
                   </Typography>
 
-                  <Typography
-                    color='textSecondary'
-                    variant='body1'
-                    sx={{mt:2,mb:2}}
-                    align='justify'
+                  <Button
+                    sx={{ minWidth: "200px" }}
+                    variant="contained"
+                    href="dashboard/projects"
                   >
-                    {t('If you just created your project or you have been invited to a project, check to your co-production processes list.')}
-                  </Typography>
-                  
-                  
-                  <Button sx={{minWidth: '200px'}} variant="contained" href="dashboard/projects">Go to processes list</Button>
+                    Go to processes list
+                  </Button>
 
-                  <Typography
-                    color='textSecondary'
-                    variant='h6'
-                    sx={{mt:3}}
-                  >
-                    {t('3. Do you want to create your own process?')}
+                  <Typography color="textSecondary" variant="h6" sx={{ mt: 3 }}>
+                    {t("3. Do you want to create your own process?")}
                   </Typography>
 
                   <Typography
-                    color='textSecondary'
-                    variant='body1'
-                    sx={{mt:2,mb:2}}
+                    color="textSecondary"
+                    variant="body1"
+                    sx={{ mt: 2, mb: 2 }}
                   >
-                    {t('We will guide you helping to manage your group. You will find an archive dedicated to shared resources, a structured schema for the process, etc.')}
+                    {t(
+                      "We will guide you helping to manage your group. You will find an archive dedicated to shared resources, a structured schema for the process, etc."
+                    )}
                   </Typography>
-                  
-                  <Button sx={{minWidth: '200px'}} onClick={() => setCoproductionProcessCreatorOpen(true)} variant="contained">Start here your guide</Button>
 
+                  <Button
+                    sx={{ minWidth: "200px" }}
+                    onClick={() => setCoproductionProcessCreatorOpen(true)}
+                    variant="contained"
+                  >
+                    Start here your guide
+                  </Button>
                 </Grid>
 
-                <Grid item xs={6} >
-                  
-                <Box
-        component="img"
-         sx={{
-          //height: 233,
-          //width: 350,
-          //maxHeight: { xs: 233, md: 167 },
-          //maxWidth: 100%,
-          minWidth:'500',
-          width:'100vh',
-        }} 
-        alt="welcome graph."
-        src="/coproduction/static/coproductionprocesses/Illustration.png"
-      />
-                 
-                  
-                 
-                 
+                <Grid item xs={6}>
+                  <Box
+                    component="img"
+                    sx={{
+                      //height: 233,
+                      //width: 350,
+                      //maxHeight: { xs: 233, md: 167 },
+                      //maxWidth: 100%,
+                      minWidth: "500",
+                      width: "100vh",
+                    }}
+                    alt="welcome graph."
+                    src="/coproduction/static/coproductionprocesses/Illustration.png"
+                  />
                 </Grid>
-                
               </Grid>
             </Grid>
-            
           </AuthGuardSkeleton>
         </Container>
         <CoproductionprocessCreate
-                open={coproductionProcessCreatorOpen}
-                setOpen={setCoproductionProcessCreatorOpen}
-                loading={coproductionProcessLoading}
-                setLoading={setCoproductionProcessLoading}
-                onCreate={onProcessCreate}
-              />
+          open={coproductionProcessCreatorOpen}
+          setOpen={setCoproductionProcessCreatorOpen}
+          loading={coproductionProcessLoading}
+          setLoading={setCoproductionProcessLoading}
+          onCreate={onProcessCreate}
+        />
       </Box>
     </>
   );

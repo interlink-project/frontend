@@ -1,86 +1,84 @@
 import {
   Avatar,
-  Box, Card, CardHeader, Chip, Grid, Link,
-  Rating, Typography
-} from '@mui/material';
-import { NatureChip } from 'components/Icons';
-import SwipeableTextMobileStepper from 'components/SwipeableTextMobileStepper';
-import { formatDistanceToNowStrict } from 'date-fns';
-import { useCustomTranslation } from 'hooks/useDependantTranslation';
-import { truncate } from 'lodash';
-import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { HTMLtoText } from 'utils/safeHTML';
+  Box,
+  Card,
+  CardHeader,
+  Chip,
+  Grid,
+  Link,
+  Rating,
+  Typography,
+} from "@mui/material";
+import { NatureChip } from "components/Icons";
+import SwipeableTextMobileStepper from "components/SwipeableTextMobileStepper";
+import { formatDistanceToNowStrict } from "date-fns";
+import { useCustomTranslation } from "hooks/useDependantTranslation";
+import { truncate } from "lodash";
+import PropTypes from "prop-types";
+import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { HTMLtoText } from "utils/safeHTML";
 
 const GridMode = ({ interlinker, t, linkProps }) => (
   <>
     <Box sx={{ p: 3, pb: 1 }}>
-
       <Box
         sx={{
-          alignItems: 'center',
-          display: 'flex',
-          textAlign: 'center',
-          justifyContent: 'space-between',
+          alignItems: "center",
+          display: "flex",
+          textAlign: "center",
+          justifyContent: "space-between",
           mt: 1,
         }}
       >
         {interlinker.logotype_link ? (
           <Avatar
-            alt={t('Logotype')}
+            alt={t("Logotype")}
             src={interlinker.logotype_link}
-            variant='square'
+            variant="square"
           >
             {interlinker.title}
           </Avatar>
-        ) : <div />}
+        ) : (
+          <div />
+        )}
         <Box sx={{ ml: 2 }}>
           <Link
-            color='textPrimary'
+            color="textPrimary"
             {...linkProps}
-            variant='h6'
+            variant="h6"
             title={interlinker.name}
           >
             {truncate(interlinker.name, {
               length: 100,
-              separator: ' ',
+              separator: " ",
             })}
-
           </Link>
-          <Typography
-            color='textSecondary'
-            variant='body2'
-          >
-            {t('by')}
-            {' '}
+          <Typography color="textSecondary" variant="body2">
+            {t("by")}{" "}
             <Link
-              color='textPrimary'
+              color="textPrimary"
               component={RouterLink}
-              to='#'
-              variant='subtitle2'
-              title='teamname'
+              to="#"
+              variant="subtitle2"
+              title="teamname"
             >
-              {t('Interlink platform')}
+              {t("Interlink platform")}
             </Link>
           </Typography>
-          <Typography
-            color='textSecondary'
-            variant='body2'
-          >
-            {t('Last update')}
-            :
-            {' '}
-            {t('time-ago', {
-              when: formatDistanceToNowStrict(new Date(interlinker.updated_at || interlinker.created_at))
+          <Typography color="textSecondary" variant="body2">
+            {t("Last update")}:{" "}
+            {t("time-ago", {
+              when: formatDistanceToNowStrict(
+                new Date(interlinker.updated_at || interlinker.created_at)
+              ),
             })}
           </Typography>
-
         </Box>
         <Box
           sx={{
-            alignItems: 'right',
-            display: 'flex',
+            alignItems: "right",
+            display: "flex",
           }}
         >
           {/* isLiked ? (
@@ -101,7 +99,6 @@ const GridMode = ({ interlinker, t, linkProps }) => (
       ) */}
         </Box>
       </Box>
-
     </Box>
     <Box
       sx={{
@@ -109,14 +106,13 @@ const GridMode = ({ interlinker, t, linkProps }) => (
         px: 3,
       }}
     >
-      <Typography
-        color='textSecondary'
-        variant='body2'
-      >
-        {HTMLtoText(truncate(interlinker.description, {
-          length: 200,
-          separator: ' ',
-        }))}
+      <Typography color="textSecondary" variant="body2">
+        {HTMLtoText(
+          truncate(interlinker.description, {
+            length: 200,
+            separator: " ",
+          })
+        )}
       </Typography>
     </Box>
 
@@ -127,10 +123,10 @@ const GridMode = ({ interlinker, t, linkProps }) => (
       }}
     >
       <Grid
-        alignItems='center'
-        sx={{ textAlign: 'center' }}
+        alignItems="center"
+        sx={{ textAlign: "center" }}
         container
-        justifyContent='space-between'
+        justifyContent="space-between"
         spacing={3}
       >
         {/* <Grid item>
@@ -149,49 +145,26 @@ const GridMode = ({ interlinker, t, linkProps }) => (
       </Typography>
 </Grid> */}
         <Grid item>
-          <Typography
-            color='textPrimary'
-            variant='subtitle2'
-            sx={{ mb: 1 }}
-          >
-            {t('Nature')}
+          <Typography color="textPrimary" variant="subtitle2" sx={{ mb: 1 }}>
+            {t("Nature")}
           </Typography>
-          <Typography
-            color='textPrimary'
-            variant='subtitle2'
-          >
-            <NatureChip
-              t={t}
-              interlinker={interlinker}
-            />
+          <Typography color="textPrimary" variant="subtitle2">
+            <NatureChip t={t} interlinker={interlinker} />
           </Typography>
         </Grid>
         <Grid item>
-          <Typography
-            color='textPrimary'
-            variant='subtitle2'
-            sx={{ mb: 1 }}
-          >
-            {t('Rating')}
+          <Typography color="textPrimary" variant="subtitle2" sx={{ mb: 1 }}>
+            {t("Rating")}
           </Typography>
           <Box
             sx={{
-              alignItems: 'center',
-              display: 'flex',
+              alignItems: "center",
+              display: "flex",
             }}
           >
-            <Rating
-              readOnly
-              size='small'
-              value={interlinker.rating || 0}
-            />
-            <Typography
-              color='textPrimary'
-              sx={{ ml: 1 }}
-            >
-              (
-              {interlinker.ratings_count}
-              )
+            <Rating readOnly size="small" value={interlinker.rating || 0} />
+            <Typography color="textPrimary" sx={{ ml: 1 }}>
+              ({interlinker.ratings_count})
             </Typography>
           </Box>
         </Grid>
@@ -217,7 +190,7 @@ const GridMode = ({ interlinker, t, linkProps }) => (
     <Box sx={{ bottom: 0 }}>
       <SwipeableTextMobileStepper
         images={interlinker.snapshots_links}
-        height='300px'
+        height="300px"
       />
     </Box>
   </>
@@ -226,187 +199,132 @@ const GridMode = ({ interlinker, t, linkProps }) => (
 const ListMode = ({ interlinker, t, linkProps }) => (
   <>
     <Grid container>
-      <Grid
-        item
-        xs={12}
-        md={6}
-        lg={4}
-        xl={4}
-      >
+      <Grid item xs={12} md={6} lg={4} xl={4}>
         <CardHeader
-          avatar={(
+          avatar={
             <Avatar
-              alt={t('Logotype')}
+              alt={t("Logotype")}
               src={interlinker.logotype_link}
-              variant='rounded'
+              variant="rounded"
             >
               {interlinker.title}
             </Avatar>
-)}
-          title={(
+          }
+          title={
             <Link
-              color='textPrimary'
+              color="textPrimary"
               {...linkProps}
-              variant='h6'
+              variant="h6"
               title={interlinker.name}
+              data-cy={`interlinker-title-${interlinker.name}`}
             >
               {interlinker.name}
             </Link>
-)}
-          subheader={(
+          }
+          subheader={
             <Box>
-
-              <Typography
-                color='textSecondary'
-                variant='body2'
-              >
-                {t('by')}
-                {' '}
+              <Typography color="textSecondary" variant="body2">
+                {t("by")}{" "}
                 <Link
-                  color='textPrimary'
+                  color="textPrimary"
                   component={RouterLink}
-                  to='#'
-                  variant='subtitle2'
-                  title='teamname'
+                  to="#"
+                  variant="subtitle2"
+                  title="teamname"
                 >
-                  {t('Interlink platform')}
+                  {t("Interlink platform")}
                 </Link>
               </Typography>
-              <Typography
-                color='textSecondary'
-                variant='body2'
-              >
-                {t('Last update')}
-                :
-                {' '}
-                {t('time-ago', {
-                  when: formatDistanceToNowStrict(new Date(interlinker.updated_at || interlinker.created_at))
+              <Typography color="textSecondary" variant="body2">
+                {t("Last update")}:{" "}
+                {t("time-ago", {
+                  when: formatDistanceToNowStrict(
+                    new Date(interlinker.updated_at || interlinker.created_at)
+                  ),
                 })}
               </Typography>
-
             </Box>
-)}
+          }
         />
       </Grid>
-      <Grid
-        item
-        xs={12}
-        md={6}
-        lg={8}
-        xl={8}
-      >
+      <Grid item xs={12} md={6} lg={8} xl={8}>
         <Box
           sx={{
             p: 2,
           }}
         >
-          <Typography
-            color='textSecondary'
-            variant='body2'
-          >
-            {HTMLtoText(truncate(interlinker.description, {
-              length: 500,
-              separator: ' ',
-            }))}
+          <Typography color="textSecondary" variant="body2">
+            {HTMLtoText(
+              truncate(interlinker.description, {
+                length: 500,
+                separator: " ",
+              })
+            )}
           </Typography>
         </Box>
-
       </Grid>
     </Grid>
 
     <Grid
-      alignItems='center'
-      sx={{ textAlign: 'center', p: 2, pt: 0 }}
+      alignItems="center"
+      sx={{ textAlign: "center", p: 2, pt: 0 }}
       container
-      justifyContent='center'
+      justifyContent="center"
       spacing={3}
     >
-      <Grid
-        item
-        xs={6}
-        md={6}
-        lg={3}
-        xl={3}
-      >
-        <Typography
-          color='textPrimary'
-          variant='subtitle2'
-          sx={{ mb: 1 }}
-        >
-          {t('Nature')}
+      <Grid item xs={6} md={6} lg={3} xl={3}>
+        <Typography color="textPrimary" variant="subtitle2" sx={{ mb: 1 }}>
+          {t("Nature")}
         </Typography>
-        <Typography
-          color='textPrimary'
-          variant='subtitle2'
-        >
-          <NatureChip
-            interlinker={interlinker}
-            t={t}
-          />
+        <Typography color="textPrimary" variant="subtitle2">
+          <NatureChip interlinker={interlinker} t={t} />
         </Typography>
       </Grid>
-      <Grid
-        item
-        xs={6}
-        md={6}
-        lg={3}
-        xl={3}
-      >
-        <Typography
-          color='textPrimary'
-          variant='subtitle2'
-          sx={{ mb: 1 }}
-        >
-          {t('Rating')}
+      <Grid item xs={6} md={6} lg={3} xl={3}>
+        <Typography color="textPrimary" variant="subtitle2" sx={{ mb: 1 }}>
+          {t("Rating")}
         </Typography>
-        <Rating
-          readOnly
-          size='small'
-          value={interlinker.rating || 0}
-        />
+        <Rating readOnly size="small" value={interlinker.rating || 0} />
       </Grid>
-      <Grid
-        item
-        xs={12}
-        md={12}
-        lg={6}
-        xl={6}
-      >
+      <Grid item xs={12} md={12} lg={6} xl={6}>
         <Typography
-          color='textPrimary'
-          variant='subtitle2'
-          sx={{ mb: 1, textAlign: 'center' }}
+          color="textPrimary"
+          variant="subtitle2"
+          sx={{ mb: 1, textAlign: "center" }}
         >
-          {t('Keywords')}
+          {t("Keywords")}
         </Typography>
-        {interlinker.tags && interlinker.tags.map(
-          (el) => (
+        {interlinker.tags &&
+          interlinker.tags.map((el) => (
             <Chip
               label={el}
               key={el}
-              size='small'
-              variant='outlined'
+              size="small"
+              variant="outlined"
               sx={{ mr: 1 }}
             />
-          )
-        )}
+          ))}
       </Grid>
     </Grid>
-
   </>
 );
 
-const InterlinkerCard = ({ language, interlinker, mode, onInterlinkerClick }) => {
+const InterlinkerCard = ({
+  language,
+  interlinker,
+  mode,
+  onInterlinkerClick,
+}) => {
   const [isLiked, setIsLiked] = useState(interlinker.isLiked);
   const [likes, setLikes] = useState(interlinker.likes || 0);
   const t = useCustomTranslation(language);
 
   const sameHeightCards = {
-    minHeight: '200px',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between'
+    minHeight: "200px",
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
   };
 
   const handleLike = () => {
@@ -420,35 +338,28 @@ const InterlinkerCard = ({ language, interlinker, mode, onInterlinkerClick }) =>
   };
   //     <CardActionArea component={RouterLink} to="/">
 
-  const linkProps = onInterlinkerClick ? {
-    onClick: () => onInterlinkerClick(interlinker),
-  } : {
-    component: RouterLink,
-    onClick: onInterlinkerClick,
-    to: `/dashboard/interlinkers/${interlinker.id}`
-  };
+  const linkProps = onInterlinkerClick
+    ? {
+        onClick: () => onInterlinkerClick(interlinker),
+      }
+    : {
+        component: RouterLink,
+        onClick: onInterlinkerClick,
+        to: `/dashboard/interlinkers/${interlinker.id}`,
+      };
   return (
     <Card
       style={sameHeightCards}
-      aria-haspopup='true'
-    // onMouseEnter={() => setHovered(true)}
-    // onMouseLeave={() => setHovered(false)}
+      aria-haspopup="true"
+      // onMouseEnter={() => setHovered(true)}
+      // onMouseLeave={() => setHovered(false)}
     >
-      {mode === 'grid' && (
-      <GridMode
-        interlinker={interlinker}
-        t={t}
-        linkProps={linkProps}
-      />
+      {mode === "grid" && (
+        <GridMode interlinker={interlinker} t={t} linkProps={linkProps} />
       )}
-      {mode === 'list' && (
-      <ListMode
-        interlinker={interlinker}
-        t={t}
-        linkProps={linkProps}
-      />
+      {mode === "list" && (
+        <ListMode interlinker={interlinker} t={t} linkProps={linkProps} />
       )}
-
     </Card>
   );
 };
