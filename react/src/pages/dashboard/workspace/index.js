@@ -157,6 +157,7 @@ const MyWorkspace = () => {
                     sx={{ minWidth: "200px" }}
                     href="docs/en/"
                     variant="contained"
+                    data-cy="check-tutorials"
                   >
                     Check tutorials
                   </Button>
@@ -203,6 +204,7 @@ const MyWorkspace = () => {
                     sx={{ minWidth: "200px" }}
                     onClick={() => setCoproductionProcessCreatorOpen(true)}
                     variant="contained"
+                    data-cy="start-here-your-guide"
                   >
                     Start here your guide
                   </Button>

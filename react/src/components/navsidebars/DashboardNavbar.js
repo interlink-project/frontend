@@ -107,7 +107,7 @@ const DashboardNavbar = (props) => {
             variant={
               window.location.pathname === page.path ? "outlined" : "text"
             }
-            dataCy={page?.dataCy}
+            data-cy={page?.dataCy}
             disabled={page.disabled}
           >
             <Typography textAlign="center" variant="button">
