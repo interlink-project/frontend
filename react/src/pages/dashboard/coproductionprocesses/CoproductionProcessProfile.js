@@ -22,6 +22,7 @@ import TeamTab from './Tabs/Team';
 import Workplan from './Tabs/Workplan';
 import LeaderboardTab from './Tabs/Leaderboard';
 import Resources from './Tabs/Resources';
+import Profile from './Tabs/Profile';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -137,6 +138,7 @@ const CoproductionProcessProfile = () => {
 
   const tabs = [
     { label: t('Overview'), value: 'overview' },
+    { label: t('Profile'), value: 'profile' },
     { label: t('Resources'), value: 'resources' },
     { label: t('Guide'), value: 'guide', disabled: !hasSchema },
     { label: t('Leaderboard'), value: 'leaderboard', disabled: !hasSchema },
@@ -174,6 +176,14 @@ const CoproductionProcessProfile = () => {
                   >
                     <Card sx={style}>
                       <Overview />
+                    </Card>
+                  </TabPanel>
+                  <TabPanel
+                    value={tab}
+                    index='profile'
+                  >
+                    <Card sx={style}>
+                      <Profile />
                     </Card>
                   </TabPanel>
                   <TabPanel

@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, Chip, Divider, Drawer, Skeleton, Stack, Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { SavedSearch, AccountTree, ArrowBack, Dashboard, Folder, Group as GroupIcon, Settings, Timeline, Resources, Leaderboard, MilitaryTech } from '@mui/icons-material';
+import { PersonOutline,SavedSearch, AccountTree, ArrowBack, Dashboard, Folder, Group as GroupIcon, Settings, Timeline, Resources, Leaderboard, MilitaryTech } from '@mui/icons-material';
 import { StatusChip } from 'components/Icons';
 import useDependantTranslation from 'hooks/useDependantTranslation';
 import PropTypes from 'prop-types';
@@ -64,11 +64,18 @@ const ProcessSidebar = (props) => {
       title: '',
       items: [
         {
+          title: t('Profile'),
+          path: `/dashboard/coproductionprocesses/${processId}/profile`,
+          icon: <PersonOutline />,
+          disabled: false
+        },
+        {
           title: t('Overview'),
           path: `/dashboard/coproductionprocesses/${processId}/overview`,
           icon: <SavedSearch />,
           disabled: false
         },
+        
         {
           title: t('Resources'),
           path: `/dashboard/coproductionprocesses/${processId}/resources`,

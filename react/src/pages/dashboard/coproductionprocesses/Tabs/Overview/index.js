@@ -19,7 +19,7 @@ import { defaultReduceAnimations } from '@mui/lab/CalendarPicker/CalendarPicker'
 export default function Overview({ }) {
   const { process, isAdministrator, tree } = useSelector((state) => state.process);
   const t = useCustomTranslation(process.language);
-  const [tab, setTab] = useState(isAdministrator & !process.is_part_of_publication ? 'progress' : 'assets');
+  const [tab, setTab] = useState(isAdministrator & !process.is_part_of_publication ? 'progress' : 'notifications');
   const [loading, setLoading] = React.useState(true);
   //const [assets, setAssets] = React.useState([]);
   const { assetsList } = useSelector((state) => state.general);
@@ -116,7 +116,8 @@ export default function Overview({ }) {
       )}
       {tab === "progress" ? <TimeLine assets={assetsList} /> : <></>}
 
-      {tab === "assets" ? (
+      {/* {tab === "assets" &  ? (
+         { isAdministrator & !process.is_part_of_publication &&(
         <Box sx={{ p: 3, justifyContent: "center" }}>
           <AssetsTable
             language={process.language}
@@ -124,9 +125,10 @@ export default function Overview({ }) {
             getActions={getAssetsActions}
           />
         </Box>
+        )}
       ) : (
         <></>
-      )}
+      )} */}
       
       {tab === "notifications" ? <CoproNotifications /> : <></>}
     </Box>
