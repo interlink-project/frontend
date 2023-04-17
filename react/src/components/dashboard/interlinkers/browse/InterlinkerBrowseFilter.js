@@ -110,9 +110,9 @@ const InterlinkerBrowseFilter = ({
               onChange={(event) => {
                 setInputValue(event.target.value);
               }}
-              data-cy="search-input-interlinkers"
               placeholder={t("Search")}
               value={inputValue}
+              data-cy="search-input-interlinkers"
             />
           </Box>
         </Box>

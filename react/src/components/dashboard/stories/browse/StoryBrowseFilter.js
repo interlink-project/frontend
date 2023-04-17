@@ -111,6 +111,7 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
               }}
               placeholder={t("Search")}
               value={inputValue}
+              data-cy="search-input-stories"
             />
           </Box>
         </Box>
@@ -151,6 +152,7 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
           <Rating
             value={filters.rating}
             onChange={(e, value) => changeFilter("rating", value)}
+            data-cy="rating-filter"
           />
           <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
           {/* <Typography variant="body2" sx={{ mr: 1 }}><b>Order by:</b></Typography>
@@ -189,6 +191,7 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
                 filters.keyword.filter((nt) => nt !== keyword)
               )
             }
+            data-cy={`active-topic-filter-${keyword}`}
           />
         ))}
         {/*
