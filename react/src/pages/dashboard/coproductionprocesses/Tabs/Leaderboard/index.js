@@ -4,6 +4,8 @@ import { gamesApi, usersApi } from '__api__';
 import { AppBar, Box, Paper, Tab, Tabs, Grid, Typography } from '@mui/material';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import OverallLeaderboard from 'components/dashboard/coproductionprocesses/OverallLeaderboard';
+import useAuth from 'hooks/useAuth';
+import PersonalLeaderboard from 'components/dashboard/coproductionprocesses/PersonalLeaderboard';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -31,6 +33,8 @@ const LeaderboardTab = ({ }) => {
     const [value, setValue] = useState(0);
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const auth = useAuth();
+
 
     const handleLeaderboard = async (game) => {
         setLoading(true);
@@ -84,15 +88,20 @@ const LeaderboardTab = ({ }) => {
                             }
                         }}>
                             <Tab label="Leaderboard" />
+                            <Tab label="My Profile" />
                         </Tabs>
                     </Box>
-
 
 
 
                     <TabPanel value={value} index={0}>
                         <OverallLeaderboard
                             users={users}
+                            loading={loading} />
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                        <PersonalLeaderboard
+                            user={auth.user}
                             loading={loading} />
                     </TabPanel>
 

@@ -288,20 +288,30 @@ const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog 
 const Assets = ({ language, loading, getActions = null }) => {
   const [interlinkerDialogOpen, setInterlinkerDialogOpen] = useState(false);
   const [selectedInterlinker, setSelectedInterlinker] = useState(false);
-  // const [rows, setRows] = useState([]);
   const [activitiesDialogOpen, setactivitiesDialogOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
   const dispatch = useDispatch();
 
   const [inputValue, setInputValue] = useState('');
   const { process } = useSelector((state) => state.process);
   const { assetsList } = useSelector((state) => state.general);
 
-  const handleClickHistory = (event) => {
+  const handleClick = (event) => {
     event.stopPropagation();
     event.preventDefault();
-    setactivitiesDialogOpen(true);
+    setAnchorEl(event.currentTarget);
 
-    dispatch(getCoproductionProcessNotifications({ 'coproductionprocess_id': process.id, 'asset_id': asset.id }))
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleClickHistory = (id) => {
+    setactivitiesDialogOpen(true);
+    dispatch(getCoproductionProcessNotifications({ 'coproductionprocess_id': process.id, 'asset_id': id }))
   };
 
   const t = useCustomTranslation(language);
@@ -310,27 +320,60 @@ const Assets = ({ language, loading, getActions = null }) => {
     {
       field: 'icon',
       headerName: '',
+      sortable: false,
       flex: 0.05,
+      renderCell: (params) => {
+        return (
+          <Avatar
+            src={params.row.icon}
+            sx={{ height: '30px', width: '30px' }}
+          >
+            {!params.row.icon && <Article />}
+          </Avatar>
+        );
+      }
     },
     {
       field: 'name',
       headerName: 'Name',
-      flex: 0.3,
+      flex: 1,
+      headerAlign: 'left',
     },
     {
       field: 'updated',
       disablePadding: false,
+      headerAlign: 'center',
       headerName: 'Updated',
+      flex: 0.3,
     },
     {
       field: 'interlinker',
       disablePadding: false,
+      headerAlign: 'center',
       headerName: 'INTERLINKER',
+      flex: 0.5,
+      renderCell: (params) => {
+        {
+          const showInterlinkerId = params.row.data && (params.row.data.externalinterlinker_id || params.row.data.knowledgeinterlinker_id || params.row.data.softwareinterlinker_id);
+          return showInterlinkerId ? (
+            <InterlinkerReference
+              onClick={(event) => {
+                event.stopPropagation();
+                event.preventDefault();
+                setInterlinkerDialogOpen(true);
+                setSelectedInterlinker(showInterlinkerId);
+              }}
+              interlinker_id={showInterlinkerId}
+            />
+          ) : t('external-resource')
+        }
+      }
     },
     {
       field: 'history',
+      sortable: false,
       headerName: t('History'),
-      flex: 2,
+      flex: 0.3,
       align: 'center',
       headerAlign: 'center',
       renderCell: (params) => {
@@ -349,22 +392,67 @@ const Assets = ({ language, loading, getActions = null }) => {
       field: 'actions',
       disablePadding: false,
       headerName: 'Actions',
+      sortable: false,
+      flex: 0.15,
+      renderCell: (params) => {
+        // console.log(params.row.actions);
+        return (
+          <>
+            <IconButton
+              aria-label='settings'
+              aria-controls='basic-menu'
+              aria-haspopup='true'
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id='basic-menu'
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              onClick={(event) => {
+                event.stopPropagation();
+                event.preventDefault();
+              }}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              {params.row.actions && params.row.actions.map(({ id, loading, onClick, text, icon }) => (
+                <MyMenuItem
+                  key={id}
+                  loading={loading}
+                  id={id}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    onClick(handleClose);
+                  }}
+                  text={text}
+                  icon={icon}
+                />
+              ))}
+
+            </Menu>
+          </>
+        );
+      }
     }
   ];
 
   const rows = assetsList.map((asset) => {
-    console.log(asset);
     return {
       id: asset.id,
       icon: asset.internalData.icon,
       name: asset.internalData.name,
-      updated: asset.updated_at,
-      interlinker: null, //TODO:,
-      actions: getActions && getActions(asset)
+      updated: moment(asset.internalData.updated_at || asset.internalData.created_at).fromNow(),
+      actions: getActions && getActions(asset),
+      data: asset
     }
 
   });
-  console.log(rows);
 
   const location = useLocation();
   const isLocationCatalogue = location.pathname.startsWith('/stories/');
@@ -379,7 +467,7 @@ const Assets = ({ language, loading, getActions = null }) => {
             setOpen={setInterlinkerDialogOpen}
             interlinker={selectedInterlinker}
           />
-          <Box sx={{ my: 2, mx: 10 }}>
+          {/* <Box sx={{ my: 2, mx: 10 }}>
             <SearchBox
               size='small'
               language={language}
@@ -387,28 +475,25 @@ const Assets = ({ language, loading, getActions = null }) => {
               inputValue={inputValue}
               setInputValue={setInputValue}
             />
-          </Box>
-          <Box sx={{ my: 2, mx: 10, height: 400 }}>
+          </Box> */}
+          <Box sx={{ my: 1, mx: 2 }}>
             <DataGrid
               rows={rows}
               columns={columns}
               pageSizeOptions={[5]}
-              disableRowSelectionOnClick
+              disableSelectionOnClick
+              rowSelection={false}
+              disableRowSelectionOnClick={true}
+              autoHeight
+              localeText={{
+                noRowsLabel: 'No assets found'
+              }}
+
             />
           </Box>
         </>
       ) : (
         <CircularProgress />
-      )}
-
-
-      {assetsList.length === 0 && (
-        <Alert
-          severity='info'
-          sx={{ my: 2 }}
-        >
-          {t('No resources yet')}
-        </Alert>
       )}
 
       <Dialog
