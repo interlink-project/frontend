@@ -183,6 +183,7 @@ const InterlinkerResults = ({
               loading={loading}
               variant="contained"
               onClick={handleLoadMore}
+              data-cy="interlinkers-catalogue-load-more"
             >
               {t("Load more")}
             </LoadingButton>

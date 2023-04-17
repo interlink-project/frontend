@@ -1,10 +1,18 @@
-import { Box, Card, Chip, Divider, Input, LinearProgress, Rating, Typography } from '@mui/material';
-import { Search } from '@mui/icons-material';
-import { useCustomTranslation } from 'hooks/useDependantTranslation';
-import useMounted from 'hooks/useMounted';
-import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  Card,
+  Chip,
+  Divider,
+  Input,
+  Rating,
+  Typography,
+} from "@mui/material";
+import { Search } from "@mui/icons-material";
+import { useCustomTranslation } from "hooks/useDependantTranslation";
+import useMounted from "hooks/useMounted";
+import React, { useEffect, useState } from "react";
 //import { problemprofilesApi } from '__api__';
-import MultiSelect from '../../../MultiSelect';
+import MultiSelect from "../../../MultiSelect";
 
 const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
   const [inputValue, setInputValue] = useState(filters.search);
@@ -20,45 +28,45 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
     //     setLoadingProblemProfiles(false);
     //   }
     // });
-    setProblemProfiles([])
+    setProblemProfiles([]);
   }, [language]);
 
-//   const problemprofilesMultiselect = {
-//     label: t('Problem profiles'),
-//     options: problemProfiles.map((pp) => ({
-//       label: `${pp.id} - ${pp.name}`,
-//       value: pp.id
-//     }))
-//   };
+  //   const problemprofilesMultiselect = {
+  //     label: t('Problem profiles'),
+  //     options: problemProfiles.map((pp) => ({
+  //       label: `${pp.id} - ${pp.name}`,
+  //       value: pp.id
+  //     }))
+  //   };
 
   const keywordMultiselect = {
-    label: t('Topic'),
+    label: t("Topic"),
     options: [
       {
-        label: t('Childcare'),
-        value: 'childcare'
+        label: t("Childcare"),
+        value: "childcare",
       },
       {
-        label: t('Work-Life Balance'),
-        value: 'work-life'
+        label: t("Work-Life Balance"),
+        value: "work-life",
       },
       {
-        label: t('Children'),
-        value: 'children'
+        label: t("Children"),
+        value: "children",
       },
       {
-        label: t('Mobility'),
-        value: 'mobility'
+        label: t("Mobility"),
+        value: "mobility",
       },
       {
-        label: t('School'),
-        value: 'school'
-      }
-    ]
+        label: t("School"),
+        value: "school",
+      },
+    ],
   };
 
   const changeFilter = (key, value) => {
-    console.log('CHANGED', key, value);
+    console.log("CHANGED", key, value);
     const newFilters = { ...filters };
     newFilters[key] = value;
     onFiltersChange(newFilters);
@@ -68,7 +76,7 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
     let delayDebounceFn;
     if (mounted.current && inputValue !== filters.search) {
       delayDebounceFn = setTimeout(() => {
-        changeFilter('search', inputValue);
+        changeFilter("search", inputValue);
       }, 800);
     }
     return () => {
@@ -83,16 +91,16 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
       <Card>
         <Box
           sx={{
-            alignItems: 'center',
-            display: 'flex',
-            p: 2
+            alignItems: "center",
+            display: "flex",
+            p: 2,
           }}
         >
-          <Search fontSize='small' />
+          <Search fontSize="small" />
           <Box
             sx={{
               flexGrow: 1,
-              ml: 3
+              ml: 3,
             }}
           >
             <Input
@@ -101,7 +109,7 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
               onChange={(event) => {
                 setInputValue(event.target.value);
               }}
-              placeholder={t('Search')}
+              placeholder={t("Search")}
               value={inputValue}
             />
           </Box>
@@ -110,54 +118,41 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
         <Divider />
         <Box
           sx={{
-            alignItems: 'center',
-            display: 'flex',
-            flexWrap: 'wrap',
-            p: 1
+            alignItems: "center",
+            display: "flex",
+            flexWrap: "wrap",
+            p: 1,
           }}
-        > 
-        
+        >
           <MultiSelect
             label={keywordMultiselect.label}
-            onChange={(e) => changeFilter('keyword', e)}
+            onChange={(e) => changeFilter("keyword", e)}
             options={keywordMultiselect.options}
             value={filters.keyword}
-          />  
+            datacy="keyword-multiselect"
+            datacyOption="keyword-multiselect-option"
+          />
           {/* <Divider
             orientation='vertical'
             flexItem
             sx={{ mx: 2 }}
           />  */}
-           
+
           {/* <MultiSelect
             label={problemprofilesMultiselect.label}
             onChange={(e) => changeFilter('problemprofiles', e)}
             options={problemprofilesMultiselect.options}
             value={filters.problemprofiles}
           />  */}
-          <Divider
-            orientation='vertical'
-            flexItem
-            sx={{ mx: 2 }}
-          />  
-          <Typography
-            variant='body2'
-            sx={{ mx: 1 }}
-          >
-            <b>
-              {t('Minimum rating')}
-              :
-            </b>
+          <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
+          <Typography variant="body2" sx={{ mx: 1 }}>
+            <b>{t("Minimum rating")}:</b>
           </Typography>
           <Rating
             value={filters.rating}
-            onChange={(e, value) => changeFilter('rating', value)}
+            onChange={(e, value) => changeFilter("rating", value)}
           />
-          <Divider
-            orientation='vertical'
-            flexItem
-            sx={{ mx: 2 }}
-          />
+          <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
           {/* <Typography variant="body2" sx={{ mr: 1 }}><b>Order by:</b></Typography>
         <Select
           labelId={selectOptions.label}
@@ -173,20 +168,29 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
       </Card>
       <Box sx={{ mt: 1 }}>
         {filters.search && (
-        <Chip
-          sx={{ mr: 1, mt: 1 }}
-          label={`${t('Search')}: ${filters.search}`}
-          onDelete={() => changeFilter('search', '')}
-        />
+          <Chip
+            sx={{ mr: 1, mt: 1 }}
+            label={`${t("Search")}: ${filters.search}`}
+            onDelete={() => changeFilter("search", "")}
+          />
         )}
         {filters.keyword.map((keyword) => (
           <Chip
             key={`active-filter-${keyword}`}
             sx={{ mr: 1, mt: 1 }}
-            label={`${t('Topic')}: ${keywordMultiselect.options.find((option) => option.value === keyword).label}`}
-            onDelete={() => changeFilter('keyword', filters.keyword.filter((nt) => nt !== keyword))}
+            label={`${t("Topic")}: ${
+              keywordMultiselect.options.find(
+                (option) => option.value === keyword
+              ).label
+            }`}
+            onDelete={() =>
+              changeFilter(
+                "keyword",
+                filters.keyword.filter((nt) => nt !== keyword)
+              )
+            }
           />
-        ))}  
+        ))}
         {/*
         {filters.problemprofiles && filters.problemprofiles.map((pp) => (
           <Chip
@@ -197,14 +201,13 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
           />
         ))} */}
         {filters.rating && (
-        <Chip
-          sx={{ mr: 1, mt: 1 }}
-          label={`${t('Minimum rating')}: ${filters.rating}`}
-          onDelete={() => changeFilter('rating', null)}
-        />
+          <Chip
+            sx={{ mr: 1, mt: 1 }}
+            label={`${t("Minimum rating")}: ${filters.rating}`}
+            onDelete={() => changeFilter("rating", null)}
+          />
         )}
       </Box>
-
     </>
   );
 };
