@@ -130,13 +130,19 @@ const MyWorkspace = () => {
                     variant="subtitle2"
                     sx={{ mt: 2 }}
                     align="justify"
+                    data-cy="Welcome-description"
                   >
                     {t(
                       "Welcome to the INTERLINK platform, a collaborative enviroment where PAs, citizens, and other actors can collaborate to develop their projects, which we will call co-production processes."
                     )}
                   </Typography>
 
-                  <Typography color="textSecondary" variant="h6" sx={{ mt: 3 }}>
+                  <Typography
+                    color="textSecondary"
+                    variant="h6"
+                    sx={{ mt: 3 }}
+                    data-cy="first-question-title"
+                  >
                     {t(
                       "1. Have you been invited to a process that hasn’t started yet?"
                     )}
@@ -147,6 +153,7 @@ const MyWorkspace = () => {
                     variant="body1"
                     sx={{ mt: 2, mb: 2 }}
                     align="justify"
+                    data-cy="first-question-description"
                   >
                     {t(
                       "During the waiting, Check our video tutorial to discover the platform functionalities."
@@ -162,7 +169,12 @@ const MyWorkspace = () => {
                     Check tutorials
                   </Button>
 
-                  <Typography color="textSecondary" variant="h6" sx={{ mt: 3 }}>
+                  <Typography
+                    color="textSecondary"
+                    variant="h6"
+                    sx={{ mt: 3 }}
+                    data-cy="second-question-title"
+                  >
                     {t("2. Do you want to see your projects ?")}
                   </Typography>
 
@@ -171,6 +183,7 @@ const MyWorkspace = () => {
                     variant="body1"
                     sx={{ mt: 2, mb: 2 }}
                     align="justify"
+                    data-cy="second-question-description"
                   >
                     {t(
                       "If you just created your project or you have been invited to a project, check to your co-production processes list."
@@ -186,7 +199,12 @@ const MyWorkspace = () => {
                     Go to processes list
                   </Button>
 
-                  <Typography color="textSecondary" variant="h6" sx={{ mt: 3 }}>
+                  <Typography
+                    color="textSecondary"
+                    variant="h6"
+                    sx={{ mt: 3 }}
+                    data-cy="third-question-title"
+                  >
                     {t("3. Do you want to create your own process?")}
                   </Typography>
 
@@ -194,6 +212,7 @@ const MyWorkspace = () => {
                     color="textSecondary"
                     variant="body1"
                     sx={{ mt: 2, mb: 2 }}
+                    data-cy="third-question-description"
                   >
                     {t(
                       "We will guide you helping to manage your group. You will find an archive dedicated to shared resources, a structured schema for the process, etc."
