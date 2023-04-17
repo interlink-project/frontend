@@ -178,8 +178,9 @@ const RightSide = ({ softwareInterlinkers }) => {
     dispatch(setUpdatingTree(true));
     setLoading('delete');
     //Obtain the name with the id
-    const nombreAsset = document.getElementById('bt-' + asset.id).innerHTML;
-    //const nombreAsset=spanAsset.getAttribute('name');
+    // const nombreAsset = document.getElementById('bt-' + asset.id).innerHTML;
+    console.log(asset);
+    const nombreAsset=asset.internalData.name;
     localStorage.setItem('assetId', asset.id);
     const capitalizeAssetName = nombreAsset.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
     localStorage.setItem('assetName', capitalizeAssetName);
