@@ -33,6 +33,7 @@ const MyMenuItem = ({ onClick, text, icon, id, loading }) => (
   </MenuItem>
 );
 
+// Not used now. Let as reference for future fixes
 const AssetRow = ({ inputValue, language, asset, actions, openInterlinkerDialog }) => {
   //const [data, setData] = useState(null);
   let data = asset
@@ -314,6 +315,8 @@ const Assets = ({ language, loading, getActions = null }) => {
     dispatch(getCoproductionProcessNotifications({ 'coproductionprocess_id': process.id, 'asset_id': id }))
   };
 
+
+
   const t = useCustomTranslation(language);
 
   const columns = [
@@ -443,13 +446,44 @@ const Assets = ({ language, loading, getActions = null }) => {
   ];
 
   const rows = assetsList.map((asset) => {
+    let dataExtra = {};
+    if (asset.type == 'externalasset') {
+
+    } else {
+      //Add extra information needed:
+      const backend = asset['software_response']['backend'];
+      dataExtra['link'] = backend + '/' + asset['external_asset_id'];
+  
+      const api_path = asset['software_response']['api_path'];
+      dataExtra['internal_link'] = "http://" + backend + api_path + "/" + asset['external_asset_id'];
+  
+      dataExtra['capabilities'] = {
+        "clone": asset['software_response']['clone'],
+        "view": asset['software_response']['view'],
+        "edit": asset['software_response']['edit'],
+        "delete": asset['software_response']['delete'],
+        "download": asset['software_response']['download'],
+      }
+  
+      dataExtra['softwareinterlinker'] = null
+      if (asset['software_response']) {
+        dataExtra['softwareinterlinker'] = {
+          "id": asset['software_response']['id'],
+          "name": asset['software_response']['name'],
+          "description": asset['software_response']['description'],
+          "logotype_link": asset['software_response']['logotype_link'],
+        }
+      }
+  
+    }
     return {
       id: asset.id,
       icon: asset.internalData.icon,
       name: asset.internalData.name,
       updated: moment(asset.internalData.updated_at || asset.internalData.created_at).fromNow(),
       actions: getActions && getActions(asset),
-      data: asset
+      data: asset,
+      dataExtra: dataExtra
     }
 
   });
@@ -485,6 +519,14 @@ const Assets = ({ language, loading, getActions = null }) => {
               rowSelection={false}
               disableRowSelectionOnClick={true}
               autoHeight
+              onRowClick={(params) => {
+                console.log(params.row);
+                if (params.row.data.type === 'internalasset') {
+                  window.open(`${params.row.dataExtra.link}/view`, '_blank');
+                } else {
+                  window.open(params.row.data.uri);
+                }
+              }}
               localeText={{
                 noRowsLabel: 'No assets found'
               }}
