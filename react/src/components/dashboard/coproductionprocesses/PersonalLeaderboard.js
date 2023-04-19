@@ -1,4 +1,4 @@
-import { Dialog, Box, DialogContent, IconButton, Grid, Card, CardContent, Container, Typography, CardMedia, Button, Divider, Link, CircularProgress } from '@mui/material';
+import { Dialog, Box, List, Chip, DialogContent, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Grid, Card, CardContent, Container, Typography, CardMedia, Button, Divider, Link, CircularProgress } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
@@ -9,95 +9,162 @@ import { Close, ViewTimeline } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserActivities } from "slices/general";
 import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
+import { getAllChildren } from 'slices/process';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 
 
+const DEVELOPMENT_COMPLEXITY = {
+    0: 'None',
+    20: 'Very low',
+    40: 'Low',
+    60: 'Medium',
+    80: 'High',
+    100: 'Very high',
+    default: 'No defined'
+}
 
-const PersonalLeaderboard = ({ user, loading }) => {
+const RANKING = {
+    1: 'gold',
+    2: 'silver',
+    3: 'bronze',
+}
 
+const CONTRIBUTION_LEVELS = {
+    1: 'Low contribution',
+    2: 'Average contribution',
+    3: 'High contribution',
+}
 
-    const [rows, setRows] = useState([]);
-    const [activitiesDialogOpen, setactivitiesDialogOpen] = useState(false);
+const CONTRIBUTION_COLORS = {
+    1: 'low_contribution.main',
+    2: 'average_contribution.main',
+    3: 'high_contribution.main',
+}
 
-    const { process, tree } = useSelector((state) => state.process);
-    console.log(tree);
+const PersonalLeaderboard = ({ user, game, place, loading }) => {
 
+    const { process, tree, treeitems } = useSelector((state) => state.process);
+    const [filteredGame, setFilteredGame] = useState({});
+    const [phases, setPhases] = useState({});
+    const [points, setPoints] = useState(0);
     const dispatch = useDispatch();
     const t = useCustomTranslation(process.language);
 
-    // const handleClickHistory = (userId) => {
-    //     console.log("Selected user: " + userId);
-    //     if (userId == null) {
-    //         return;
-    //     }
-    //     setactivitiesDialogOpen(true);
-    //     dispatch(getUserActivities({
-    //         'coproductionprocess_id': process.id, 'assets': assetsList, 'user_id': userId
-    //     }));
-    // };
+    const filterGame = () => {
+        let tmpGame = {};
+        let tmpPhases = {};
+        let tmpPoints = 0;
+        for (let task of game.taskList) {
+            for (let player of task.players) {
+                if (player.id === user.id) {
+                    tmpGame[task.id] = {
+                        "score": task.development * player.development,
+                        "contribution": player.development,
+                    }
+                    console.log(tmpGame);
+                    let phase_id = treeitems.find((item) => item.id === task.id).phase_id
+                    if (tmpPhases[phase_id] === undefined) {
+                        tmpPhases[phase_id] = task.development * player.development;
+                    } else {
+                        tmpPhases[phase_id] += task.development * player.development;
+                    }
+                    tmpPoints += task.development * player.development;
+                }
+            }
+        }
+        setPoints(tmpPoints);
+        setPhases(tmpPhases);
+        setFilteredGame(tmpGame);
+    }
 
-
-    // const handleRows = () => {
-    //     let tmpRows = [];
-
-    //     for (let i = 3; i < users.length; i++) {
-    //         tmpRows.push({
-    //             id: users[i].id,
-    //             position: i + 1,
-    //             collab_name: users[i].name,
-    //             points: users[i].score,
-    //         });
-    //     }
-    //     setRows(tmpRows);
-
-    // };
-
-    // useEffect(() => {
-    //     if (users.length > 0) {
-    //         if (users.length > 3) {
-    //             handleRows();
-    //         }
-    //     }
-    // }, [users]);
+    useEffect(() => {
+        filterGame();
+    }, []);
 
 
     return (
         <>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={8} lg={8}>
-                    <UserAvatar user={user} />
-                    <Typography variant="h3" component="h2" gutterBottom>
-                        {user.full_name}
-                    </Typography>
-                    <Typography variant="body1" gutterBottom>
-                        {user.email}
-                    </Typography>
+                    <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                        <UserAvatar user={user} sx={{ width: '15%', height: '100%' }} />
+                        <Box sx={{ m: 2, textAlign: 'left' }}>
+                            <Typography variant="h3" component="h3" gutterBottom>
+                                {user.full_name}
+                            </Typography>
+                            <Box sx={{ display: 'inline-flex', alignItems: 'center' }}>
+                                <Typography variant="body1" color="text.secondary" gutterBottom sx={{ ml: 0.3 }}>
+                                    {user.email}
+                                </Typography>
+                                <Chip label={`${points} points`} sx={{ ml: 2, backgroundColor: `${RANKING[place]}.main`, color: `${RANKING[place]}.contrastText` }} />
+                            </Box>
+                        </Box>
+                    </Box>
                 </Grid>
-                <Grid item xs={12} md={4} lg={4} sx={{ textAlign: 'right' }}>
+                <Grid item xs={12} md={4} lg={4} sx={{ textAlign: 'center', }}>
                     <Typography variant="h3" component="h2" gutterBottom>
-                        Place
+                        Place:
                     </Typography>
-                    {/* TODO: Set images depending on the position in the leaderboard */}
-                    <img
-                        src={'/static/graphics/podium.png'}
-                        alt={'podium'}
-                        loading="lazy"
-                    />
+                    {place < 4 ?
+                        <img
+                            src={`/static/graphics/${place}place.svg`}
+                            alt={'medal'}
+                            loading="lazy"
+                        />
+                        : <Typography variant="h2" component="h2" gutterBottom>
+                            {place}</Typography>}
+
+
                 </Grid>
-            </Grid>
-            <Grid container spacing={2}>
-                <Typography>
-                    Your contribution in each task
-                </Typography>
-                
-                <Box sx={{ width: '100%' }}>
-                    {tree.map((node) => {
-                        <Typography variant="h5" component="h2">
-                            {node.name}
+            </Grid >
+            <Box>
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <Grid item xs={3}>
+                        <Typography variant="h5" component="h5">
+                            Your contribution in each task
                         </Typography>
-                        // }
-                    })}
-                </Box>
-            </Grid>
+                    </Grid>
+                </Grid>
+
+                {tree.map((node) => (
+                    <>
+                        <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+                            {node.name} - {phases[node.id] ? phases[node.id] : '0'} points
+                        </Typography>
+                        <List >
+                            {node.children.map((objective) => (
+                                <>
+                                    {objective.children.map((child) => (
+                                        <ListItem>
+                                            <ListItemSecondaryAction>
+                                                <Typography variant="body2" color={filteredGame[child.id] ? CONTRIBUTION_COLORS[filteredGame[child.id].contribution] : "primary" }>
+                                                    {filteredGame[child.id] ? CONTRIBUTION_LEVELS[filteredGame[child.id].contribution] + ' - ' + filteredGame[child.id].score + ' points' : "No contribution"}
+                                                </Typography>
+
+                                            </ListItemSecondaryAction>
+                                            <ListItemText
+                                                primary={child.name}
+                                                secondary={DEVELOPMENT_COMPLEXITY[child.development]}
+                                                sx={{
+                                                    bgcolor: '',
+                                                    borderRadius: '5px',
+                                                    p: 0,
+                                                }}
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </>
+                            ))}
+                        </List>
+                    </>
+                ))}
+            </Box >
         </>
     )
 }

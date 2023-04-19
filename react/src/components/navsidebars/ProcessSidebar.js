@@ -160,7 +160,7 @@ const ProcessSidebar = (props) => {
             />
           )}
           <Typography
-            sx={{ textAlign: 'center', width: '100%' }}
+            sx={{ textAlign: 'center', width: '100%'}}
             variant='h6'
           >
             {!loading && !updating && process ? process.name : <Skeleton />}
@@ -181,9 +181,10 @@ const ProcessSidebar = (props) => {
           {!loading && !updating && game_id && 
             <Chip
               size='small'
-              color='success'
+              color='primary' 
               label={'Incentives'}
               icon={<MilitaryTech />}
+              sx={{ backgroundColor: "gold.main" }}
             />
           }
 

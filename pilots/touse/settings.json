@@ -53,6 +53,18 @@
 				"main": "#F44336",
 				"contrastText": "#ffffff"
 			},
+			"gold": {
+				"main": "#a57c00",
+				"contrastText": "#ffffff"
+			},
+			"silver": {
+				"main": "#c0c0c0",
+				"contrastText": "#000000"
+			},
+			"bronze": {
+				"main": "#88540b",
+				"contrastText": "#000000"
+			},
 			"progressBarColor": "#d822a3"
 		},
 		"dark": {
@@ -97,6 +109,18 @@
 			"low_contribution": {
 				"main": "#F44336",
 				"contrastText": "#ffffff"
+			},
+			"gold": {
+				"main": "#a57c00",
+				"contrastText": "#ffffff"
+			},
+			"silver": {
+				"main": "#c0c0c0",
+				"contrastText": "#000000"
+			},
+			"bronze": {
+				"main": "#88540b",
+				"contrastText": "#000000"
 			},
 			"progressBarColor": "#d822a3"
 		}
