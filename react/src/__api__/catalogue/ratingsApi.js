@@ -12,7 +12,6 @@ class RatingsApi extends GeneralApi {
         params: removeEmpty(params)
       }
     );
-    console.log('getMulti call', res.data);
     return res.data;
   }
 

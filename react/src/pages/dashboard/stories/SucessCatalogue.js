@@ -1,19 +1,12 @@
-import { useMatomo } from '@datapunt/matomo-tracker-react';
-import { Box, Container, Grid, Typography } from '@mui/material';
-import { InterlinkerDialog } from 'components/dashboard/interlinkers';
-import StoryBrowse from 'components/dashboard/stories/browse/StoryBrowse';
-import { useState } from 'react';
-import { Helmet } from 'react-helmet-async';
-import { useTranslation } from 'react-i18next';
-import { getLanguage } from 'translations/i18n';
-import { getUnseenUserNotifications } from 'slices/general';
-import React from 'react';
-import { cleanProcess } from 'slices/process';
-import useAuth from 'hooks/useAuth';
-import { useDispatch, useSelector } from 'react-redux';
-import useMounted from 'hooks/useMounted';
-import { useNavigate } from 'react-router-dom';
-
+import { Box, Container, Grid, Typography } from "@mui/material";
+import StoryBrowse from "components/dashboard/stories/browse/StoryBrowse";
+import { useState } from "react";
+import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
+import { getLanguage } from "translations/i18n";
+import React from "react";
+import useMounted from "hooks/useMounted";
+import { useNavigate } from "react-router-dom";
 
 const SuccessCatalogue = () => {
   const [open, setOpen] = useState(false);
@@ -22,13 +15,9 @@ const SuccessCatalogue = () => {
   const { t } = useTranslation();
   const language = getLanguage();
 
-  const [searchValue] = React.useState('');
-  const { user, isAuthenticated } = useAuth();
-  const dispatch = useDispatch();
   const mounted = useMounted();
   const navigate = useNavigate();
 
-  
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -38,46 +27,44 @@ const SuccessCatalogue = () => {
   };
   //const { trackEvent } = useMatomo();
 
-
   return (
     <>
       <Helmet>
-        <title>{t('catalogue-title')}</title>
+        <title>{t("catalogue-title")}</title>
       </Helmet>
 
       <Box
         sx={{
-          backgroundColor: 'background.default',
-          minHeight: '100%',
+          backgroundColor: "background.default",
+          minHeight: "100%",
           py: 5,
-          px: 1
+          px: 1,
         }}
       >
-        <Container maxWidth='lg'>
-          <Grid
-            container
-            spacing={3}
-          >
+        <Container maxWidth="lg">
+          <Grid container spacing={3}>
             <Grid
-              alignItems='center'
+              alignItems="center"
               container
-              justifyContent='space-between'
+              justifyContent="space-between"
               spacing={3}
               item
               xs={12}
             >
               <Grid item>
                 <Typography
-                  color='textSecondary'
-                  variant='overline'
+                  color="textSecondary"
+                  variant="overline"
+                  data-cy="catalogue-title"
                 >
-                  {t('Catalogue')}
+                  {t("Catalogue")}
                 </Typography>
                 <Typography
-                  color='textPrimary'
-                  variant='h5'
+                  color="textPrimary"
+                  variant="h5"
+                  data-cy="interlinkers-success-catalogue"
                 >
-                  {t('interlinkers-success-catalogue')}
+                  {t("interlinkers-success-catalogue")}
                 </Typography>
               </Grid>
               <Grid item />
@@ -92,18 +79,13 @@ const SuccessCatalogue = () => {
               //   action: 'story-open',
               //   name: story.id
               // });
-              
+
               setStory(story);
               handleClickOpen();
-              navigate(story.id+"/overview");
+              navigate(story.id + "/overview");
             }}
           />
-
-
-
-
-
-          </Container>
+        </Container>
       </Box>
     </>
   );

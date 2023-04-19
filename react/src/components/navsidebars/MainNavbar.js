@@ -1,48 +1,42 @@
-import {
-  AppBar,
-  Box, Divider,
-  IconButton,
-  Link,
-  Toolbar
-} from '@mui/material';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
-import i18n from 'translations/i18n';
-import MenuIcon from '../../icons/Menu';
-import { LandingNavbarLogo } from '../Logo';
-import SettingsPopover from './SettingsPopover';
+import { AppBar, Box, Divider, IconButton, Link, Toolbar } from "@mui/material";
+import PropTypes from "prop-types";
+import React from "react";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import i18n from "translations/i18n";
+import MenuIcon from "../../icons/Menu";
+import { LandingNavbarLogo } from "../Logo";
+import SettingsPopover from "./SettingsPopover";
 
 export const landingPages = [
   {
-    name: i18n.t('Project'),
-    link: '/',
+    name: i18n.t("Project"),
+    link: "/",
   },
   {
-    name: i18n.t('INTERLINK platform'),
-    link: '/platform',
+    name: i18n.t("INTERLINK platform"),
+    link: "/platform",
   },
   {
-    name: i18n.t('Co-production'),
-    link: '/coprod',
+    name: i18n.t("Co-production"),
+    link: "/coprod",
   },
   {
-    name: i18n.t('Catalogue'),
-    link: '/catal',
+    name: i18n.t("Catalogue"),
+    link: "/catal",
   },
   {
-    name: i18n.t('About'),
-    link: '/about',
+    name: i18n.t("About"),
+    link: "/about",
   },
 ];
 
 export const UserAreaButton = () => (
   <Link
-    color='primary'
+    color="primary"
     component={RouterLink}
-    to='/dashboard'
-    underline='none'
-    variant='contained'
+    to="/dashboard"
+    underline="none"
+    variant="contained"
   >
     Dashboard
   </Link>
@@ -57,56 +51,58 @@ const MainNavbar = (props) => {
     <AppBar
       elevation={0}
       sx={{
-        backgroundColor: 'background.paper',
-        color: 'text.secondary',
+        backgroundColor: "background.paper",
+        color: "text.secondary",
       }}
     >
       <Toolbar sx={{ minHeight: 64 }}>
         <IconButton
-          color='inherit'
+          color="inherit"
           onClick={onSidebarMobileOpen}
           sx={{
             display: {
-              md: 'none',
+              md: "none",
             },
           }}
         >
-          <MenuIcon fontSize='small' />
+          <MenuIcon fontSize="small" />
         </IconButton>
-        <RouterLink to='/'>
+        <RouterLink to="/">
           <LandingNavbarLogo />
         </RouterLink>
         <Box sx={{ flexGrow: 1 }} />
         <Box
           sx={{
-            alignItems: 'center',
+            alignItems: "center",
             display: {
-              md: 'flex',
-              xs: 'none',
+              md: "flex",
+              xs: "none",
             },
           }}
         >
           {landingPages.map((el, i) => (
             <React.Fragment key={`sidebarItem${i}`}>
               <Link
-                color={location.pathname === el.link ? 'primary' : 'textSecondary'}
+                color={
+                  location.pathname === el.link ? "primary" : "textSecondary"
+                }
                 component={RouterLink}
                 to={el.link}
-                underline='none'
-                variant='body1'
+                underline="none"
+                variant="body1"
+                data-cy={`landingPage_link_${el?.name?.replace(" ", "_")}`}
               >
                 {el.name}
               </Link>
               {true && (
-              <Divider
-                orientation='vertical'
-                sx={{
-                  height: 32,
-                  mx: 2,
-                }}
-              />
+                <Divider
+                  orientation="vertical"
+                  sx={{
+                    height: 32,
+                    mx: 2,
+                  }}
+                />
               )}
-
             </React.Fragment>
           ))}
           <SettingsPopover />

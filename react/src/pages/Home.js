@@ -65,6 +65,7 @@ const Home = () => {
           light={false}
           graphic={
             <iframe
+              data-cy="home-2-0"
               style={{
                 minHeight: "300px",
                 width: "100%",
@@ -78,11 +79,14 @@ const Home = () => {
           }
           right={
             <div>
-              <Typography variant="h4">{t("home-2-1")}</Typography>
+              <Typography data-cy="home-2-1" variant="h4">
+                {t("home-2-1")}
+              </Typography>
               <Typography
                 color="textSecondary"
                 sx={{ my: 3, textAlign: "justify" }}
                 variant="subtitle1"
+                data-cy="home-2-2"
               >
                 {t("home-2-2")}
               </Typography>
@@ -94,6 +98,7 @@ const Home = () => {
             <img
               style={{ width: "100%", height: "auto" }}
               src="/static/graphics/figure7.png"
+              data-cy="home-3-0"
             />
           }
           right={
@@ -103,6 +108,7 @@ const Home = () => {
                 color="textSecondary"
                 sx={{ my: 3 }}
                 variant="subtitle1"
+                data-cy="home-3-2"
               >
                 {t("home-3-2")}
               </Typography>
@@ -118,6 +124,7 @@ const Home = () => {
                   size="large"
                   sx={{ m: 1 }}
                   variant="outlined"
+                  data-cy="home-3-3"
                 >
                   {t("home-3-3")}
                 </Button>
@@ -131,16 +138,20 @@ const Home = () => {
             <img
               style={{ width: "100%", height: "auto" }}
               src="/static/graphics/wordcloud-white.png"
+              data-cy="home-4-0"
             />
           }
           light={false}
           right={
             <>
-              <Typography variant="h3">{t("home-4-1")}</Typography>
+              <Typography variant="h3" data-cy="home-4-1">
+                {t("home-4-1")}
+              </Typography>
               <Typography
                 color="textSecondary"
                 sx={{ my: 3 }}
                 variant="subtitle1"
+                data-cy="home-4-2"
               >
                 {t("home-4-2")}
               </Typography>
@@ -156,6 +167,7 @@ const Home = () => {
                   size="large"
                   sx={{ m: 1 }}
                   variant="outlined"
+                  data-cy="home-4-3"
                 >
                   {t("home-4-3")}
                 </Button>
@@ -168,15 +180,19 @@ const Home = () => {
             <img
               style={{ width: "100%", height: "auto" }}
               src="/static/graphics/map2.png"
+              data-cy="home-5-0"
             />
           }
           right={
             <>
-              <Typography variant="h3">{t("home-5-1")}</Typography>
+              <Typography variant="h3" data-cy="home-5-1">
+                {t("home-5-1")}
+              </Typography>
               <Typography
                 color="textSecondary"
                 sx={{ my: 3 }}
                 variant="subtitle1"
+                data-cy="home-5-2"
               >
                 {t("home-5-2")}
               </Typography>
@@ -193,6 +209,7 @@ const Home = () => {
                   size="large"
                   sx={{ m: 1 }}
                   variant="outlined"
+                  data-cy="home-5-3"
                 >
                   {t("home-5-3")}
                 </Button>
