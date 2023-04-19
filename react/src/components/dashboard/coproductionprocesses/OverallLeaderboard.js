@@ -128,7 +128,7 @@ const OverallLeaderboard = ({ users, loading }) => {
       <Grid container spacing={2}>
         <Grid item xs={12} md={6} lg={6}>
           <Typography variant="h3" component="h2" gutterBottom>
-            Leaderboard
+            {t("Leaderboard")}
           </Typography>
           <Typography variant="body1" gutterBottom>
             Here you can see the overall standings. The amount of points is

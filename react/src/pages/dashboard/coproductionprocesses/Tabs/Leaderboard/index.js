@@ -91,8 +91,8 @@ const LeaderboardTab = ({ }) => {
 
                             }
                         }}>
-                            <Tab label="Leaderboard" />
-                            <Tab label="My Profile" />
+                            <Tab label={t("Leaderboard")} />
+                            <Tab label={t("My Profile")} />
                         </Tabs>
                     </Box>
 

@@ -338,7 +338,7 @@ const Assets = ({ language, loading, getActions = null }) => {
     },
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: t("Name"),
       flex: 1,
       headerAlign: 'left',
     },
@@ -346,14 +346,14 @@ const Assets = ({ language, loading, getActions = null }) => {
       field: 'updated',
       disablePadding: false,
       headerAlign: 'center',
-      headerName: 'Updated',
+      headerName: t("Updated"),
       flex: 0.3,
     },
     {
       field: 'interlinker',
       disablePadding: false,
       headerAlign: 'center',
-      headerName: 'INTERLINKER',
+      headerName: t("INTERLINKER"),
       flex: 0.5,
       renderCell: (params) => {
         {
@@ -394,7 +394,7 @@ const Assets = ({ language, loading, getActions = null }) => {
     {
       field: 'actions',
       disablePadding: false,
-      headerName: 'Actions',
+      headerName: t("Actions"),
       sortable: false,
       flex: 0.15,
       renderCell: (params) => {
