@@ -103,7 +103,7 @@ const PersonalLeaderboard = ({ user, game, place, loading }) => {
                 </Grid>
                 <Grid item xs={12} md={4} lg={4} sx={{ textAlign: 'center', }}>
                     <Typography variant="h3" component="h2" gutterBottom>
-                        Place:
+                        {t("Place")}:
                     </Typography>
                     {place < 4 ?
                         <img
@@ -127,7 +127,7 @@ const PersonalLeaderboard = ({ user, game, place, loading }) => {
                 >
                     <Grid item xs={3}>
                         <Typography variant="h5" component="h5">
-                            Your contribution in each task
+                            {t("Your contribution in each task")}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -135,7 +135,7 @@ const PersonalLeaderboard = ({ user, game, place, loading }) => {
                 {tree.map((node) => (
                     <>
                         <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-                            {node.name} - {phases[node.id] ? phases[node.id] : '0'} points
+                            {node.name} - {phases[node.id] ? phases[node.id] : '0'} {t("points")}
                         </Typography>
                         <List >
                             {node.children.map((objective) => (
