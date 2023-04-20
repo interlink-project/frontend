@@ -15,7 +15,7 @@ import { gamesApi } from '__api__';
 export default function ContributionsTable({ rows, assets, closedTask }) {
   const [stateRows, setRows] = useState([]);
   const [pageSize, setPageSize] = useState(5);
-
+  const [loading, setLoading] = useState(false);
   const contribValues = ['Low', 'Average', 'High'];
 
   const [activitiesDialogOpen, setactivitiesDialogOpen] = useState(false);
@@ -77,12 +77,14 @@ export default function ContributionsTable({ rows, assets, closedTask }) {
   ];
 
   useEffect(() => {
+    setLoading(true);
     if (rows && rows.length > 0) {
       console.log(rows);
       setRows(rows);
     } else {
       setRows([]);
     }
+    setLoading(false);
 
   }, [rows]);
 
@@ -95,6 +97,7 @@ export default function ContributionsTable({ rows, assets, closedTask }) {
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
         rowsPerPageOptions={[5, 10, 20]}
         rows={stateRows}
+        loading={loading}
         columns={columns}
         onCellEditCommit={(props, event) => {
           rows[rows.findIndex((row) => row.id === props.id)][props.field] = props.value;

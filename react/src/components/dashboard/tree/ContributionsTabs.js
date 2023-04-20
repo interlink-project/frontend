@@ -20,7 +20,6 @@ const ContributionsTabs = ({ contributions }) => {
     const [contributor, setContributor] = useState(null);
     const [closedTask, setClosedTask] = useState(false);
 
-    const [loading, setLoading] = useState(false);
     const [claimDialogOpen, setClaimDialogOpen] = useState(false);
 
     const { assetsList } = useSelector((state) => state.general);
@@ -76,16 +75,17 @@ const ContributionsTabs = ({ contributions }) => {
     };
 
     useEffect(async () => {
+        console.log("contributions", contributions);
         let task;
 
         try { task = await gamesApi.getTask(process.id, selectedTreeItem.id); } catch (e) { console.error(e); }
-        console.log(contributions);
-        console.log(task);
+        console.log("contributions", contributions);
+        console.log("task", task);
         if (typeof task !== 'undefined' && task.completed) {
 
             setRows([]);
             setClosedTask(task.completed);
-            console.log(task);
+            console.log("tasks dentro de closed task",task);
             let r = [];
             for (let player of task.players) {
                 r.push({ id: player.id, name: player.name, contribution: Object.keys(CONTRIBUTION_LEVELS).find(key => CONTRIBUTION_LEVELS[key] === player.development), contrib_value: player.development });
@@ -93,10 +93,10 @@ const ContributionsTabs = ({ contributions }) => {
             setRows(r);
 
         } else {
-            // setClosedTask(task.completed);
             if (contributions.length === 0) {
                 console.log("NO CONTRIBUTIONS");
                 setRows([]);
+                setClosedTask(task.completed);
                 return;
             }
             let total_contribs = 0;
@@ -111,7 +111,7 @@ const ContributionsTabs = ({ contributions }) => {
                     total_contribs += 1;
                 }
             }
-
+            
             setRows([]);
             for (let id in contribs) {
                 usersApi.get(id).then((res) => {
@@ -120,6 +120,7 @@ const ContributionsTabs = ({ contributions }) => {
                     console.log(err);
                 });
             }
+            setClosedTask(task.completed);
         }
 
     }, [contributions]);
@@ -291,10 +292,10 @@ const ContributionsTabs = ({ contributions }) => {
                                     const paramListJson = JSON.stringify(parametersList)
                                     const dataToSend = {
                                         coproductionprocess_id: process.id,
-                                        notification_event: 'add_contribution_asset',
+                                        notification_event: "add_contribution_asset",
                                         asset_id: selectedAsset.id,
                                         parameters: paramListJson,
-                                        claim_type: 'Development',
+                                        claim_type: "Development",
                                         user_id: values.user.id
                                     };
 
@@ -404,13 +405,13 @@ const ContributionsTabs = ({ contributions }) => {
                                                 error={Boolean(touched.title && errors.title)}
                                                 fullWidth
                                                 helperText={touched.title && errors.title}
-                                                label='Title'
-                                                name='title'
+                                                label={t("Title")}
+                                                name="title"
                                                 onBlur={handleBlur}
                                                 onChange={handleChange}
-                                                onClick={() => setFieldTouched('title')}
+                                                onClick={() => setFieldTouched("title")}
                                                 value={values.title}
-                                                variant='outlined'
+                                                variant="outlined"
                                                 sx={{ mt: 1 }}
                                             />
                                             <TextField
@@ -421,23 +422,23 @@ const ContributionsTabs = ({ contributions }) => {
                                                 error={Boolean(touched.description && errors.description)}
                                                 fullWidth
                                                 helperText={touched.description && errors.description}
-                                                label='Description'
-                                                name='description'
+                                                label={t("Description")}
+                                                name="description"
                                                 onBlur={handleBlur}
                                                 onChange={handleChange}
-                                                onClick={() => setFieldTouched('description')}
+                                                onClick={() => setFieldTouched("description")}
                                                 value={values.description}
-                                                variant='outlined'
+                                                variant="outlined"
                                             />
 
                                             <LoadingButton
                                                 sx={{ mt: 2 }}
-                                                variant='contained'
+                                                variant="contained"
                                                 fullWidth
                                                 loading={isSubmitting}
                                                 onClick={handleSubmit}
                                             >
-                                                {t('Claim')}
+                                                {t("Claim")}
                                             </LoadingButton>
                                         </Box>
                                     </form>
