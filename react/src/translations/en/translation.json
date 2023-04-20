@@ -317,5 +317,9 @@
   "Import from csv": "Import from CSV",
   "Some of the users could not be added. Check the csv file with the rejected mails": "Some of the users could not be added. Check the csv file with the rejected mails",
   "All the users have been added successfully": "All the users have been added successfully",
-  "Level of contribution": "Level of contribution"
+  "Level of contribution": "Level of contribution",
+  "Close": "Close",
+  "Reward System": "Reward System",
+  "The reward system permits to reward your contributors, but how?": "The reward system permits to reward your contributors, but how?",
+  "You will able to set the difficulty of every task on three levels": "You will able to set the difficulty of every task on three levels"
 }

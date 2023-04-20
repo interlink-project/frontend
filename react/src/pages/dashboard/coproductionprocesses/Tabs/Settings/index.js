@@ -20,8 +20,6 @@ import {
   Input,
   Stack,
   TextField as MuiTextField,
-  FormControl,
-  InputLabel,
   Select,
   MenuItem,
   Typography,
@@ -45,7 +43,6 @@ import UsersList from "components/dashboard/organizations/UsersList";
 import { Form, Formik } from "formik";
 import { useCustomTranslation } from "hooks/useDependantTranslation";
 import useMounted from "hooks/useMounted";
-import $ from "jquery";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -54,26 +51,41 @@ import { getProcess, updateProcess } from "slices/process";
 import * as Yup from "yup";
 import { coproductionProcessesApi, storiesApi, gamesApi } from "__api__";
 import { withStyles } from "@mui/styles";
-import useAuth from "hooks/useAuth";
 import { getSelectedStory } from "slices/general";
 import { Link } from "react-router-dom";
 import InterlinkAnimation from "components/home/InterlinkLoading";
 import { styled } from "@mui/material/styles";
+import Lightbox from "../../../../../components/Lightbox";
+import RewardSettings from "./RewardSettings";
 
 const SettingsTab = () => {
-  const { user } = useAuth();
   const [isCloning, setIsCloning] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
   const [storiesList, setStoriesList] = useState([]);
   const [jsonPropertiesFile, setJsonPropertiesFile] = useState(null);
   const [editMode, setEditMode] = useState(false);
 
-  const [dialogOpenPublicationExample, setDialogOpenPublicationExample] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  const handleOpenLightbox = () => {
+    setIsLightboxOpen(true);
+  };
+
+  const handleCloseLightbox = () => {
+    setIsLightboxOpen(false);
+  };
+
+  const [dialogOpenPublicationExample, setDialogOpenPublicationExample] =
+    useState(false);
   const [gameId, setGameId] = useState(null);
 
-  const { process, hasSchema, isAdministrator, tree } = useSelector((state) => state.process);
+  const { process, hasSchema, isAdministrator, tree } = useSelector(
+    (state) => state.process
+  );
 
-  const [isIncentiveModuleActive, setIsIncentiveModuleActive] = useState(process.incentive_and_rewards_state);
+  const [isIncentiveModuleActive, setIsIncentiveModuleActive] = useState(
+    process.incentive_and_rewards_state
+  );
   const [logotype, setLogotype] = useState(null);
   const mounted = useMounted();
   const t = useCustomTranslation(process.language);
@@ -92,7 +104,6 @@ const SettingsTab = () => {
   };
 
   const onPublish = () => {
-
     setPublishDialogOpen(true);
     //coproductionProcessesApi.copy(process.id).then(() => navigate('/dashboard'));
   };
@@ -109,17 +120,17 @@ const SettingsTab = () => {
   };
 
   const handleAdministratorAdd = (user) => {
-    if (typeof user !== 'undefined') {
-      user instanceof Array ? user = user[0] : null;
-    
-    coproductionProcessesApi
-      .addAdministrator(process.id, user.id)
-      .then((res) => {
-        console.log(res);
-        if (mounted.current) {
-          dispatch(getProcess(process.id, false));
-        }
-      });
+    if (typeof user !== "undefined") {
+      user instanceof Array ? (user = user[0]) : null;
+
+      coproductionProcessesApi
+        .addAdministrator(process.id, user.id)
+        .then((res) => {
+          console.log(res);
+          if (mounted.current) {
+            dispatch(getProcess(process.id, false));
+          }
+        });
     }
   };
   const handleAdministratorRemove = (user) => {
@@ -153,12 +164,12 @@ const SettingsTab = () => {
     for (const phase of tree) {
       for (const objective of phase.children) {
         for (const task of objective.children) {
-          if (task.type === 'task' && task.is_disabled === false) {
+          if (task.type === "task" && task.is_disabled === false) {
             taskList.push({
               id: task.id,
               management: task.management,
               development: task.development,
-              exploitation: task.exploitation
+              exploitation: task.exploitation,
             });
           }
         }
@@ -166,7 +177,6 @@ const SettingsTab = () => {
     }
     return taskList;
   };
-
 
   const TextField = (props) => (
     <>
@@ -204,30 +214,32 @@ const SettingsTab = () => {
     } else {
       gamesApi.deleteGame(process.id).then((res) => {
         console.log(res);
-        dispatch(updateProcess({
-          id: process.id,
-          data: { game_id: null },
-          logotype: false,
-          onSuccess: false
-        }));
-
-      })
+        dispatch(
+          updateProcess({
+            id: process.id,
+            data: { game_id: null },
+            logotype: false,
+            onSuccess: false,
+          })
+        );
+      });
     }
 
     try {
-      dispatch(updateProcess({
-        id: process.id,
-        data: values,
-        logotype,
-        onSuccess: () => {
-          if (mounted.current) {
-            console.log(process);
-          }
-        }
-      }));
+      dispatch(
+        updateProcess({
+          id: process.id,
+          data: values,
+          logotype,
+          onSuccess: () => {
+            if (mounted.current) {
+              console.log(process);
+            }
+          },
+        })
+      );
     } catch (err) {
       console.error(err);
-
     }
   };
 
@@ -282,12 +294,12 @@ const SettingsTab = () => {
 
   const handleDeleteStory = (event, story_id) => {
     console.log("Delete story:" + story_id);
-    storiesApi
-      .delete(story_id)
-      .then(() => {
-        setStoriesList((storiesList) => storiesList.filter((story) => story.id !== story_id));
-        navigate("/dashboard/coproductionprocesses/" + process.id + "/settings");
-      });
+    storiesApi.delete(story_id).then(() => {
+      setStoriesList((storiesList) =>
+        storiesList.filter((story) => story.id !== story_id)
+      );
+      navigate("/dashboard/coproductionprocesses/" + process.id + "/settings");
+    });
   };
 
   const logoStyle = {
@@ -302,7 +314,6 @@ const SettingsTab = () => {
     textAlign: "center",
     color: theme.palette.text.secondary,
   }));
-
 
   return (
     <Box style={{ minHeight: "87vh", backgroundColor: "background.default" }}>
@@ -374,21 +385,16 @@ const SettingsTab = () => {
       />
 
       <Box sx={{ mx: 4 }}>
-        <Grid
-          container
-          direction='row'
-          justifyContent='right'
-          spacing={2}
-        >
+        <Grid container direction="row" justifyContent="right" spacing={2}>
           {!editMode && isAdministrator && (
             <Button
-              sx={{ mb: 3, justifyContent: 'right', textAlign: 'center' }}
-              variant='contained'
-              color='primary'
+              sx={{ mb: 3, justifyContent: "right", textAlign: "center" }}
+              variant="contained"
+              color="primary"
               onClick={() => setEditMode(true)}
               startIcon={<Edit />}
             >
-              {t('Edit coproduction process')}
+              {t("Edit coproduction process")}
             </Button>
           )}
         </Grid>
@@ -608,7 +614,6 @@ const SettingsTab = () => {
                   />
                 </Grid>
               </Grid>
-
             </Form>
           )}
         </Formik>
@@ -675,9 +680,7 @@ const SettingsTab = () => {
               />
             }
           >
-            {t(
-              "The clearing of the co-production tree is irreversible"
-            )}
+            {t("The clearing of the co-production tree is irreversible")}
           </Alert>
 
           <Box sx={{ mt: 2 }} />
@@ -718,17 +721,12 @@ const SettingsTab = () => {
               />
             }
           >
-            {t(
-              "The deletion of the coproduction process is irreversible"
-            )}
+            {t("The deletion of the coproduction process is irreversible")}
           </Alert>
         </Card>
 
         {!process.is_part_of_publication && (
-
           <>
-
-
             {/* Cloning coprod */}
             <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
               <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
@@ -767,9 +765,7 @@ const SettingsTab = () => {
                   />
                 }
               >
-                {t(
-                  "The clonation of the coproduction process will create"
-                )}
+                {t("The clonation of the coproduction process will create")}
               </Alert>
             </Card>
 
@@ -823,11 +819,17 @@ const SettingsTab = () => {
                   "If you disable the Reward system every data will be deleted"
                 )}
               </Alert>
+              <div>
+                <button onClick={handleOpenLightbox}>Open eeeee</button>
+                {(isLightboxOpen || true) && (
+                  <Lightbox onClose={handleCloseLightbox}>
+                    <RewardSettings />
+                  </Lightbox>
+                )}
+              </div>
             </Card>
-
           </>
         )}
-
       </Box>
 
       <Dialog
@@ -883,7 +885,6 @@ const SettingsTab = () => {
                         <ListItemText primary={fechaStoryText} />
                       </ListItemButton>
 
-
                       <ConfirmationButton
                         Actionator={({ onClick }) => (
                           <Button
@@ -935,15 +936,16 @@ const SettingsTab = () => {
 
                 <Typography variant="p" sx={{ mt: 3 }}>
                   {t("Example file:")}
-
                 </Typography>
 
-
-                <Link to="/coproduction/static/stories/ExampleTemplate.json" target="_blank" download><Download sx={{ ml: 1 }} /> </Link>
-
+                <Link
+                  to="/coproduction/static/stories/ExampleTemplate.json"
+                  target="_blank"
+                  download
+                >
+                  <Download sx={{ ml: 1 }} />{" "}
+                </Link>
               </Grid>
-
-
 
               <Grid item xs={6} md={4}>
                 <Stack direction="row" spacing={0}>
@@ -965,9 +967,7 @@ const SettingsTab = () => {
                       onChange={handleCapture}
                     />
                   </LoadingButton>
-
                 </Stack>
-
 
                 {/* <Button sx={{ mt: 2 }} variant="contained" component="label">
                   {t("Publish from a File")}
@@ -979,18 +979,13 @@ const SettingsTab = () => {
                   />
                 </Button> */}
               </Grid>
-
-
             </Grid>
           </>
           {/* )} */}
         </DialogContent>
       </Dialog>
 
-      <Dialog
-        open={isPublishing}
-        onClose={() => setIsPublishing(false)}
-      >
+      <Dialog open={isPublishing} onClose={() => setIsPublishing(false)}>
         <IconButton
           aria-label="close"
           onClick={() => setIsPublishing(false)}
@@ -1021,10 +1016,7 @@ const SettingsTab = () => {
         </DialogContent>
       </Dialog>
 
-      <Dialog
-        open={isCloning}
-        onClose={() => setIsCloning(false)}
-      >
+      <Dialog open={isCloning} onClose={() => setIsCloning(false)}>
         <IconButton
           aria-label="close"
           onClick={() => setIsCloning(false)}
@@ -1054,11 +1046,7 @@ const SettingsTab = () => {
           </Stack>
         </DialogContent>
       </Dialog>
-
-
     </Box>
-
-
   );
 };
 
