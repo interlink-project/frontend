@@ -327,5 +327,9 @@
   "Close": "Chiudi",
   "Reward System": "Sistema di ricompensa",
   "The reward system permits to reward your contributors, but how?": "Il sistema di ricompensa permette di premiare i tuoi collaboratori, ma come?",
-  "You will able to set the difficulty of every task on three levels": "Sarai in grado di impostare la difficoltà di ogni compito su tre livelli"
+  "You will able to set the difficulty of every task on three levels": "Sarai in grado di impostare la difficoltà di ogni compito su tre livelli",
+  "Easy": "Facile",
+  "Medium": "Medio",
+  "Hard": "Difficile",
+  "Every time someone adds a resource to the task, he will be able to claim is contribute": "Ogni volta che qualcuno aggiunge una risorsa al compito, potrà reclamare il suo contributo"
 }
