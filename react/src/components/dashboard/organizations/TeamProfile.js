@@ -211,7 +211,7 @@ const TeamProfile = ({ open, setOpen, teamId, onChanges }) => {
               item
               md={4}
             >
-              <Paper sx={{ height: '55vh', backgroundColor: 'background.paper' }}>
+              <Paper sx={{ backgroundColor: 'background.paper' }}>
                 <Stack
                   direction='column'
                   sx={{ textAlign: 'center', justifyContent: 'center', p: 2 }}
