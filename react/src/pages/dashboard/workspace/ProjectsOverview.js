@@ -48,7 +48,7 @@ function ProcessRow({ process, t }) {
       sx={{ "& > *": { borderBottom: "unset" }, cursor: "pointer" }}
       onClick={() => {
         
-        if (process.hideGuieCheckList){
+        if (process.hideguidechecklist){
           navigate(`/dashboard/coproductionprocesses/${process.id}/profile`)
         }
         else{

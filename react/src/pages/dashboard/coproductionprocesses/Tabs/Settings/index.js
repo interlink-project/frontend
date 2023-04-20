@@ -74,7 +74,7 @@ const SettingsTab = () => {
   const { process, hasSchema, isAdministrator, tree } = useSelector((state) => state.process);
 
   const [isIncentiveModuleActive, setIsIncentiveModuleActive] = useState(process.incentive_and_rewards_state);
-  const [isGuideHidden, setIsGuideHidden] = useState(!process.hideGuieCheckList);
+  const [isGuideHidden, setIsGuideHidden] = useState(!process.hideguidechecklist);
   const [logotype, setLogotype] = useState(null);
   const mounted = useMounted();
   const t = useCustomTranslation(process.language);
@@ -236,7 +236,7 @@ const SettingsTab = () => {
     setIsGuideHidden((prev) => !prev);
 
     //Active the incentive and rewards
-    const values = { hideGuieCheckList: isGuideHidden };
+    const values = { hideguidechecklist: isGuideHidden };
     
     try {
       dispatch(updateProcess({

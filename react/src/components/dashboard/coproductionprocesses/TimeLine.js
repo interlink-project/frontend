@@ -194,8 +194,8 @@ export default function TimeLine({ assets }) {
     //alert("Muestra el index: " + sectionNum);
   }
 
-  const setHideGuieCheckList = async () => {
-    const values = { hideGuieCheckList: true };
+  const setHideguidechecklist = async () => {
+    const values = { hideguidechecklist: true };
     if(hasSchema){
       try {
         dispatch(
@@ -1031,7 +1031,7 @@ export default function TimeLine({ assets }) {
                       >
                         {t("Go to guide section and start your job")}
                       </Button>
-                        <Link href="#" onClick={setHideGuieCheckList}>
+                        <Link href="#" onClick={setHideguidechecklist}>
                           Hide this guide.
                         </Link>
                       </Stack>

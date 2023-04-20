@@ -19,7 +19,7 @@ import { defaultReduceAnimations } from '@mui/lab/CalendarPicker/CalendarPicker'
 export default function Overview({ }) {
   const { process, isAdministrator, tree } = useSelector((state) => state.process);
   const t = useCustomTranslation(process.language);
-  const [tab, setTab] = useState(isAdministrator & !process.is_part_of_publication  & !process.hideGuieCheckList ? 'progress' : 'notifications');
+  const [tab, setTab] = useState(isAdministrator & !process.is_part_of_publication  & !process.hideguidechecklist ? 'progress' : 'notifications');
   const [loading, setLoading] = React.useState(true);
   //const [assets, setAssets] = React.useState([]);
   const { assetsList } = useSelector((state) => state.general);
@@ -104,7 +104,7 @@ export default function Overview({ }) {
             aria-label="overview-tabs"
             centered
           >
-            { isAdministrator & !process.is_part_of_publication & !process.hideGuieCheckList  &&(
+            { isAdministrator & !process.is_part_of_publication & !process.hideguidechecklist  &&(
             <Tab value="progress" label={t("Progress")} />
             )}
             
