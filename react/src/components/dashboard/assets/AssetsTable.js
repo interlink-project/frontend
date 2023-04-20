@@ -270,6 +270,10 @@ dataExtra['softwareinterlinker']=null
               </IconButton>
               )}
 
+
+
+              
+
               <Menu
                 id='basic-menu'
                 anchorEl={anchorEl}
@@ -450,6 +454,7 @@ const Assets = ({ language, loading,  getActions = null }) => {
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
+  console.log("Assets: "+JSON.stringify(assetsList))
 
   const location=useLocation();
   const isLocationCatalogue=location.pathname.startsWith('/stories/');

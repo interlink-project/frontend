@@ -32,6 +32,20 @@ import SelectTypeCoproProcess from "./SelectTypeCoproProcess";
 import SelectGovernanceModel from "./SelectGovernanceModel";
 import { getProcess, updateProcess } from "slices/process";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  ArrowForward,
+  ArrowLeft,
+  ArrowRight,
+  Groups,
+  Construction,
+  Build,
+  MilitaryTech,
+  BusinessCenter,
+  Widgets,
+  DataSaverOff,
+  Flag,
+  ArrowBack,
+} from "@mui/icons-material";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -146,6 +160,7 @@ export default function TimeLine({ assets }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
+  const [roadItemIndex, setRoadItemIndex] = React.useState("section_1");
 
   const [selectorTypeOpen, setSelectorTypeOpen] = React.useState(false);
   const [selectorTypeLoading, setSelectorTypeLoading] = React.useState(false);
@@ -168,72 +183,97 @@ export default function TimeLine({ assets }) {
   const permissionsFullfilled = process.enabled_permissions.length >= 1;
   const newAssetsFullfilled = assets.length >= 1;
 
-  
   function nextSect(nextSectionNum) {
-    const section = document.querySelector("#" + nextSectionNum);
-    section.scrollIntoView({ behavior: "smooth", block: "start" });
+    // const section = document.querySelector("#" + nextSectionNum);
+    // section.scrollIntoView({ behavior: "smooth", block: "start" });
+    showSection(nextSectionNum);
   }
 
-  const setHasAddAnOrganization = async () => {
+  function showSection(sectionNum) {
+    setRoadItemIndex(sectionNum);
+    //alert("Muestra el index: " + sectionNum);
+  }
 
+  const setHideGuieCheckList = async () => {
+    const values = { hideGuieCheckList: true };
+    if(hasSchema){
+      try {
+        dispatch(
+          updateProcess({
+            id: process.id,
+            data: values,
+            logotype: false,
+            onSuccess: false,
+          })
+        );
+      } catch (err) {
+        console.error(err);
+      }
+      navigate("/dashboard/coproductionprocesses/"+process.id+"/profile");
+    }else{
+      alert('It is not possible to hide the guide before selecting the scheme.')
+    }
+   
+  };
+  
+
+
+
+  const setHasAddAnOrganization = async () => {
     const values = { hasAddAnOrganization: true };
     try {
-      dispatch(updateProcess({
-        id: process.id,
-        data: values,
-        logotype: false,
-        onSuccess: false
-      }));
+      dispatch(
+        updateProcess({
+          id: process.id,
+          data: values,
+          logotype: false,
+          onSuccess: false,
+        })
+      );
     } catch (err) {
       console.error(err);
     }
-  
-  }; 
+  };
 
   const setSkipResourcesStep = async () => {
-
     const values = { skipResourcesStep: true };
     try {
-      dispatch(updateProcess({
-        id: process.id,
-        data: values,
-        logotype: false,
-        onSuccess: false
-      }));
+      dispatch(
+        updateProcess({
+          id: process.id,
+          data: values,
+          logotype: false,
+          onSuccess: false,
+        })
+      );
     } catch (err) {
       console.error(err);
     }
-  
-  }; 
+  };
 
-  
   const temp_completeStates = [
-    process.hasAddAnOrganization,//Has Organizations? He decide!.
-    !!dataFulfilled|| administratorsFulfilled,
-    process.hasDecideSchema || hasSchema,//Did you decide the type (If has a schema it means it has a type)
+    process.hasAddAnOrganization, //Has Organizations? He decide!.
+    !!dataFulfilled || administratorsFulfilled,
+    process.hasDecideSchema || hasSchema, //Did you decide the type (If has a schema it means it has a type)
     hasSchema,
-    process.incentive_and_rewards_state,//Have you active the rewards?
-    permissionsFullfilled,//Have you grant permissions to a team in all process?
-    process.skipResourcesStep ||newAssetsFullfilled
+    process.incentive_and_rewards_state, //Have you active the rewards?
+    permissionsFullfilled, //Have you grant permissions to a team in all process?
+    process.skipResourcesStep || newAssetsFullfilled,
   ];
 
-  let checker = arr => arr.every(v => v === true);
-  const hasCompletedAll=checker(temp_completeStates);
-
+  let checker = (arr) => arr.every((v) => v === true);
+  const hasCompletedAll = checker(temp_completeStates);
 
   const completeStates = [
-    process.hasAddAnOrganization,//Has Organizations? He decide!.
-    !!dataFulfilled|| administratorsFulfilled,
-    process.hasDecideSchema || hasSchema,//Did you decide the type (If has a schema it means it has a type)
+    process.hasAddAnOrganization, //Has Organizations? He decide!.
+    !!dataFulfilled || administratorsFulfilled,
+    process.hasDecideSchema || hasSchema, //Did you decide the type (If has a schema it means it has a type)
     hasSchema,
-    process.incentive_and_rewards_state,//Have you active the rewards?
-    permissionsFullfilled,//Have you grant permissions to a team in all process?
-    process.skipResourcesStep ||newAssetsFullfilled,
-    hasCompletedAll,//Has Finish
+    process.incentive_and_rewards_state, //Have you active the rewards?
+    permissionsFullfilled, //Have you grant permissions to a team in all process?
+    process.skipResourcesStep || newAssetsFullfilled,
+    hasCompletedAll, //Has Finish
   ];
-
-  
-  
 
   const selectedStepIndex = null;
 
@@ -256,6 +296,7 @@ export default function TimeLine({ assets }) {
             <RoadmapCustomized
               completeStates={completeStates}
               selectedStateIndex={selectedStepIndex}
+              onClick={showSection}
             />
           </Grid>
         </Grid>
@@ -280,586 +321,735 @@ export default function TimeLine({ assets }) {
             pictureSize="450px"
           /> */}
 
-          <Step
-            active
-            completed={!!dataFulfilled}
-            sx={{
-              "& .MuiStepLabel-iconContainer": {
-                alignSelf: "baseline",
-              },
-              "& .MuiSvgIcon-root": {
-                fontSize: "2.5rem",
-              },
-            }}
-            id="section_1"
-          >
-            <StepLabel>
-              <Grid container spacing={2}>
-                <Grid item xs={6} sx={{ minHeight: "55vh" }}>
-                  <Stack spacing={1}>
-                    <Typography variant="h6">
-                      {t("Organizations and Teams")}
-                    </Typography>
+          {roadItemIndex == "section_1" && (
+            <Step
+              active
+              completed={!!dataFulfilled}
+              sx={{
+                "& .MuiStepLabel-iconContainer": {
+                  alignSelf: "baseline",
+                },
+                "& .MuiSvgIcon-root": {
+                  fontSize: "2.5rem",
+                },
+              }}
+              id="section_1"
+            >
+              <StepLabel StepIconComponent={Groups}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6} sx={{ minHeight: "55vh" }}>
+                    <Stack spacing={1}>
+                      <Typography variant="h6">
+                        {t("Organizations and Teams")}
+                      </Typography>
 
-                    <Typography variant="subtitle1">
-                      {t(
-                        "Ok firstly, if you haven't done so before, create your own organization and teams for your project. take into account that if you select your organization as public, it will be visible to all users of the platform. So once you created your organization, you will find inside it a button to create teams."
-                      )}
-                    </Typography>
-                    <Stack
-                      direction="row"
-                      justifyContent="left"
-                      alignItems="center"
-                      divider={<Divider orientation="vertical" flexItem />}
-                      spacing={2}
-                    >
-                      <Button
-                        onClick={() => navigate(`/dashboard/organizations`)}
-                        size="small"
-                        variant="contained"
-                        sx={{ maxWidth: "200px" }}
+                      <Typography variant="subtitle1">
+                        {t(
+                          "Ok firstly, if you haven't done so before, create your own organization and teams for your project. take into account that if you select your organization as public, it will be visible to all users of the platform. So once you created your organization, you will find inside it a button to create teams."
+                        )}
+                      </Typography>
+                      <Stack
+                        direction="row"
+                        justifyContent="left"
+                        alignItems="center"
+                        divider={<Divider orientation="vertical" flexItem />}
+                        spacing={2}
                       >
-                        {t("Go to organizations")}
-                      </Button>
-                      <Link href="#" onClick={setHasAddAnOrganization}>already done</Link>
+                        <Button
+                          onClick={() => navigate(`/dashboard/organizations`)}
+                          size="small"
+                          variant="contained"
+                          sx={{ maxWidth: "200px" }}
+                        >
+                          {t("Go to organizations")}
+                        </Button>
+                        <Link href="#" onClick={setHasAddAnOrganization}>
+                          already done
+                        </Link>
+                      </Stack>
                     </Stack>
-                  </Stack>
-                </Grid>
-                <Grid item xs={6}>
-                  <img
-                    src="/coproduction/static/images/overview_step1.svg"
-                    height="400vw"
-                  ></img>
-                </Grid>
-
-                <Grid
-                  container
-                  spacing={0}
-                  direction="column"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Grid item xs={12}>
+                    
                     <IconButton
                       onClick={() => nextSect("section_2")}
                       color="primary"
-                      sx={{ border: "1px" }}
+                      sx={{ border: "1px", mt: 2 }}
                       variant="outlined"
                     >
-                      <ArrowDownwardIcon />
+                      <ArrowForward />
                     </IconButton>
                   </Grid>
+                  <Grid item xs={6}>
+                    <img
+                      src="/coproduction/static/images/overview_step1.svg"
+                      height="400vw"
+                    ></img>
+                  </Grid>
+
+                  {/*                   <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Grid item xs={12}>
+                      <IconButton
+                        onClick={() => nextSect("section_2")}
+                        color="primary"
+                        sx={{ border: "1px" }}
+                        variant="outlined"
+                      >
+                        <ArrowDownwardIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid> */}
                 </Grid>
-              </Grid>
-            </StepLabel>
-          </Step>
+              </StepLabel>
+            </Step>
+          )}
 
           {/* Step 2 */}
-          <Step
-            active
-            completed={!!dataFulfilled}
-            sx={{
-              "& .MuiStepLabel-iconContainer": {
-                alignSelf: "baseline",
-              },
-              "& .MuiSvgIcon-root": {
-                fontSize: "2.5rem",
-              },
-            }}
-            id={"section_2"}
-          >
-            <StepLabel>
-              <Grid container spacing={2}>
-                <Grid item xs={6} sx={{ minHeight: "55vh" }}>
-                  <Stack spacing={1}>
-                    <Typography variant="h6">
-                      {t("Set coproduction data and administrator")}
-                    </Typography>
+          {roadItemIndex == "section_2" && (
+            <Step
+              active
+              completed={!!dataFulfilled}
+              sx={{
+                "& .MuiStepLabel-iconContainer": {
+                  alignSelf: "baseline",
+                },
+                "& .MuiSvgIcon-root": {
+                  fontSize: "2.5rem",
+                },
+              }}
+              id={"section_2"}
+            >
+              <StepLabel StepIconComponent={DataSaverOff}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6} sx={{ minHeight: "55vh" }}>
+                    <Stack spacing={1}>
+                      <Typography variant="h6">
+                        {t("Set coproduction data and administrator")}
+                      </Typography>
 
-                    <Typography variant="subtitle1">
-                      {t(
-                        "The coproduction process data are a set of attributes that serve to define the process to be carried out. At this point you will describe the aim of the project, challenges, which is the organization of the project etc. Than you can also set others administrators for the project [OPTIONAL]. They can update the co-production process information, add permissions to the tree items or add new administrators."
-                      )}
-                    </Typography>
-
-                    <Button
-                      onClick={() =>
-                        navigate(
-                          `/dashboard/coproductionprocesses/${process.id}/settings`
-                        )
-                      }
-                      size="small"
-                      variant="contained"
-                      sx={{ maxWidth: "200px" }}
-                    >
-                      {t("Go to settings section")}
-                    </Button>
-                  </Stack>
-                </Grid>
-                <Grid item xs={6}>
-                  <img
-                    src="/coproduction/static/images/overview_step2.svg"
-                    height="350vw"
-                  ></img>
-                </Grid>
-
-                <Grid
-                  container
-                  spacing={0}
-                  direction="column"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Grid item xs={12}>
-                    <IconButton
-                      onClick={() => nextSect("section_3")}
-                      color="primary"
-                      sx={{ border: "1px" }}
-                      variant="outlined"
-                    >
-                      <ArrowDownwardIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </StepLabel>
-          </Step>
-
-          {/* Step 3 */}
-          <Step
-            active
-            completed={!!dataFulfilled}
-            sx={{
-              "& .MuiStepLabel-iconContainer": {
-                alignSelf: "baseline",
-              },
-              "& .MuiSvgIcon-root": {
-                fontSize: "2.5rem",
-              },
-            }}
-            id={"section_3"}
-          >
-            <StepLabel>
-              <Grid container spacing={2}>
-                <Grid item xs={6} sx={{ minHeight: "55vh" }}>
-                  <Stack spacing={1}>
-                    <Typography variant="h6">
-                      {t("What is your project?")}
-                    </Typography>
-
-                    <Typography variant="subtitle1">
-                      {t(
-                        "Every co-production process has particular characteristics and consequently each one has a specific schema to be followed. To help you in the selection of the schema (next step), you can tell us which type of co-production process you are going to do. Click on the button to select some keywords and we will help you to select the right type of coproduction process."
-                      )}
-                    </Typography>
-
-                    <Button
-                      onClick={() => {
-                        setSelectorTypeOpen(true);
-                      }}
-                      size="small"
-                      variant="contained"
-                      sx={{ maxWidth: "200px" }}
-                    >
-                      {t("Decide your type of co-production process")}
-                    </Button>
-                  </Stack>
-                </Grid>
-                <Grid item xs={6}>
-                  <img
-                    src="/coproduction/static/images/overview_step3.svg"
-                    height="400vw"
-                  ></img>
-                </Grid>
-
-                <Grid
-                  container
-                  spacing={0}
-                  direction="column"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Grid item xs={12}>
-                    <IconButton
-                      onClick={() => nextSect("section_4")}
-                      color="primary"
-                      sx={{ border: "1px" }}
-                      variant="outlined"
-                    >
-                      <ArrowDownwardIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </StepLabel>
-          </Step>
-
-          {/* Step 4 */}
-          <Step
-            active
-            completed={!!dataFulfilled}
-            sx={{
-              "& .MuiStepLabel-iconContainer": {
-                alignSelf: "baseline",
-              },
-              "& .MuiSvgIcon-root": {
-                fontSize: "2.5rem",
-              },
-            }}
-            id={"section_4"}
-          >
-            <StepLabel>
-              <Grid container spacing={2}>
-                <Grid item xs={6} sx={{ minHeight: "55vh" }}>
-                  <Stack spacing={1}>
-                    <Typography variant="h6">
-                      {t("Select the coproduction schema")}
-                    </Typography>
-
-                    <Typography variant="subtitle1">
-                      {t(
-                        "The schemas give to the user some directives on how to proceed in the overall process. Phases, objectives and tasks of the co-production process. Click on the button and search for the optimal coproduction schema for your process. Nevertheless, you can undo this action (clear the coproduction tree) in the settings section."
-                      )}
-                    </Typography>
-
-                    {hasSchema ? (
-                      <Alert severity="success">
+                      <Typography variant="subtitle1">
                         {t(
-                          "The schema has already been selected for this process"
+                          "The coproduction process data are a set of attributes that serve to define the process to be carried out. At this point you will describe the aim of the project, challenges, which is the organization of the project etc. Than you can also set others administrators for the project [OPTIONAL]. They can update the co-production process information, add permissions to the tree items or add new administrators."
                         )}
-                      </Alert>
-                    ) : (
-                      <></>
-                    )}
-                    {!hasSchema && (
-                      <Button
-                        disabled={process.creator_id !== user.id}
-                        onClick={handleClickOpen}
-                        size="small"
-                        variant="contained"
-                        sx={{ maxWidth: "200px" }}
-                      >
-                        {t("Select an schema")}
-                      </Button>
-                    )}
-                  </Stack>
-                </Grid>
-                <Grid item xs={6}>
-                  <img
-                    src="/coproduction/static/images/overview_step4.svg"
-                    height="330vw"
-                  ></img>
-                </Grid>
+                      </Typography>
 
-                <Grid
-                  container
-                  spacing={0}
-                  direction="column"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Grid item xs={12}>
-                    <IconButton
-                      onClick={() => nextSect("section_5")}
-                      color="primary"
-                      sx={{ border: "1px" }}
-                      variant="outlined"
-                    >
-                      <ArrowDownwardIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </StepLabel>
-          </Step>
-
-          {/* Step 5 */}
-          <Step
-            active
-            completed={!!dataFulfilled}
-            sx={{
-              "& .MuiStepLabel-iconContainer": {
-                alignSelf: "baseline",
-              },
-              "& .MuiSvgIcon-root": {
-                fontSize: "2.5rem",
-              },
-            }}
-            id={"section_5"}
-          >
-            <StepLabel>
-              <Grid container spacing={2}>
-                <Grid item xs={6} sx={{ minHeight: "55vh" }}>
-                  <Stack spacing={1}>
-                    <Typography variant="h6">
-                      {t("Give rewards to your collaborators")}
-                    </Typography>
-
-                    <Typography variant="subtitle1">
-                      {t(
-                        "If you want to incentivize your collaborators to do their best, try our reward system. If you active this function, you will be able to set the difficulty of each task. At the end of the task you will have to decide the level of contribute of each collaborator that will give him a reward. The reward system needs to be connected with an external portal of vouchers so that the collaborator can take his reward. Click on the button, check how it works and decide if you want to active this function."
-                      )}
-                    </Typography>
-
-                    <Button
-                      onClick={() =>
-                        navigate(
-                          `/dashboard/coproductionprocesses/${process.id}/settings`
-                        )
-                      }
-                      size="small"
-                      variant="contained"
-                      sx={{ maxWidth: "200px" }}
-                    >
-                      {t("Go tot he reward system tutorial")}
-                    </Button>
-                  </Stack>
-                </Grid>
-                <Grid item xs={6}>
-                  <img
-                    src="/coproduction/static/images/overview_step5.svg"
-                    height="410vw"
-                  ></img>
-                </Grid>
-
-                <Grid
-                  container
-                  spacing={0}
-                  direction="column"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Grid item xs={12}>
-                    <IconButton
-                      onClick={() => nextSect("section_6")}
-                      color="primary"
-                      sx={{ border: "1px" }}
-                      variant="outlined"
-                    >
-                      <ArrowDownwardIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </StepLabel>
-          </Step>
-
-          {/* Step 6 */}
-          <Step
-            active
-            completed={!!dataFulfilled}
-            sx={{
-              "& .MuiStepLabel-iconContainer": {
-                alignSelf: "baseline",
-              },
-              "& .MuiSvgIcon-root": {
-                fontSize: "2.5rem",
-              },
-            }}
-            id={"section_6"}
-          >
-            <StepLabel>
-              <Grid container spacing={2}>
-                <Grid item xs={6} sx={{ minHeight: "55vh" }}>
-                  <Stack spacing={1}>
-                    <Typography variant="h6">
-                      {t("Grant permissions to Teams over the process")}
-                    </Typography>
-
-                    <Typography variant="subtitle1">
-                      {t(
-                        "Now you can allow teams to work on the coproduction process. For that, associate permissions to teams by navigating to the Team section and adding permission for the whole coproduction process. Otherwise you can go to Guide section and add new permissions for distinct tree items (objectives, tasks)."
-                      )}
-                    </Typography>
-
-                    <Button
-                      onClick={() =>
-                        navigate(
-                          `/dashboard/coproductionprocesses/${process.id}/team`
-                        )
-                      }
-                      size="small"
-                      variant="contained"
-                      sx={{ maxWidth: "200px" }}
-                    >
-                      {t(
-                        "Grant permissions to the overall process in the Team section"
-                      )}
-                    </Button>
-                  </Stack>
-                </Grid>
-                <Grid item xs={6}>
-                  <img
-                    src="/coproduction/static/images/overview_step6.png"
-                    height="410vw"
-                  ></img>
-                </Grid>
-
-                <Grid
-                  container
-                  spacing={0}
-                  direction="column"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Grid item xs={12}>
-                    <IconButton
-                      onClick={() => nextSect("section_7")}
-                      color="primary"
-                      sx={{ border: "1px" }}
-                      variant="outlined"
-                    >
-                      <ArrowDownwardIcon />
-                    </IconButton>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </StepLabel>
-          </Step>
-
-          {/* Step 7 */}
-          <Step
-            active
-            completed={!!dataFulfilled}
-            sx={{
-              "& .MuiStepLabel-iconContainer": {
-                alignSelf: "baseline",
-              },
-              "& .MuiSvgIcon-root": {
-                fontSize: "2.5rem",
-              },
-            }}
-            id={"section_7"}
-          >
-            <StepLabel>
-              <Grid container spacing={2}>
-                <Grid item xs={6} sx={{ minHeight: "55vh" }}>
-                  <Stack spacing={1}>
-                    <Typography variant="h6">
-                      {t("Your Interlinkers/Resources")}
-                    </Typography>
-
-                    <Typography variant="subtitle1">
-                      {t(
-                        "Once you add a resource to a tree element, it will be visible into the Resources section. You will see the tree element from which it came and some useful infos abouts the resources."
-                      )}
-                    </Typography>
-
-                    {dataFulfilled ? (
-                      <Alert severity="success">
-                        {t("The coproduction process data has been defined")}
-                      </Alert>
-                    ) : (
-                      <></>
-                    )}
-
-                    <Stack
-                      direction="row"
-                      justifyContent="left"
-                      alignItems="center"
-                      divider={<Divider orientation="vertical" flexItem />}
-                      spacing={2}
-                    >
                       <Button
                         onClick={() =>
                           navigate(
-                            `/dashboard/coproductionprocesses/${process.id}/resources`
+                            `/dashboard/coproductionprocesses/${process.id}/settings`
                           )
                         }
                         size="small"
                         variant="contained"
                         sx={{ maxWidth: "200px" }}
                       >
-                        {t("Go to Resources section")}
+                        {t("Go to settings section")}
                       </Button>
-                      <Link href="#" onClick={setSkipResourcesStep} >or just skip</Link>
                     </Stack>
-                  </Stack>
-                </Grid>
-                <Grid item xs={6}>
-                  <img
-                    src="/coproduction/static/images/overview_step7.svg"
-                    height="450vw"
-                  ></img>
-                </Grid>
+                    <IconButton
+                      onClick={() => nextSect("section_1")}
+                      color="primary"
+                      sx={{ border: "1px", mt: 2 }}
+                      variant="outlined"
+                    >
+                      <ArrowBack />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => nextSect("section_3")}
+                      color="primary"
+                      sx={{ border: "1px", mt: 2 }}
+                      variant="outlined"
+                    >
+                      <ArrowForward />
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <img
+                      src="/coproduction/static/images/overview_step2.svg"
+                      height="350vw"
+                    ></img>
+                  </Grid>
 
+                  {/*  <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Grid item xs={12}>
+                      <IconButton
+                        onClick={() => nextSect("section_3")}
+                        color="primary"
+                        sx={{ border: "1px" }}
+                        variant="outlined"
+                      >
+                        <ArrowDownwardIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid> */}
+                </Grid>
+              </StepLabel>
+            </Step>
+          )}
+
+          {/* Step 3 */}
+          {roadItemIndex == "section_3" && (
+            <Step
+              active
+              completed={!!dataFulfilled}
+              sx={{
+                "& .MuiStepLabel-iconContainer": {
+                  alignSelf: "baseline",
+                },
+                "& .MuiSvgIcon-root": {
+                  fontSize: "2.5rem",
+                },
+              }}
+              id={"section_3"}
+            >
+              <StepLabel StepIconComponent={Construction}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6} sx={{ minHeight: "55vh" }}>
+                    <Stack spacing={1}>
+                      <Typography variant="h6">
+                        {t("What is your project?")}
+                      </Typography>
+
+                      <Typography variant="subtitle1">
+                        {t(
+                          "Every co-production process has particular characteristics and consequently each one has a specific schema to be followed. To help you in the selection of the schema (next step), you can tell us which type of co-production process you are going to do. Click on the button to select some keywords and we will help you to select the right type of coproduction process."
+                        )}
+                      </Typography>
+
+                      <Button
+                        onClick={() => {
+                          setSelectorTypeOpen(true);
+                        }}
+                        size="small"
+                        variant="contained"
+                        sx={{ maxWidth: "200px" }}
+                      >
+                        {t("Decide your type of co-production process")}
+                      </Button>
+                    </Stack>
+                    <IconButton
+                      onClick={() => nextSect("section_2")}
+                      color="primary"
+                      sx={{ border: "1px", mt: 2 }}
+                      variant="outlined"
+                    >
+                      <ArrowBack />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => nextSect("section_4")}
+                      color="primary"
+                      sx={{ border: "1px", mt: 2 }}
+                      variant="outlined"
+                    >
+                      <ArrowForward />
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <img
+                      src="/coproduction/static/images/overview_step3.svg"
+                      height="400vw"
+                    ></img>
+                  </Grid>
+
+                  {/* <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Grid item xs={12}>
+                      <IconButton
+                        onClick={() => nextSect("section_4")}
+                        color="primary"
+                        sx={{ border: "1px" }}
+                        variant="outlined"
+                      >
+                        <ArrowDownwardIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid> */}
+                </Grid>
+              </StepLabel>
+            </Step>
+          )}
+
+          {/* Step 4 */}
+
+          {roadItemIndex == "section_4" && (
+            <Step
+              active
+              completed={!!dataFulfilled}
+              sx={{
+                "& .MuiStepLabel-iconContainer": {
+                  alignSelf: "baseline",
+                },
+                "& .MuiSvgIcon-root": {
+                  fontSize: "2.5rem",
+                },
+              }}
+              id={"section_4"}
+            >
+              <StepLabel StepIconComponent={Build}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6} sx={{ minHeight: "55vh" }}>
+                    <Stack spacing={1}>
+                      <Typography variant="h6">
+                        {t("Select the coproduction schema")}
+                      </Typography>
+
+                      <Typography variant="subtitle1">
+                        {t(
+                          "The schemas give to the user some directives on how to proceed in the overall process. Phases, objectives and tasks of the co-production process. Click on the button and search for the optimal coproduction schema for your process. Nevertheless, you can undo this action (clear the coproduction tree) in the settings section."
+                        )}
+                      </Typography>
+
+                      {hasSchema ? (
+                        <Alert severity="success">
+                          {t(
+                            "The schema has already been selected for this process"
+                          )}
+                        </Alert>
+                      ) : (
+                        <></>
+                      )}
+                      {!hasSchema && (
+                        <Button
+                          disabled={process.creator_id !== user.id}
+                          onClick={handleClickOpen}
+                          size="small"
+                          variant="contained"
+                          sx={{ maxWidth: "200px" }}
+                        >
+                          {t("Select an schema")}
+                        </Button>
+                      )}
+                    </Stack>
+                    <IconButton
+                      onClick={() => nextSect("section_3")}
+                      color="primary"
+                      sx={{ border: "1px", mt: 2 }}
+                      variant="outlined"
+                    >
+                      <ArrowBack />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => nextSect("section_5")}
+                      color="primary"
+                      sx={{ border: "1px", mt: 2 }}
+                      variant="outlined"
+                    >
+                      <ArrowForward />
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <img
+                      src="/coproduction/static/images/overview_step4.svg"
+                      height="330vw"
+                    ></img>
+                  </Grid>
+
+                  {/*  <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Grid item xs={12}>
+                      <IconButton
+                        onClick={() => nextSect("section_5")}
+                        color="primary"
+                        sx={{ border: "1px" }}
+                        variant="outlined"
+                      >
+                        <ArrowDownwardIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid> */}
+                </Grid>
+              </StepLabel>
+            </Step>
+          )}
+
+          {/* Step 5 */}
+          {roadItemIndex == "section_5" && (
+            <Step
+              active
+              completed={!!dataFulfilled}
+              sx={{
+                "& .MuiStepLabel-iconContainer": {
+                  alignSelf: "baseline",
+                },
+                "& .MuiSvgIcon-root": {
+                  fontSize: "2.5rem",
+                },
+              }}
+              id={"section_5"}
+            >
+              <StepLabel StepIconComponent={MilitaryTech}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6} sx={{ minHeight: "55vh" }}>
+                    <Stack spacing={1}>
+                      <Typography variant="h6">
+                        {t("Give rewards to your collaborators")}
+                      </Typography>
+
+                      <Typography variant="subtitle1">
+                        {t(
+                          "If you want to incentivize your collaborators to do their best, try our reward system. If you active this function, you will be able to set the difficulty of each task. At the end of the task you will have to decide the level of contribute of each collaborator that will give him a reward. The reward system needs to be connected with an external portal of vouchers so that the collaborator can take his reward. Click on the button, check how it works and decide if you want to active this function."
+                        )}
+                      </Typography>
+
+                      <Button
+                        onClick={() =>
+                          navigate(
+                            `/dashboard/coproductionprocesses/${process.id}/settings`
+                          )
+                        }
+                        size="small"
+                        variant="contained"
+                        sx={{ maxWidth: "200px" }}
+                      >
+                        {t("Go to the reward system tutorial")}
+                      </Button>
+                    </Stack>
+                    <IconButton
+                      onClick={() => nextSect("section_4")}
+                      color="primary"
+                      sx={{ border: "1px", mt: 2 }}
+                      variant="outlined"
+                    >
+                      <ArrowBack />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => nextSect("section_6")}
+                      color="primary"
+                      sx={{ border: "1px", mt: 2 }}
+                      variant="outlined"
+                    >
+                      <ArrowForward />
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <img
+                      src="/coproduction/static/images/overview_step5.svg"
+                      height="410vw"
+                    ></img>
+                  </Grid>
+
+                  {/* <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Grid item xs={12}>
+                      <IconButton
+                        onClick={() => nextSect("section_6")}
+                        color="primary"
+                        sx={{ border: "1px" }}
+                        variant="outlined"
+                      >
+                        <ArrowDownwardIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid> */}
+                </Grid>
+              </StepLabel>
+            </Step>
+          )}
+
+          {/* Step 6 */}
+
+          {roadItemIndex == "section_6" && (
+            <Step
+              active
+              completed={!!dataFulfilled}
+              sx={{
+                "& .MuiStepLabel-iconContainer": {
+                  alignSelf: "baseline",
+                },
+                "& .MuiSvgIcon-root": {
+                  fontSize: "2.5rem",
+                },
+              }}
+              id={"section_6"}
+            >
+              <StepLabel StepIconComponent={BusinessCenter}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6} sx={{ minHeight: "55vh" }}>
+                    <Stack spacing={1}>
+                      <Typography variant="h6">
+                        {t("Grant permissions to Teams over the process")}
+                      </Typography>
+
+                      <Typography variant="subtitle1">
+                        {t(
+                          "Now you can allow teams to work on the coproduction process. For that, associate permissions to teams by navigating to the Team section and adding permission for the whole coproduction process. Otherwise you can go to Guide section and add new permissions for distinct tree items (objectives, tasks)."
+                        )}
+                      </Typography>
+
+                      <Button
+                        onClick={() =>
+                          navigate(
+                            `/dashboard/coproductionprocesses/${process.id}/team`
+                          )
+                        }
+                        size="small"
+                        variant="contained"
+                        sx={{ maxWidth: "200px" }}
+                      >
+                        {t(
+                          "Grant permissions to the overall process in the Team section"
+                        )}
+                      </Button>
+                    </Stack>
+                    <IconButton
+                      onClick={() => nextSect("section_5")}
+                      color="primary"
+                      sx={{ border: "1px", mt: 2 }}
+                      variant="outlined"
+                    >
+                      <ArrowBack />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => nextSect("section_7")}
+                      color="primary"
+                      sx={{ border: "1px", mt: 2 }}
+                      variant="outlined"
+                    >
+                      <ArrowForward />
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <img
+                      src="/coproduction/static/images/overview_step6.png"
+                      height="410vw"
+                    ></img>
+                  </Grid>
+
+                  {/* <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Grid item xs={12}>
+                      <IconButton
+                        onClick={() => nextSect("section_7")}
+                        color="primary"
+                        sx={{ border: "1px" }}
+                        variant="outlined"
+                      >
+                        <ArrowDownwardIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid> */}
+                </Grid>
+              </StepLabel>
+            </Step>
+          )}
+
+          {/* Step 7 */}
+
+          {roadItemIndex == "section_7" && (
+            <Step
+              active
+              completed={!!dataFulfilled}
+              sx={{
+                "& .MuiStepLabel-iconContainer": {
+                  alignSelf: "baseline",
+                },
+                "& .MuiSvgIcon-root": {
+                  fontSize: "2.5rem",
+                },
+              }}
+              id={"section_7"}
+            >
+              <StepLabel StepIconComponent={Widgets}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6} sx={{ minHeight: "55vh" }}>
+                    <Stack spacing={1}>
+                      <Typography variant="h6">
+                        {t("Your Interlinkers/Resources")}
+                      </Typography>
+
+                      <Typography variant="subtitle1">
+                        {t(
+                          "Once you add a resource to a tree element, it will be visible into the Resources section. You will see the tree element from which it came and some useful infos abouts the resources."
+                        )}
+                      </Typography>
+
+                      {dataFulfilled ? (
+                        <Alert severity="success">
+                          {t("The coproduction process data has been defined")}
+                        </Alert>
+                      ) : (
+                        <></>
+                      )}
+
+                      <Stack
+                        direction="row"
+                        justifyContent="left"
+                        alignItems="center"
+                        divider={<Divider orientation="vertical" flexItem />}
+                        spacing={2}
+                      >
+                        <Button
+                          onClick={() =>
+                            navigate(
+                              `/dashboard/coproductionprocesses/${process.id}/resources`
+                            )
+                          }
+                          size="small"
+                          variant="contained"
+                          sx={{ maxWidth: "200px" }}
+                        >
+                          {t("Go to Resources section")}
+                        </Button>
+                        <Link href="#" onClick={setSkipResourcesStep}>
+                          or just skip
+                        </Link>
+                      </Stack>
+                    </Stack>
+                    <IconButton
+                      onClick={() => nextSect("section_6")}
+                      color="primary"
+                      sx={{ border: "1px", mt: 2 }}
+                      variant="outlined"
+                    >
+                      <ArrowBack />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => nextSect("section_8")}
+                      color="primary"
+                      sx={{ border: "1px", mt: 2 }}
+                      variant="outlined"
+                    >
+                      <ArrowForward />
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <img
+                      src="/coproduction/static/images/overview_step7.svg"
+                      height="450vw"
+                    ></img>
+                  </Grid>
+
+                  {/*  <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Grid item xs={12}>
+                      <IconButton
+                        onClick={() => nextSect("section_8")}
+                        color="primary"
+                        sx={{ border: "1px" }}
+                        variant="outlined"
+                      >
+                        <ArrowDownwardIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid> */}
+                </Grid>
+              </StepLabel>
+            </Step>
+          )}
+
+          {/* Step 8 */}
+          {roadItemIndex == "section_8" && (
+            <Step
+              active
+              completed={!!dataFulfilled}
+              sx={{
+                "& .MuiStepLabel-iconContainer": {
+                  alignSelf: "baseline",
+                },
+                "& .MuiSvgIcon-root": {
+                  fontSize: "2.5rem",
+                },
+              }}
+              id={"section_8"}
+            >
+              <StepLabel  StepIconComponent={Flag} >
                 <Grid
                   container
-                  spacing={0}
                   direction="column"
                   alignItems="center"
                   justifyContent="center"
                 >
-                  <Grid item xs={12}>
-                    <IconButton
-                      onClick={() => nextSect("section_8")}
-                      color="primary"
-                      sx={{ border: "1px" }}
-                      variant="outlined"
-                    >
-                      <ArrowDownwardIcon />
-                    </IconButton>
+                  <Grid item>
+                    <Typography variant="h3">
+                      {t("Well done! You're ready to start")}
+                    </Typography>
+
+                    <Typography variant="subtitle1">
+                      {t(
+                        "You completed all the preliminar phases and now you're ready to start your job using the Guide section."
+                      )}
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      {t(
+                        "Good luck for your process and remember, work inclusive."
+                      )}
+                    </Typography>
+                    
                   </Grid>
-                </Grid>
-              </Grid>
-            </StepLabel>
-          </Step>
 
-          {/* Step 8 */}
-          <Step
-            active
-            completed={!!dataFulfilled}
-            sx={{
-              "& .MuiStepLabel-iconContainer": {
-                alignSelf: "baseline",
-              },
-              "& .MuiSvgIcon-root": {
-                fontSize: "2.5rem",
-              },
-            }}
-            id={"section_8"}
-          >
-            <StepLabel>
-              <Grid
-                container
-                direction="column"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Grid item>
-                  <Typography variant="h3">
-                    {t("Well done! You're ready to start")}
-                  </Typography>
+                  <Stack
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                        divider={<Divider orientation="vertical" flexItem />}
+                        spacing={2}
+                      >
+                        <Button
+                        onClick={() =>
+                          navigate(
+                            `/dashboard/coproductionprocesses/${process.id}/guide`
+                          )
+                        }
+                        
+                        variant="contained"
+                        sx={{ maxWidth: "500px", mt: 2 }}
+                      >
+                        {t("Go to guide section and start your job")}
+                      </Button>
+                        <Link href="#" onClick={setHideGuieCheckList}>
+                          Hide this guide.
+                        </Link>
+                      </Stack>
 
-                  <Typography variant="subtitle1">
-                    {t(
-                      "You completed all the preliminar phases and now you're ready to start your job using the Guide section."
-                    )}
-                  </Typography>
-                  <Typography variant="subtitle1">
-                    {t(
-                      "Good luck for your process and remember, work inclusive."
-                    )}
-                  </Typography>
-                </Grid>
-                <Grid item>
-                  <img
-                    src="/coproduction/static/images/overview_step8.svg"
-                    height="450px"
-                  ></img>
-                </Grid>
 
-                <IconButton
-                  onClick={() => nextSect("section_0")}
-                  color="primary"
-                  sx={{ border: "1px" }}
-                  variant="outlined"
-                >
-                  <ArrowUpwardIcon />
-                </IconButton>
-              </Grid>
-            </StepLabel>
-          </Step>
+                 
+                  <Grid item>
+                    <img
+                      src="/coproduction/static/images/overview_step8.svg"
+                      height="450px"
+                    ></img>
+                  </Grid>
+
+                 
+                </Grid>
+              </StepLabel>
+            </Step>
+          )}
 
           {/* <Step active completed={!!dataFulfilled}>
             <StepLabel>

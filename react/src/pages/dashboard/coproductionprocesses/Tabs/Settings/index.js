@@ -74,6 +74,7 @@ const SettingsTab = () => {
   const { process, hasSchema, isAdministrator, tree } = useSelector((state) => state.process);
 
   const [isIncentiveModuleActive, setIsIncentiveModuleActive] = useState(process.incentive_and_rewards_state);
+  const [isGuideHidden, setIsGuideHidden] = useState(!process.hideGuieCheckList);
   const [logotype, setLogotype] = useState(null);
   const mounted = useMounted();
   const t = useCustomTranslation(process.language);
@@ -214,6 +215,29 @@ const SettingsTab = () => {
       })
     }
 
+    try {
+      dispatch(updateProcess({
+        id: process.id,
+        data: values,
+        logotype,
+        onSuccess: () => {
+          if (mounted.current) {
+            console.log(process);
+          }
+        }
+      }));
+    } catch (err) {
+      console.error(err);
+
+    }
+  };
+
+  const toggleGuideHide = async () => {
+    setIsGuideHidden((prev) => !prev);
+
+    //Active the incentive and rewards
+    const values = { hideGuieCheckList: isGuideHidden };
+    
     try {
       dispatch(updateProcess({
         id: process.id,
@@ -821,6 +845,33 @@ const SettingsTab = () => {
               >
                 {t(
                   "If you disable the Reward system every data will be deleted"
+                )}
+              </Alert>
+            </Card>
+
+            {/* Show Process Guide */}
+            <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
+              <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+                {t("Show process startup guide")}
+              </Typography>
+              <Alert
+                severity="info"
+                sx={{ mt: 2 }}
+                action={
+                  <>
+                    <GoldSwitch
+                      checked={isGuideHidden}
+                      onChange={toggleGuideHide}
+                      name="guideSwitch"
+                      inputProps={{ "aria-label": "secondary checkbox" }}
+                      disabled={!isAdministrator}
+                      color="secondary"
+                    />
+                  </>
+                }
+              >
+                {t(
+                  "This option will show the process startup guide to all users"
                 )}
               </Alert>
             </Card>

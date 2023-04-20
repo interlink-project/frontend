@@ -1,5 +1,6 @@
 import {  Alert, Avatar, Box, Button, Dialog, DialogContent, Grid, IconButton, Menu, MenuItem, Paper, Stack, Tab, Tabs, TextField, Typography } from '@mui/material';
-import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@mui/icons-material';
+import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew,Share } from '@mui/icons-material';
+
 import { LoadingButton } from '@mui/lab';
 import { AssetsTable } from 'components/dashboard/assets';
 import InterlinkerBrowse from 'components/dashboard/interlinkers/browse/InterlinkerBrowse';
@@ -18,6 +19,8 @@ import NewAssetModal from 'components/dashboard/coproductionprocesses/NewAssetMo
 import { useLocation } from 'react-router';
 import { getAssetsList_byTask } from 'slices/general';
 import useAuth from 'hooks/useAuth';
+
+import { REACT_APP_COMPLETE_DOMAIN } from 'configuration';
 
 const RightSide = ({ softwareInterlinkers }) => {
   const { process, isAdministrator, selectedTreeItem } = useSelector((state) => state.process);
@@ -174,6 +177,15 @@ const RightSide = ({ softwareInterlinkers }) => {
     setAnchorEl(null);
   };
 
+  const handleShare = (asset) => {
+
+    const linkToAsset=`${REACT_APP_COMPLETE_DOMAIN}/dashboard/coproductionprocesses/${process.id}/${asset.id}/view`
+    
+    copyTextToClipboard(linkToAsset);
+    
+    setAnchorEl(null);
+  };
+
   const handleDelete = (asset, callback) => {
     dispatch(setUpdatingTree(true));
     setLoading('delete');
@@ -250,6 +262,14 @@ const RightSide = ({ softwareInterlinkers }) => {
     setAnchorEl(null);
   };
 
+  const copyTextToClipboard= async (text) => {
+    if ('clipboard' in navigator) {
+      return await navigator.clipboard.writeText(text);
+    } else {
+      return document.execCommand('copy', true, text);
+    }
+  }
+
   const getAssetsActions = (asset) => {
     const actions = [];
 
@@ -279,6 +299,17 @@ const RightSide = ({ softwareInterlinkers }) => {
         },
         text: t('Open'),
         icon: <OpenInNew fontSize='small' />
+      });
+
+      actions.push({
+        id: `${id}-share-action`,
+        loading: loading === 'share',
+        onClick: (closeMenuItem) => {
+          handleShare(asset);
+          closeMenuItem();
+        },
+        text: t('Share'),
+        icon: <Share fontSize='small' />
       });
       
       if (capabilities.edit) {

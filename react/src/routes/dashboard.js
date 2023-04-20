@@ -4,6 +4,7 @@ import DashboardLayout from 'components/layouts/DashboardLayout';
 import Loadable from './Loadable';
 import OrganizationProfileSolo from 'components/dashboard/organizations/OrganizationProfileSolo';
 import StoryLayout from 'components/layouts/StoryLayout';
+import RedirectProcessAsset from 'pages/dashboard/coproductionprocesses/RedirectProcessAsset';
 
 
 const CoproductionProcessProfile = Loadable(
@@ -107,6 +108,16 @@ export const routes = [
             path: ':tab',
             element: <AuthGuard><CoproductionProcessProfile /></AuthGuard>
           },
+        ]
+      },
+      {
+        path: 'coproductionprocesses/:processId/:assetId/view',
+        children: [
+          {
+            path: '',
+            element: <AuthGuard><RedirectProcessAsset /></AuthGuard>
+            ,
+          }
         ]
       },
       {

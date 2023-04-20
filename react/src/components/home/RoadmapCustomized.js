@@ -90,6 +90,7 @@ function ColorlibStepIcon(props) {
 export default function CustomizedSteppers(props) {
   const steps = props.completeStates;
   const activeStep = props.selectedStateIndex;
+  const onClickEvent= props.onClick;
   const titles=["Organizations","Settings","Type","Schema","Rewards","Permissions","Resources","Finish"]
 
   const handleStep = (stepFase) => {
@@ -99,11 +100,15 @@ export default function CustomizedSteppers(props) {
   };
 
   function nextSect(nextSectionNum) {
-    const section = document.querySelector("#" + nextSectionNum);
-    section.scrollIntoView({ behavior: "smooth", block: "start" });
+    // const section = document.querySelector("#" + nextSectionNum);
+    // section.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    showSection(nextSectionNum);
   };
 
-  
+  function showSection(sectionNum) {
+    onClickEvent(sectionNum);
+  };
 
 
   const [anchorElList, setAnchorElList] = React.useState([null,null,null,null,null,null,null,null])

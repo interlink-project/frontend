@@ -47,9 +47,18 @@ function ProcessRow({ process, t }) {
       key={process.id}
       hover
       sx={{ "& > *": { borderBottom: "unset" }, cursor: "pointer" }}
-      onClick={() =>
-        navigate(`/dashboard/coproductionprocesses/${process.id}/overview`)
-      }
+      onClick={() => {
+        
+        if (process.hideGuieCheckList){
+          navigate(`/dashboard/coproductionprocesses/${process.id}/profile`)
+        }
+        else{
+          navigate(`/dashboard/coproductionprocesses/${process.id}/overview`)
+          
+        }
+      
+        
+      }}
     >
       <TableCell align="center">
         <Box style={{ justifyContent: "center", display: "flex" }}>
