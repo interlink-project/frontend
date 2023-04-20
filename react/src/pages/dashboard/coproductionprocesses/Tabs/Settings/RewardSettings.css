@@ -1,5 +1,20 @@
+.mt-1 {
+  margin-top: 1rem;
+}
+.mb-1 {
+  margin-bottom: 1rem;
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+.mb-2 {
+  margin-bottom: 2rem;
+}
+
 .col-reward-setting p {
   font-weight: 600 !important;
+  color: #172b4d;
 }
 .col-reward-setting {
   display: flex;
@@ -35,6 +50,11 @@
 
 .reward-left-number {
   color: #0f97c7;
+  padding-right: 1rem;
+}
+
+.reward-left-text {
+  padding-left: 0.5rem;
 }
 
 .col-reward-right {
@@ -65,15 +85,36 @@
   font-weight: 600;
 }
 
+.footer-instruction,
+.skip-reward,
+.activate-reward {
+  text-align: center;
+}
+
+.medals-image {
+  max-width: 50%;
+}
 @media (max-width: 600px) {
+  .medals-image {
+    max-width: 100%;
+  }
+}
+@media (max-width: 900px) {
   .col-reward-setting {
     flex-direction: column-reverse;
   }
 
+  .medals-image {
+    max-width: 80%;
+  }
+
   .col-reward-right {
-    height: 300px;
     max-height: 100%;
     overflow-y: auto !important;
     position: inherit;
+    align-self: center;
+  }
+  .footer p {
+    font-size: 0.8rem;
   }
 }

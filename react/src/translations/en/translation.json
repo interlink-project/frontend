@@ -321,5 +321,9 @@
   "Close": "Close",
   "Reward System": "Reward System",
   "The reward system permits to reward your contributors, but how?": "The reward system permits to reward your contributors, but how?",
-  "You will able to set the difficulty of every task on three levels": "You will able to set the difficulty of every task on three levels"
+  "You will able to set the difficulty of every task on three levels": "You will able to set the difficulty of every task on three levels",
+  "Easy": "Easy",
+  "Medium": "Medium",
+  "Hard": "Hard",
+  "Every time someone adds a resource to the task, he will be able to claim is contribute": "Every time someone adds a resource to the task, he will be able to claim is contribute"
 }

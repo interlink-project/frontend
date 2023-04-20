@@ -327,5 +327,9 @@
   "Close": "Aizvērt",
   "Reward System": "Atalgojuma sistēma",
   "The reward system permits to reward your contributors, but how?": "Atalgojuma sistēma ļauj atbalstīt savus ieguldītājus, bet kā?",
-  "You will able to set the difficulty of every task on three levels": "Jūs varēsiet iestatīt uzdevumu grūtības līmeni trīs līmeņos"
+  "You will able to set the difficulty of every task on three levels": "Jūs varēsiet iestatīt uzdevumu grūtības līmeni trīs līmeņos",
+  "Easy": "Vienkārši",
+  "Medium": "Vidēji",
+  "Hard": "Grūti",
+  "Every time someone adds a resource to the task, he will be able to claim is contribute": "Katru reizi, kad kāds pievieno resursu uzdevumam, viņš varēs pieprasīt savu ieguldījumu"
 }
