@@ -47,10 +47,8 @@ const initialSettings = {
           main: '#ff9800'
         },
         gold: {
-          light: '#f7b50f',
-          main: '#f7b50f',
-          dark: '#f7b50f',
-          contrastText: '#000',
+          main: "#F7B50F",
+          contrastText: "#000000",
         },
         high_contribution: {
           main: "#44C949",
@@ -98,10 +96,8 @@ const initialSettings = {
           main: '#ff9800'
         },
         gold: {
-          light: '#f7b50f',
-          main: '#f7b50f',
-          dark: '#f7b50f',
-          contrastText: '#000',
+          main: "#F7B50F",
+          contrastText: "#000000"
         },
         high_contribution: {
           main: "#44C949",
@@ -117,7 +113,7 @@ const initialSettings = {
         },
         progressBarColor: '#d822a3'
       }
-    }
+    }    
   }),
   logos: {},
 

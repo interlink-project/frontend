@@ -42,6 +42,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   const [editMode, setEditMode] = useState(false);
   const { process, updatingTree, treeitems, selectedTreeItem, isAdministrator } = useSelector((state) => state.process);
   const isTask = selectedTreeItem && selectedTreeItem.type === 'task';
+  const [resetContributions, setResetContributions] = useState(false)
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -91,6 +92,9 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     }
     if (status !== element.status) {
       data.status = status;
+      if (resetContributions) {
+        //TODO: Method that removes the completion of a task in the game
+      }
     }
     if (name !== element.name) {
       data.name = name;
@@ -557,6 +561,11 @@ const TreeItemData = ({ language, processId, element, assets }) => {
                   exclusive
                   fullWidth
                   onChange={(event, newStatus) => {
+                    console.log(status);
+                    console.log(newStatus);
+                    if (status === 'finished' && newStatus === 'in_progress') {
+                      setResetContributions(true);
+                    }
                     setStatus(newStatus);
                   }}
                 >

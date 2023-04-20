@@ -110,9 +110,9 @@ const InterlinkerBrowseFilter = ({
               onChange={(event) => {
                 setInputValue(event.target.value);
               }}
-              data-cy="search-input-interlinkers"
               placeholder={t("Search")}
               value={inputValue}
+              data-cy="search-input-interlinkers"
             />
           </Box>
         </Box>
@@ -131,6 +131,8 @@ const InterlinkerBrowseFilter = ({
             onChange={(e) => changeFilter("nature", e)}
             options={natureMultiselect.options}
             value={filters.nature}
+            datacy="nature-filter"
+            datacyOption="nature-filter-option"
           />
           <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
           <MultiSelect
@@ -138,6 +140,8 @@ const InterlinkerBrowseFilter = ({
             onChange={(e) => changeFilter("problemprofiles", e)}
             options={problemprofilesMultiselect.options}
             value={filters.problemprofiles}
+            datacy="problemprofiles-filter"
+            datacyOption="problemprofiles-filter-option"
           />
           <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
 
@@ -147,6 +151,7 @@ const InterlinkerBrowseFilter = ({
           <Rating
             value={filters.rating}
             onChange={(e, value) => changeFilter("rating", value)}
+            data-cy="rating-filter"
           />
           <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
           {/* <Typography variant="body2" sx={{ mr: 1 }}><b>Order by:</b></Typography>
@@ -185,6 +190,7 @@ const InterlinkerBrowseFilter = ({
                 filters.nature.filter((nt) => nt !== nature)
               )
             }
+            data-cy={`active-nature-filter-${nature}`}
           />
         ))}
         {filters.problemprofiles &&

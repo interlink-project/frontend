@@ -27,7 +27,6 @@ export default class GeneralApi {
         }
       }
     );
-    console.log('getMulti call', res.data, 'in', language);
     return res.data;
   }
 

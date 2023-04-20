@@ -4,6 +4,8 @@ import { gamesApi, usersApi } from '__api__';
 import { AppBar, Box, Paper, Tab, Tabs, Grid, Typography } from '@mui/material';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import OverallLeaderboard from 'components/dashboard/coproductionprocesses/OverallLeaderboard';
+import useAuth from 'hooks/useAuth';
+import PersonalLeaderboard from 'components/dashboard/coproductionprocesses/PersonalLeaderboard';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -29,8 +31,12 @@ const LeaderboardTab = ({ }) => {
     const { process } = useSelector((state) => state.process);
     const t = useCustomTranslation(process.language);
     const [value, setValue] = useState(0);
+    const [game, setGame] = useState({});
     const [users, setUsers] = useState([]);
+    const [place, setPlace] = useState(0);
     const [loading, setLoading] = useState(true);
+    const auth = useAuth();
+
 
     const handleLeaderboard = async (game) => {
         setLoading(true);
@@ -40,21 +46,23 @@ const LeaderboardTab = ({ }) => {
             us.push({ id: player.playerId, name: user.full_name, score: player.score });
         }
         setUsers(us);
+        setPlace(us.findIndex((user) => user.id === auth.user.id) + 1);
         setLoading(false);
     };
-
-
-
 
     const handleTabChange = (event, newValue) => {
         setValue(newValue);
     };
 
 
-
     useEffect(() => {
         gamesApi.getLeaderboard(process.id).then((res) => {
-            handleLeaderboard(res)
+            handleLeaderboard(res);
+        });
+
+        gamesApi.getGame(process.id).then((res) => {
+            setGame(res[0]);
+            console.log(res[0]);
         });
     }, []);
 
@@ -83,16 +91,23 @@ const LeaderboardTab = ({ }) => {
 
                             }
                         }}>
-                            <Tab label="Leaderboard" />
+                            <Tab label={t("Leaderboard")} />
+                            <Tab label={t("My Profile")} />
                         </Tabs>
                     </Box>
-
 
 
 
                     <TabPanel value={value} index={0}>
                         <OverallLeaderboard
                             users={users}
+                            loading={loading} />
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                        <PersonalLeaderboard
+                            user={auth.user}
+                            game={game}
+                            place={place}
                             loading={loading} />
                     </TabPanel>
 

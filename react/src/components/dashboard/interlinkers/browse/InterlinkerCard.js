@@ -196,6 +196,17 @@ const GridMode = ({ interlinker, t, linkProps }) => (
   </>
 );
 
+const slugify = (text) => {
+  return text
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, "_") // Replace spaces with _
+    .replace(/[^\w\-]+/g, "") // Remove all non-word chars
+    .replace(/\-\-+/g, "-") // Replace multiple - with single -
+    .replace(/^-+/, "") // Trim - from start of text
+    .replace(/-+$/, ""); // Trim - from end of text
+};
+
 const ListMode = ({ interlinker, t, linkProps }) => (
   <>
     <Grid container>
@@ -216,7 +227,7 @@ const ListMode = ({ interlinker, t, linkProps }) => (
               {...linkProps}
               variant="h6"
               title={interlinker.name}
-              data-cy={`interlinker-title-${interlinker.name}`}
+              data-cy={`interlinker-title-${slugify(interlinker.name)}`}
             >
               {interlinker.name}
             </Link>
@@ -231,6 +242,7 @@ const ListMode = ({ interlinker, t, linkProps }) => (
                   to="#"
                   variant="subtitle2"
                   title="teamname"
+                  data-cy={`interlinker-teamname-${slugify(interlinker.name)}`}
                 >
                   {t("Interlink platform")}
                 </Link>
@@ -253,7 +265,11 @@ const ListMode = ({ interlinker, t, linkProps }) => (
             p: 2,
           }}
         >
-          <Typography color="textSecondary" variant="body2">
+          <Typography
+            color="textSecondary"
+            variant="body2"
+            data-cy={`interlinker-description-${slugify(interlinker.name)}`}
+          >
             {HTMLtoText(
               truncate(interlinker.description, {
                 length: 500,
@@ -276,7 +292,11 @@ const ListMode = ({ interlinker, t, linkProps }) => (
         <Typography color="textPrimary" variant="subtitle2" sx={{ mb: 1 }}>
           {t("Nature")}
         </Typography>
-        <Typography color="textPrimary" variant="subtitle2">
+        <Typography
+          color="textPrimary"
+          variant="subtitle2"
+          data-cy={`interlinker-nature-${slugify(interlinker.name)}`}
+        >
           <NatureChip interlinker={interlinker} t={t} />
         </Typography>
       </Grid>
@@ -284,9 +304,21 @@ const ListMode = ({ interlinker, t, linkProps }) => (
         <Typography color="textPrimary" variant="subtitle2" sx={{ mb: 1 }}>
           {t("Rating")}
         </Typography>
-        <Rating readOnly size="small" value={interlinker.rating || 0} />
+        <Rating
+          readOnly
+          size="small"
+          value={interlinker.rating || 0}
+          data-cy={`interlinker-rating-${slugify(interlinker.name)}`}
+        />
       </Grid>
-      <Grid item xs={12} md={12} lg={6} xl={6}>
+      <Grid
+        item
+        xs={12}
+        md={12}
+        lg={6}
+        xl={6}
+        data-cy={`interlinker-keywords-${slugify(interlinker.name)}`}
+      >
         <Typography
           color="textPrimary"
           variant="subtitle2"
@@ -297,6 +329,7 @@ const ListMode = ({ interlinker, t, linkProps }) => (
         {interlinker.tags &&
           interlinker.tags.map((el) => (
             <Chip
+              data-cy={`interlinker-keyword-${slugify(el)}`}
               label={el}
               key={el}
               size="small"
