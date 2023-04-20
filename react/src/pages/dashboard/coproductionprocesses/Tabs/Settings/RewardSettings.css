@@ -1,0 +1,79 @@
+.col-reward-setting p {
+  font-weight: 600 !important;
+}
+.col-reward-setting {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 80%;
+  width: 100%;
+  font-family: "Segoe UI";
+}
+.holder {
+  height: 100vh;
+  overflow: hidden;
+  width: 100;
+}
+.col-reward-left,
+.col-reward-right {
+  height: 300px;
+  max-height: 80%;
+  overflow-y: auto !important;
+}
+
+/* hide scrollbar for col-reward-left */
+.col-reward-left::-webkit-scrollbar {
+  display: none;
+}
+.col-reward-left {
+  height: 70%;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+  overflow-y: scroll;
+  padding-bottom: 5rem;
+}
+
+.reward-left-number {
+  color: #0f97c7;
+}
+
+.col-reward-right {
+  text-align: center;
+  height: fit-content;
+  position: fixed;
+  right: 5%;
+  width: 50%;
+}
+
+.box-reward > li {
+  display: flex;
+  align-items: center;
+}
+
+.footer {
+  position: fixed;
+  bottom: 10%;
+  padding-block: 1rem;
+  width: 80%;
+  background-color: #fff;
+  left: 10%;
+  border-top: 1px solid #e5e5e5;
+  padding-inline: 1rem;
+}
+
+.footer p {
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .col-reward-setting {
+    flex-direction: column-reverse;
+  }
+
+  .col-reward-right {
+    height: 300px;
+    max-height: 100%;
+    overflow-y: auto !important;
+    position: inherit;
+  }
+}
