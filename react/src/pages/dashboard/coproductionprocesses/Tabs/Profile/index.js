@@ -99,7 +99,7 @@ export default function Profile({}) {
       </AppBar>
       <Paper>
         <Grid container columns={{ xs: 12, md: 12 }} sx={{ m: 2 }} spacing={2}>
-          <Grid item xs={12} md={1}>
+          <Grid item xs={12} md={1} >
             <Stack>
               <Avatar
                 variant="rounded"
@@ -110,7 +110,7 @@ export default function Profile({}) {
               </Avatar>
               <Typography variant="h6" sx={{ mb: 2, ml: 1 }}>
                 <Chip
-                  label={t("Finished")}
+                  label={t(process.status)}
                   size="small"
                   sx={{ mt: "-5px" }}
                   color="primary"
@@ -130,7 +130,7 @@ export default function Profile({}) {
           <Grid item xs={12} md={3}>
             <Stack
               direction="column"
-              justifyContent="center"
+              
               alignItems="flex-end"
               spacing={0}
             >
