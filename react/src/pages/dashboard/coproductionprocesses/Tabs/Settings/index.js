@@ -64,11 +64,14 @@ const SettingsTab = () => {
   const [storiesList, setStoriesList] = useState([]);
   const [jsonPropertiesFile, setJsonPropertiesFile] = useState(null);
   const [editMode, setEditMode] = useState(false);
-
-  const [isLightboxOpen, setIsLightboxOpen] = useState(true);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [isRewardingAtivated, setIsRewardingAtivated] = useState(false);
 
   const handleOpenLightbox = () => {
-    setIsLightboxOpen(true);
+    if (!isRewardingAtivated) {
+      setIsLightboxOpen(true);
+    }
+    setIsRewardingAtivated(!isRewardingAtivated);
   };
 
   const handleCloseLightbox = () => {
@@ -841,8 +844,12 @@ const SettingsTab = () => {
                       color="secondary"
                     />
                     */}
-                    <Button variant="contained" onClick={handleOpenLightbox}>
-                      {t("Activate")}
+                    <Button
+                      variant="contained"
+                      color={isRewardingAtivated ? "error" : "success"}
+                      onClick={handleOpenLightbox}
+                    >
+                      {isRewardingAtivated ? t("Deactivate") : t("Activate")}
                     </Button>
                   </>
                 }
@@ -854,7 +861,7 @@ const SettingsTab = () => {
               <div>
                 {isLightboxOpen && (
                   <Lightbox onClose={handleCloseLightbox}>
-                    <RewardSettings />
+                    <RewardSettings onClose={handleCloseLightbox} />
                   </Lightbox>
                 )}
               </div>
