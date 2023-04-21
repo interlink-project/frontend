@@ -15,8 +15,8 @@ import {
 } from "@mui/material";
 import CreateSchema from "components/dashboard/SchemaSelector";
 import RoadmapCustomized from "components/home/RoadmapCustomized";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import Lightbox from "../../../components/Lightbox";
+import RewardSettings from "../../../pages/dashboard/coproductionprocesses/Tabs/Settings/RewardSettings";
 
 import useAuth from "hooks/useAuth";
 import { useCustomTranslation } from "hooks/useDependantTranslation";
@@ -27,15 +27,11 @@ import { styled } from "@mui/material/styles";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
-import { relativeTimeRounding } from "moment";
 import SelectTypeCoproProcess from "./SelectTypeCoproProcess";
-import SelectGovernanceModel from "./SelectGovernanceModel";
-import { getProcess, updateProcess } from "slices/process";
+import { updateProcess } from "slices/process";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ArrowForward,
-  ArrowLeft,
-  ArrowRight,
   Groups,
   Construction,
   Build,
@@ -161,9 +157,24 @@ export default function TimeLine({ assets }) {
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [roadItemIndex, setRoadItemIndex] = React.useState("section_1");
+  const [isLightboxOpen, setIsLightboxOpen] = React.useState(false);
+  const [isRewardingAtivated, setIsRewardingAtivated] = React.useState(false);
 
   const [selectorTypeOpen, setSelectorTypeOpen] = React.useState(false);
   const [selectorTypeLoading, setSelectorTypeLoading] = React.useState(false);
+
+  const handleOpenLightbox = () => {
+    if (!isRewardingAtivated) {
+      setIsLightboxOpen(true);
+    }
+    if (isRewardingAtivated) {
+      setIsRewardingAtivated(!isRewardingAtivated);
+    }
+  };
+
+  const handleCloseLightbox = () => {
+    setIsLightboxOpen(false);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -196,7 +207,7 @@ export default function TimeLine({ assets }) {
 
   const setHideguidechecklist = async () => {
     const values = { hideguidechecklist: true };
-    if(hasSchema){
+    if (hasSchema) {
       try {
         dispatch(
           updateProcess({
@@ -209,15 +220,13 @@ export default function TimeLine({ assets }) {
       } catch (err) {
         console.error(err);
       }
-      navigate("/dashboard/coproductionprocesses/"+process.id+"/profile");
-    }else{
-      alert('It is not possible to hide the guide before selecting the scheme.')
+      navigate("/dashboard/coproductionprocesses/" + process.id + "/profile");
+    } else {
+      alert(
+        "It is not possible to hide the guide before selecting the scheme."
+      );
     }
-   
   };
-  
-
-
 
   const setHasAddAnOrganization = async () => {
     const values = { hasAddAnOrganization: true };
@@ -344,9 +353,7 @@ export default function TimeLine({ assets }) {
                       </Typography>
 
                       <Typography variant="subtitle1">
-                        {t(
-                          "Ok firstly- if you"
-                        )}
+                        {t("Ok firstly- if you")}
                       </Typography>
                       <Stack
                         direction="row"
@@ -364,11 +371,11 @@ export default function TimeLine({ assets }) {
                           {t("Go to organizations")}
                         </Button>
                         <Link href="#" onClick={setHasAddAnOrganization}>
-                        {t("already done")}
+                          {t("already done")}
                         </Link>
                       </Stack>
                     </Stack>
-                    
+
                     <IconButton
                       onClick={() => nextSect("section_2")}
                       color="primary"
@@ -517,13 +524,11 @@ export default function TimeLine({ assets }) {
                   <Grid item xs={6} sx={{ minHeight: "55vh" }}>
                     <Stack spacing={1}>
                       <Typography variant="h6">
-                        {t("What is your project")+'?'}
+                        {t("What is your project") + "?"}
                       </Typography>
 
                       <Typography variant="subtitle1">
-                        {t(
-                          "Every co-production process has particular"
-                        )+'.'}
+                        {t("Every co-production process has particular") + "."}
                       </Typography>
 
                       <Button
@@ -609,9 +614,7 @@ export default function TimeLine({ assets }) {
                       </Typography>
 
                       <Typography variant="subtitle1">
-                        {t(
-                          "The schemas give to the user some directives"
-                        )}
+                        {t("The schemas give to the user some directives")}
                       </Typography>
 
                       {hasSchema ? (
@@ -712,11 +715,7 @@ export default function TimeLine({ assets }) {
                       </Typography>
 
                       <Button
-                        onClick={() =>
-                          navigate(
-                            `/dashboard/coproductionprocesses/${process.id}/settings`
-                          )
-                        }
+                        onClick={() => handleOpenLightbox()}
                         size="small"
                         variant="contained"
                         sx={{ maxWidth: "200px" }}
@@ -888,9 +887,7 @@ export default function TimeLine({ assets }) {
                       </Typography>
 
                       <Typography variant="subtitle1">
-                        {t(
-                          "Once you add a resource to a tree element"
-                        )}
+                        {t("Once you add a resource to a tree element")}
                       </Typography>
 
                       {dataFulfilled ? (
@@ -921,7 +918,7 @@ export default function TimeLine({ assets }) {
                           {t("Go to Resources section")}
                         </Button>
                         <Link href="#" onClick={setSkipResourcesStep}>
-                        {t("or just skip")}
+                          {t("or just skip")}
                         </Link>
                       </Stack>
                     </Stack>
@@ -987,7 +984,7 @@ export default function TimeLine({ assets }) {
               }}
               id={"section_8"}
             >
-              <StepLabel  StepIconComponent={Flag} >
+              <StepLabel StepIconComponent={Flag}>
                 <Grid
                   container
                   direction="column"
@@ -1000,55 +997,58 @@ export default function TimeLine({ assets }) {
                     </Typography>
 
                     <Typography variant="subtitle1">
-                      {t(
-                        "You completed all the preliminar phases"
-                      )}
+                      {t("You completed all the preliminar phases")}
                     </Typography>
                     <Typography variant="subtitle1">
                       {t(
                         "Good luck for your process and remember, work inclusive"
                       )}
                     </Typography>
-                    
                   </Grid>
 
                   <Stack
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                        divider={<Divider orientation="vertical" flexItem />}
-                        spacing={2}
-                      >
-                        <Button
-                        onClick={() =>
-                          navigate(
-                            `/dashboard/coproductionprocesses/${process.id}/guide`
-                          )
-                        }
-                        
-                        variant="contained"
-                        sx={{ maxWidth: "500px", mt: 2 }}
-                      >
-                        {t("Go to guide section and start your job")}
-                      </Button>
-                        <Link href="#" onClick={setHideguidechecklist}>
-                        {t("Hide this guide")}
-                        </Link>
-                      </Stack>
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    divider={<Divider orientation="vertical" flexItem />}
+                    spacing={2}
+                  >
+                    <Button
+                      onClick={() =>
+                        navigate(
+                          `/dashboard/coproductionprocesses/${process.id}/guide`
+                        )
+                      }
+                      variant="contained"
+                      sx={{ maxWidth: "500px", mt: 2 }}
+                    >
+                      {t("Go to guide section and start your job")}
+                    </Button>
+                    <Link href="#" onClick={setHideguidechecklist}>
+                      {t("Hide this guide")}
+                    </Link>
+                  </Stack>
 
-
-                 
                   <Grid item>
                     <img
                       src="/static/guide/overview_step8.svg"
                       height="450px"
                     ></img>
                   </Grid>
-
-                 
                 </Grid>
               </StepLabel>
             </Step>
+          )}
+          {console.log({ isLightboxOpen })}
+          {isLightboxOpen && (
+            <Lightbox onClose={handleCloseLightbox}>
+              <RewardSettings
+                onClose={handleCloseLightbox}
+                activateReward={() => {
+                  setIsRewardingAtivated(true);
+                }}
+              />
+            </Lightbox>
           )}
 
           {/* <Step active completed={!!dataFulfilled}>

@@ -71,7 +71,9 @@ const SettingsTab = () => {
     if (!isRewardingAtivated) {
       setIsLightboxOpen(true);
     }
-    setIsRewardingAtivated(!isRewardingAtivated);
+    if (isRewardingAtivated) {
+      setIsRewardingAtivated(!isRewardingAtivated);
+    }
   };
 
   const handleCloseLightbox = () => {
@@ -861,7 +863,12 @@ const SettingsTab = () => {
               <div>
                 {isLightboxOpen && (
                   <Lightbox onClose={handleCloseLightbox}>
-                    <RewardSettings onClose={handleCloseLightbox} />
+                    <RewardSettings
+                      onClose={handleCloseLightbox}
+                      activateReward={() => {
+                        setIsRewardingAtivated(true);
+                      }}
+                    />
                   </Lightbox>
                 )}
               </div>

@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 
 const RewardSettings = (props) => {
-  const { onClose } = props;
+  const { onClose, activateReward } = props;
   const [leaderboard, setLeaderboard] = useState(true);
   const [individualChart, setIndividualChart] = useState(true);
   const [classicChart, setClassicChart] = useState(true);
@@ -305,15 +305,16 @@ const RewardSettings = (props) => {
         </Grid>
       </Grid>
       <Grid container className="footer">
-        <Grid item md={9} sm={12}>
+        <Grid item md={8} sm={12}>
           <Typography variant="body1" className="footer-instruction">
             {t(
               "If you change your mind during the process, you can disable this function in the settings"
             )}
           </Typography>
         </Grid>
-        <Grid item md={3} sm={12} className="skip-reward">
+        <Grid item md={2} sm={12} className="skip-reward">
           <Link
+            href="#"
             variant="body2"
             color="textSecondary"
             onClick={() => {
@@ -323,6 +324,18 @@ const RewardSettings = (props) => {
             {t("I want to skip that part")}
           </Link>
         </Grid>
+        <Grid item md={2} sm={12} className="skip-reward">
+          <Link
+            href="#"
+            variant="body2"
+            onClick={() => {
+              activateReward();
+              onClose();
+            }}
+          >
+            {t("Active this function")}
+          </Link>
+        </Grid>
       </Grid>
     </>
   );
@@ -330,10 +343,12 @@ const RewardSettings = (props) => {
 
 RewardSettings.propTypes = {
   onClose: PropTypes.func,
+  activateReward: PropTypes.func,
 };
 
 RewardSettings.defaultProps = {
   onClose: () => {},
+  activateReward: () => {},
 };
 
 export default RewardSettings;
