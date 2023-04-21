@@ -289,7 +289,7 @@ export default function TimeLine({ assets }) {
         >
           <Grid item xs={3}>
             <Typography variant="subtitle2" sx={{ m: 2 }}>
-              Roadmap
+              {t("Roadmap")}
             </Typography>
           </Grid>
           <Grid item xs={3}>
@@ -345,7 +345,7 @@ export default function TimeLine({ assets }) {
 
                       <Typography variant="subtitle1">
                         {t(
-                          "Ok firstly, if you haven't done so before, create your own organization and teams for your project. take into account that if you select your organization as public, it will be visible to all users of the platform. So once you created your organization, you will find inside it a button to create teams."
+                          "Ok firstly- if you"
                         )}
                       </Typography>
                       <Stack
@@ -364,7 +364,7 @@ export default function TimeLine({ assets }) {
                           {t("Go to organizations")}
                         </Button>
                         <Link href="#" onClick={setHasAddAnOrganization}>
-                          already done
+                        {t("already done")}
                         </Link>
                       </Stack>
                     </Stack>
@@ -433,7 +433,7 @@ export default function TimeLine({ assets }) {
 
                       <Typography variant="subtitle1">
                         {t(
-                          "The coproduction process data are a set of attributes that serve to define the process to be carried out. At this point you will describe the aim of the project, challenges, which is the organization of the project etc. Than you can also set others administrators for the project [OPTIONAL]. They can update the co-production process information, add permissions to the tree items or add new administrators."
+                          "The coproduction process data are a set of attributes that serve to define the process to be carried out"
                         )}
                       </Typography>
 
@@ -517,13 +517,13 @@ export default function TimeLine({ assets }) {
                   <Grid item xs={6} sx={{ minHeight: "55vh" }}>
                     <Stack spacing={1}>
                       <Typography variant="h6">
-                        {t("What is your project?")}
+                        {t("What is your project")+'?'}
                       </Typography>
 
                       <Typography variant="subtitle1">
                         {t(
-                          "Every co-production process has particular characteristics and consequently each one has a specific schema to be followed. To help you in the selection of the schema (next step), you can tell us which type of co-production process you are going to do. Click on the button to select some keywords and we will help you to select the right type of coproduction process."
-                        )}
+                          "Every co-production process has particular"
+                        )+'.'}
                       </Typography>
 
                       <Button
@@ -610,7 +610,7 @@ export default function TimeLine({ assets }) {
 
                       <Typography variant="subtitle1">
                         {t(
-                          "The schemas give to the user some directives on how to proceed in the overall process. Phases, objectives and tasks of the co-production process. Click on the button and search for the optimal coproduction schema for your process. Nevertheless, you can undo this action (clear the coproduction tree) in the settings section."
+                          "The schemas give to the user some directives"
                         )}
                       </Typography>
 
@@ -707,7 +707,7 @@ export default function TimeLine({ assets }) {
 
                       <Typography variant="subtitle1">
                         {t(
-                          "If you want to incentivize your collaborators to do their best, try our reward system. If you active this function, you will be able to set the difficulty of each task. At the end of the task you will have to decide the level of contribute of each collaborator that will give him a reward. The reward system needs to be connected with an external portal of vouchers so that the collaborator can take his reward. Click on the button, check how it works and decide if you want to active this function."
+                          "If you want to incentivize your collaborators to do their best"
                         )}
                       </Typography>
 
@@ -797,7 +797,7 @@ export default function TimeLine({ assets }) {
 
                       <Typography variant="subtitle1">
                         {t(
-                          "Now you can allow teams to work on the coproduction process. For that, associate permissions to teams by navigating to the Team section and adding permission for the whole coproduction process. Otherwise you can go to Guide section and add new permissions for distinct tree items (objectives, tasks)."
+                          "Now you can allow teams to work on the coproduction process"
                         )}
                       </Typography>
 
@@ -884,12 +884,12 @@ export default function TimeLine({ assets }) {
                   <Grid item xs={6} sx={{ minHeight: "55vh" }}>
                     <Stack spacing={1}>
                       <Typography variant="h6">
-                        {t("Your Interlinkers/Resources")}
+                        {t("Your Interlinkers-Resources")}
                       </Typography>
 
                       <Typography variant="subtitle1">
                         {t(
-                          "Once you add a resource to a tree element, it will be visible into the Resources section. You will see the tree element from which it came and some useful infos abouts the resources."
+                          "Once you add a resource to a tree element"
                         )}
                       </Typography>
 
@@ -921,7 +921,7 @@ export default function TimeLine({ assets }) {
                           {t("Go to Resources section")}
                         </Button>
                         <Link href="#" onClick={setSkipResourcesStep}>
-                          or just skip
+                        {t("or just skip")}
                         </Link>
                       </Stack>
                     </Stack>
@@ -996,17 +996,17 @@ export default function TimeLine({ assets }) {
                 >
                   <Grid item>
                     <Typography variant="h3">
-                      {t("Well done! You're ready to start")}
+                      {t("Well done-Youre ready to start")}
                     </Typography>
 
                     <Typography variant="subtitle1">
                       {t(
-                        "You completed all the preliminar phases and now you're ready to start your job using the Guide section."
+                        "You completed all the preliminar phases"
                       )}
                     </Typography>
                     <Typography variant="subtitle1">
                       {t(
-                        "Good luck for your process and remember, work inclusive."
+                        "Good luck for your process and remember, work inclusive"
                       )}
                     </Typography>
                     
@@ -1032,7 +1032,7 @@ export default function TimeLine({ assets }) {
                         {t("Go to guide section and start your job")}
                       </Button>
                         <Link href="#" onClick={setHideguidechecklist}>
-                          Hide this guide.
+                        {t("Hide this guide")}
                         </Link>
                       </Stack>
 

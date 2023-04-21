@@ -26,12 +26,15 @@ import {
 
 
 
+
 import { LoadingButton } from "@mui/lab";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getLanguage, LANGUAGES } from "translations/i18n";
 import { Done, Delete, Close, KeyboardArrowRight } from "@mui/icons-material";
 import SelectGovernanceModel from "./SelectGovernanceModel";
+
+
 
 export default function SelectTypeCoproProcess({
   open,
@@ -43,11 +46,12 @@ export default function SelectTypeCoproProcess({
 
 
   const [language, setLanguage] = useState(getLanguage());
+  const { t } = useTranslation();
 
-  const [listKeywords, setListKeywords] = useState(['NoProfit', 'Social', 'Linear-Hierarchy', 'Public Administration', 'Citizens']);
+  const [listKeywords, setListKeywords] = useState(t("list-tags-governance-predefined").split(","));
   const [listSelectedKeywords, setListSelectedKeywords] = useState([]);
 
-  const { t } = useTranslation();
+  
 
   const [openGovernanceSelector, setOpenGovernanceSelector] = React.useState(false);
   const [selectorGovTypeLoading,setSelectorGovTypeLoading]= React.useState(false);
@@ -65,6 +69,9 @@ export default function SelectTypeCoproProcess({
     });
 
     //Actions for next
+    //Save the tags related to the process.
+    
+
     setOpen(false);
     setLoading(false);
     setOpenGovernanceSelector(true);

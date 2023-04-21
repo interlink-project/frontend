@@ -60,47 +60,27 @@ export default function SelectGovernanceModel({
   const [listGovernanceModels, setListGovernanceModels] = useState([
     {
       recomended: true,
-      title: "Citizen Sourcing (C2G)",
-      description: `Occurs when government design and delivers a service, but asks
-     citizens for the voluntary commitment of resources to improve the
-     service itself, such as their personal data.`,
-      example: `The city of Boston provides a Citizen Connect iPhone App
-     that allows constituents to report various services
-     requests, including for removing greffiti, filling
-     potholes, adn fixing traffic lights.`,
+      title: t("Citizen Sourcing"),
+      description: t("Occurs when government design"),
+      example: t("The city of Boston provides a Citizen"),
+    },
+    {
+      recomended: true,
+      title: t("Public Civil Partnership"),
+      description: t("Occurs when government, citizen"),
+      example: t("In December 2016 the city of Ghent"),
     },
     {
       recomended: false,
-      title: "Public Civil Partnership (G+G)",
-      description: `Occurs when government design and delivers a service, but asks
-       citizens for the voluntary commitment of resources to improve the
-       service itself, such as their personal data.`,
-      example: `The city of Boston provides a Citizen Connect iPhone App
-       that allows constituents to report various services
-       requests, including for removing greffiti, filling
-       potholes, adn fixing traffic lights.`,
+      title: t("Government as a Platform"),
+      description: t("Is a specific type of co-delivery"),
+      example: t("The UK Government Digital Service adopted"),
     },
     {
       recomended: false,
-      title: "Government as a Platform (G2C)",
-      description: `Occurs when government design and delivers a service, but asks
-       citizens for the voluntary commitment of resources to improve the
-       service itself, such as their personal data.`,
-      example: `The city of Boston provides a Citizen Connect iPhone App
-       that allows constituents to report various services
-       requests, including for removing greffiti, filling
-       potholes, adn fixing traffic lights.`,
-    },
-    {
-      recomended: false,
-      title: "Citizen-to-Citizen (C2C)",
-      description: `Occurs when government design and delivers a service, but asks
-       citizens for the voluntary commitment of resources to improve the
-       service itself, such as their personal data.`,
-      example: `The city of Boston provides a Citizen Connect iPhone App
-       that allows constituents to report various services
-       requests, including for removing greffiti, filling
-       potholes, adn fixing traffic lights.`,
+      title: t("Citizen-to-Citizen"),
+      description: t("Is a situation in which citizens self-organize services"),
+      example: t("Etsy alloys company owners to create their"),
     },
   ]);
 
@@ -113,9 +93,11 @@ export default function SelectGovernanceModel({
             <Grid xs={9}>
             <Typography variant="h6">{governanceModel.title}</Typography>
           </Grid>
+          
           <Grid xs={3}>
-            <Typography variant="h6" color="primary">{bull}Recomended</Typography>
-          </Grid>
+          <Typography variant="subtitle2" color="primary">{bull}{t("Recomended")}</Typography>
+          </Grid>  
+          
           </>
         ):(
             <Grid xs={12}>
@@ -126,13 +108,13 @@ export default function SelectGovernanceModel({
         </Grid>
 
         <Typography variant="body2">{governanceModel.description}</Typography>
-        <Typography variant="subtitle2">Example</Typography>
+        <Typography variant="subtitle2">{t("For example")+':'}</Typography>
         <Typography variant="body2">{governanceModel.example}</Typography>
       </CardContent>
       <CardActions>
         <Grid container justifyContent="flex-end">
           <Button onClick={handleClick} variant="contained" size="small">
-            Select
+          {t("Select")}
           </Button>
         </Grid>
       </CardActions>
