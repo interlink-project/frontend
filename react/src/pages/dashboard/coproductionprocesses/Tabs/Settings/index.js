@@ -851,7 +851,7 @@ const SettingsTab = () => {
                       color={isRewardingAtivated ? "error" : "success"}
                       onClick={handleOpenLightbox}
                     >
-                      {isRewardingAtivated ? t("Deactivate") : t("Activate")}
+                      {isRewardingAtivated ? t("Deactivate") : t("Settings")}
                     </Button>
                   </>
                 }
