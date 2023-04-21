@@ -49,16 +49,16 @@ function ProcessRow({ process, t }) {
       hover
       sx={{ "& > *": { borderBottom: "unset" }, cursor: "pointer" }}
       onClick={() => {
-        
-        if (process.hideguidechecklist){
+
+        if (process.hideguidechecklist) {
           navigate(`/dashboard/coproductionprocesses/${process.id}/profile`)
         }
-        else{
+        else {
           navigate(`/dashboard/coproductionprocesses/${process.id}/overview`)
-          
+
         }
-      
-        
+
+
       }}
     >
       <TableCell align="center">
@@ -126,7 +126,6 @@ const ProjectsOverview = () => {
   const mounted = useMounted();
   const { user, isAuthenticated } = useAuth();
 
-  const [rows, setRows] = React.useState([]);
   const columns = [
     {
       field: 'icon',
@@ -144,7 +143,49 @@ const ProjectsOverview = () => {
         );
       }
     },
+    {
+      field: 'name',
+      headerName: t("Name"),
+      flex: 1,
+      headerAlign: 'center',
+    },
+    {
+      field: 'created',
+      headerName: t("Created"),
+      flex: 1,
+      headerAlign: 'center',
+    },
+    {
+      field: 'status',
+      headerName: t("Status"),
+      flex: 1,
+      headerAlign: 'center',
+    },
+    {
+      field: 'teams',
+      headerName: t("Teams"),
+      flex: 1,
+      headerAlign: 'center',
+    },
+    {
+      field: 'participation',
+      headerName: t("Your participation in the process"),
+      flex: 1,
+      headerAlign: 'center',
+    },
+
   ]
+
+
+  const rows = processes.map((process) => {
+    return {
+      id: process.id,
+      name: process.name,
+      
+    }
+  })
+
+
 
   const getCoproductionProcessesData = React.useCallback(
     async (search) => {
@@ -284,25 +325,25 @@ const ProjectsOverview = () => {
                 />
               </Box>
               <DataGrid
-              rows={rows}
-              columns={columns}
-              pageSizeOptions={[5]}
-              disableSelectionOnClick
-              rowSelection={false}
-              disableRowSelectionOnClick={true}
-              autoHeight
-              onRowClick={(params) => {
-                if (params.row.data.type === 'internalasset') {
-                  window.open(`${params.row.dataExtra.link}/view`, '_blank');
-                } else {
-                  window.open(params.row.data.uri);
-                }
-              }}
-              localeText={{
-                noRowsLabel: t("No coproduction processes found"),
-              }}
+                rows={rows}
+                columns={columns}
+                pageSizeOptions={[5]}
+                disableSelectionOnClick
+                rowSelection={false}
+                disableRowSelectionOnClick={true}
+                autoHeight
+                onRowClick={(params) => {
+                  if (params.row.data.type === 'internalasset') {
+                    window.open(`${params.row.dataExtra.link}/view`, '_blank');
+                  } else {
+                    window.open(params.row.data.uri);
+                  }
+                }}
+                localeText={{
+                  noRowsLabel: t("No coproduction processes found"),
+                }}
 
-            />
+              />
               <TableContainer component={Paper} data-cy="table-process-header">
                 <Table>
                   <TableHead>
