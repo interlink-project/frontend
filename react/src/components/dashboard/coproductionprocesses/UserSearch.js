@@ -249,7 +249,7 @@ const UserSearch = ({
       {importCsv && (
         <>
           <Button sx={{ mt: 2 }} variant="contained" component="label">
-            {t("Import from csv")}
+            {t("Import from CSV")}
             <input
               type="file"
               accept=".csv"

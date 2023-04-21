@@ -64,3 +64,23 @@ Now, you should select a given team through the window that pops us with all ava
 
 The selected team should have access rights granted to the resources generated across the whole co-production tree. In this case we have only granted resource view access to this team, they can neither write nor delete resources. 
 ![Team selection for assignment to co-production process](images/team-assigned-process-view-resources-only.png)
+
+## Exporting team members mails to a CSV file
+
+You may export the list of members of a given team to a CSV file by clicking on the button "Download e-mails" as shown in the figure below.
+![Export team members to CSV](images/team-export-members-to-csv.png)
+
+## Creating a new team or adding users to already created one from a CSV file
+
+You may create a new team or add users to an already created one by importing a CSV file with the list of users to be added. The CSV file must have the following format:
+
+- All the mails should be in the first column.
+- One mail per row.
+
+Here you can download a [sample CSV file](/files/sample-csv-file.csv) with the list of users to be added to a team.
+
+Once you have the CSV file, you can import it by clicking on the button "Import from CSV" as shown in the figure below to create the team with the imported members.
+![Import team members from CSV](images/team-create-members-from-csv.png)
+
+Furthermore, you can import it by clicking on the button "Import from CSV" as shown in the figure below to add the imported members to an already created team.
+![Import team members from CSV](images/team-export-members-to-csv.png)
