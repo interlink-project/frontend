@@ -1039,7 +1039,6 @@ export default function TimeLine({ assets }) {
               </StepLabel>
             </Step>
           )}
-          {console.log({ isLightboxOpen })}
           {isLightboxOpen && (
             <Lightbox onClose={handleCloseLightbox}>
               <RewardSettings
