@@ -103,7 +103,7 @@ export default function Profile({}) {
             <Stack>
               <Avatar
                 variant="rounded"
-                sx={{ width: "80px", height: "80px" }}
+                sx={{ width: "90px", height: "80px",ml:1 }}
                 src={process && process.logotype_link}
               >
                 {" "}
@@ -112,7 +112,7 @@ export default function Profile({}) {
                 <Chip
                   label={t(process.status)}
                   size="small"
-                  sx={{ mt: "-5px" }}
+                  sx={{ width: "95px",mt: "-5px" }}
                   color="primary"
                 />
               </Typography>
