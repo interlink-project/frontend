@@ -484,16 +484,16 @@ const Assets = ({ language, loading, getActions = null }) => {
       }
   
     }
+    console.log("asset",asset);
     return {
       id: asset.id,
       icon: asset.internalData.icon,
       name: asset.internalData.name,
-      updated: moment(asset.internalData.updated_at || asset.internalData.created_at).fromNow(),
+      updated: moment(asset.updated_at || asset.created_at).fromNow(),
       actions: getActions && getActions(asset),
       data: asset,
       dataExtra: dataExtra
     }
-
   });
 
   const location = useLocation();
