@@ -42,7 +42,7 @@ const CONTRIBUTION_COLORS = {
 }
 
 const PersonalLeaderboard = ({ user, game, place, loading }) => {
-
+    
     const { process, tree, treeitems } = useSelector((state) => state.process);
     const [filteredGame, setFilteredGame] = useState({});
     const [phases, setPhases] = useState({});
@@ -105,14 +105,18 @@ const PersonalLeaderboard = ({ user, game, place, loading }) => {
                     <Typography variant="h3" component="h2" gutterBottom>
                         {t("Place")}:
                     </Typography>
-                    {place < 4 ?
+
+                    {place < 4 && place != 0 ?
                         <img
                             src={`/static/graphics/${place}place.svg`}
                             alt={'medal'}
                             loading="lazy"
                         />
-                        : <Typography variant="h2" component="h2" gutterBottom>
-                            {place}</Typography>}
+                        : place === 0 ?
+                            <Typography variant="h6" component="h6" gutterBottom>
+                                {t("No contributions yet")}</Typography>
+                            : <Typography variant="h2" component="h2" gutterBottom>
+                                {place}</Typography>}
 
 
                 </Grid>
@@ -125,7 +129,7 @@ const PersonalLeaderboard = ({ user, game, place, loading }) => {
                     alignItems="center"
                     justifyContent="center"
                 >
-                    <Grid item xs={3}>
+                    <Grid item xs={3} sx={{ mt: 2 }}>
                         <Typography variant="h5" component="h5">
                             {t("Your contribution in each task")}
                         </Typography>
@@ -143,7 +147,7 @@ const PersonalLeaderboard = ({ user, game, place, loading }) => {
                                     {objective.children.map((child) => (
                                         <ListItem>
                                             <ListItemSecondaryAction>
-                                                <Typography variant="body2" color={filteredGame[child.id] ? CONTRIBUTION_COLORS[filteredGame[child.id].contribution] : "primary" }>
+                                                <Typography variant="body2" color={filteredGame[child.id] ? CONTRIBUTION_COLORS[filteredGame[child.id].contribution] : "primary"}>
                                                     {filteredGame[child.id] ? CONTRIBUTION_LEVELS[filteredGame[child.id].contribution] + ' - ' + filteredGame[child.id].score + ' points' : "No contribution"}
                                                 </Typography>
 
