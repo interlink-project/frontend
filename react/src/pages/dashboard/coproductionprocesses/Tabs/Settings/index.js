@@ -65,7 +65,7 @@ const SettingsTab = () => {
   const [jsonPropertiesFile, setJsonPropertiesFile] = useState(null);
   const [editMode, setEditMode] = useState(false);
 
-  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(true);
 
   const handleOpenLightbox = () => {
     setIsLightboxOpen(true);
@@ -804,6 +804,7 @@ const SettingsTab = () => {
                 sx={{ mt: 2 }}
                 action={
                   <>
+                    {/*
                     <GoldSwitch
                       checked={isIncentiveModuleActive}
                       onChange={toggleIncentivesRewards}
@@ -812,6 +813,10 @@ const SettingsTab = () => {
                       disabled={!isAdministrator}
                       color="secondary"
                     />
+                    */}
+                    <Button variant="contained" onClick={handleOpenLightbox}>
+                      {t("Activate")}
+                    </Button>
                   </>
                 }
               >
@@ -820,8 +825,7 @@ const SettingsTab = () => {
                 )}
               </Alert>
               <div>
-                <button onClick={handleOpenLightbox}>Open eeeee</button>
-                {(isLightboxOpen || true) && (
+                {isLightboxOpen && (
                   <Lightbox onClose={handleCloseLightbox}>
                     <RewardSettings />
                   </Lightbox>

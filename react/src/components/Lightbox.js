@@ -1,9 +1,9 @@
 import PropTypes from "prop-types";
 import "./Lightbox.css";
-import { useTranslation } from "react-i18next";
+import { Link } from "@mui/material";
+
 const Lightbox = (props) => {
   const { onClose, children, datacyChildren, datacyClose } = props;
-  const { t } = useTranslation();
 
   return (
     <div className="lightbox">
@@ -11,14 +11,12 @@ const Lightbox = (props) => {
         className="lightbox__content"
         data-cy={`lightbox-children-${datacyChildren}`}
       >
-        {children}
-        <button
+        <Link
           className="lightbox__close"
           data-cy={`lightbox-close-${datacyClose}`}
           onClick={onClose}
-        >
-          {t("Close")}
-        </button>
+        ></Link>
+        {children}
       </div>
     </div>
   );

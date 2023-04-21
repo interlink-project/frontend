@@ -1,13 +1,4 @@
-import {
-  Grid,
-  Typography,
-  Box,
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-} from "@mui/material";
+import { Grid, Typography, Box, Link, Radio } from "@mui/material";
 import React, { useState, useRef, useEffect } from "react";
 import {
   SentimentSatisfied,
@@ -19,6 +10,8 @@ import { useTranslation } from "react-i18next";
 
 const RewardSettings = () => {
   const [leaderboard, setLeaderboard] = useState(true);
+  const [individualChart, setIndividualChart] = useState(true);
+  const [classicChart, setClassicChart] = useState(true);
 
   const { t } = useTranslation();
   return (
@@ -110,9 +103,9 @@ const RewardSettings = () => {
             </Grid>
             <Grid item md={11} sx={{ mt: 0 }}>
               <Typography variant="body1" className="reward-left-text">
-                Once finished a task you will have to set the contribute of
-                every collaborator assigning a level of contribution based on
-                four levels:{" "}
+                {t(
+                  "Once finished a task you will have to set the contribute of every collaborator assigning a level of contribution based on four levels:"
+                )}
                 <Box className="box-reward">
                   <li>
                     <Typography variant="body1">
@@ -168,13 +161,15 @@ const RewardSettings = () => {
             </Grid>
             <Grid item md={11} sx={{ mt: 0 }}>
               <Typography variant="body1" className="reward-left-text">
-                Now you have two ways, you can active the Leaderboard or not.
-                This function permit to the users to see (in addition to his
-                profile) the points of others collaborators. Obviously
-                activating this function you have to bear in mind that could
-                incetivize the competion beetween users.{" "}
+                {t(
+                  "Now you have two ways, you can active the Leaderboard or not. This function permit to the users to see (in addition to his profile) the points of others collaborators. Obviously activating this function you have to bear in mind that could incetivize the competion beetween users"
+                )}
+                .
                 <strong>
-                  Remember that in any case the admins will see the Leaderboard.
+                  {t(
+                    "Remember that in any case the admins will see the Leaderboard"
+                  )}
+                  .
                 </strong>
                 <p>
                   <Radio
@@ -184,7 +179,7 @@ const RewardSettings = () => {
                     name="radio-buttons"
                     inputProps={{ "aria-label": "A" }}
                   />
-                  2. Leaderboard + profile
+                  {t("Leaderboard + profile")}
                 </p>
                 <p>
                   <Radio
@@ -193,7 +188,7 @@ const RewardSettings = () => {
                     value="noleaderboard"
                     name="radio-buttons"
                   />
-                  No Leaderboard, only personal profile
+                  {t("No Leaderboard, only personal profile")}
                 </p>
               </Typography>
             </Grid>
@@ -206,7 +201,28 @@ const RewardSettings = () => {
             </Grid>
             <Grid item md={11} sx={{ mt: 0 }}>
               <Typography variant="body1" className="reward-left-text">
-                xxxxxxxxxxxxxxxx
+                <strong>
+                  {t("You can decide to set two types of chart")}:
+                </strong>
+                <p>
+                  <Radio
+                    checked={individualChart}
+                    onChange={(e) => setIndividualChart(!individualChart)}
+                    value="individualChart"
+                    name="radio-buttons"
+                    inputProps={{ "aria-label": "A" }}
+                  />
+                  {t("Individual chart (reccomended for citizens involving)")}
+                </p>
+                <p>
+                  <Radio
+                    checked={!individualChart}
+                    onChange={(e) => setIndividualChart(!individualChart)}
+                    value="individualChart"
+                    name="radio-buttons"
+                  />
+                  {t("Team chart")}
+                </p>
               </Typography>
             </Grid>
           </Grid>
@@ -218,7 +234,49 @@ const RewardSettings = () => {
             </Grid>
             <Grid item md={11} sx={{ mt: 0 }}>
               <Typography variant="body1" className="reward-left-text">
-                xxxxxxxxxxxxxxxx
+                {t(
+                  "You can also decide beetween two styles of Leaderboard. You can incetivize the podium or you can show it like the other positions. The podium into the Leaderboard does not mean that only the first three places can recive the reward, you can decide the distribution of the rewards as you want"
+                )}
+                .
+                <p>
+                  <Radio
+                    checked={classicChart}
+                    onChange={(e) => setClassicChart(!classicChart)}
+                    value="classicChart"
+                    name="radio-buttons"
+                    inputProps={{ "aria-label": "A" }}
+                  />
+                  {t("Classic chart")}
+                  <Box
+                    className="mt-1 mb-1"
+                    alt="Reward image 4"
+                    component="img"
+                    src={`/static/reward/Reward_image_4.svg`}
+                    sx={{
+                      height: "auto",
+                      maxWidth: "100%",
+                    }}
+                  ></Box>
+                </p>
+                <p>
+                  <Radio
+                    checked={!classicChart}
+                    onChange={(e) => setClassicChart(!classicChart)}
+                    value="classicChart"
+                    name="radio-buttons"
+                  />
+                  {t("Incetive podium")}
+                  <Box
+                    className="mt-1 mb-1"
+                    alt="Reward image 3"
+                    component="img"
+                    src={`/static/reward/Reward_image_5.svg`}
+                    sx={{
+                      height: "auto",
+                      maxWidth: "100%",
+                    }}
+                  ></Box>
+                </p>
               </Typography>
             </Grid>
           </Grid>
@@ -230,7 +288,7 @@ const RewardSettings = () => {
             </Grid>
             <Grid item md={11} sx={{ mt: 0 }}>
               <Typography variant="body1" className="reward-left-text">
-                xxxxxxxxxxxxxxxx
+                Once completed the project.......
               </Typography>
             </Grid>
           </Grid>
@@ -247,15 +305,18 @@ const RewardSettings = () => {
       <Grid container className="footer">
         <Grid item md={8} sm={12}>
           <Typography variant="body1" className="footer-instruction">
-            If you change your mind during the process, you can disable this
-            function in the settings
+            {t(
+              "If you change your mind during the process, you can disable this function in the settings"
+            )}
           </Typography>
         </Grid>
         <Grid item md={2} sm={6} className="skip-reward">
-          <Typography variant="body1">I want to skip that part</Typography>
+          <Link variant="body2" color="textSecondary">
+            {t("I want to skip that part")}
+          </Link>
         </Grid>
         <Grid item md={2} sm={6} className="activate-reward">
-          <Typography variant="body1"> Active this function</Typography>
+          <Link variant="body2">{t("Active this function")}</Link>
         </Grid>
       </Grid>
     </>
