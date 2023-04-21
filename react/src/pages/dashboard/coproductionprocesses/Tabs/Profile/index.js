@@ -94,7 +94,7 @@ export default function Profile({}) {
     <Box sx={{ pb: 3 }}>
       <AppBar sx={{ position: "relative" }}>
         <Typography variant="h6" sx={{ p: 2 }}>
-          {t("Profile")}
+          {t("Front Page")}
         </Typography>
       </AppBar>
       <Paper>
