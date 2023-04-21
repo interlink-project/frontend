@@ -16,7 +16,6 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { DataGrid } from '@mui/x-data-grid';
 import { Add, Folder, MenuBook } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import AuthGuardSkeleton from "components/guards/AuthGuardSkeleton";
@@ -42,7 +41,6 @@ import TeamAvatar from "components/TeamAvatar";
 
 function ProcessRow({ process, t }) {
   const navigate = useNavigate();
-
   return (
     <TableRow
       key={process.id}
@@ -125,26 +123,6 @@ const ProjectsOverview = () => {
   const dispatch = useDispatch();
   const mounted = useMounted();
   const { user, isAuthenticated } = useAuth();
-
-  const [rows, setRows] = React.useState([]);
-  const columns = [
-    {
-      field: 'icon',
-      headerName: '',
-      sortable: false,
-      flex: 0.05,
-      renderCell: (params) => {
-        return (
-          <Avatar
-            src={params.row.icon}
-            sx={{ height: '30px', width: '30px' }}
-          >
-            {!params.row.icon && <></>}
-          </Avatar>
-        );
-      }
-    },
-  ]
 
   const getCoproductionProcessesData = React.useCallback(
     async (search) => {
@@ -283,26 +261,6 @@ const ProjectsOverview = () => {
                   datacy={"search-process"}
                 />
               </Box>
-              <DataGrid
-              rows={rows}
-              columns={columns}
-              pageSizeOptions={[5]}
-              disableSelectionOnClick
-              rowSelection={false}
-              disableRowSelectionOnClick={true}
-              autoHeight
-              onRowClick={(params) => {
-                if (params.row.data.type === 'internalasset') {
-                  window.open(`${params.row.dataExtra.link}/view`, '_blank');
-                } else {
-                  window.open(params.row.data.uri);
-                }
-              }}
-              localeText={{
-                noRowsLabel: t("No coproduction processes found"),
-              }}
-
-            />
               <TableContainer component={Paper} data-cy="table-process-header">
                 <Table>
                   <TableHead>
