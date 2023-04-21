@@ -254,7 +254,7 @@ const MyWorkspace = () => {
                     }}
                     alt="welcome graph."
                     data-cy="welcome-dashboard-illustration"
-                    src="/coproduction/static/coproductionprocesses/Illustration.png"
+                    src="/static/guide/Illustration.png"
                   />
                 </Grid>
               </Grid>

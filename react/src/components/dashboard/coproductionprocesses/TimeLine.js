@@ -317,7 +317,7 @@ export default function TimeLine({ assets }) {
             linktoPage={`/dashboard/organizations`}
             sectionName="section_1"
             nextSectName="section_2"
-            picturePath="/coproduction/static/images/overview_step1.svg"
+            picturePath="/coproduction/static/guide/overview_step1.svg"
             pictureSize="450px"
           /> */}
 
@@ -380,7 +380,7 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/coproduction/static/images/overview_step1.svg"
+                      src="/static/guide/overview_step1.svg"
                       height="400vw"
                     ></img>
                   </Grid>
@@ -469,7 +469,7 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/coproduction/static/images/overview_step2.svg"
+                      src="/static/guide/overview_step2.svg"
                       height="350vw"
                     ></img>
                   </Grid>
@@ -556,7 +556,7 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/coproduction/static/images/overview_step3.svg"
+                      src="/static/guide/overview_step3.svg"
                       height="400vw"
                     ></img>
                   </Grid>
@@ -654,7 +654,7 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/coproduction/static/images/overview_step4.svg"
+                      src="/static/guide/overview_step4.svg"
                       height="330vw"
                     ></img>
                   </Grid>
@@ -743,7 +743,7 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/coproduction/static/images/overview_step5.svg"
+                      src="/static/guide/overview_step5.svg"
                       height="410vw"
                     ></img>
                   </Grid>
@@ -835,7 +835,7 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/coproduction/static/images/overview_step6.png"
+                      src="/static/guide/overview_step6.png"
                       height="410vw"
                     ></img>
                   </Grid>
@@ -944,7 +944,7 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/coproduction/static/images/overview_step7.svg"
+                      src="/static/guide/overview_step7.svg"
                       height="450vw"
                     ></img>
                   </Grid>
@@ -1040,7 +1040,7 @@ export default function TimeLine({ assets }) {
                  
                   <Grid item>
                     <img
-                      src="/coproduction/static/images/overview_step8.svg"
+                      src="/static/guide/overview_step8.svg"
                       height="450px"
                     ></img>
                   </Grid>
