@@ -535,7 +535,7 @@ const Assets = ({ language, loading, getActions = null }) => {
                 }
               }}
               localeText={{
-                noRowsLabel: 'No assets found'
+                noRowsLabel: t('No assets found')
               }}
 
             />
