@@ -134,12 +134,18 @@ const ProjectsOverview = () => {
       flex: 0.05,
       renderCell: (params) => {
         return (
-          <Avatar
-            src={params.row.icon}
-            sx={{ height: '30px', width: '30px' }}
-          >
-            {!params.row.icon && <></>}
-          </Avatar>
+          
+            params.row.is_part_of_publication ? <MenuBook sx={{ mr: 1 }} />
+              : params.row.logotype_link ? (
+                <Avatar
+                  sx={{ height: "25px", width: "25px" }}
+                  variant="rounded"
+                  src={params.row.logotype_link}
+                />
+              ) : (
+                <Folder />
+              )
+          
         );
       }
     },
@@ -148,40 +154,104 @@ const ProjectsOverview = () => {
       headerName: t("Name"),
       flex: 1,
       headerAlign: 'center',
+      align: 'center',
+      renderCell: (params) => {
+        return (
+          <b>{params.row.name}</b>
+        );
+      }
+
+    },
+    {
+      field: 'tags',
+      headerName: t("Tags"),
+      flex: 1,
+      headerAlign: 'center',
     },
     {
       field: 'created',
       headerName: t("Created"),
       flex: 1,
+      align: 'center',
       headerAlign: 'center',
+      renderCell: (params) => {
+        return (
+          moment(params.row.created_at).fromNow()
+        );
+      }
     },
     {
       field: 'status',
       headerName: t("Status"),
       flex: 1,
       headerAlign: 'center',
+      align: 'center',
+      renderCell: (params) => {
+        return (
+          <StatusChip t={t} status={params.row.status} />
+        );
+      }
     },
     {
       field: 'teams',
       headerName: t("Teams"),
       flex: 1,
       headerAlign: 'center',
+      align: 'center',
+      renderCell: (params) => {
+        return (
+          <AvatarGroup max={5} variant="rounded">
+            {params.row.teams.length > 0 ? (
+              params.row.teams.map((team) => (
+                <TeamAvatar
+                  sx={{ height: 25, width: 25 }}
+                  // key={team.id}
+                  team={team}
+                />
+              ))
+            ) : (
+              <Stack direction="row" alignItems="center">
+                <WarningIcon />
+                <Typography sx={{ ml: 2 }}>{t("No teams")}</Typography>
+              </Stack>
+            )}
+          </AvatarGroup>
+        )
+      }
+
+
     },
     {
       field: 'participation',
-      headerName: t("Your participation in the process"),
+      headerName: t("Roles"),
       flex: 1,
       headerAlign: 'center',
+      align: 'center',
+      renderCell: (params) => {
+        return (
+          params.row.participation.map((p) => (
+            <Chip key={p} label={p} />
+          )))
+      }
     },
+    
 
   ]
 
 
   const rows = processes.map((process) => {
+    console.log(process)
     return {
       id: process.id,
       name: process.name,
-      
+      created_at: process.created_at,
+      status: process.status,
+      teams: process.enabled_teams,
+      participation: process.current_user_participation,
+      tags: process.tags_ids,
+      is_part_of_publication: process.is_part_of_publication,
+      logotype_link: process.logotype_link,
+      hideguidechecklist: process.hideguidechecklist,
     }
   })
 
@@ -333,10 +403,11 @@ const ProjectsOverview = () => {
                 disableRowSelectionOnClick={true}
                 autoHeight
                 onRowClick={(params) => {
-                  if (params.row.data.type === 'internalasset') {
-                    window.open(`${params.row.dataExtra.link}/view`, '_blank');
-                  } else {
-                    window.open(params.row.data.uri);
+                  if (params.row.hideguidechecklist) {
+                    navigate(`/dashboard/coproductionprocesses/${params.row.id}/profile`)
+                  }
+                  else {
+                    navigate(`/dashboard/coproductionprocesses/${params.row.id}/overview`)
                   }
                 }}
                 localeText={{
