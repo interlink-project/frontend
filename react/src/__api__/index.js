@@ -15,5 +15,6 @@ import { teamsApi } from './coproduction/teamsApi';
 import { storiesApi } from './coproduction/storiesApi';
 import { usersApi } from './users';
 import { problemprofilesApi } from './catalogue/problemProfilesApi';
-export { storiesApi, problemprofilesApi, permissionsApi, organizationsApi, usernotificationsApi,coproductionprocessnotificationsApi, assetsApi, knowledgeInterlinkersApi, softwareInterlinkersApi, coproductionProcessesApi, coproductionSchemasApi, teamsApi, usersApi, tasksApi, phasesApi, objectivesApi, interlinkersApi };
+import {recommenderApi} from './coproduction/recommenderApi';
+export { storiesApi, problemprofilesApi, permissionsApi, organizationsApi, usernotificationsApi,coproductionprocessnotificationsApi, assetsApi, knowledgeInterlinkersApi, softwareInterlinkersApi, coproductionProcessesApi, coproductionSchemasApi, teamsApi, usersApi, tasksApi, phasesApi, objectivesApi, interlinkersApi, recommenderApi };
 export { gamesApi } from './gamification/gamesApi';

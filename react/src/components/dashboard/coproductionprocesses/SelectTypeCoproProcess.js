@@ -21,41 +21,36 @@ import {
   TextField,
   Typography,
   Stack,
-  Chip
+  Chip,
 } from "@mui/material";
-
-
-
 
 import { LoadingButton } from "@mui/lab";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getLanguage, LANGUAGES } from "translations/i18n";
+import { recommenderApi } from "__api__";
 import { Done, Delete, Close, KeyboardArrowRight } from "@mui/icons-material";
 import SelectGovernanceModel from "./SelectGovernanceModel";
-
-
 
 export default function SelectTypeCoproProcess({
   open,
   setOpen,
   loading,
-  setLoading
-
+  setLoading,
 }) {
-
-
   const [language, setLanguage] = useState(getLanguage());
   const { t } = useTranslation();
 
-  const [listKeywords, setListKeywords] = useState(t("list-tags-governance-predefined").split(","));
+  const [listKeywords, setListKeywords] = useState(
+    t("list-tags-governance-predefined").split(",")
+  );
+  const [recomendedCategories,setRecomendedCategories] = useState([]);
   const [listSelectedKeywords, setListSelectedKeywords] = useState([]);
 
-  
-
-  const [openGovernanceSelector, setOpenGovernanceSelector] = React.useState(false);
-  const [selectorGovTypeLoading,setSelectorGovTypeLoading]= React.useState(false);
-
+  const [openGovernanceSelector, setOpenGovernanceSelector] =
+    React.useState(false);
+  const [selectorGovTypeLoading, setSelectorGovTypeLoading] =
+    React.useState(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -70,11 +65,33 @@ export default function SelectTypeCoproProcess({
 
     //Actions for next
     //Save the tags related to the process.
-    
+    //Create the training data
 
-    setOpen(false);
-    setLoading(false);
-    setOpenGovernanceSelector(true);
+    const listCategories = "C2C,C2G;C2G;G+G;G+G,G2C;C2G,G2C;G2C,C2G;G+G,C2C;G2C,C2C;G2C,C2C;G2C;C2C,C2G;C2C,C2G;G+G,C2C;G+G,G2C;C2C,C2G;G+G,G2C;G+G,G2C;G+G;G+G;G+G;G+G,G2C;G+G,G2C;G+G,C2G;G+G,C2G;G+G,G2C;G2C;G2C;G+G;C2C,C2G;G2C;G2C;G2C;G2C;G2C;G2C;G2C;G2C;G2C;G2C;G2C;G2C;G2C;G2C;G2C;C2C,C2G;C2C;C2C;C2C,C2G;C2C;C2C;C2C,C2G;C2C,G+G;C2C,G+G;C2C,G+G;C2C,C2G;C2C,C2G;G+G,C2C;G+G,C2C".split(';');
+
+    let trainingdata = {};
+    let cont = 0;
+    for (const keyword of listKeywords) {
+      trainingdata[keyword]=listCategories[cont];
+      cont++;
+    }
+
+    const sampleData=listSelectedKeywords.join(",");
+
+
+    recommenderApi
+      .recommendGovernanceModel(sampleData, [trainingdata])
+      .then((data) => {
+        console.log("data", data);
+        setRecomendedCategories(data);
+
+        setOpen(false);
+        setLoading(false);
+        setOpenGovernanceSelector(true);
+      });
+      
+
+     
   };
 
   const handleClick = (keyword) => {
@@ -83,44 +100,45 @@ export default function SelectTypeCoproProcess({
 
     const newKeyList = listKeywords.filter((item) => item !== keyword);
     setListKeywords(newKeyList);
-
-  }
+  };
 
   const handleDelete = (keyword) => {
-    const newSelectedList = listSelectedKeywords.filter((item) => item !== keyword);
+    const newSelectedList = listSelectedKeywords.filter(
+      (item) => item !== keyword
+    );
     setListSelectedKeywords(newSelectedList);
 
     const newKeyList = listKeywords.concat(keyword);
     setListKeywords(newKeyList);
- 
-  }
+  };
 
-  const listChipsKeywords = listKeywords.map((keyword) =>
+  const listChipsKeywords = listKeywords.map((keyword) => (
     <Chip
-      
       key={`active-keyword-${keyword}`}
       label={keyword}
-      onClick={() => handleClick(keyword)} 
+      onClick={() => handleClick(keyword)}
       onDelete={() => handleClick(keyword)}
       deleteIcon={<Done />}
     />
-  );
+  ));
 
-  const listChipsSelectedKeywords = listSelectedKeywords.map((keyword) =>
+  const listChipsSelectedKeywords = listSelectedKeywords.map((keyword) => (
     <Chip
       key={`active-sel-keyword-${keyword}`}
       label={keyword}
-      onClick={() => handleDelete(keyword)} 
+      onClick={() => handleDelete(keyword)}
       onDelete={() => handleDelete(keyword)}
       deleteIcon={<Delete />}
       variant="outlined"
     />
-  );
+  ));
 
   return (
     <>
       <Dialog open={open} onClose={handleClose} fullWidth>
-        <DialogTitle sx={{ textAlign: "center", m: 2 }} >{t("Select the features of your process")}</DialogTitle>
+        <DialogTitle sx={{ textAlign: "center", m: 2 }}>
+          {t("Select the features of your process")}
+        </DialogTitle>
         <DialogContent>
           <>
             <Box sx={{ textAlign: "center" }}>
@@ -130,7 +148,7 @@ export default function SelectTypeCoproProcess({
                   id="contained-button-file"
                   type="file"
                   sx={{ display: "none" }}
-                //onChange={handleFileSelected}
+                  //onChange={handleFileSelected}
                 />
                 {/* <IconButton component='span'>
                   <Avatar
@@ -163,41 +181,29 @@ export default function SelectTypeCoproProcess({
               ) + "."}
             </Typography>
 
-            <Box sx={{ minWidth: 275,flexGrow: 1, p: 2 }}>
+            <Box sx={{ minWidth: 275, flexGrow: 1, p: 2 }}>
               <Card className="h-50 d-flex flex-column" variant="outlined">
                 <CardContent>
-
-                  <Grid container spacing={1} >
-                   
+                  <Grid container spacing={1}>
                     {listChipsKeywords}
-                    
                   </Grid>
-
-                  
                 </CardContent>
-
               </Card>
             </Box>
 
             <Typography sx={{ textAlign: "center", m: 2 }} variant="body1">
-              {t(
-                "Your Keywords"
-              )}
+              {t("Your Keywords")}
             </Typography>
 
             <Box sx={{ minWidth: 275 }}>
               <Card variant="outlined">
                 <CardContent>
-                    <Grid container spacing={1} >
-
+                  <Grid container spacing={1}>
                     {listChipsSelectedKeywords}
-                    </Grid>
+                  </Grid>
                 </CardContent>
-
               </Card>
             </Box>
-
-
           </>
         </DialogContent>
         <DialogActions sx={{ justifyContent: "center" }}>
@@ -216,9 +222,10 @@ export default function SelectTypeCoproProcess({
       <SelectGovernanceModel
         open={openGovernanceSelector}
         setOpen={setOpenGovernanceSelector}
+        setOpenPreviousDialog={setOpen}
         loading={selectorGovTypeLoading}
         setLoading={setSelectorGovTypeLoading}
-        
+        categories={recomendedCategories}
       />
     </>
   );
