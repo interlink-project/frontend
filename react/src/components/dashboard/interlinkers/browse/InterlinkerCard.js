@@ -18,6 +18,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { HTMLtoText } from "utils/safeHTML";
+import { slugify } from "../../../../utils";
 
 const GridMode = ({ interlinker, t, linkProps }) => (
   <>
@@ -195,17 +196,6 @@ const GridMode = ({ interlinker, t, linkProps }) => (
     </Box>
   </>
 );
-
-const slugify = (text) => {
-  return text
-    .toString()
-    .toLowerCase()
-    .replace(/\s+/g, "_") // Replace spaces with _
-    .replace(/[^\w\-]+/g, "") // Remove all non-word chars
-    .replace(/\-\-+/g, "-") // Replace multiple - with single -
-    .replace(/^-+/, "") // Trim - from start of text
-    .replace(/-+$/, ""); // Trim - from end of text
-};
 
 const ListMode = ({ interlinker, t, linkProps }) => (
   <>

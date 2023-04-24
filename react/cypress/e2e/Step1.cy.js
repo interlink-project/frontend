@@ -47,7 +47,7 @@ describe("Verify that users can log in and/or register to access the Collaborati
       "1 INTERLINKERs "
     );
     cy.get(
-      '[data-cy="interlinker-title-AAC - Authentication and Authorization Controller"]'
+      '[data-cy="interlinker-title-aac_-_authentication_and_authorization_controller"]'
     ).should("exist");
     cy.log(
       "✅ Third criteria is OK - INTERLINKERs catalogue browsing, searching and filtering"
