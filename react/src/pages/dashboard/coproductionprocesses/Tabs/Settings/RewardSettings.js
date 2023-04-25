@@ -195,7 +195,8 @@ const RewardSettings = (props) => {
               </Typography>
             </Grid>
           </Grid>
-          <Grid container md={12}>
+          {/* 5 step */}
+          {/* <Grid container md={12}>
             <Grid item md={1} className="reward-left-number">
               <Typography variant="h1" sx={{ mt: 0 }}>
                 5.
@@ -227,8 +228,9 @@ const RewardSettings = (props) => {
                 </p>
               </Typography>
             </Grid>
-          </Grid>
-          <Grid container md={12}>
+          </Grid> */}
+          {/* 6 step */}
+          {/* <Grid container md={12}>
             <Grid item md={1} className="reward-left-number">
               <Typography variant="h1" sx={{ mt: 0 }}>
                 6.
@@ -281,8 +283,9 @@ const RewardSettings = (props) => {
                 </p>
               </Typography>
             </Grid>
-          </Grid>
-          <Grid container md={12}>
+          </Grid> */}
+          {/* 7 Step */}
+          {/* <Grid container md={12}>
             <Grid item md={1} className="reward-left-number">
               <Typography variant="h1" sx={{ mt: 0 }}>
                 7.
@@ -293,7 +296,7 @@ const RewardSettings = (props) => {
                 Once completed the project.......
               </Typography>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
         <Grid item md={12} className="col-reward-right">
           <Box
