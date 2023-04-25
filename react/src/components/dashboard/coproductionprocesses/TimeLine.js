@@ -12,6 +12,9 @@ import {
   StepLabel,
   Stepper,
   Typography,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/material";
 import CreateSchema from "components/dashboard/SchemaSelector";
 import RoadmapCustomized from "components/home/RoadmapCustomized";
@@ -42,6 +45,9 @@ import {
   Flag,
   ArrowBack,
 } from "@mui/icons-material";
+import Organizations from "pages/dashboard/organizations";
+import OrganizationsDialog, {OganizationsDialog} from "pages/dashboard/organizations/indexDialog"
+import { LoadingButton } from "@mui/lab";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -156,6 +162,7 @@ export default function TimeLine({ assets }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
+  const [openOrganizations,setOpenOrganizations] = React.useState(false);
   const [roadItemIndex, setRoadItemIndex] = React.useState("section_1");
   const [isLightboxOpen, setIsLightboxOpen] = React.useState(false);
   const [isRewardingAtivated, setIsRewardingAtivated] = React.useState(false);
@@ -183,6 +190,10 @@ export default function TimeLine({ assets }) {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleCloseOrganizations = () => {
+    setOpenOrganizations(false);
   };
 
   const openGSelector = () => {
@@ -363,7 +374,7 @@ export default function TimeLine({ assets }) {
                         spacing={2}
                       >
                         <Button
-                          onClick={() => navigate(`/dashboard/organizations`)}
+                          onClick={() => setOpenOrganizations(true)}
                           size="small"
                           variant="contained"
                           sx={{ maxWidth: "200px" }}
@@ -1247,6 +1258,28 @@ export default function TimeLine({ assets }) {
         loading={selectorTypeLoading}
         setLoading={setSelectorTypeLoading}
       />
+
+        <Dialog key='dialogOrg' open={openOrganizations} onClose={handleCloseOrganizations} fullWidth maxWidth="xl">
+            
+        <DialogTitle sx={{ textAlign: "center", m: 2 }}>
+          {t("Organizations")}
+        </DialogTitle>
+        <DialogContent dividers>
+            <Box sx={{ minHeight: "93vh" }}>
+         
+              <OrganizationsDialog />
+            </Box>
+            </DialogContent>
+            <DialogActions sx={{ justifyContent: "center" }}>
+          <Button
+         
+            onClick={handleCloseOrganizations}
+          >
+            {t("Close")}
+            
+          </Button>
+        </DialogActions>
+          </Dialog> 
     </>
   );
 }

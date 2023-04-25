@@ -529,7 +529,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                           language={process.language}
                           loading={loadingAssets}
                           //assets={assetsList}
-                          getActions={[]}
+                          
                         />
                 
                 </>

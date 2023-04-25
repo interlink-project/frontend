@@ -67,7 +67,7 @@ export default function SelectGovernanceModel({
 
  
   function handleClick(name) {
-    alert(`You have selected the governance model, ${name}`);
+    //alert(`You have selected the governance model, ${name}`);
 
 
     //Save Inter-governmental model
@@ -157,7 +157,7 @@ export default function SelectGovernanceModel({
   });
 
   const listGovernanceCards = listGovernanceModels.map((governanceModel) => (
-    <Card className="h-50 d-flex flex-column" variant="outlined">
+    <Card key={governanceModel.code} className="h-50 d-flex flex-column" variant="outlined">
       <CardContent>
         <Grid container spacing={2} xs={12} sx={{ ml: 0 }}>
           {governanceModel.recomended ? (

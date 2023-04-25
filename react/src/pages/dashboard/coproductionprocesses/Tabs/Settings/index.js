@@ -108,7 +108,7 @@ const SettingsTab = () => {
     setIsCloning(true);
     coproductionProcessesApi
       .copy(process.id, "Copy of ")
-      .then(() => navigate("/dashboard"));
+      .then(() => navigate("/dashboard/projects"));
   };
 
   const onPublish = () => {
@@ -119,7 +119,7 @@ const SettingsTab = () => {
   const onRemove = () => {
     coproductionProcessesApi
       .delete(process.id)
-      .then(() => navigate("/dashboard"));
+      .then(() => navigate("/dashboard/projects"));
   };
   const onCoproductionProcessClear = () => {
     coproductionProcessesApi
