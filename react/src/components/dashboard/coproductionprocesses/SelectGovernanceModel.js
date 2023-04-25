@@ -35,6 +35,10 @@ import {
   KeyboardArrowRight,
   ArrowBack,
 } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+
+import { updateProcess } from "slices/process";
+import useMounted from "hooks/useMounted";
 
 export default function SelectGovernanceModel({
   open,
@@ -51,10 +55,43 @@ export default function SelectGovernanceModel({
     setOpen(false);
     setLoading(false);
   };
+  const dispatch = useDispatch();
+
+  const { process } = useSelector(
+    (state) => state.process
+  );
+
+  const mounted = useMounted();
+
+  const [logotype] = useState(null);
 
  
   function handleClick(name) {
     alert(`You have selected the governance model, ${name}`);
+
+
+    //Save Inter-governmental model
+    const values = { intergovernmental_model: name };
+
+    try {
+      dispatch(
+        updateProcess({
+          id: process.id,
+          data: values,
+          logotype,
+          onSuccess: () => {
+            if (mounted.current) {
+              console.log(process);
+            }
+          },
+        })
+      );
+    } catch (err) {
+      console.error(err);
+    }
+
+
+
     handleClose();
   }
 

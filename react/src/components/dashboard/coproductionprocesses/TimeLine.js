@@ -263,7 +263,7 @@ export default function TimeLine({ assets }) {
   const temp_completeStates = [
     process.hasAddAnOrganization, //Has Organizations? He decide!.
     !!dataFulfilled || administratorsFulfilled,
-    process.hasDecideSchema || hasSchema, //Did you decide the type (If has a schema it means it has a type)
+    process.intergovernmental_model!=null, //Did you decide the type (If has a schema it means it has a type)
     hasSchema,
     process.incentive_and_rewards_state, //Have you active the rewards?
     permissionsFullfilled, //Have you grant permissions to a team in all process?
@@ -276,7 +276,7 @@ export default function TimeLine({ assets }) {
   const completeStates = [
     process.hasAddAnOrganization, //Has Organizations? He decide!.
     !!dataFulfilled || administratorsFulfilled,
-    process.hasDecideSchema || hasSchema, //Did you decide the type (If has a schema it means it has a type)
+    process.intergovernmental_model!=null, //Did you decide the type (If has a schema it means it has a type)
     hasSchema,
     process.incentive_and_rewards_state, //Have you active the rewards?
     permissionsFullfilled, //Have you grant permissions to a team in all process?
@@ -531,16 +531,27 @@ export default function TimeLine({ assets }) {
                         {t("Every co-production process has particular") + "."}
                       </Typography>
 
-                      <Button
-                        onClick={() => {
-                          setSelectorTypeOpen(true);
-                        }}
-                        size="small"
-                        variant="contained"
-                        sx={{ maxWidth: "200px" }}
-                      >
-                        {t("Decide your type of co-production process")}
-                      </Button>
+                      {process.intergovernmental_model!=null ? (
+                        <Alert severity="success">
+                          {t(
+                            "You have already defined the type of co-production process"
+                          )+': '+process.intergovernmental_model}
+                        </Alert>
+                      ) : (
+                        <Button
+                         onClick={() => {
+                           setSelectorTypeOpen(true);
+                         }}
+                         size="small"
+                         variant="contained"
+                         sx={{ maxWidth: "200px" }}
+                       >
+                         {t("Decide your type of co-production process")}
+                       </Button>
+                      )}
+                      
+
+                     
                     </Stack>
                     <IconButton
                       onClick={() => nextSect("section_2")}

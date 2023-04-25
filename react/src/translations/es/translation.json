@@ -342,6 +342,8 @@
     "Schema" : "Esquema",
   "Rewards" : "Recompensas",
   "Finish" : "Final",
+
+  "You have already defined the type of co-production process": "Ya ha definido el tipo de proceso de coproducción",
     
   "workspace-subtitle": "Esta es la actividad reciente relacionada con tu espacio de trabajo",
   "add-process": "Crear nuevo proceso",
