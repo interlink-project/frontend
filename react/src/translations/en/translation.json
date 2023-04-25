@@ -225,7 +225,7 @@
   "Clone coproduction process": "Clone coproduction process",
   "Publish coproduction process": "Publish coproduction process",
   "Reward system": "Reward system",
-  "If you disable the Reward system every data will be deleted": "If you disable the Reward system every data will be deleted, so if you want to enable again this option, you will not able to restore the old data.",
+  "If you disable the Reward system every data will be deleted": "If you disable the Reward system every data regarding the gamification will be deleted, so if you want to enable again this option, you will not able to restore the old data.",
   "The deletion of the coproduction process is irreversible": "The deletion of the co-production process is irreversible. All resources created in it will disappear. All resources created in it will disappear.",
   "The clonation of the coproduction process will create": "The clonation of the coproduction process will create a new coproduction process with the same structure and resources.",
   "Include the source file to publish information": "Include the source file (.json) with the publish information.",

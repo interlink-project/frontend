@@ -82,7 +82,6 @@ const SettingsTab = () => {
 
   const [dialogOpenPublicationExample, setDialogOpenPublicationExample] =
     useState(false);
-  const [gameId, setGameId] = useState(null);
 
   const { process, hasSchema, isAdministrator, tree } = useSelector(
     (state) => state.process
@@ -210,11 +209,8 @@ const SettingsTab = () => {
     </>
   );
 
-  const toggleIncentivesRewards = async () => {
-    setIsIncentiveModuleActive((prev) => !prev);
-
-    //Active the incentive and rewards
-    const values = { incentive_and_rewards_state: !isIncentiveModuleActive };
+  useEffect(async () => {
+    const values = { incentive_and_rewards_state: isRewardingAtivated };
     if (values.incentive_and_rewards_state) {
       const taskList = prepareGameTemplate(tree);
       let res = await gamesApi.setGame(process.id, taskList);
@@ -249,7 +245,7 @@ const SettingsTab = () => {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [isRewardingAtivated]);
 
   const toggleGuideHide = async () => {
     setIsGuideHidden((prev) => !prev);
@@ -836,17 +832,8 @@ const SettingsTab = () => {
                 sx={{ mt: 2 }}
                 action={
                   <>
-                    {/*
-                    <GoldSwitch
-                      checked={isIncentiveModuleActive}
-                      onChange={toggleIncentivesRewards}
-                      name="incentiveSwitch"
-                      inputProps={{ "aria-label": "secondary checkbox" }}
-                      disabled={!isAdministrator}
-                      color="secondary"
-                    />
-                    */}
                     <Button
+                      disabled={!isAdministrator}
                       variant="contained"
                       color={isRewardingAtivated ? "error" : "success"}
                       onClick={handleOpenLightbox}
