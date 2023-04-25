@@ -74,7 +74,7 @@ const StorySidebar = (props) => {
       title: "",
       items: [
         {
-          title: t("Project Overview"),
+          title: t("Process Overview"),
           path: `/stories/${storyId}/overview`,
           icon: <Balcony />,
           disabled: false,
@@ -155,7 +155,7 @@ const StorySidebar = (props) => {
               <Avatar
                 variant="rounded"
                 sx={{ width: "80px", height: "80px" }}
-                src={selectedStory.data_story.logo}
+                src={selectedStory.logotype}
               >
                 {/*               {(!selectedStory || !selectedStory.logo) && <Folder />}
               {' '} */}

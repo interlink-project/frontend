@@ -31,8 +31,8 @@ const GridMode = ({ story, t, linkProps }) => (
           mt: 1,
         }}
       >
-        {story.data.logo ? (
-          <Avatar alt={t("Logotype")} src={story.data.logo} variant="square">
+        {story.logotype ? (
+          <Avatar alt={t("Logotype")} src={story.logotype} variant="square">
             {story.data.title}
           </Avatar>
         ) : (
@@ -253,7 +253,7 @@ const ListMode = ({ story, t, linkProps }) => (
             <>
               <Avatar
                 alt={t("Logotype")}
-                src={story.data.logo}
+                src={story.logotype}
                 variant="rounded"
               >
                 {story.title}

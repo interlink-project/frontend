@@ -67,6 +67,7 @@ const StoryResults = ({
                   self.indexOf((el) => el.id === element.id) !== index
               )
             );
+            console.log(loadedRows)
             // if (filters.search) {
             //   trackSiteSearch({
             //     keyword: filters.hasOwnProperty('search') ? filters.search : '',

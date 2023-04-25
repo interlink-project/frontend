@@ -302,7 +302,7 @@ const SettingsTab = () => {
           setJsonPropertiesFile(extractedData);
 
           // console.log(objJson);
-          storiesApi.create(extractedData, process.id, clone_id).then((res) => {
+          storiesApi.create(extractedData, process, clone_id).then((res) => {
             setStoriesList((storiesList) => [...storiesList, res.data]);
             setIsPublishing(false);
             navigate(
