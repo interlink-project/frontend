@@ -1,4 +1,4 @@
-import { Grid, Typography, Box, Link, Radio } from "@mui/material";
+import { Grid, Typography, Box, Link, Radio, Button } from "@mui/material";
 import React, { useState, useRef, useEffect } from "react";
 import {
   SentimentSatisfied,
@@ -328,16 +328,16 @@ const RewardSettings = (props) => {
           </Link>
         </Grid>
         <Grid item md={2} sm={12} className="skip-reward">
-          <Link
-            href="#"
-            variant="body2"
+          <Button
+            sx={{ minWidth: "200px", mr: 2 }}
+            variant="outlined"
             onClick={() => {
               activateReward();
               onClose();
             }}
           >
-            {t("Active this function")}
-          </Link>
+            {t("ACTIVATE this function")}
+          </Button>
         </Grid>
       </Grid>
     </>
