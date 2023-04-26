@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useCustomTranslation } from 'hooks/useDependantTranslation';
 import ContributionsTable from 'components/dashboard/tree/ContributionsTable';
-import { gamesApi, usersApi, coproductionprocessnotificationsApi, tasksApi } from '__api__';
+import { gamesApi, usersApi, coproductionprocessnotificationsApi, tasksApi, teamsApi } from '__api__';
 import { IconButton, Box, Button, Dialog, DialogTitle, DialogContent, Select, InputLabel, MenuItem, DialogActions, TextField, Typography, Grid } from '@mui/material';
 import ConfirmationButton from 'components/ConfirmationButton';
 import { LoadingButton } from '@mui/lab';
@@ -25,6 +25,7 @@ const ContributionsTabs = ({ contributions }) => {
     const { assetsList } = useSelector((state) => state.general);
     const { process, selectedTreeItem } = useSelector((state) => state.process);
     const t = useCustomTranslation(process.language);
+    const includedUsers = new Set(process.enabled_teams.map((team) => team.users.map((user) => user.id)).flat().concat(process.administrators_ids));
 
     const CONTRIBUTION_LEVELS = {
         "Low": 1,
@@ -189,7 +190,7 @@ const ContributionsTabs = ({ contributions }) => {
                                 </Button>
                             )}
                             onClick={handleCloseTask}
-                            text={t('Are you sure?')}
+                            text={t('Check the complexity of the task before closing it.')}
                         />
                     </Box>
                     ) : null}
@@ -339,6 +340,7 @@ const ContributionsTabs = ({ contributions }) => {
                                                         error={Boolean(touched.user && errors.user)}
                                                         alert={false}
                                                         importCsv={false}
+                                                        include={Array.from(includedUsers)}
                                                         onClick={(user) => {
                                                             setFieldValue('user', user);
                                                             setFieldTouched('user');

@@ -33,6 +33,7 @@ const UserSearch = ({
   importCsv = true,
   error = false,
   onBulk = false,
+  include = [],
 }) => {
   const [loading, setLoading] = useState(false);
   const mounted = useMounted();
@@ -306,6 +307,10 @@ const UserSearch = ({
             ) : (
               open &&
               searchResults.slice(0, 4).map((user) => {
+                if (include.length > 0 && !include.includes(user.id)) {
+                  return null;
+                }
+
                 const alreadySelected = exclude.includes(user.id);
                 return (
                   <MenuItem
