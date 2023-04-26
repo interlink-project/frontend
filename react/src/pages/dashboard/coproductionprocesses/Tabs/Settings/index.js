@@ -998,7 +998,7 @@ const SettingsTab = () => {
                 </Typography>
 
                 <Link
-                  to="/coproduction/static/stories/ExampleTemplate.json"
+                  to="/static/story/ExampleTemplate.json"
                   target="_blank"
                   download
                 >
