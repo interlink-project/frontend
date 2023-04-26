@@ -1,57 +1,97 @@
-import { useMatomo } from '@datapunt/matomo-tracker-react';
+import { useMatomo } from "@datapunt/matomo-tracker-react";
 import {
-  Alert, Grid,
-  Box, Button, Chip, Divider, IconButton, Link, Stack, TextField, ToggleButton, ToggleButtonGroup, Typography, Select, MenuItem,
-} from '@mui/material';
-import { Edit } from '@mui/icons-material';
+  Alert,
+  Grid,
+  Box,
+  Button,
+  Chip,
+  Divider,
+  IconButton,
+  Link,
+  Stack,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import { Edit } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
+import ConfirmationButton from "components/ConfirmationButton";
+import { FinishedIcon, InProgressIcon } from "components/dashboard/assets";
+import { useCustomTranslation } from "hooks/useDependantTranslation";
+import moment from "moment";
+import { Fragment, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import {
-  LoadingButton
-} from '@mui/lab';
-import { DesktopDateRangePicker, LocalizationProvider } from '@mui/x-date-pickers-pro';
-import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
-import ConfirmationButton from 'components/ConfirmationButton';
-import { FinishedIcon, InProgressIcon } from 'components/dashboard/assets';
-import { useCustomTranslation } from 'hooks/useDependantTranslation';
-import moment from 'moment';
-import { Fragment, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
-import { getTree, setSelectedTreeItemById, setUpdatingTree } from 'slices/process';
-import { tree_items_translations } from 'utils/someCommonTranslations';
-import { gamesApi, objectivesApi, phasesApi, tasksApi } from '__api__';
-import { AwaitingIcon, statusIcon, StatusText } from '../../Icons';
-import { coproductionprocessnotificationsApi } from '__api__';
+  getTree,
+  setSelectedTreeItemById,
+  setUpdatingTree,
+} from "slices/process";
+import { tree_items_translations } from "utils/someCommonTranslations";
+import { gamesApi, objectivesApi, phasesApi, tasksApi } from "__api__";
+import { AwaitingIcon, statusIcon, StatusText } from "../../Icons";
+import { coproductionprocessnotificationsApi } from "__api__";
 import { assetsApi } from "__api__";
+
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { DateRangePicker } from "react-date-range";
+import { addDays } from "date-fns";
+import * as locales from "react-date-range/dist/locale";
 
 const apis = {
   task: tasksApi,
   objective: objectivesApi,
-  phase: phasesApi
+  phase: phasesApi,
 };
 
 const TreeItemData = ({ language, processId, element, assets }) => {
   const [dateRange, setDateRange] = useState([null, null]);
-  const [status, setStatus] = useState('');
-  const [name, setName] = useState('');
-  const [listAssetsNames, setListAssetsNames] = useState('');
-  const [description, setDescription] = useState('');
+  const [status, setStatus] = useState("");
+  const [name, setName] = useState("");
+  const [listAssetsNames, setListAssetsNames] = useState("");
+  const [description, setDescription] = useState("");
   //const [management, setManagement] = useState('');
-  const [development, setDevelopment] = useState('');
+  const [development, setDevelopment] = useState("");
   //const [exploitation, setExploitation] = useState('');
   // const [taskDataContributions, setTaskDataContributions] = useState(null);
   const [editMode, setEditMode] = useState(false);
-  const { process, updatingTree, treeitems, selectedTreeItem, isAdministrator } = useSelector((state) => state.process);
-  const isTask = selectedTreeItem && selectedTreeItem.type === 'task';
-  const [resetContributions, setResetContributions] = useState(false)
+  const {
+    process,
+    updatingTree,
+    treeitems,
+    selectedTreeItem,
+    isAdministrator,
+  } = useSelector((state) => state.process);
+  const isTask = selectedTreeItem && selectedTreeItem.type === "task";
+  const [resetContributions, setResetContributions] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const t = useCustomTranslation(language);
   const { trackEvent } = useMatomo();
 
+  const [selectionRangeState, setSelectionRangeState] = useState([
+    {
+      startDate: new Date(),
+      endDate: addDays(new Date(), 7),
+      key: "selection",
+    },
+  ]);
 
-
-
+  const handleSelect = (ranges) => {
+    console.log(ranges);
+    setSelectionRangeState([ranges.selection]);
+    // {
+    //   selection: {
+    //     startDate: [native Date Object],
+    //     endDate: [native Date Object],
+    //   }
+    // }
+  };
 
   const restart = (el) => {
     setName(el.name);
@@ -60,7 +100,20 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     setDevelopment(el.development);
     //setExploitation(el.exploitation);
     setStatus(el.status);
-    setDateRange([el.start_date ? new Date(el.start_date) : null, el.end_date ? new Date(el.end_date) : null]);
+    setDateRange([
+      el.start_date ? addDays(new Date(el.start_date), 1) : null,
+      el.end_date ? addDays(new Date(el.end_date), 1) : null,
+    ]);
+
+    setSelectionRangeState([
+      {
+        startDate: element.start_date
+          ? addDays(new Date(el.start_date), 1)
+          : null,
+        endDate: el.end_date ? addDays(new Date(el.end_date), 1) : null,
+        key: "selection",
+      },
+    ]);
   };
 
   useEffect(() => {
@@ -82,8 +135,14 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     // Do not update because the message received through sockets triggers the update
     // dispatch(setUpdatingTree(true));
 
-    const start_date = dateRange[0] && dateRange[0].toISOString().slice(0, 10);
-    const end_date = dateRange[1] && dateRange[1].toISOString().slice(0, 10);
+    // const start_date = dateRange[0] && dateRange[0].toISOString().slice(0, 10);
+    // const end_date = dateRange[1] && dateRange[1].toISOString().slice(0, 10);
+
+    const start_date = selectionRangeState[0].startDate
+      .toISOString()
+      .slice(0, 10);
+    const end_date = selectionRangeState[0].endDate.toISOString().slice(0, 10);
+
     if (start_date !== element.start_date) {
       data.start_date = start_date;
     }
@@ -111,9 +170,11 @@ const TreeItemData = ({ language, processId, element, assets }) => {
         // TODO: If we put the game in the slice the checking of the task status will be faster
         gamesApi.getTask(process.id, selectedTreeItem.id).then((res) => {
           if (!res.completed) {
-            gamesApi.updateTask(process.id, selectedTreeItem.id, data.development).then((res) => {
-              console.log(res);
-            });
+            gamesApi
+              .updateTask(process.id, selectedTreeItem.id, data.development)
+              .then((res) => {
+                console.log(res);
+              });
           }
         });
       }
@@ -123,22 +184,25 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     // }
     trackEvent({
       category: processId,
-      action: 'update-treeitem',
+      action: "update-treeitem",
       name: element.id,
     });
 
-    if (selectedTreeItem.status == 'finished' && development !== element.development) {
-      alert('The status of the task is finished, the complexity values can not be modified.');
+    if (
+      selectedTreeItem.status == "finished" &&
+      development !== element.development
+    ) {
+      alert(
+        "The status of the task is finished, the complexity values can not be modified."
+      );
     } else {
       apis[element.type].update(element.id, data).then(() => {
         update(element.id);
       });
     }
-
   };
 
   const update = (selectedTreeItemId) => {
-
     dispatch(getTree(processId, selectedTreeItemId));
     if (selectedTreeItemId) {
       dispatch(setSelectedTreeItemById(selectedTreeItemId));
@@ -148,26 +212,30 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   const deleteTreeItem = () => {
     trackEvent({
       category: processId,
-      action: 'delete-treeitem',
+      action: "delete-treeitem",
       name: element.id,
     });
     dispatch(setUpdatingTree(true));
     apis[element.type].delete(element.id).then(() => {
       let setSelectedTreeItem = null;
-      if (element.type === 'task') {
+      if (element.type === "task") {
         setSelectedTreeItem = element.objective_id;
-      } else if (element.type === 'objective') {
+      } else if (element.type === "objective") {
         setSelectedTreeItem = element.phase_id;
       } else {
         //Change to the next possible phase that is not disabled
-        const nextPhase = treeitems.find((el) => el.id != element.id && el.type === 'phase' && el.is_disabled === false);
+        const nextPhase = treeitems.find(
+          (el) =>
+            el.id != element.id &&
+            el.type === "phase" &&
+            el.is_disabled === false
+        );
         if (nextPhase) {
           setSelectedTreeItem = nextPhase.id;
         } else {
           setSelectedTreeItem = null;
         }
       }
-
 
       update(setSelectedTreeItem);
     });
@@ -177,7 +245,6 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   // console.log(assets);
 
   let listAssets = [];
-
 
   const includeObjectNames = (text) => {
     //Search and reemplace que assetName and icon
@@ -301,35 +368,29 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     return text;
   }; */
 
-
   if (isTask) {
-
-
   }
 
   const treeitem_translations = tree_items_translations(t);
 
-
   const complexityLevelsF = (status) => {
-
     switch (status) {
       case 0:
-        return 'None';
+        return "None";
       case 20:
-        return 'Very low'
+        return "Very low";
       case 40:
-        return 'Low';
+        return "Low";
       case 60:
-        return 'Medium';
+        return "Medium";
       case 80:
-        return 'High';
+        return "High";
       case 100:
-        return 'Very high';
+        return "Very high";
       default:
-        return 'No defined';
+        return "No defined";
     }
-  }
-
+  };
 
   return (
     <>
@@ -337,32 +398,29 @@ const TreeItemData = ({ language, processId, element, assets }) => {
         <IconButton
           onClick={() => setEditMode(true)}
           sx={{
-            position: 'relative',
+            position: "relative",
             right: 0,
-            float: 'right'
+            float: "right",
           }}
         >
           <Edit />
         </IconButton>
       )}
-      <Typography variant='h6'>
-        {t('Name')}
-      </Typography>
+      <Typography variant="h6">{t("Name")}</Typography>
       {editMode ? (
         <TextField
           onChange={(event) => {
             setName(event.target.value);
           }}
-          variant='standard'
+          variant="standard"
           fullWidth
           value={name}
         />
-      ) : name}
-      <Typography
-        variant='h6'
-        sx={{ mt: 2 }}
-      >
-        {t('Description')}
+      ) : (
+        name
+      )}
+      <Typography variant="h6" sx={{ mt: 2 }}>
+        {t("Description")}
       </Typography>
       {editMode ? (
         <TextField
@@ -371,36 +429,28 @@ const TreeItemData = ({ language, processId, element, assets }) => {
           }}
           multiline
           fullWidth
-          variant='standard'
+          variant="standard"
           value={description}
         />
       ) : (
-        <p style={{
-          whiteSpace: 'pre-wrap',
-          marginTop: 0
-        }}
+        <p
+          style={{
+            whiteSpace: "pre-wrap",
+            marginTop: 0,
+          }}
         >
           {description}
         </p>
       )}
       {isTask ? (
         <>
-          <Typography
-            variant='h6'
-            sx={{ mt: 2 }}
-          >
-            {t('Complexity Level')}
+          <Typography variant="h6" sx={{ mt: 2 }}>
+            {t("Complexity Level")}
           </Typography>
-
-
 
           {editMode ? (
             <>
-              <Box
-                justifyContent='center'
-                sx={{ mt: 2, gap: 10, margin: 2 }}
-              >
-
+              <Box justifyContent="center" sx={{ mt: 2, gap: 10, margin: 2 }}>
                 {/* <TextField
           id="management_txt"
           select
@@ -426,39 +476,35 @@ const TreeItemData = ({ language, processId, element, assets }) => {
           
         </TextField> */}
 
-
                 <TextField
                   id="development_txt"
                   select
-                  label={t('Development')}
+                  label={t("Development")}
                   value={development}
                   type="number"
                   sx={{ mt: 2, gap: 10, margin: 2, minWidth: 120 }}
                   onChange={(event) => {
                     setDevelopment(event.target.value);
                   }}
-
                 >
-
-                  <MenuItem key='mi_d_1' value='0'>
-                    {t('None')}
+                  <MenuItem key="mi_d_1" value="0">
+                    {t("None")}
                   </MenuItem>
-                  <MenuItem key='mi_d_2' value='20'>
-                    {t('Very low')}
+                  <MenuItem key="mi_d_2" value="20">
+                    {t("Very low")}
                   </MenuItem>
-                  <MenuItem key='mi_d_3' value='40'>
-                    {t('Low')}
+                  <MenuItem key="mi_d_3" value="40">
+                    {t("Low")}
                   </MenuItem>
-                  <MenuItem key='mi_d_4' value='60'>
-                    {t('Medium')}
+                  <MenuItem key="mi_d_4" value="60">
+                    {t("Medium")}
                   </MenuItem>
-                  <MenuItem key='mi_d_5' value='80'>
-                    {t('High')}
+                  <MenuItem key="mi_d_5" value="80">
+                    {t("High")}
                   </MenuItem>
-                  <MenuItem key='mi_d_6' value='100'>
-                    {t('Very high')}
+                  <MenuItem key="mi_d_6" value="100">
+                    {t("Very high")}
                   </MenuItem>
-
                 </TextField>
 
                 {/* <TextField
@@ -485,54 +531,34 @@ const TreeItemData = ({ language, processId, element, assets }) => {
           </MenuItem>
           
         </TextField> */}
-
-
-
               </Box>
             </>
           ) : (
-            <p style={{
-              whiteSpace: 'pre-wrap',
-              marginTop: 0
-            }}
+            <p
+              style={{
+                whiteSpace: "pre-wrap",
+                marginTop: 0,
+              }}
             >
-
-              <Box
-                justifyContent='center'
-                sx={{ mt: 2, gap: 10, margin: 2 }}
-              >
-
-
-                <Box
-                >
+              <Box justifyContent="center" sx={{ mt: 2, gap: 10, margin: 2 }}>
+                <Box>
                   <span sx={{}}></span> {complexityLevelsF(development)}
                 </Box>
 
-                <Box
-                  sx={{ mt: 2, gap: 10, margin: 2 }}
-                >
+                <Box sx={{ mt: 2, gap: 10, margin: 2 }}></Box>
 
-                </Box>
-
-                <Box
-                  sx={{ mt: 2, gap: 10, margin: 2 }}
-                >
-
-                </Box>
-
-
-
+                <Box sx={{ mt: 2, gap: 10, margin: 2 }}></Box>
               </Box>
             </p>
           )}
         </>
-      ) : (<></>)}
+      ) : (
+        <></>
+      )}
 
       {false && element.problemprofiles && (
         <>
-          <Typography variant='h6'>
-            {t('Problem profiles')}
-          </Typography>
+          <Typography variant="h6">{t("Problem profiles")}</Typography>
           {element.problemprofiles.map((pp) => (
             <Chip
               sx={{ mr: 1, mt: 1 }}
@@ -545,128 +571,121 @@ const TreeItemData = ({ language, processId, element, assets }) => {
 
       {!process.is_part_of_publication && (
         <>
-          <Typography
-            variant='h6'
-            sx={{ mt: 2 }}
-          >
-            <>{t('Current status')}</>
+          <Typography variant="h6" sx={{ mt: 2 }}>
+            <>{t("Current status")}</>
           </Typography>
           {editMode ? (
             <>
-              {element.type === 'task' ? (
+              {element.type === "task" ? (
                 <ToggleButtonGroup
                   sx={{ mt: 1 }}
-                  color={status === 'finished' ? 'success' : status === 'in_progress' ? 'warning' : 'primary'}
+                  color={
+                    status === "finished"
+                      ? "success"
+                      : status === "in_progress"
+                      ? "warning"
+                      : "primary"
+                  }
                   value={status}
                   exclusive
                   fullWidth
                   onChange={(event, newStatus) => {
                     console.log(status);
                     console.log(newStatus);
-                    if (status === 'finished' && newStatus === 'in_progress') {
+                    if (status === "finished" && newStatus === "in_progress") {
                       setResetContributions(true);
                     }
                     setStatus(newStatus);
                   }}
                 >
-                  <ToggleButton value='awaiting'>
+                  <ToggleButton value="awaiting">
                     <>
-                      {t('Awaiting')}
+                      {t("Awaiting")}
                       <AwaitingIcon />
                     </>
                   </ToggleButton>
-                  <ToggleButton value='in_progress'>
+                  <ToggleButton value="in_progress">
                     <>
-                      {t('In progress')}
+                      {t("In progress")}
                       <InProgressIcon />
                     </>
                   </ToggleButton>
-                  <ToggleButton value='finished'>
+                  <ToggleButton value="finished">
                     <>
-                      {t('Finished')}
-                      {' '}
-                      <FinishedIcon />
+                      {t("Finished")} <FinishedIcon />
                     </>
                   </ToggleButton>
                 </ToggleButtonGroup>
               ) : (
-                <Alert
-                  severity='warning'
-                  sx={{ mt: 1 }}
-                >
-                  <>{t('Status can only be set for tasks')}</>
+                <Alert severity="warning" sx={{ mt: 1 }}>
+                  <>{t("Status can only be set for tasks")}</>
                 </Alert>
               )}
             </>
-          )
-
-            : (
-              <Stack
-                alignItems='center'
-                direction='row'
-                spacing={1}
-              >
-                {statusIcon(status)}
-                <div>
-                  <StatusText
-                    status={status}
-                    t={t}
-                  />
-                </div>
-              </Stack>
-            )}
+          ) : (
+            <Stack alignItems="center" direction="row" spacing={1}>
+              {statusIcon(status)}
+              <div>
+                <StatusText status={status} t={t} />
+              </div>
+            </Stack>
+          )}
           <Link
-            component='button'
-            variant='h6'
+            component="button"
+            variant="h6"
             onClick={() => {
-              navigate(`/dashboard/coproductionprocesses/${processId}/workplan`);
+              navigate(
+                `/dashboard/coproductionprocesses/${processId}/workplan`
+              );
             }}
             sx={{ mt: 2 }}
-            underline='none'
+            underline="none"
           >
-            {t('Time planification')}
-            :
+            {t("Time planification")}:
           </Link>
 
           {editMode ? (
             <>
-              {element.type === 'task' ? (
-                <Box
-                  justifyContent='center'
-                  sx={{ mt: 2 }}
-                >
-                  <LocalizationProvider
-                    dateAdapter={AdapterDayjs}
-                    localeText={{ start: 'Desktop start', end: 'Desktop end' }}
-                  >
+              {element.type === "task" ? (
+                <Box justifyContent="center" sx={{ mt: 2 }}>
+                  <DateRangePicker
+                    ranges={selectionRangeState}
+                    onChange={handleSelect}
+                    locale={locales[language]}
+                  />
 
+                  {/*  <LocalizationProvider
+                    dateAdapter={AdapterDayjs}
+                    localeText={{ start: "Desktop start", end: "Desktop end" }}
+                  >
+                    
                     <DesktopDateRangePicker
-                      startText='Start date'
-                      endText='End date'
+                      startText="Start date"
+                      endText="End date"
                       value={dateRange}
                       onChange={(newValue) => {
                         setDateRange(newValue);
                       }}
-
                       renderInput={(startProps, endProps) => (
                         <Stack
                           spacing={3}
-                          direction='row'
-                          sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}
+                          direction="row"
+                          sx={{
+                            width: "100%",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
                         >
                           <TextField {...startProps} />
                           <TextField {...endProps} />
                         </Stack>
                       )}
                     />
-                  </LocalizationProvider>
+                  </LocalizationProvider> */}
                 </Box>
               ) : (
-                <Alert
-                  severity='warning'
-                  sx={{ mt: 1 }}
-                >
-                  {t('Start and end dates can only be set for tasks')}
+                <Alert severity="warning" sx={{ mt: 1 }}>
+                  {t("Start and end dates can only be set for tasks")}
                 </Alert>
               )}
             </>
@@ -674,87 +693,79 @@ const TreeItemData = ({ language, processId, element, assets }) => {
             <Box sx={{ mt: 2 }}>
               {dateRange[0] !== null ? (
                 <>
-                  <b>
-                    {t('Start')}
-                    :
-                    {' '}
-                  </b>
-                  {moment(dateRange[0]).format('LL')}
+                  <b>{t("Start")}: </b>
+                  {moment(dateRange[0]).format("LL")}
                   <br />
-                  <b>
-                    {t('End')}
-                    :
-                    {' '}
-                  </b>
-                  {moment(dateRange[1]).format('LL')}
+                  <b>{t("End")}: </b>
+                  {moment(dateRange[1]).format("LL")}
                 </>
-              ) : <Alert severity='warning'>{t('Not set')}</Alert>}
+              ) : (
+                <Alert severity="warning">{t("Not set")}</Alert>
+              )}
             </Box>
           )}
-
         </>
-
       )}
 
-
-      {editMode
-        && (
-          <Box sx={{ width: '100%', justifyContent: 'center', textAlign: 'center' }}>
-            <Stack
-              sx={{ mt: 2 }}
-              justifyContent='center'
-              direction='row'
-              spacing={2}
+      {editMode && (
+        <Box
+          sx={{ width: "100%", justifyContent: "center", textAlign: "center" }}
+        >
+          <Stack
+            sx={{ mt: 2 }}
+            justifyContent="center"
+            direction="row"
+            spacing={2}
+          >
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => setEditMode(false)}
+              color="warning"
             >
+              {t("Discard changes")}
+            </Button>
+            <LoadingButton
+              loading={updatingTree}
+              sx={{ width: "200px" }}
+              variant="contained"
+              onClick={saveData}
+              color="primary"
+              size="small"
+            >
+              {t("Save")}
+            </LoadingButton>
+          </Stack>
+          <Divider sx={{ my: 2 }}>{t("other actions")}</Divider>
+          <ConfirmationButton
+            Actionator={({ onClick }) => (
               <Button
-                size='small'
-                variant='outlined'
-                onClick={() => setEditMode(false)}
-                color='warning'
+                size="small"
+                variant="text"
+                onClick={onClick}
+                color="error"
               >
-                {t('Discard changes')}
+                {t("Remove {{what}}", {
+                  what: treeitem_translations[element.type].toLowerCase(),
+                })}
               </Button>
+            )}
+            ButtonComponent={({ onClick }) => (
               <LoadingButton
-                loading={updatingTree}
-                sx={{ width: '200px' }}
-                variant='contained'
-                onClick={saveData}
-                color='primary'
-                size='small'
+                sx={{ mt: 1 }}
+                fullWidth
+                variant="contained"
+                color="error"
+                onClick={onClick}
               >
-                {t('Save')}
+                {t("Confirm deletion")}
               </LoadingButton>
-            </Stack>
-            <Divider sx={{ my: 2 }}>
-              {t('other actions')}
-            </Divider>
-            <ConfirmationButton
-              Actionator={({ onClick }) => (
-                <Button
-                  size='small'
-                  variant='text'
-                  onClick={onClick}
-                  color='error'
-                >
-                  {t('Remove {{what}}', { what: treeitem_translations[element.type].toLowerCase() })}
-                </Button>
-              )}
-              ButtonComponent={({ onClick }) => (
-                <LoadingButton
-                  sx={{ mt: 1 }}
-                  fullWidth
-                  variant='contained'
-                  color='error'
-                  onClick={onClick}
-                >
-                  {t('Confirm deletion')}
-                </LoadingButton>
-              )}
-              onClick={deleteTreeItem}
-              text={t('Are you sure?')}
-            />
-          </Box>
-        )}
+            )}
+            onClick={deleteTreeItem}
+            text={t("Are you sure?")}
+          />
+        </Box>
+      )}
     </>
   );
 };
