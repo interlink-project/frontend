@@ -336,7 +336,7 @@ const RewardSettings = (props) => {
               onClose();
             }}
           >
-            {t("ACTIVATE this function")}
+            {t("Active this function")}
           </Button>
         </Grid>
       </Grid>

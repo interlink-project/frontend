@@ -65,14 +65,13 @@ const SettingsTab = () => {
   const [jsonPropertiesFile, setJsonPropertiesFile] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [isRewardingAtivated, setIsRewardingAtivated] = useState(false);
 
   const handleOpenLightbox = () => {
-    if (!isRewardingAtivated) {
+    if (!process.game_id) {
       setIsLightboxOpen(true);
     }
-    if (isRewardingAtivated) {
-      setIsRewardingAtivated(!isRewardingAtivated);
+    if (process.game_id) {
+      changeRewarding(false);
     }
   };
 
@@ -86,7 +85,7 @@ const SettingsTab = () => {
   const { process, hasSchema, isAdministrator, tree } = useSelector(
     (state) => state.process
   );
-
+    console.log(process);
   const [isIncentiveModuleActive, setIsIncentiveModuleActive] = useState(
     process.incentive_and_rewards_state
   );
@@ -209,8 +208,8 @@ const SettingsTab = () => {
     </>
   );
 
-  useEffect(async () => {
-    const values = { incentive_and_rewards_state: isRewardingAtivated };
+  const changeRewarding = async (status) => {
+    const values = { incentive_and_rewards_state: status };
     if (values.incentive_and_rewards_state) {
       const taskList = prepareGameTemplate(tree);
       let res = await gamesApi.setGame(process.id, taskList);
@@ -245,7 +244,7 @@ const SettingsTab = () => {
     } catch (err) {
       console.error(err);
     }
-  }, [isRewardingAtivated]);
+  };
 
   const toggleGuideHide = async () => {
     setIsGuideHidden((prev) => !prev);
@@ -835,10 +834,10 @@ const SettingsTab = () => {
                     <Button
                       disabled={!isAdministrator}
                       variant="contained"
-                      color={isRewardingAtivated ? "error" : "success"}
+                      color={process.game_id ? "error" : "success"}
                       onClick={handleOpenLightbox}
                     >
-                      {isRewardingAtivated ? t("Deactivate") : t("Settings")}
+                      {process.game_id ? t("Deactivate") : t("Settings")}
                     </Button>
                   </>
                 }
@@ -853,7 +852,7 @@ const SettingsTab = () => {
                     <RewardSettings
                       onClose={handleCloseLightbox}
                       activateReward={() => {
-                        setIsRewardingAtivated(true);
+                        changeRewarding(true);
                       }}
                     />
                   </Lightbox>
