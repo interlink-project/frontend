@@ -42,8 +42,16 @@
 				"main": "#ff9800"
 			},
 			"gold": {
-				"contrastText": "#000000",
-				"main": "#c7b50f"
+				"main": "#a57c00",
+				"contrastText": "#ffffff"
+			},
+			"silver": {
+				"main": "#c0c0c0",
+				"contrastText": "#000000"
+			},
+			"bronze": {
+				"main": "#88540b",
+				"contrastText": "#000000"
 			},
 			"high_contribution": {
 				"main": "#44C949",
@@ -92,8 +100,16 @@
 				"main": "#ff9800"
 			},
 			"gold": {
-				"contrastText": "#000000",
-				"main": "#c7b50f"
+				"main": "#a57c00",
+				"contrastText": "#ffffff"
+			},
+			"silver": {
+				"main": "#c0c0c0",
+				"contrastText": "#000000"
+			},
+			"bronze": {
+				"main": "#88540b",
+				"contrastText": "#000000"
 			},
 			"high_contribution": {
 				"main": "#44C949",
