@@ -77,13 +77,16 @@ const TreeItemData = ({ language, processId, element, assets }) => {
   const [selectionRangeState, setSelectionRangeState] = useState([
     {
       startDate: new Date(),
-      endDate: addDays(new Date(), 7),
+      endDate: addDays(new Date(), 0),
       key: "selection",
     },
   ]);
+  const [changeTheDate, setChangeTheDate] = useState(false);
 
   const handleSelect = (ranges) => {
     console.log(ranges);
+
+    setChangeTheDate(true);
     setSelectionRangeState([ranges.selection]);
     // {
     //   selection: {
@@ -101,23 +104,32 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     //setExploitation(el.exploitation);
     setStatus(el.status);
     setDateRange([
-      el.start_date ? addDays(new Date(el.start_date), 1) : null,
-      el.end_date ? addDays(new Date(el.end_date), 1) : null,
+      el.start_date ? new Date(el.start_date) : null,
+      el.end_date ? new Date(el.end_date) : null,
     ]);
 
-    setSelectionRangeState([
-      {
-        startDate: element.start_date
-          ? addDays(new Date(el.start_date), 1)
-          : null,
-        endDate: el.end_date ? addDays(new Date(el.end_date), 1) : null,
-        key: "selection",
-      },
-    ]);
+    if (el.start_date && el.end_date) {
+      setSelectionRangeState([
+        {
+          startDate: el.start_date ? new Date(el.start_date) : null,
+          endDate: el.end_date ? new Date(el.end_date) : null,
+          key: "selection",
+        },
+      ]);
+    } else {
+      setSelectionRangeState([
+        {
+          startDate: null,
+          endDate: null,
+          key: "selection",
+        },
+      ]);
+    }
   };
 
   useEffect(() => {
     restart(element);
+    setChangeTheDate(false);
   }, [editMode]);
 
   useEffect(() => {
@@ -137,18 +149,39 @@ const TreeItemData = ({ language, processId, element, assets }) => {
 
     // const start_date = dateRange[0] && dateRange[0].toISOString().slice(0, 10);
     // const end_date = dateRange[1] && dateRange[1].toISOString().slice(0, 10);
+    if (changeTheDate) {
+      if (selectionRangeState[0].startDate && selectionRangeState[0].endDate) {
+        let start_date = null;
+        let end_date = null;
 
-    const start_date = selectionRangeState[0].startDate
-      .toISOString()
-      .slice(0, 10);
-    const end_date = selectionRangeState[0].endDate.toISOString().slice(0, 10);
+        if (!data.start_date) {
+          start_date = addDays(selectionRangeState[0].startDate, 1)
+            .toISOString()
+            .slice(0, 10);
 
-    if (start_date !== element.start_date) {
-      data.start_date = start_date;
+          end_date = addDays(selectionRangeState[0].endDate, 1)
+            .toISOString()
+            .slice(0, 10);
+        } else {
+          start_date = selectionRangeState[0].startDate
+            .toISOString()
+            .slice(0, 10);
+          end_date = selectionRangeState[0].endDate.toISOString().slice(0, 10);
+
+        }
+
+        if (start_date !== element.start_date) {
+          //alert(element.start_date + " <- " + start_date);
+          data.start_date = start_date;
+        }
+
+        if (end_date !== element.end_date) {
+          //alert(data.end_date + " <- " + end_date);
+          data.end_date = end_date;
+        }
+      }
     }
-    if (end_date !== element.end_date) {
-      data.end_date = end_date;
-    }
+
     if (status !== element.status) {
       data.status = status;
       if (resetContributions) {

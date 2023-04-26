@@ -56,6 +56,7 @@ import { Link } from "react-router-dom";
 import InterlinkAnimation from "components/home/InterlinkLoading";
 import { styled } from "@mui/material/styles";
 import Lightbox from "../../../../../components/Lightbox";
+import CreateSchema from "components/dashboard/SchemaSelector";
 import RewardSettings from "./RewardSettings";
 
 const SettingsTab = () => {
@@ -65,6 +66,11 @@ const SettingsTab = () => {
   const [jsonPropertiesFile, setJsonPropertiesFile] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [openDialogSchema, setOpenDialogSchema] = useState(false);
+      
+  const handleCloseDialogSchema = () => {
+    setOpenDialogSchema(false);
+  };
 
   const handleOpenLightbox = () => {
     if (!process.game_id) {
@@ -247,9 +253,21 @@ const SettingsTab = () => {
   };
 
   const toggleGuideHide = async () => {
+    if(isGuideHidden){
+      //Before hide the guide check you have selected a schema:
+
+      if(!hasSchema){
+        alert(t("To hide the guide checklist you must select a schema."));
+        setOpenDialogSchema(true);
+        return false;      
+      }
+
+    }
+
     setIsGuideHidden((prev) => !prev);
 
-    //Active the incentive and rewards
+
+    //Hide guide startup checklist
     const values = { hideguidechecklist: isGuideHidden };
 
     try {
@@ -1104,6 +1122,17 @@ const SettingsTab = () => {
           </Stack>
         </DialogContent>
       </Dialog>
+
+      {!hasSchema &&  (
+          <Dialog open={openDialogSchema} onClose={handleCloseDialogSchema} fullWidth maxWidth="xl">
+            <Box sx={{ minHeight: "93vh" }}>
+              <CreateSchema />
+            </Box>
+          </Dialog>
+      )}
+
+
+
     </Box>
   );
 };
