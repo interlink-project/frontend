@@ -21,6 +21,7 @@ import { getAssetsList_byTask } from 'slices/general';
 import useAuth from 'hooks/useAuth';
 
 import { REACT_APP_COMPLETE_DOMAIN } from 'configuration';
+import AssetsShare from './AssetsShare';
 
 const RightSide = ({ softwareInterlinkers }) => {
   const { process, isAdministrator, selectedTreeItem } = useSelector((state) => state.process);
@@ -31,6 +32,9 @@ const RightSide = ({ softwareInterlinkers }) => {
   const [assets, setAssets] = useState([]);
   const [loadingAssets, setLoadingAssets] = useState(false);
   const [loading, setLoading] = useState('');
+  const [assetsShareOpen, setAssetsShareOpen] = useState(false);
+  const [assetsShareLoading, setAssetsShareLoading] = useState(false);
+
   // new asset modal
   const [selectedInterlinker, setSelectedInterlinker] = useState(null);
   const [selectedAsset, setSelectedAsset] = useState(null);
@@ -182,6 +186,9 @@ const RightSide = ({ softwareInterlinkers }) => {
     const linkToAsset=`${REACT_APP_COMPLETE_DOMAIN}/dashboard/coproductionprocesses/${process.id}/${asset.id}/view`
     
     copyTextToClipboard(linkToAsset);
+
+    setSelectedAsset(asset);
+    setAssetsShareOpen(true);
     
     setAnchorEl(null);
   };
@@ -253,8 +260,8 @@ const RightSide = ({ softwareInterlinkers }) => {
 
   const handleEdit = (asset) => {
 
-    const backend =asset['software_response']['backend'];
-    const linktoAsset =backend+'/'+asset['external_asset_id'];
+    // const backend =asset['software_response']['backend'];
+    // const linktoAsset =backend+'/'+asset['external_asset_id'];
     
 
     window.open(`${linktoAsset}/edit`, '_blank');
@@ -1019,6 +1026,14 @@ const RightSide = ({ softwareInterlinkers }) => {
           )}
 
         </Box>
+
+        <AssetsShare
+        open={assetsShareOpen}
+        setOpen={setAssetsShareOpen}
+        loading={assetsShareLoading}
+        setLoading={setAssetsShareLoading}
+        asset={selectedAsset}
+      />
       </Grid>
     )
   );
