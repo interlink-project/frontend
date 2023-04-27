@@ -82,7 +82,7 @@ const RewardSettings = (props) => {
             <Grid item md={11} sx={{ mt: 0 }}>
               <Typography variant="body1" className="reward-left-text">
                 {t(
-                  "Every time someone adds a resource to the task, he will be able to claim is contribute"
+                  "Every time someone adds a resource to the task, she will be able to claim her contribution"
                 )}
               </Typography>
               <Box
@@ -106,14 +106,15 @@ const RewardSettings = (props) => {
             <Grid item md={11} sx={{ mt: 0 }}>
               <Typography variant="body1" className="reward-left-text">
                 {t(
-                  "Once finished a task you will have to set the contribute of every collaborator assigning a level of contribution based on four levels:"
-                )}
+                  "Once finished a task you will have to set the contribution of every collaborator assigning a level of contribution based on four levels"
+                )+":"}
+                </Typography>
                 <Box className="box-reward">
                   <li>
                     <Typography variant="body1">
                       •{" "}
                       <span style={{ color: "#F44336" }}>
-                        {t("No contribute")}
+                        {t("No contribution")}
                       </span>
                     </Typography>
                   </li>
@@ -121,7 +122,7 @@ const RewardSettings = (props) => {
                     <Typography variant="body1">
                       •{" "}
                       <span style={{ color: "#FF7A00" }}>
-                        {t("Low contribute")}
+                        {t("Low contribution")}
                       </span>
                     </Typography>
                   </li>
@@ -129,7 +130,7 @@ const RewardSettings = (props) => {
                     <Typography variant="body1">
                       •{" "}
                       <span style={{ color: "#FFE607" }}>
-                        {t("Medium contribute")}
+                        {t("Medium contribution")}
                       </span>
                     </Typography>
                   </li>
@@ -137,12 +138,12 @@ const RewardSettings = (props) => {
                     <Typography variant="body1">
                       •{" "}
                       <span style={{ color: "#44C949" }}>
-                        {t("High contribute")}
+                        {t("High contribution")}
                       </span>
                     </Typography>
                   </li>
                 </Box>
-              </Typography>
+              
               <Box
                 className="mt-1 mb-1"
                 alt="Reward image 3"
@@ -164,11 +165,11 @@ const RewardSettings = (props) => {
             <Grid item md={11} sx={{ mt: 0 }}>
               <Typography variant="body1" className="reward-left-text">
                 {t(
-                  "Now you have two ways, you can active the Leaderboard or not. This function permit to the users to see (in addition to his profile) the points of others collaborators. Obviously activating this function you have to bear in mind that could incetivize the competion beetween users"
+                  "Now you have two ways, you can active the Leaderboard or not. This function permit to the users to see (in addition to his profile) the points of other collaborators. Obviously, activating this function, you have to bear in mind that could incentivize the competition between users"
                 )}
                 .
                 <strong>
-                  {t(
+                  {" "+t(
                     "Remember that in any case the admins will see the Leaderboard"
                   )}
                   .
