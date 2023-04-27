@@ -403,6 +403,18 @@ const RightSide = ({ softwareInterlinkers }) => {
         text: t('Open'),
         icon: <OpenInNew fontSize='small' />
       });
+
+      actions.push({
+        id: `${id}-share-action`,
+        loading: loading === 'share',
+        onClick: (closeMenuItem) => {
+          handleShare(asset);
+          closeMenuItem();
+        },
+        text: t('Share'),
+        icon: <Share fontSize='small' />
+      });
+
       if (can.create) {
         actions.push({
           id: `${id}-clone-action`,
