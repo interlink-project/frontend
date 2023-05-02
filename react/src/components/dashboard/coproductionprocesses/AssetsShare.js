@@ -37,7 +37,7 @@ import { LoadingButton } from "@mui/lab";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getLanguage, LANGUAGES } from "translations/i18n";
-import { recommenderApi } from "__api__";
+import { recommenderApi,assetsApi } from "__api__";
 import { Done, Delete, Close, KeyboardArrowRight } from "@mui/icons-material";
 import SelectGovernanceModel from "./SelectGovernanceModel";
 import { REACT_APP_COMPLETE_DOMAIN } from "configuration";
@@ -117,15 +117,41 @@ export default function AssetsShare({
   };
 
   const handleNext = async () => {
-    //setLoading(true);
-    alert("Lets send the emails");
-    console.log("Subject: " + subject);
-    console.log("Instructions: " + instructions);
-    console.log("Ids of selected teams are: " + checkboxValues);
-    console.log("Asset id is: " + asset.id);
-    
-    //Send the emails!!
+  //setLoading(true);
+  alert("Lets send the emails");
+  console.log("Subject: " + subject);
+  console.log("Instructions: " + instructions);
+  console.log("Ids of selected teams are: " + checkboxValues);
+  console.log("Asset id is: " + asset.id);
+  console.log("Asset link es: " + assetLink);    
+  //Send the emails!!
+
+  //En el caso que sea una lista de usuarios:
+  const listTeams=checkboxValues.join(",");
+  const dataToSend = {
+    asset_id: asset.id,
+    asset_link: assetLink,
+    subject: subject,
+    instructions: instructions,
+    listTeams: listTeams
   };
+
+
+  assetsApi
+    .emailAskTeamContribution(dataToSend)
+    .then((res) => {
+      console.log(res);
+      
+    })
+    .catch((err) => {
+      
+      console.log(err);
+      
+    });
+
+
+  };
+
 
   if (selectedTreeItem) {
     const permissions = selectedTreeItem.permissions;
