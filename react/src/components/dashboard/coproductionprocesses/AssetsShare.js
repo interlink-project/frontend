@@ -158,7 +158,7 @@ export default function AssetsShare({
             <Typography sx={{ mb: 1, fontWeight: "bold" }} variant="body1">
               {"1.- " +
                 t(
-                  "You can copy the link below and share it with your colleagues"
+                  "You may copy the link below and share it with your colleagues"
                 ) +
                 "."}
             </Typography>
@@ -183,7 +183,7 @@ export default function AssetsShare({
             </FormControl>
             <Divider sx={{ my: 2 }} />
             <Typography sx={{ mb: 1, fontWeight: "bold" }} variant="body1">
-              {"2.- " + t("You can send and email to a team") + "."}
+              {"2.- " + t("You may send and email to a team") + "."}
             </Typography>
             <FormControl fullWidth sx={{ m: 1 }} variant="standard">
               <TextField
