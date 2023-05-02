@@ -117,25 +117,22 @@ export default function AssetsShare({
   };
 
   const handleNext = async () => {
-  //setLoading(true);
-  alert("Lets send the emails");
-  console.log("Subject: " + subject);
-  console.log("Instructions: " + instructions);
-  console.log("Ids of selected teams are: " + checkboxValues);
-  console.log("Asset id is: " + asset.id);
-  console.log("Asset link es: " + assetLink);    
-  //Send the emails!!
-
-  //En el caso que sea una lista de usuarios:
+  
   const listTeams=checkboxValues.join(",");
+  if (!Array.isArray(listTeams)){
+    listTeams = [listTeams];
+  }
   const dataToSend = {
     asset_id: asset.id,
-    asset_link: assetLink,
+    link: assetLink,
+    asset_name: asset.internalData.name,
+    icon: asset.internalData.icon,
     subject: subject,
     instructions: instructions,
-    listTeams: listTeams
+    listTeams: listTeams,
+    processId: process.id
   };
-
+  console.log(dataToSend)
 
   assetsApi
     .emailAskTeamContribution(dataToSend)
