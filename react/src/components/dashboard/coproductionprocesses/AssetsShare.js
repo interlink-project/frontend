@@ -122,13 +122,15 @@ export default function AssetsShare({
     console.log("Subject: " + subject);
     console.log("Instructions: " + instructions);
     console.log("Ids of selected teams are: " + checkboxValues);
+    console.log("Asset id is: " + asset.id);
+    
     //Send the emails!!
   };
 
   if (selectedTreeItem) {
     const permissions = selectedTreeItem.permissions;
     for (var i = 0; i < permissions.length; i++) {
-      if (listTeams.includes(permissions[i].team) == false) {
+      if (!listTeams.includes(permissions[i].team)) {
         listTeams.push(permissions[i].team);
       }
     }

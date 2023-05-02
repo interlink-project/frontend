@@ -84,7 +84,9 @@ const ContributionsTabs = ({ contributions }) => {
       .replace(/'/g, "&#39;");
   }
 
-  const createContributionUser = (values, user, isListUsers = false,setErrors, setStatus, setSubmitting) => {
+  
+
+  const createContributionUser = (values, user, isListUsers = false, isTeams=false,setErrors, setStatus, setSubmitting) => {
     const selectedAsset = values.asset;
     //Defino el link del asset
     let selectedAssetLink = "";
@@ -136,6 +138,7 @@ const ContributionsTabs = ({ contributions }) => {
         parameters: paramListJson,
         claim_type: "Development",
         user_id: user.id,
+        isTeam: isTeams,
       };
     } else {
       //En el caso que sea una lista de usuarios:
@@ -147,6 +150,7 @@ const ContributionsTabs = ({ contributions }) => {
         parameters: paramListJson,
         claim_type: "Development",
         user_id: listUsuarios,
+        isTeam: isTeams,
       };
     }
 
@@ -452,7 +456,7 @@ const ContributionsTabs = ({ contributions }) => {
                   if (userSelected || fileSelected || teamsSelected) {
                     if (userSelected) {
                       //alert("You have selected a user:" + values.user.id);
-                      createContributionUser(values, values.user,setErrors, setStatus, setSubmitting);
+                      createContributionUser(values, values.user,false,false,setErrors, setStatus, setSubmitting);
                     }
                     if (fileSelected) {
                       //("You have selected a file:" + listUsers.length);
@@ -463,12 +467,13 @@ const ContributionsTabs = ({ contributions }) => {
                         listUsersIds=[...listUsersIds,usuario[0].id]  
                       }
                       //alert("You have selected a file:" + listUsersIds)
-                      createContributionUser(values, listUsersIds, true,setErrors, setStatus, setSubmitting);
+                      createContributionUser(values, listUsersIds, true, false, setErrors, setStatus, setSubmitting);
 
 
                     }
                     if (teamsSelected) {
                       alert("You have selected a team:" + checkboxValues);
+                      createContributionUser(values, checkboxValues,true,true,setErrors, setStatus, setSubmitting);
                     }
                   } else {
                     setStatus({ success: false });
