@@ -211,14 +211,19 @@ const ContributionsTabs = ({ contributions }) => {
     });
   };
 
-  if (selectedTreeItem) {
+  useEffect(() => { 
+
     const permissions = selectedTreeItem.permissions;
+    setListTeams([]);
+
     for (var i = 0; i < permissions.length; i++) {
-      if (listTeams.includes(permissions[i].team) == false) {
-        listTeams.push(permissions[i].team);
+      if (!listTeams.includes(permissions[i].team)) {
+   
+        setListTeams([...listTeams, permissions[i].team]);
       }
     }
-  }
+
+  }, [selectedTreeItem]);
 
   const CONTRIBUTION_LEVELS = {
     Low: 1,
@@ -479,7 +484,7 @@ const ContributionsTabs = ({ contributions }) => {
                     setStatus({ success: false });
                     setErrors({ submit: err });
                     setSubmitting(false);
-                    alert("You must select one of the contribution options");
+                    alert(t("You must select one of the contribution option."));
                   }
                 }}
               >

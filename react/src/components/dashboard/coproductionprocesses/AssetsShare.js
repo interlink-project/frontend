@@ -37,7 +37,7 @@ import { LoadingButton } from "@mui/lab";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getLanguage, LANGUAGES } from "translations/i18n";
-import { recommenderApi,assetsApi } from "__api__";
+import { recommenderApi, assetsApi } from "__api__";
 import { Done, Delete, Close, KeyboardArrowRight } from "@mui/icons-material";
 import SelectGovernanceModel from "./SelectGovernanceModel";
 import { REACT_APP_COMPLETE_DOMAIN } from "configuration";
@@ -117,47 +117,42 @@ export default function AssetsShare({
   };
 
   const handleNext = async () => {
-  
-  const listTeams=checkboxValues.join(",");
-  if (!Array.isArray(listTeams)){
-    listTeams = [listTeams];
-  }
-  const dataToSend = {
-    asset_id: asset.id,
-    link: assetLink,
-    asset_name: asset.internalData.name,
-    icon: asset.internalData.icon,
-    subject: subject,
-    instructions: instructions,
-    listTeams: listTeams,
-    processId: process.id
-  };
-  console.log(dataToSend)
+    let listTeamsSelected = checkboxValues.join(",");
+    if (!Array.isArray(listTeamsSelected)) {
+      listTeamsSelected = [listTeamsSelected];
+    }
+    const dataToSend = {
+      asset_id: asset.id,
+      link: assetLink,
+      asset_name: asset.internalData.name,
+      icon: asset.internalData.icon,
+      subject: subject,
+      instructions: instructions,
+      listTeams: listTeamsSelected,
+      processId: process.id,
+    };
+    console.log(dataToSend);
 
-  assetsApi
-    .emailAskTeamContribution(dataToSend)
-    .then((res) => {
-      console.log(res);
-      
-    })
-    .catch((err) => {
-      
-      console.log(err);
-      
-    });
-
-
+    assetsApi
+      .emailAskTeamContribution(dataToSend)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-
-  if (selectedTreeItem) {
+  useEffect(() => {
     const permissions = selectedTreeItem.permissions;
+    setListTeams([]);
+
     for (var i = 0; i < permissions.length; i++) {
       if (!listTeams.includes(permissions[i].team)) {
-        listTeams.push(permissions[i].team);
+        setListTeams([...listTeams, permissions[i].team]);
       }
     }
-  }
+  }, [selectedTreeItem]);
 
   return (
     <>
