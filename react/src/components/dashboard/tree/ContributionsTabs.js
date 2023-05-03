@@ -29,10 +29,18 @@ import {
   Checkbox,
   Stack,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import ConfirmationButton from "components/ConfirmationButton";
 import { LoadingButton } from "@mui/lab";
 import UserSearch from "../coproductionprocesses/UserSearch";
-import { Delete, Edit, Save, Close, ViewList } from "@mui/icons-material";
+import {
+  Delete,
+  Edit,
+  Save,
+  Close,
+  ViewList,
+  Download,
+} from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -84,9 +92,15 @@ const ContributionsTabs = ({ contributions }) => {
       .replace(/'/g, "&#39;");
   }
 
-  
-
-  const createContributionUser = (values, user, isListUsers = false, isTeams=false,setErrors, setStatus, setSubmitting) => {
+  const createContributionUser = (
+    values,
+    user,
+    isListUsers = false,
+    isTeams = false,
+    setErrors,
+    setStatus,
+    setSubmitting
+  ) => {
     const selectedAsset = values.asset;
     //Defino el link del asset
     let selectedAssetLink = "";
@@ -142,7 +156,7 @@ const ContributionsTabs = ({ contributions }) => {
       };
     } else {
       //En el caso que sea una lista de usuarios:
-      const listUsuarios=user.join(",");
+      const listUsuarios = user.join(",");
       dataToSend = {
         coproductionprocess_id: process.id,
         notification_event: "add_contribution_asset",
@@ -164,7 +178,6 @@ const ContributionsTabs = ({ contributions }) => {
         handleCloseDialog();
       })
       .catch((err) => {
-        
         console.log(err);
         setStatus({ success: false });
         setErrors({ submit: err });
@@ -211,18 +224,15 @@ const ContributionsTabs = ({ contributions }) => {
     });
   };
 
-  useEffect(() => { 
-
+  useEffect(() => {
     const permissions = selectedTreeItem.permissions;
     setListTeams([]);
 
     for (var i = 0; i < permissions.length; i++) {
       if (!listTeams.includes(permissions[i].team)) {
-   
         setListTeams([...listTeams, permissions[i].team]);
       }
     }
-
   }, [selectedTreeItem]);
 
   const CONTRIBUTION_LEVELS = {
@@ -356,7 +366,7 @@ const ContributionsTabs = ({ contributions }) => {
               </Typography>
             </Grid>
 
-            {process.game_id ? (
+            {/* {process.game_id ? ( */}
 
             <Grid item xs={6} sx={{ position: "relative" }}>
               <Button
@@ -373,8 +383,7 @@ const ContributionsTabs = ({ contributions }) => {
               </Button>
             </Grid>
 
-            ) : null}
-
+            {/* ) : null} */}
           </Grid>
           {/* Table */}
           <ContributionsTable
@@ -454,7 +463,10 @@ const ContributionsTabs = ({ contributions }) => {
 
                   asset: Yup.object().required("Required"),
                 })}
-                onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+                onSubmit={async (
+                  values,
+                  { setErrors, setStatus, setSubmitting }
+                ) => {
                   //alert("Lets send the contribution to the server!!");
 
                   const userSelected = values.user != "";
@@ -466,24 +478,46 @@ const ContributionsTabs = ({ contributions }) => {
                   if (userSelected || fileSelected || teamsSelected) {
                     if (userSelected) {
                       //alert("You have selected a user:" + values.user.id);
-                      createContributionUser(values, values.user,false,false,setErrors, setStatus, setSubmitting);
+                      createContributionUser(
+                        values,
+                        values.user,
+                        false,
+                        false,
+                        setErrors,
+                        setStatus,
+                        setSubmitting
+                      );
                     }
                     if (fileSelected) {
                       //("You have selected a file:" + listUsers.length);
-                      let listUsersIds=[];
+                      let listUsersIds = [];
                       for (let i = 0; i < listUsers.length; i++) {
                         //Obtain a user from its email:
-                        const usuario = await usersApi.search(listUsers[i])
-                        listUsersIds=[...listUsersIds,usuario[0].id]  
+                        const usuario = await usersApi.search(listUsers[i]);
+                        listUsersIds = [...listUsersIds, usuario[0].id];
                       }
                       //alert("You have selected a file:" + listUsersIds)
-                      createContributionUser(values, listUsersIds, true, false, setErrors, setStatus, setSubmitting);
-
-
+                      createContributionUser(
+                        values,
+                        listUsersIds,
+                        true,
+                        false,
+                        setErrors,
+                        setStatus,
+                        setSubmitting
+                      );
                     }
                     if (teamsSelected) {
                       alert("You have selected a team:" + checkboxValues);
-                      createContributionUser(values, checkboxValues,true,true,setErrors, setStatus, setSubmitting);
+                      createContributionUser(
+                        values,
+                        checkboxValues,
+                        true,
+                        true,
+                        setErrors,
+                        setStatus,
+                        setSubmitting
+                      );
                     }
                   } else {
                     setStatus({ success: false });
@@ -516,7 +550,7 @@ const ContributionsTabs = ({ contributions }) => {
                             component="h5"
                             sx={{ mt: 2 }}
                           >
-                            {t("Select one of the follow options") + ":"}
+                            {t("Select one of the following options") + ":"}
                           </Typography>
                           <Box sx={{ ml: 1 }}>
                             <InputLabel
@@ -537,44 +571,13 @@ const ContributionsTabs = ({ contributions }) => {
                                 setContributor(user);
                               }}
                             />
+                            
+
                             <InputLabel
                               id="resource-select-label"
                               sx={{ mt: 2, mb: -1, fontWeight: "bold" }}
                             >
                               {"2.- " +
-                                t(
-                                  "Add contribution from multiple users included in a file" +
-                                    "."
-                                )}
-                            </InputLabel>
-                            <Stack direction="row" sx={{ mt: 2 }} spacing={0}>
-                              <LoadingButton
-                                variant="contained"
-                                //   disabled={!isAdministrator}
-                                loading={false}
-                                //color="warning"
-                                component="label"
-                                startIcon={<ViewList />}
-                                sx={{
-                                  mb: 3,
-                                  justifyContent: "right",
-                                  textAlign: "center",
-                                }}
-                              >
-                                {t("Cargar users from csv file")}
-                                <input
-                                  type="file"
-                                  accept=".csv"
-                                  hidden
-                                  onChange={parseFile}
-                                />
-                              </LoadingButton>
-                            </Stack>
-                            <InputLabel
-                              id="resource-select-label"
-                              sx={{ mt: 2, mb: -1, fontWeight: "bold" }}
-                            >
-                              {"3.- " +
                                 t("Add contribution of one or multiple teams") +
                                 "."}
                             </InputLabel>
@@ -606,6 +609,51 @@ const ContributionsTabs = ({ contributions }) => {
                                   </>
                                 ))}
                             </FormGroup>
+                            <InputLabel
+                              id="resource-select-label"
+                              sx={{ mt: 2, mb: -1, fontWeight: "bold" }}
+                            >
+                              {"3.- " +
+                                t(
+                                  "Add contribution from multiple users included in a file" +
+                                    "."
+                                )}
+                            </InputLabel>
+                            <Stack direction="row" sx={{ mt: 2 }} spacing={0}>
+                              <LoadingButton
+                                variant="contained"
+                                //   disabled={!isAdministrator}
+                                loading={false}
+                                //color="warning"
+                                component="label"
+                                startIcon={<ViewList />}
+                                sx={{
+                                  mb: 3,
+                                  justifyContent: "right",
+                                  textAlign: "center",
+                                }}
+                              >
+                                {t("Cargar users from csv file")}
+                                <input
+                                  type="file"
+                                  accept=".csv"
+                                  hidden
+                                  onChange={parseFile}
+                                />
+                              </LoadingButton>
+                              <Grid container spacing={3}>
+                                <Typography variant="p" sx={{ mt: 3,ml:4 }}>
+                                  {t("An example a file") + ":"}
+                                  <Link
+                                    to="/static/story/ExampleFileCSV.csv"
+                                    target="_blank"
+                                    download
+                                  >
+                                    <Download sx={{ ml: 1 }} />{" "}
+                                  </Link>
+                                </Typography>
+                              </Grid>
+                            </Stack>
                           </Box>
                           <Divider sx={{ my: 2 }} />
                         </Box>
@@ -804,7 +852,7 @@ const ContributionsTabs = ({ contributions }) => {
                       </Select>
 
                       <Typography variant="h6" component="h5" sx={{ mt: 2 }}>
-                        {t("Fill contribution information")}
+                        {t("Filling contribution information")}
                       </Typography>
                       <TextField
                         required
