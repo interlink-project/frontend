@@ -366,7 +366,7 @@ const ContributionsTabs = ({ contributions }) => {
               </Typography>
             </Grid>
 
-            {/* {process.game_id ? ( */}
+            {process.game_id ? (
 
             <Grid item xs={6} sx={{ position: "relative" }}>
               <Button
@@ -383,7 +383,7 @@ const ContributionsTabs = ({ contributions }) => {
               </Button>
             </Grid>
 
-            {/* ) : null} */}
+             ) : null} 
           </Grid>
           {/* Table */}
           <ContributionsTable
