@@ -356,6 +356,8 @@ const ContributionsTabs = ({ contributions }) => {
               </Typography>
             </Grid>
 
+            {process.game_id ? (
+
             <Grid item xs={6} sx={{ position: "relative" }}>
               <Button
                 variant="contained"
@@ -370,6 +372,9 @@ const ContributionsTabs = ({ contributions }) => {
                 {t("Add contributor")}
               </Button>
             </Grid>
+
+            ) : null}
+
           </Grid>
           {/* Table */}
           <ContributionsTable
