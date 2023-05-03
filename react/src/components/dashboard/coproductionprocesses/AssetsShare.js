@@ -101,6 +101,9 @@ export default function AssetsShare({
   };
 
   const handleClose = () => {
+    setSubject("");
+    setInstructions("");
+    setCheckboxValues([]);
     setOpen(false);
     setLoading(false);
   };
@@ -116,7 +119,7 @@ export default function AssetsShare({
     event.preventDefault();
   };
 
-  const handleNext = async () => {
+  const handleNext = () => {
 
   // const listTeams = checkboxValues
   // if (!Array.isArray(listTeams)){
@@ -138,12 +141,13 @@ export default function AssetsShare({
     .emailAskTeamContribution(dataToSend)
     .then((res) => {
       console.log(res);
-      
+      handleClose();
     })
     .catch((err) => {
       
       console.log(err);
-      
+      handleClose();
+
     });
 
 
@@ -273,7 +277,7 @@ export default function AssetsShare({
                 severity="success"
                 sx={{ width: "100%" }}
               >
-                The link has been copied to the clipboard!
+                {t("The link has been copied to the clipboard!")}
               </Alert>
             </Snackbar>
           </>
