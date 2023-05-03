@@ -101,6 +101,9 @@ export default function AssetsShare({
   };
 
   const handleClose = () => {
+    setSubject("");
+    setInstructions("");
+    setCheckboxValues([]);
     setOpen(false);
     setLoading(false);
   };
@@ -117,10 +120,7 @@ export default function AssetsShare({
   };
 
   const handleNext = async () => {
-    let listTeamsSelected = checkboxValues.join(",");
-    if (!Array.isArray(listTeamsSelected)) {
-      listTeamsSelected = [listTeamsSelected];
-    }
+
     const dataToSend = {
       asset_id: asset.id,
       link: assetLink,
@@ -128,7 +128,7 @@ export default function AssetsShare({
       icon: asset.internalData.icon,
       subject: subject,
       instructions: instructions,
-      listTeams: listTeamsSelected,
+      listTeams: checkboxValues,
       processId: process.id,
     };
     console.log(dataToSend);
@@ -137,6 +137,7 @@ export default function AssetsShare({
       .emailAskTeamContribution(dataToSend)
       .then((res) => {
         console.log(res);
+        handleClose();
       })
       .catch((err) => {
         console.log(err);
@@ -268,7 +269,7 @@ export default function AssetsShare({
                 severity="success"
                 sx={{ width: "100%" }}
               >
-                The link has been copied to the clipboard!
+                {t('The link has been copied to the clipboard')+'!'}
               </Alert>
             </Snackbar>
           </>
