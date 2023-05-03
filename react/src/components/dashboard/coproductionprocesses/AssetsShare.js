@@ -117,11 +117,11 @@ export default function AssetsShare({
   };
 
   const handleNext = async () => {
-  
-  const listTeams=checkboxValues.join(",");
-  if (!Array.isArray(listTeams)){
-    listTeams = [listTeams];
-  }
+
+  // const listTeams = checkboxValues
+  // if (!Array.isArray(listTeams)){
+  //   listTeams = [listTeams];
+  // }
   const dataToSend = {
     asset_id: asset.id,
     link: assetLink,
@@ -129,7 +129,7 @@ export default function AssetsShare({
     icon: asset.internalData.icon,
     subject: subject,
     instructions: instructions,
-    listTeams: listTeams,
+    listTeams: checkboxValues,
     processId: process.id
   };
   console.log(dataToSend)
