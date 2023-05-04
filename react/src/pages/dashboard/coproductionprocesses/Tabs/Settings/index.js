@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   List,
   Paper,
   ListItem,
@@ -67,7 +68,7 @@ const SettingsTab = () => {
   const [editMode, setEditMode] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [openDialogSchema, setOpenDialogSchema] = useState(false);
-      
+
   const handleCloseDialogSchema = () => {
     setOpenDialogSchema(false);
   };
@@ -91,7 +92,7 @@ const SettingsTab = () => {
   const { process, hasSchema, isAdministrator, tree } = useSelector(
     (state) => state.process
   );
-    console.log(process);
+  console.log(process);
   const [isIncentiveModuleActive, setIsIncentiveModuleActive] = useState(
     process.incentive_and_rewards_state
   );
@@ -253,13 +254,13 @@ const SettingsTab = () => {
   };
 
   const toggleGuideHide = async () => {
-    if(isGuideHidden){
+    if (isGuideHidden) {
       //Before hide the guide check you have selected a schema:
 
-      if(!hasSchema){
+      if (!hasSchema) {
         alert(t("To hide the guide checklist you must select a schema."));
         setOpenDialogSchema(true);
-        return false;      
+        return false;
       }
 
     }
@@ -549,7 +550,7 @@ const SettingsTab = () => {
                 justifyContent="center"
                 spacing={2}
               >
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <TextField
                     label={t("NAME OF THE PROJECT")}
                     helperText={touched.name && errors.name}
@@ -562,7 +563,7 @@ const SettingsTab = () => {
                 </Grid>
                 <Grid
                   item
-                  xs={6}
+                  xs={4}
                   container
                   direction="row"
                   justifyContent="flex-start"
@@ -587,6 +588,60 @@ const SettingsTab = () => {
                     <MenuItem value="in_progress">{t("In progress")}</MenuItem>
                     <MenuItem value="finished">{t("Finished")}</MenuItem>
                   </Select>
+                </Grid>
+                <Grid
+                  item
+                  xs={4}
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                >
+                  <Typography variant="overline" sx={{ color: "primary.main" }}>
+                    {/* {t("TAGS")} */}
+                  </Typography>
+                  <Autocomplete
+                    multiple
+                    disablePortal
+                    id="tag-standard"
+                    options={[]}
+                    fullWidth
+                    readOnly={!editMode}
+                    renderInput={(params) => 
+                    <TextField {...params} 
+                    label={t("TAGS")}
+                    onKeyDown={(e) => {
+                      if (
+                        e.key === "Enter" &&
+                        options.findIndex((o) => o.title === inputValue) === -1
+                      ) {
+                        setOptions((o) => o.concat({ title: inputValue }));
+                      }
+                    }}
+                     />}
+                  />
+                  {/* <Autocomplete
+                    options={[]}
+                    noOptionsText="Enter to create a new option"
+                    getOptionLabel={(option) => option.title}
+                    onInputChange={(e, newValue) => {
+                      // setInputValue(newValue);
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={t("TAGS")}
+                        variant="outlined"
+                        onKeyDown={(e) => {
+                          if (
+                            e.key === "Enter" &&
+                            options.findIndex((o) => o.title === inputValue) === -1
+                          ) {
+                            setOptions((o) => o.concat({ title: inputValue }));
+                          }
+                        }}
+                      />
+                    )}
+                  /> */}
                 </Grid>
 
                 <Grid item xs={12}>
@@ -1123,12 +1178,12 @@ const SettingsTab = () => {
         </DialogContent>
       </Dialog>
 
-      {!hasSchema &&  (
-          <Dialog open={openDialogSchema} onClose={handleCloseDialogSchema} fullWidth maxWidth="xl">
-            <Box sx={{ minHeight: "93vh" }}>
-              <CreateSchema />
-            </Box>
-          </Dialog>
+      {!hasSchema && (
+        <Dialog open={openDialogSchema} onClose={handleCloseDialogSchema} fullWidth maxWidth="xl">
+          <Box sx={{ minHeight: "93vh" }}>
+            <CreateSchema />
+          </Box>
+        </Dialog>
       )}
 
 
