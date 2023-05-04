@@ -438,8 +438,8 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
 
           <Dialog open={claimDialogOpen} onClose={handleCloseDialog}>
             <DialogTitle sx={{ textAlign: "left", m: 1 }}>
-              <Typography variant="h6" component="h2">
-                {t("Introduce the details of the contribution")}
+              <Typography variant="h5" component="h4">
+                {t("Create Contributions for Users")}
               </Typography>
             </DialogTitle>
             <IconButton
@@ -599,6 +599,12 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
                                 "."}
                             </InputLabel>
                             <FormGroup sx={{ mt: 1 }}>
+                              {listTeams.length == 0 && ( 
+                                <Typography variant="body2" color="text.secondary">
+                                  {t("There are no teams assigned to this task")}
+                                </Typography>
+                              )}
+
                               {listTeams.length > 0 &&
                                 listTeams.map((team) => (
                                   <>
@@ -660,7 +666,7 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
                               </LoadingButton>
                               <Grid container spacing={3}>
                                 <Typography variant="p" sx={{ mt: 3,ml:4 }}>
-                                  {t("An example a file") + ":"}
+                                  {t("An example of this file") + ":"}
                                   <Link
                                     to="/static/story/ExampleFileCSV.csv"
                                     target="_blank"
