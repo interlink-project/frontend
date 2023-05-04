@@ -48,7 +48,7 @@ import ContributionCard from "./ContributionCard";
 import Papa from "papaparse";
 import { ExportToCsv } from "export-to-csv";
 
-const ContributionsTabs = ({ contributions }) => {
+const ContributionsTabs = ({ contributions, setContributions }) => {
   // Data for new contributions
   const [rows, setRows] = useState([]);
   const [contributor, setContributor] = useState(null);
@@ -185,6 +185,17 @@ const ContributionsTabs = ({ contributions }) => {
       });
   };
 
+  //Obtain the contributions data
+  const getContributionsData = () => {
+
+    tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
+      if(res){
+        setContributions(res.assetsWithContribution);
+      }  
+    });
+
+  };
+
   const parseFile = (evt) => {
     let exclude = [];
     if (!(evt.target && evt.target.files && evt.target.files[0])) {
@@ -229,11 +240,13 @@ const ContributionsTabs = ({ contributions }) => {
     setListTeams([]);
 
     for (var i = 0; i < permissions.length; i++) {
-      if (!listTeams.includes(permissions[i].team)) {
+      if (!(listTeams.includes(permissions[i].team))) {
         setListTeams([...listTeams, permissions[i].team]);
       }
     }
   }, [selectedTreeItem]);
+
+
 
   const CONTRIBUTION_LEVELS = {
     Low: 1,
@@ -366,7 +379,7 @@ const ContributionsTabs = ({ contributions }) => {
               </Typography>
             </Grid>
 
-            {process.game_id ? (
+            {/* {process.game_id ? ( */}
 
             <Grid item xs={6} sx={{ position: "relative" }}>
               <Button
@@ -383,7 +396,7 @@ const ContributionsTabs = ({ contributions }) => {
               </Button>
             </Grid>
 
-             ) : null} 
+             {/* ) : null}  */}
           </Grid>
           {/* Table */}
           <ContributionsTable
@@ -431,7 +444,7 @@ const ContributionsTabs = ({ contributions }) => {
             </DialogTitle>
             <IconButton
               aria-label="close"
-              onClick={() => handleCloseDialog}
+              onClick={() => handleCloseDialog()}
               sx={{
                 position: "absolute",
                 right: 8,
@@ -506,9 +519,11 @@ const ContributionsTabs = ({ contributions }) => {
                         setStatus,
                         setSubmitting
                       );
+                      //Refresh the list of contributions
+                      getContributionsData();
                     }
                     if (teamsSelected) {
-                      alert("You have selected a team:" + checkboxValues);
+                      //alert("You have selected a team:" + checkboxValues);
                       createContributionUser(
                         values,
                         checkboxValues,
@@ -518,6 +533,8 @@ const ContributionsTabs = ({ contributions }) => {
                         setStatus,
                         setSubmitting
                       );
+                      //Refresh the list of contributions
+                      getContributionsData();
                     }
                   } else {
                     setStatus({ success: false });

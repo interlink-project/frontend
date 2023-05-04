@@ -1014,6 +1014,7 @@ const RightSide = ({ softwareInterlinkers }) => {
           {tabValue === 'contributions' && (
             <ContributionsTabs
               contributions={contributions}
+              setContributions={setContributions}
               
             // element={selectedTreeItem}
             // your_permissions={permissions && permissions.your_permissions}

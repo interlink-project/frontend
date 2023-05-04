@@ -234,6 +234,7 @@ export default function AssetsShare({
               </Typography>
 
               <FormGroup>
+                {listTeams.length === 0 && t("No teams assigned to this task.")}
                 {listTeams.length > 0 &&
                   listTeams.map((team) => (
                     <>
