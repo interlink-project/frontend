@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { assetsApi,storiesApi,coproductionProcessesApi, organizationsApi, usernotificationsApi, coproductionprocessnotificationsApi, teamsApi, tasksApi } from '../__api__';
+import { assetsApi,storiesApi,tagsApi,coproductionProcessesApi, organizationsApi, usernotificationsApi, coproductionprocessnotificationsApi, teamsApi, tasksApi } from '../__api__';
 import { subDays, subHours } from 'date-fns';
 
 const now = new Date();
@@ -30,6 +30,9 @@ const initialState = {
 
   userActivities:[],
   loadingUserActivities: false,
+
+  tags: [],
+  loadingTags: false,
 };
 
 const slice = createSlice({
@@ -89,6 +92,12 @@ const slice = createSlice({
     },
     setLoadingUserActivities(state, action) {
       state.loadingUserActivities = action.payload;
+    },
+    setTags(state, action) {
+      state.tags = action.payload;
+    },
+    setLoadingTags(state, action) {
+      state.loadingTags = action.payload;
     },
   }
 });
@@ -171,6 +180,15 @@ export const getUserActivities = (params) => async (dispatch) => {
   //console.log(activity);
   dispatch(slice.actions.setUserActivities(activity));
   dispatch(slice.actions.setLoadingUserActivities(false));
+};
+
+export const getTags = () => async (dispatch) => {
+  dispatch(slice.actions.setLoadingTags(true));
+  const tags_data = await tagsApi.getMulti();
+  console.log("GENERAL TAGS")
+  console.log(tags_data);
+  dispatch(slice.actions.setTags(tags_data));
+  dispatch(slice.actions.setLoadingTags(false));
 };
 
 export default slice;

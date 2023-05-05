@@ -20,7 +20,7 @@ import "./translations/i18n";
 import { useDispatch, useSelector } from "react-redux";
 import { getProcess, getTree } from "slices/process";
 import getAssets from "./components/dashboard/coproductionprocesses/RightSide";
-import { getCoproductionProcesses } from "slices/general";
+import { getCoproductionProcesses, getTags } from "slices/general";
 import { getOrganizations } from "slices/general";
 import { getUnseenUserNotifications } from "slices/general";
 
@@ -105,6 +105,8 @@ const App = () => {
       personalSocket.close();
       setPersonalSocket(null);
     }
+
+    dispatch(getTags());
   }, [location, auth]);
 
   useEffect(() => {

@@ -50,9 +50,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { getProcess, updateProcess } from "slices/process";
 import * as Yup from "yup";
-import { coproductionProcessesApi, storiesApi, gamesApi } from "__api__";
+import { coproductionProcessesApi, storiesApi, gamesApi, tagsApi } from "__api__";
 import { withStyles } from "@mui/styles";
-import { getSelectedStory } from "slices/general";
+import { getSelectedStory, getTags } from "slices/general";
 import { Link } from "react-router-dom";
 import InterlinkAnimation from "components/home/InterlinkLoading";
 import { styled } from "@mui/material/styles";
@@ -92,7 +92,7 @@ const SettingsTab = () => {
   const { process, hasSchema, isAdministrator, tree } = useSelector(
     (state) => state.process
   );
-  console.log(process);
+
   const [isIncentiveModuleActive, setIsIncentiveModuleActive] = useState(
     process.incentive_and_rewards_state
   );
@@ -103,6 +103,10 @@ const SettingsTab = () => {
   const mounted = useMounted();
   const t = useCustomTranslation(process.language);
 
+  const { tags } = useSelector(
+    (state) => state.general
+  );
+  const [selectedTags, setSelectedTags] = useState([]);
   //Dialogs:
   const [publishDialogOpen, setPublishDialogOpen] = useState(false);
 
@@ -601,25 +605,27 @@ const SettingsTab = () => {
                   </Typography>
                   <Autocomplete
                     multiple
-                    disablePortal
                     id="tag-standard"
-                    options={[]}
+                    options={tags}
                     fullWidth
+                    // getOptionLabel={option => option.name}
                     readOnly={!editMode}
-                    renderInput={(params) => 
-                    <TextField {...params} 
-                    label={t("TAGS")}
-                    onKeyDown={(e) => {
-                      if (
-                        e.key === "Enter" &&
-                        options.findIndex((o) => o.title === inputValue) === -1
-                      ) {
-                        setOptions((o) => o.concat({ title: inputValue }));
-                      }
-                    }}
-                     />}
+                    renderInput={(params) =>
+                      <TextField {...params}
+                        label={t("TAGS")}
+                        
+                      //   onKeyDown={(e) => {
+                      //     if (
+                      //       e.key === "Enter" &&
+                      //       tags.findIndex((o) => o.name === e.inputValue) === -1
+                      //     ) {
+                      //       setSelectedTags((o) => o.concat({ name: e.inputValue }));
+                      //     }
+                      //   }
+                      // }
+                      />}
                   />
-                  {/* <Autocomplete
+                  <Autocomplete
                     options={[]}
                     noOptionsText="Enter to create a new option"
                     getOptionLabel={(option) => option.title}
@@ -641,7 +647,7 @@ const SettingsTab = () => {
                         }}
                       />
                     )}
-                  /> */}
+                  />
                 </Grid>
 
                 <Grid item xs={12}>
