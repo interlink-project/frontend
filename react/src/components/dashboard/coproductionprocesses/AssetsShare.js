@@ -120,7 +120,6 @@ export default function AssetsShare({
   };
 
   const handleNext = async () => {
-
     const dataToSend = {
       asset_id: asset.id,
       link: assetLink,
@@ -149,7 +148,7 @@ export default function AssetsShare({
     setListTeams([]);
 
     for (var i = 0; i < permissions.length; i++) {
-      if (!(listTeams.includes(permissions[i].team))) {
+      if (!listTeams.includes(permissions[i].team)) {
         setListTeams([...listTeams, permissions[i].team]);
       }
     }
@@ -234,7 +233,10 @@ export default function AssetsShare({
               </Typography>
 
               <FormGroup>
-                {listTeams.length === 0 && t("No teams assigned to this task. If you want to be able to share this task with your colleagues, please assign a team to it.")}
+                {listTeams.length === 0 &&
+                  t(
+                    "No teams assigned to this task. If you want to be able to share this task with your colleagues, please assign a team to it."
+                  )}
                 {listTeams.length > 0 &&
                   listTeams.map((team) => (
                     <>
@@ -270,7 +272,7 @@ export default function AssetsShare({
                 severity="success"
                 sx={{ width: "100%" }}
               >
-                {t('The link has been copied to the clipboard')+'!'}
+                {t("The link has been copied to the clipboard") + "!"}
               </Alert>
             </Snackbar>
           </>
@@ -282,7 +284,7 @@ export default function AssetsShare({
             size="large"
             onClick={handleNext}
           >
-            {t("Send the emails")}
+            {t("Send email to team members")}
             <Email sx={{ ml: 2 }} />
           </LoadingButton>
         </DialogActions>

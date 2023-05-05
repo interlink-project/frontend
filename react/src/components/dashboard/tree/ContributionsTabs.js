@@ -187,13 +187,11 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
 
   //Obtain the contributions data
   const getContributionsData = () => {
-
     tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
-      if(res){
+      if (res) {
         setContributions(res.assetsWithContribution);
-      }  
+      }
     });
-
   };
 
   const parseFile = (evt) => {
@@ -240,13 +238,11 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
     setListTeams([]);
 
     for (var i = 0; i < permissions.length; i++) {
-      if (!(listTeams.includes(permissions[i].team))) {
+      if (!listTeams.includes(permissions[i].team)) {
         setListTeams([...listTeams, permissions[i].team]);
       }
     }
   }, [selectedTreeItem]);
-
-
 
   const CONTRIBUTION_LEVELS = {
     Low: 1,
@@ -396,7 +392,7 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
               </Button>
             </Grid>
 
-             {/* ) : null}  */}
+            {/* ) : null}  */}
           </Grid>
           {/* Table */}
           <ContributionsTable
@@ -588,7 +584,6 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
                                 setContributor(user);
                               }}
                             />
-                            
 
                             <InputLabel
                               id="resource-select-label"
@@ -599,9 +594,14 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
                                 "."}
                             </InputLabel>
                             <FormGroup sx={{ mt: 1 }}>
-                              {listTeams.length == 0 && ( 
-                                <Typography variant="body2" color="text.secondary">
-                                  {t("There are no teams assigned to this task")}
+                              {listTeams.length == 0 && (
+                                <Typography
+                                  variant="body2"
+                                  color="text.secondary"
+                                >
+                                  {t(
+                                    "There are no teams assigned to this task"
+                                  )}
                                 </Typography>
                               )}
 
@@ -665,7 +665,7 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
                                 />
                               </LoadingButton>
                               <Grid container spacing={3}>
-                                <Typography variant="p" sx={{ mt: 3,ml:4 }}>
+                                <Typography variant="p" sx={{ mt: 3, ml: 4 }}>
                                   {t("An example of this file") + ":"}
                                   <Link
                                     to="/static/story/ExampleFileCSV.csv"
@@ -875,7 +875,7 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
                       </Select>
 
                       <Typography variant="h6" component="h5" sx={{ mt: 2 }}>
-                        {t("Filling contribution information")}
+                        {t("Fill in contribution information")}
                       </Typography>
                       <TextField
                         required
