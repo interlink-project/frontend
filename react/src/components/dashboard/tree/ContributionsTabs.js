@@ -395,24 +395,22 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
               </Typography>
             </Grid>
 
-            {/* {process.game_id ? ( */}
-
-            <Grid item xs={6} sx={{ position: "relative" }}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleAddRow}
-                sx={{
-                  position: "absolute",
-                  bottom: 0,
-                  right: 0,
-                }}
-              >
-                {t("Add contributor")}
-              </Button>
-            </Grid>
-
-            {/* ) : null}  */}
+            {process.game_id ? (
+              <Grid item xs={6} sx={{ position: "relative" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleAddRow}
+                  sx={{
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                  }}
+                >
+                  {t("Add contributor")}
+                </Button>
+              </Grid>
+            ) : null}
           </Grid>
           {/* Table */}
           <ContributionsTable
