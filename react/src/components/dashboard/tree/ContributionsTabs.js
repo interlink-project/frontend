@@ -171,7 +171,17 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
     coproductionprocessnotificationsApi
       .createbyEvent(dataToSend)
       .then((res) => {
-        console.log(res);
+        const responseData = JSON.parse(res.data);
+        console.log(responseData);
+
+        if (responseData["excluded"].length > 0) {
+          alert(
+            "We couldn't include " +
+              responseData["excluded"].length +
+              " users because is not part of a team with permissions over this task. Please check the list of users and try again."
+          );
+        }
+
         setStatus({ success: true });
         setSubmitting(false);
         // getAssets();
@@ -234,15 +244,25 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
   };
 
   useEffect(() => {
-    const permissions = selectedTreeItem.permissions;
-    setListTeams([]);
+    if (claimDialogOpen) {
+      const permissions = selectedTreeItem.permissions;
+      setListTeams([]);
 
-    for (var i = 0; i < permissions.length; i++) {
-      if (!listTeams.includes(permissions[i].team)) {
-        setListTeams([...listTeams, permissions[i].team]);
+      let listTeamsTemporal = [];
+
+      for (var i = 0; i < permissions.length; i++) {
+        const equipoTemp = permissions[i].team;
+
+        if (listTeamsTemporal.includes(equipoTemp)) {
+        } else {
+          listTeamsTemporal.push(equipoTemp);
+        }
       }
+
+      let listTeamsSet = new Set(listTeamsTemporal);
+      setListTeams(Array.from(listTeamsSet));
     }
-  }, [selectedTreeItem]);
+  }, [claimDialogOpen]);
 
   const CONTRIBUTION_LEVELS = {
     Low: 1,
@@ -503,7 +523,16 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
                       for (let i = 0; i < listUsers.length; i++) {
                         //Obtain a user from its email:
                         const usuario = await usersApi.search(listUsers[i]);
-                        listUsersIds = [...listUsersIds, usuario[0].id];
+                        if (usuario[0] === undefined) {
+                          alert(
+                            "The user " +
+                              listUsers[i] +
+                              " haven't registered yet in the platform. Please, ask him to register and try again."
+                          );
+                          return false;
+                        } else {
+                          listUsersIds = [...listUsersIds, usuario[0].id];
+                        }
                       }
                       //alert("You have selected a file:" + listUsersIds)
                       createContributionUser(

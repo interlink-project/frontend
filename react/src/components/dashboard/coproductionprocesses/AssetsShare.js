@@ -42,6 +42,7 @@ import { Done, Delete, Close, KeyboardArrowRight } from "@mui/icons-material";
 import SelectGovernanceModel from "./SelectGovernanceModel";
 import { REACT_APP_COMPLETE_DOMAIN } from "configuration";
 import { useDispatch, useSelector } from "react-redux";
+import useMounted from "hooks/useMounted";
 
 export default function AssetsShare({
   open,
@@ -63,6 +64,7 @@ export default function AssetsShare({
   const [listTeams, setListTeams] = useState([]);
 
   const [checkboxValues, setCheckboxValues] = useState([]);
+  const mounted = useMounted();
 
   const handleCheckboxChange = (event) => {
     const value = event.target.value;
@@ -147,12 +149,20 @@ export default function AssetsShare({
     const permissions = selectedTreeItem.permissions;
     setListTeams([]);
 
+    let listTeamsTemporal = [];
+
     for (var i = 0; i < permissions.length; i++) {
-      if (!listTeams.includes(permissions[i].team)) {
-        setListTeams([...listTeams, permissions[i].team]);
+      const equipoTemp = permissions[i].team;
+
+      if (listTeamsTemporal.includes(equipoTemp)) {
+      } else {
+        listTeamsTemporal.push(equipoTemp);
       }
     }
-  }, [selectedTreeItem]);
+
+    let listTeamsSet = new Set(listTeamsTemporal);
+    setListTeams(Array.from(listTeamsSet));
+  }, [asset]);
 
   return (
     <>
