@@ -107,6 +107,7 @@ const SettingsTab = () => {
     (state) => state.general
   );
   const [selectedTags, setSelectedTags] = useState([]);
+  const [inputTag, setInputTag] = useState("");
   //Dialogs:
   const [publishDialogOpen, setPublishDialogOpen] = useState(false);
 
@@ -340,6 +341,17 @@ const SettingsTab = () => {
       setStoriesList(res);
       //console.log(storiesList);
     });
+    let tmp_tags = [];
+    process.tags_ids.map((tag) => {
+      tags.find((t) => {
+        console.log("tag",t.id, tag);
+        if (t.id === tag) {
+          tmp_tags.push(t);
+        }
+      })
+    });
+    console.log("TMP_TAGS",tmp_tags);
+    setSelectedTags(tmp_tags);
   }, []);
 
   const handleDeleteStory = (event, story_id) => {
@@ -600,53 +612,66 @@ const SettingsTab = () => {
                   direction="row"
                   justifyContent="flex-start"
                 >
-                  <Typography variant="overline" sx={{ color: "primary.main" }}>
-                    {/* {t("TAGS")} */}
-                  </Typography>
                   <Autocomplete
                     multiple
-                    id="tag-standard"
-                    options={tags}
                     fullWidth
-                    // getOptionLabel={option => option.name}
+                    selectOnFocus
+                    handleHomeEndKeys
+                    freeSolo
+                    id="autocomplete-tags"
                     readOnly={!editMode}
-                    renderInput={(params) =>
-                      <TextField {...params}
-                        label={t("TAGS")}
-                        
-                      //   onKeyDown={(e) => {
-                      //     if (
-                      //       e.key === "Enter" &&
-                      //       tags.findIndex((o) => o.name === e.inputValue) === -1
-                      //     ) {
-                      //       setSelectedTags((o) => o.concat({ name: e.inputValue }));
-                      //     }
-                      //   }
-                      // }
-                      />}
-                  />
-                  <Autocomplete
-                    options={[]}
+                    value={selectedTags}
+                    options={tags}
                     noOptionsText="Enter to create a new option"
-                    getOptionLabel={(option) => option.title}
-                    onInputChange={(e, newValue) => {
-                      // setInputValue(newValue);
+                    getOptionLabel={(tag) => {
+                      // Value selected with enter, right from the input
+                      if (typeof tag === 'string') {
+                        return tag;
+                      }
+                      // Add "xxx" option created dynamically
+                      if (tag.inputValue) {
+                        return tag.inputValue;
+                      }
+                      // Regular option
+                      return tag.name;
                     }}
+                    onChange={(event, newValue) => {
+                      if (typeof newValue === 'string') {
+                        setInputTag({
+                          name: newValue,
+                        });
+                        // console.log("newvalue input value", newValue.inputValue)
+                      } else if (newValue && newValue.inputValue) {
+                        // Create a new value from the user input
+                        setInputTag({
+                          name: newValue.inputValue,
+                        });
+                      } else {
+                        setInputTag(newValue);
+                      }
+                    }}
+
+                    renderOption={(props, tag) => <li {...props}>{tag.name}</li>}
                     renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label={t("TAGS")}
-                        variant="outlined"
-                        onKeyDown={(e) => {
-                          if (
-                            e.key === "Enter" &&
-                            options.findIndex((o) => o.title === inputValue) === -1
-                          ) {
-                            setOptions((o) => o.concat({ title: inputValue }));
-                          }
-                        }}
-                      />
+                      <TextField {...params} label={t("TAGS")} />
                     )}
+                  // renderInput={(params) => (
+                  //   <TextField
+                  //     {...params}
+                  //     label={t("TAGS")}
+                  //     onKeyDown={(e) => {
+                  //       if (e.key === "Enter") {
+                  //         console.log(inputTag);
+                  //       }
+                  //       if (
+                  //         e.key === "Enter" &&
+                  //         tags.findIndex((o) => o.name === inputTag) === -1
+                  //       ) {
+                  //         setSelectedTags((o) => o.concat({ name: inputTag }));
+                  //       }
+                  //     }}
+                  //   />
+                  // )}
                   />
                 </Grid>
 

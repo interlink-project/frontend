@@ -185,8 +185,6 @@ export const getUserActivities = (params) => async (dispatch) => {
 export const getTags = () => async (dispatch) => {
   dispatch(slice.actions.setLoadingTags(true));
   const tags_data = await tagsApi.getMulti();
-  console.log("GENERAL TAGS")
-  console.log(tags_data);
   dispatch(slice.actions.setTags(tags_data));
   dispatch(slice.actions.setLoadingTags(false));
 };
