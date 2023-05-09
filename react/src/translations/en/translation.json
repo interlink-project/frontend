@@ -419,5 +419,8 @@
     "Show process startup guide": "Show process startup guide",
     "This option will show the process startup guide to all users": "This option will show the process startup guide to all users",
     "Check the complexity of the task before closing it.": "Check the complexity of the task before closing it.",
-    "The link has been copied to the clipboard": "The link has been copied to the clipboard"
+    "The link has been copied to the clipboard": "The link has been copied to the clipboard",
+    "No coproduction processes found": "No coproduction processes found",
+    "No assets found": "No assets found",
+    "No tags": "No tags"
 }

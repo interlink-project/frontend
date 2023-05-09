@@ -16,7 +16,6 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { DataGrid } from '@mui/x-data-grid';
 import { Add, Folder, MenuBook } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import AuthGuardSkeleton from "components/guards/AuthGuardSkeleton";
@@ -42,23 +41,22 @@ import TeamAvatar from "components/TeamAvatar";
 
 function ProcessRow({ process, t }) {
   const navigate = useNavigate();
-
   return (
     <TableRow
       key={process.id}
       hover
       sx={{ "& > *": { borderBottom: "unset" }, cursor: "pointer" }}
       onClick={() => {
-
-        if (process.hideguidechecklist) {
+        
+        if (process.hideguidechecklist){
           navigate(`/dashboard/coproductionprocesses/${process.id}/profile`)
         }
-        else {
+        else{
           navigate(`/dashboard/coproductionprocesses/${process.id}/overview`)
-
+          
         }
-
-
+      
+        
       }}
     >
       <TableCell align="center">
@@ -125,170 +123,6 @@ const ProjectsOverview = () => {
   const dispatch = useDispatch();
   const mounted = useMounted();
   const { user, isAuthenticated } = useAuth();
-
-  const momentComparator = (a, b) => { return moment(a).diff(moment(b)); }
-
-  const columns = [
-    {
-      field: 'icon',
-      headerName: '',
-      sortable: false,
-      flex: 0.05,
-      disableColumnMenu: true,
-      renderCell: (params) => {
-        return (
-
-          params.row.is_part_of_publication ? <MenuBook sx={{ mr: 1 }} />
-            : params.row.logotype_link ? (
-              <Avatar
-                sx={{ height: "25px", width: "25px" }}
-                variant="rounded"
-                src={params.row.logotype_link}
-              />
-            ) : (
-              <Folder />
-            )
-
-        );
-      }
-    },
-    {
-      field: 'name',
-      headerName: t("Name"),
-      flex: 1,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: (params) => {
-        return (
-          <b>{params.row.name}</b>
-        );
-      }
-
-    },
-    {
-      field: 'tags',
-      headerName: t("Tags"),
-      flex: 1,
-      headerAlign: 'center',
-      align: 'center',
-      sortable: false,
-      valueGetter: (params) => {
-        if (params.value.length == 0) return t("No tags");
-        let tmp_tags = [];
-        tmp_tags.push(params.value.map((tag) => (tag.name)));
-        return tmp_tags.toString();
-      },
-      renderCell: (params) => {
-        return (
-
-          <>
-            {
-              params.row.tags.length > 0 ? (
-                <Chip key={params.row.tags[0].name} label={params.row.tags[0].name} />
-              ) : (
-                <Typography sx={{ ml: 2 }}>{t("No tags")}</Typography>
-              )
-            }
-
-          </>
-        );
-      }
-    },
-    {
-      field: 'created',
-      headerName: t("Created"),
-      flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-      valueGetter: (params) => { return params.row.created_at },
-      sortComparator: momentComparator,
-      renderCell: (params) => {
-        return (
-          moment(params.row.created_at).fromNow()
-        );
-      }
-    },
-    {
-      field: 'status',
-      headerName: t("Status"),
-      flex: 1,
-      headerAlign: 'center',
-      align: 'center',
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: (params) => {
-        return (
-          <StatusChip t={t} status={params.row.status} />
-        );
-      }
-    },
-    {
-      field: 'teams',
-      headerName: t("Teams"),
-      flex: 1,
-      headerAlign: 'center',
-      align: 'center',
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: (params) => {
-        return (
-          <AvatarGroup max={5} variant="rounded">
-            {params.row.teams.length > 0 ? (
-              params.row.teams.map((team) => (
-                <TeamAvatar
-                  sx={{ height: 25, width: 25 }}
-                  // key={team.id}
-                  team={team}
-                />
-              ))
-            ) : (
-              <Stack direction="row" alignItems="center">
-                <WarningIcon />
-                <Typography sx={{ ml: 2 }}>{t("No teams")}</Typography>
-              </Stack>
-            )}
-          </AvatarGroup>
-        )
-      }
-
-
-    },
-    {
-      field: 'participation',
-      headerName: t("Roles"),
-      flex: 1,
-      headerAlign: 'center',
-      align: 'center',
-      sortable: false,
-      disableColumnMenu: true,
-      renderCell: (params) => {
-        return (
-          params.row.participation.map((p) => (
-            <Chip key={p} label={p} />
-          )))
-      }
-    },
-
-
-  ]
-
-
-  const rows = processes.map((process) => {
-    return {
-      id: process.id,
-      name: process.name,
-      created_at: process.created_at,
-      status: process.status,
-      teams: process.enabled_teams,
-      participation: process.current_user_participation,
-      tags: process.tags,
-      is_part_of_publication: process.is_part_of_publication,
-      logotype_link: process.logotype_link,
-      hideguidechecklist: process.hideguidechecklist,
-    }
-  })
-
-
 
   const getCoproductionProcessesData = React.useCallback(
     async (search) => {
@@ -419,36 +253,15 @@ const ProjectsOverview = () => {
               </Grid>
             </Grid>
             <Box sx={{ mt: 4 }}>
-              {/* <Box sx={{ mb: 2 }}>
+              <Box sx={{ mb: 2 }}>
                 <SearchBox
                   loading={loadingProcesses}
                   inputValue={searchValue}
                   setInputValue={setSearchValue}
                   datacy={"search-process"}
                 />
-              </Box> */}
-              <DataGrid
-                rows={rows}
-                columns={columns}
-                pageSizeOptions={[5]}
-                disableSelectionOnClick
-                rowSelection={false}
-                disableRowSelectionOnClick={true}
-                autoHeight
-                onRowClick={(params) => {
-                  if (params.row.hideguidechecklist) {
-                    navigate(`/dashboard/coproductionprocesses/${params.row.id}/profile`)
-                  }
-                  else {
-                    navigate(`/dashboard/coproductionprocesses/${params.row.id}/overview`)
-                  }
-                }}
-                localeText={{
-                  noRowsLabel: t("No coproduction processes found"),
-                }}
-
-              />
-              {/* <TableContainer component={Paper} data-cy="table-process-header">
+              </Box>
+              <TableContainer component={Paper} data-cy="table-process-header">
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -471,7 +284,7 @@ const ProjectsOverview = () => {
                       ))}
                   </TableBody>
                 </Table>
-              </TableContainer> */}
+              </TableContainer>
               {processes.length === 0 && (
                 <>
                   {loadingProcesses ? (
