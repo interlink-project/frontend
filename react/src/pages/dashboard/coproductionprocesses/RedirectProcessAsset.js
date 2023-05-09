@@ -6,7 +6,6 @@ import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import useMounted from "../../../hooks/useMounted";
 
-
 import { assetsApi } from "__api__";
 
 const RedirectProcessAsset = () => {
@@ -20,33 +19,49 @@ const RedirectProcessAsset = () => {
   useEffect(() => {
     //dispatch(getProcess(processId, false));
 
-    assetsApi.get(assetId).then((res) => {
-      if (mounted.current) {
-        console.log(res);
-        const selectedAsset = res;
+    //alert("Entra a llamar a la Api RedirectProcessAsset");
+    assetsApi
+      .get(assetId)
+      .then((res) => {
+        if (mounted.current) {
+          console.log("Intenta ingresar en el asset");
+          console.log(res);
+          const selectedAsset = res;
 
-        let redirectLink='';
+          let redirectLink = "";
 
-        let completelinktoAsset = "";
-         if (selectedAsset.type === "internalasset") {
-        //   const backend = selectedAsset["software_response"]["backend"];
-        //   const linktoAsset =
-        //     backend + "/" + selectedAsset["external_asset_id"];
+          let completelinktoAsset = "";
+          if (selectedAsset.type === "internalasset") {
+            //   const backend = selectedAsset["software_response"]["backend"];
+            //   const linktoAsset =
+            //     backend + "/" + selectedAsset["external_asset_id"];
 
-        //   //alert(`${linktoAsset}/view`);
+            //   //alert(`${linktoAsset}/view`);
 
-        //   completelinktoAsset = `${linktoAsset}/view`;
-          redirectLink=selectedAsset.link+'/view';
-         } else {
-        //   //alert(asset.uri);
-        //   completelinktoAsset = selectedAsset.uri;
-          redirectLink=selectedAsset.uri;
-         }
-        // alert("Navegate to: " + completelinktoAsset);
-        //navigate(selectedAsset.link);
-        window.location.replace(redirectLink);
-      }
-    });
+            //   completelinktoAsset = `${linktoAsset}/view`;
+            redirectLink = selectedAsset.link + "/view";
+          } else {
+            //   //alert(asset.uri);
+            //   completelinktoAsset = selectedAsset.uri;
+            redirectLink = selectedAsset.uri;
+          }
+          // alert("Navegate to: " + completelinktoAsset);
+          //navigate(selectedAsset.link);
+          window.location.replace(redirectLink);
+        }
+      })
+      .catch(function (error) {
+        console.log(error.response); // undefined
+        console.log(error.response.status); // 401
+        console.log(error.response.data.error); //Please Authenticate or whatever returned from server
+        if (error.response.status == 403) {
+          alert(
+            t(
+              "You do not have permissions on this resource, please contact the process administrator to be included in a team with access permissions"
+            )
+          );
+        }
+      });
   }, []);
 
   return (

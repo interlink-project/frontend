@@ -176,9 +176,13 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
 
         if (responseData["excluded"].length > 0) {
           alert(
-            "We couldn't include " +
-              responseData["excluded"].length +
-              " users because is not part of a team with permissions over this task. Please check the list of users and try again."
+            t("We couldn't include") +
+              ": [" +
+              responseData["excluded"] +
+              "] " +
+              t(
+                "users because are not part of a team with permissions over this task. Please check the list of users and try again"
+              )
           );
         }
 
@@ -523,9 +527,14 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
                         const usuario = await usersApi.search(listUsers[i]);
                         if (usuario[0] === undefined) {
                           alert(
-                            "The user " +
+                            t("The user") +
+                              " " +
                               listUsers[i] +
-                              " haven't registered yet in the platform. Please, ask him to register and try again."
+                              " " +
+                              t(
+                                "haven't registered yet in the platform. Please, ask him to register and try again"
+                              ) +
+                              "."
                           );
                           return false;
                         } else {
