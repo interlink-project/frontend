@@ -126,26 +126,29 @@ const ProjectsOverview = () => {
   const mounted = useMounted();
   const { user, isAuthenticated } = useAuth();
 
+  const momentComparator = (a, b) => { return moment(a).diff(moment(b)); }
+
   const columns = [
     {
       field: 'icon',
       headerName: '',
       sortable: false,
       flex: 0.05,
+      disableColumnMenu: true,
       renderCell: (params) => {
         return (
-          
-            params.row.is_part_of_publication ? <MenuBook sx={{ mr: 1 }} />
-              : params.row.logotype_link ? (
-                <Avatar
-                  sx={{ height: "25px", width: "25px" }}
-                  variant="rounded"
-                  src={params.row.logotype_link}
-                />
-              ) : (
-                <Folder />
-              )
-          
+
+          params.row.is_part_of_publication ? <MenuBook sx={{ mr: 1 }} />
+            : params.row.logotype_link ? (
+              <Avatar
+                sx={{ height: "25px", width: "25px" }}
+                variant="rounded"
+                src={params.row.logotype_link}
+              />
+            ) : (
+              <Folder />
+            )
+
         );
       }
     },
@@ -167,6 +170,29 @@ const ProjectsOverview = () => {
       headerName: t("Tags"),
       flex: 1,
       headerAlign: 'center',
+      align: 'center',
+      sortable: false,
+      valueGetter: (params) => {
+        if (params.value.length == 0) return t("No tags");
+        let tmp_tags = [];
+        tmp_tags.push(params.value.map((tag) => (tag.name)));
+        return tmp_tags.toString();
+      },
+      renderCell: (params) => {
+        return (
+
+          <>
+            {
+              params.row.tags.length > 0 ? (
+                <Chip key={params.row.tags[0].name} label={params.row.tags[0].name} />
+              ) : (
+                <Typography sx={{ ml: 2 }}>{t("No tags")}</Typography>
+              )
+            }
+
+          </>
+        );
+      }
     },
     {
       field: 'created',
@@ -174,6 +200,8 @@ const ProjectsOverview = () => {
       flex: 1,
       align: 'center',
       headerAlign: 'center',
+      valueGetter: (params) => { return params.row.created_at },
+      sortComparator: momentComparator,
       renderCell: (params) => {
         return (
           moment(params.row.created_at).fromNow()
@@ -186,6 +214,8 @@ const ProjectsOverview = () => {
       flex: 1,
       headerAlign: 'center',
       align: 'center',
+      sortable: false,
+      disableColumnMenu: true,
       renderCell: (params) => {
         return (
           <StatusChip t={t} status={params.row.status} />
@@ -198,6 +228,8 @@ const ProjectsOverview = () => {
       flex: 1,
       headerAlign: 'center',
       align: 'center',
+      sortable: false,
+      disableColumnMenu: true,
       renderCell: (params) => {
         return (
           <AvatarGroup max={5} variant="rounded">
@@ -227,6 +259,8 @@ const ProjectsOverview = () => {
       flex: 1,
       headerAlign: 'center',
       align: 'center',
+      sortable: false,
+      disableColumnMenu: true,
       renderCell: (params) => {
         return (
           params.row.participation.map((p) => (
@@ -234,13 +268,12 @@ const ProjectsOverview = () => {
           )))
       }
     },
-    
+
 
   ]
 
 
   const rows = processes.map((process) => {
-    console.log(process)
     return {
       id: process.id,
       name: process.name,
@@ -248,7 +281,7 @@ const ProjectsOverview = () => {
       status: process.status,
       teams: process.enabled_teams,
       participation: process.current_user_participation,
-      tags: process.tags_ids,
+      tags: process.tags,
       is_part_of_publication: process.is_part_of_publication,
       logotype_link: process.logotype_link,
       hideguidechecklist: process.hideguidechecklist,
@@ -386,14 +419,14 @@ const ProjectsOverview = () => {
               </Grid>
             </Grid>
             <Box sx={{ mt: 4 }}>
-              <Box sx={{ mb: 2 }}>
+              {/* <Box sx={{ mb: 2 }}>
                 <SearchBox
                   loading={loadingProcesses}
                   inputValue={searchValue}
                   setInputValue={setSearchValue}
                   datacy={"search-process"}
                 />
-              </Box>
+              </Box> */}
               <DataGrid
                 rows={rows}
                 columns={columns}
@@ -415,7 +448,7 @@ const ProjectsOverview = () => {
                 }}
 
               />
-              <TableContainer component={Paper} data-cy="table-process-header">
+              {/* <TableContainer component={Paper} data-cy="table-process-header">
                 <Table>
                   <TableHead>
                     <TableRow>
@@ -438,7 +471,7 @@ const ProjectsOverview = () => {
                       ))}
                   </TableBody>
                 </Table>
-              </TableContainer>
+              </TableContainer> */}
               {processes.length === 0 && (
                 <>
                   {loadingProcesses ? (
