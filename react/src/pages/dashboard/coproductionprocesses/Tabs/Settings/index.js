@@ -107,7 +107,7 @@ const SettingsTab = () => {
     (state) => state.general
   );
   const [selectedTags, setSelectedTags] = useState([]);
-  console.log(process);
+  
   //Dialogs:
   const [publishDialogOpen, setPublishDialogOpen] = useState(false);
 
@@ -623,10 +623,12 @@ const SettingsTab = () => {
                     fullWidth
                     selectOnFocus
                     handleHomeEndKeys
+                    openOnFocus
+                    clearOnBlur
                     freeSolo
                     id="autocomplete-tags"
                     readOnly={!editMode}
-                    value={selectedTags}
+                    value={values.tags}
                     options={tags}
                     noOptionsText="Enter to create a new option"
                     getOptionLabel={(tag) => {
