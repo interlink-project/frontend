@@ -6,10 +6,16 @@ const Lightbox = (props) => {
   const { onClose, children, datacyChildren, datacyClose } = props;
 
   return (
-    <div className="lightbox">
+    <div
+      className="lightbox"
+      onClick={() => {
+        onClose();
+      }}
+    >
       <div
         className="lightbox__content"
         data-cy={`lightbox-children-${datacyChildren}`}
+        onClick={(e) => e.stopPropagation()}
       >
         <Link
           className="lightbox__close"

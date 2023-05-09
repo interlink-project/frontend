@@ -21,6 +21,10 @@ import { getCoproductionProcessNotifications } from "slices/general";
 import { useLocation } from 'react-router';
 
 
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/styles";
+
+
 const MyMenuItem = ({ onClick, text, icon, id, loading }) => (
   <MenuItem
     aria-describedby={id}
@@ -41,11 +45,17 @@ const Assets = ({ language, loading, getActions = null }) => {
   const open = Boolean(anchorEl);
   const [selectedRow, setSelectedRow] = useState(null);
 
+
   const dispatch = useDispatch();
 
   const [inputValue, setInputValue] = useState('');
   const { process } = useSelector((state) => state.process);
   const { assetsList } = useSelector((state) => state.general);
+
+  const theme = useTheme();
+  const mobileDevice = useMediaQuery(theme.breakpoints.down("sm"));
+  const largeDevice = useMediaQuery(theme.breakpoints.down("lg"));
+  const xlargeDevice = useMediaQuery(theme.breakpoints.down("xl"));
 
   const handleClick = (event) => {
     event.stopPropagation();
@@ -67,7 +77,122 @@ const Assets = ({ language, loading, getActions = null }) => {
 
   const t = useCustomTranslation(language);
 
-  const columns = [
+  
+  const location = useLocation();
+  const isLocationCatalogue = location.pathname.startsWith('/stories/');
+
+
+  let columns = []
+  if (!isLocationCatalogue) {
+
+    if(mobileDevice){
+
+      columns = [
+        {
+          field: 'icon',
+          headerName: '',
+          sortable: false,
+          flex: 0.05,
+          renderCell: (params) => {
+            return (
+              <Avatar
+                src={params.row.icon}
+                sx={{ height: '30px', width: '30px' }}
+              >
+                {!params.row.icon && <Article />}
+              </Avatar>
+            );
+          }
+        },
+        {
+          field: 'name',
+          headerName: t("Name"),
+          flex: 1,
+          headerAlign: 'left',
+        },
+        
+        {
+          field: 'history',
+          sortable: false,
+          headerName: t('History'),
+          flex: 0.3,
+          align: 'center',
+          headerAlign: 'center',
+          renderCell: (params) => {
+            const onClick = (e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              return handleClickHistory(params.row.id);
+            };
+            return (
+              <Button variant="contained" onClick={onClick} color="primary">
+                {t("Activities")}
+              </Button>)
+          }
+        },
+        {
+          field: 'actions',
+          disablePadding: false,
+          headerName: t("Actions"),
+          sortable: false,
+          flex: 0.15,
+          renderCell: (params) => {
+            console.log(params.row);
+            return (
+              <>
+                <IconButton
+                  aria-label='settings'
+                  aria-controls='basic-menu'
+                  aria-haspopup='true'
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    setAnchorEl(event.currentTarget);
+                    setSelectedRow(params.row.id);
+                  }}
+                >
+                  <MoreVertIcon />
+                </IconButton>
+                <Menu
+                  id='basic-menu'
+                  anchorEl={anchorEl}
+                  open={open && selectedRow == params.row.id}
+                  onClose={handleClose}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                  }}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}
+                >
+                  {params.row.actions && params.row.actions.map(({ id, loading, onClick, text, icon }) => (
+                    <MyMenuItem
+                      key={id}
+                      loading={loading}
+                      id={id}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        event.preventDefault();
+                        onClick(handleClose);
+                      }}
+                      text={text}
+                      icon={icon}
+                    />
+                  ))}
+    
+                </Menu>
+              </>
+            );
+          }
+        }
+      ];
+
+
+    }else{
+
+    columns = [
     {
       field: 'icon',
       headerName: '',
@@ -197,6 +322,57 @@ const Assets = ({ language, loading, getActions = null }) => {
       }
     }
   ];
+}
+} else {
+  
+  columns = [
+    {
+      field: 'icon',
+      headerName: '',
+      sortable: false,
+      flex: 0.05,
+      renderCell: (params) => {
+        return (
+          <Avatar
+            src={params.row.icon}
+            sx={{ height: '30px', width: '30px' }}
+          >
+            {!params.row.icon && <Article />}
+          </Avatar>
+        );
+      }
+    },
+    {
+      field: 'name',
+      headerName: t("Name"),
+      flex: 1,
+      headerAlign: 'left',
+    },
+    {
+      field: 'interlinker',
+      disablePadding: false,
+      headerAlign: 'center',
+      headerName: t("INTERLINKER"),
+      flex: 0.5,
+      renderCell: (params) => {
+        {
+          const showInterlinkerId = params.row.data && (params.row.data.externalinterlinker_id || params.row.data.knowledgeinterlinker_id || params.row.data.softwareinterlinker_id);
+          return showInterlinkerId ? (
+            <InterlinkerReference
+              onClick={(event) => {
+                event.stopPropagation();
+                event.preventDefault();
+                setInterlinkerDialogOpen(true);
+                setSelectedInterlinker(showInterlinkerId);
+              }}
+              interlinker_id={showInterlinkerId}
+            />
+          ) : t('external-resource')
+        }
+      }
+    }
+  ];
+}
 
   const rows = assetsList.map((asset) => {
     let dataExtra = {};
@@ -240,9 +416,6 @@ const Assets = ({ language, loading, getActions = null }) => {
       dataExtra: dataExtra
     }
   });
-
-  const location = useLocation();
-  const isLocationCatalogue = location.pathname.startsWith('/stories/');
 
   return (
     <>

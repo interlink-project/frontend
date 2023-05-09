@@ -94,25 +94,25 @@ export default function Profile({}) {
     <Box sx={{ pb: 3 }}>
       <AppBar sx={{ position: "relative" }}>
         <Typography variant="h6" sx={{ p: 2 }}>
-          {t("Profile")}
+          {t("Front Page")}
         </Typography>
       </AppBar>
       <Paper>
         <Grid container columns={{ xs: 12, md: 12 }} sx={{ m: 2 }} spacing={2}>
-          <Grid item xs={12} md={1}>
+          <Grid item xs={12} md={1} >
             <Stack>
               <Avatar
                 variant="rounded"
-                sx={{ width: "80px", height: "80px" }}
+                sx={{ width: "90px", height: "80px",ml:1 }}
                 src={process && process.logotype_link}
               >
                 {" "}
               </Avatar>
               <Typography variant="h6" sx={{ mb: 2, ml: 1 }}>
                 <Chip
-                  label={t("Finished")}
+                  label={t(process.status)}
                   size="small"
-                  sx={{ mt: "-5px" }}
+                  sx={{ width: "95px",mt: "-5px" }}
                   color="primary"
                 />
               </Typography>
@@ -130,7 +130,7 @@ export default function Profile({}) {
           <Grid item xs={12} md={3}>
             <Stack
               direction="column"
-              justifyContent="center"
+              
               alignItems="flex-end"
               spacing={0}
             >

@@ -53,7 +53,7 @@ const style = {
 };
 
 const TabsMobile = ({ tabs, tab, story }) => {
-  const logoExists = story && story.data_story.logo;
+  const logoExists = story && story.logotype;
   const navigate = useNavigate();
 
   return story && (
@@ -64,7 +64,7 @@ const TabsMobile = ({ tabs, tab, story }) => {
           variant='rounded'
           sx={logoExists ? {} : { bgcolor: red[500] }}
           aria-label='recipe'
-          src={logoExists && story.data_story.logo}
+          src={logoExists && story.logotype}
         >
           {story && !logoExists && story.data_story.name}
         </Avatar>

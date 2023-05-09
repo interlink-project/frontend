@@ -8,6 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 9999;
 }
 
 .lightbox__content {
@@ -37,8 +38,9 @@
   left: 15px;
   content: " ";
   height: 33px;
-  width: 2px;
+  width: 4px;
   background-color: #ffffff;
+
 }
 .lightbox__close:before {
   transform: rotate(45deg);

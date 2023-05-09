@@ -85,12 +85,13 @@
   font-weight: 600;
 }
 
-.footer-instruction,
-.skip-reward,
-.activate-reward {
+.footer-instruction {
   text-align: center;
 }
-
+.skip-reward {
+  text-align: right;
+  padding-right: 2rem;
+}
 .medals-image {
   max-width: 50%;
 }
@@ -100,6 +101,10 @@
   }
 }
 @media (max-width: 900px) {
+  .skip-reward {
+    text-align: center;
+    padding-right: 0;
+  }
   .col-reward-setting {
     flex-direction: column-reverse;
   }

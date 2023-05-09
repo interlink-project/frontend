@@ -200,7 +200,7 @@ export default function OverviewStory({}) {
                     mr: 2,
                   }}
                   alt={selectedStory.data_story.title}
-                  src={selectedStory.data_story.logo}
+                  src={selectedStory.logotype}
                 />
 
                 <Typography color="textSecondary" variant="h4">

@@ -12,11 +12,14 @@ import {
   StepLabel,
   Stepper,
   Typography,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@mui/material";
 import CreateSchema from "components/dashboard/SchemaSelector";
 import RoadmapCustomized from "components/home/RoadmapCustomized";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import Lightbox from "../../../components/Lightbox";
+import RewardSettings from "../../../pages/dashboard/coproductionprocesses/Tabs/Settings/RewardSettings";
 
 import useAuth from "hooks/useAuth";
 import { useCustomTranslation } from "hooks/useDependantTranslation";
@@ -27,15 +30,11 @@ import { styled } from "@mui/material/styles";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
-import { relativeTimeRounding } from "moment";
 import SelectTypeCoproProcess from "./SelectTypeCoproProcess";
-import SelectGovernanceModel from "./SelectGovernanceModel";
-import { getProcess, updateProcess } from "slices/process";
+import { updateProcess } from "slices/process";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ArrowForward,
-  ArrowLeft,
-  ArrowRight,
   Groups,
   Construction,
   Build,
@@ -46,6 +45,9 @@ import {
   Flag,
   ArrowBack,
 } from "@mui/icons-material";
+import Organizations from "pages/dashboard/organizations";
+import OrganizationsDialog, {OganizationsDialog} from "pages/dashboard/organizations/indexDialog"
+import { LoadingButton } from "@mui/lab";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -160,10 +162,26 @@ export default function TimeLine({ assets }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
+  const [openOrganizations,setOpenOrganizations] = React.useState(false);
   const [roadItemIndex, setRoadItemIndex] = React.useState("section_1");
+  const [isLightboxOpen, setIsLightboxOpen] = React.useState(false);
+  const [isRewardingAtivated, setIsRewardingAtivated] = React.useState(false);
 
   const [selectorTypeOpen, setSelectorTypeOpen] = React.useState(false);
   const [selectorTypeLoading, setSelectorTypeLoading] = React.useState(false);
+
+  const handleOpenLightbox = () => {
+    if (!isRewardingAtivated) {
+      setIsLightboxOpen(true);
+    }
+    if (isRewardingAtivated) {
+      setIsRewardingAtivated(!isRewardingAtivated);
+    }
+  };
+
+  const handleCloseLightbox = () => {
+    setIsLightboxOpen(false);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -172,6 +190,10 @@ export default function TimeLine({ assets }) {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleCloseOrganizations = () => {
+    setOpenOrganizations(false);
   };
 
   const openGSelector = () => {
@@ -196,7 +218,7 @@ export default function TimeLine({ assets }) {
 
   const setHideguidechecklist = async () => {
     const values = { hideguidechecklist: true };
-    if(hasSchema){
+    if (hasSchema) {
       try {
         dispatch(
           updateProcess({
@@ -209,15 +231,13 @@ export default function TimeLine({ assets }) {
       } catch (err) {
         console.error(err);
       }
-      navigate("/dashboard/coproductionprocesses/"+process.id+"/profile");
-    }else{
-      alert('It is not possible to hide the guide before selecting the scheme.')
+      navigate("/dashboard/coproductionprocesses/" + process.id + "/profile");
+    } else {
+      alert(
+        "It is not possible to hide the guide before selecting the scheme."
+      );
     }
-   
   };
-  
-
-
 
   const setHasAddAnOrganization = async () => {
     const values = { hasAddAnOrganization: true };
@@ -254,7 +274,7 @@ export default function TimeLine({ assets }) {
   const temp_completeStates = [
     process.hasAddAnOrganization, //Has Organizations? He decide!.
     !!dataFulfilled || administratorsFulfilled,
-    process.hasDecideSchema || hasSchema, //Did you decide the type (If has a schema it means it has a type)
+    process.intergovernmental_model!=null, //Did you decide the type (If has a schema it means it has a type)
     hasSchema,
     process.incentive_and_rewards_state, //Have you active the rewards?
     permissionsFullfilled, //Have you grant permissions to a team in all process?
@@ -267,7 +287,7 @@ export default function TimeLine({ assets }) {
   const completeStates = [
     process.hasAddAnOrganization, //Has Organizations? He decide!.
     !!dataFulfilled || administratorsFulfilled,
-    process.hasDecideSchema || hasSchema, //Did you decide the type (If has a schema it means it has a type)
+    process.intergovernmental_model!=null, //Did you decide the type (If has a schema it means it has a type)
     hasSchema,
     process.incentive_and_rewards_state, //Have you active the rewards?
     permissionsFullfilled, //Have you grant permissions to a team in all process?
@@ -289,7 +309,7 @@ export default function TimeLine({ assets }) {
         >
           <Grid item xs={3}>
             <Typography variant="subtitle2" sx={{ m: 2 }}>
-              Roadmap
+              {t("Roadmap")}
             </Typography>
           </Grid>
           <Grid item xs={3}>
@@ -317,7 +337,7 @@ export default function TimeLine({ assets }) {
             linktoPage={`/dashboard/organizations`}
             sectionName="section_1"
             nextSectName="section_2"
-            picturePath="/coproduction/static/images/overview_step1.svg"
+            picturePath="/coproduction/static/guide/overview_step1.svg"
             pictureSize="450px"
           /> */}
 
@@ -344,9 +364,7 @@ export default function TimeLine({ assets }) {
                       </Typography>
 
                       <Typography variant="subtitle1">
-                        {t(
-                          "Ok firstly, if you haven't done so before, create your own organization and teams for your project. take into account that if you select your organization as public, it will be visible to all users of the platform. So once you created your organization, you will find inside it a button to create teams."
-                        )}
+                        {t("Ok firstly- if you")}
                       </Typography>
                       <Stack
                         direction="row"
@@ -356,7 +374,7 @@ export default function TimeLine({ assets }) {
                         spacing={2}
                       >
                         <Button
-                          onClick={() => navigate(`/dashboard/organizations`)}
+                          onClick={() => setOpenOrganizations(true)}
                           size="small"
                           variant="contained"
                           sx={{ maxWidth: "200px" }}
@@ -364,11 +382,11 @@ export default function TimeLine({ assets }) {
                           {t("Go to organizations")}
                         </Button>
                         <Link href="#" onClick={setHasAddAnOrganization}>
-                          already done
+                          {t("already done")}
                         </Link>
                       </Stack>
                     </Stack>
-                    
+
                     <IconButton
                       onClick={() => nextSect("section_2")}
                       color="primary"
@@ -380,7 +398,7 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/coproduction/static/images/overview_step1.svg"
+                      src="/static/guide/overview_step1.svg"
                       height="400vw"
                     ></img>
                   </Grid>
@@ -433,7 +451,7 @@ export default function TimeLine({ assets }) {
 
                       <Typography variant="subtitle1">
                         {t(
-                          "The coproduction process data are a set of attributes that serve to define the process to be carried out. At this point you will describe the aim of the project, challenges, which is the organization of the project etc. Than you can also set others administrators for the project [OPTIONAL]. They can update the co-production process information, add permissions to the tree items or add new administrators."
+                          "The coproduction process data are a set of attributes that serve to define the process to be carried out"
                         )}
                       </Typography>
 
@@ -469,7 +487,7 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/coproduction/static/images/overview_step2.svg"
+                      src="/static/guide/overview_step2.svg"
                       height="350vw"
                     ></img>
                   </Grid>
@@ -517,25 +535,34 @@ export default function TimeLine({ assets }) {
                   <Grid item xs={6} sx={{ minHeight: "55vh" }}>
                     <Stack spacing={1}>
                       <Typography variant="h6">
-                        {t("What is your project?")}
+                        {t("What is your project") + "?"}
                       </Typography>
 
                       <Typography variant="subtitle1">
-                        {t(
-                          "Every co-production process has particular characteristics and consequently each one has a specific schema to be followed. To help you in the selection of the schema (next step), you can tell us which type of co-production process you are going to do. Click on the button to select some keywords and we will help you to select the right type of coproduction process."
-                        )}
+                        {t("Every co-production process has particular") + "."}
                       </Typography>
 
-                      <Button
-                        onClick={() => {
-                          setSelectorTypeOpen(true);
-                        }}
-                        size="small"
-                        variant="contained"
-                        sx={{ maxWidth: "200px" }}
-                      >
-                        {t("Decide your type of co-production process")}
-                      </Button>
+                      {process.intergovernmental_model!=null ? (
+                        <Alert severity="success">
+                          {t(
+                            "You have already defined the type of co-production process"
+                          )+': '+process.intergovernmental_model}
+                        </Alert>
+                      ) : (
+                        <Button
+                         onClick={() => {
+                           setSelectorTypeOpen(true);
+                         }}
+                         size="small"
+                         variant="contained"
+                         sx={{ maxWidth: "200px" }}
+                       >
+                         {t("Decide your type of co-production process")}
+                       </Button>
+                      )}
+                      
+
+                     
                     </Stack>
                     <IconButton
                       onClick={() => nextSect("section_2")}
@@ -556,7 +583,7 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/coproduction/static/images/overview_step3.svg"
+                      src="/static/guide/overview_step3.svg"
                       height="400vw"
                     ></img>
                   </Grid>
@@ -609,9 +636,7 @@ export default function TimeLine({ assets }) {
                       </Typography>
 
                       <Typography variant="subtitle1">
-                        {t(
-                          "The schemas give to the user some directives on how to proceed in the overall process. Phases, objectives and tasks of the co-production process. Click on the button and search for the optimal coproduction schema for your process. Nevertheless, you can undo this action (clear the coproduction tree) in the settings section."
-                        )}
+                        {t("The schemas give to the user some directives")}
                       </Typography>
 
                       {hasSchema ? (
@@ -654,7 +679,7 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/coproduction/static/images/overview_step4.svg"
+                      src="/static/guide/overview_step4.svg"
                       height="330vw"
                     ></img>
                   </Grid>
@@ -707,16 +732,12 @@ export default function TimeLine({ assets }) {
 
                       <Typography variant="subtitle1">
                         {t(
-                          "If you want to incentivize your collaborators to do their best, try our reward system. If you active this function, you will be able to set the difficulty of each task. At the end of the task you will have to decide the level of contribute of each collaborator that will give him a reward. The reward system needs to be connected with an external portal of vouchers so that the collaborator can take his reward. Click on the button, check how it works and decide if you want to active this function."
+                          "If you want to incentivize your collaborators to do their best"
                         )}
                       </Typography>
 
                       <Button
-                        onClick={() =>
-                          navigate(
-                            `/dashboard/coproductionprocesses/${process.id}/settings`
-                          )
-                        }
+                        onClick={() => handleOpenLightbox()}
                         size="small"
                         variant="contained"
                         sx={{ maxWidth: "200px" }}
@@ -743,7 +764,7 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/coproduction/static/images/overview_step5.svg"
+                      src="/static/guide/overview_step5.svg"
                       height="410vw"
                     ></img>
                   </Grid>
@@ -797,7 +818,7 @@ export default function TimeLine({ assets }) {
 
                       <Typography variant="subtitle1">
                         {t(
-                          "Now you can allow teams to work on the coproduction process. For that, associate permissions to teams by navigating to the Team section and adding permission for the whole coproduction process. Otherwise you can go to Guide section and add new permissions for distinct tree items (objectives, tasks)."
+                          "Now you can allow teams to work on the coproduction process"
                         )}
                       </Typography>
 
@@ -835,7 +856,7 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/coproduction/static/images/overview_step6.png"
+                      src="/static/guide/overview_step6.png"
                       height="410vw"
                     ></img>
                   </Grid>
@@ -884,13 +905,11 @@ export default function TimeLine({ assets }) {
                   <Grid item xs={6} sx={{ minHeight: "55vh" }}>
                     <Stack spacing={1}>
                       <Typography variant="h6">
-                        {t("Your Interlinkers/Resources")}
+                        {t("Your Interlinkers-Resources")}
                       </Typography>
 
                       <Typography variant="subtitle1">
-                        {t(
-                          "Once you add a resource to a tree element, it will be visible into the Resources section. You will see the tree element from which it came and some useful infos abouts the resources."
-                        )}
+                        {t("Once you add a resource to a tree element")}
                       </Typography>
 
                       {dataFulfilled ? (
@@ -921,7 +940,7 @@ export default function TimeLine({ assets }) {
                           {t("Go to Resources section")}
                         </Button>
                         <Link href="#" onClick={setSkipResourcesStep}>
-                          or just skip
+                          {t("or just skip")}
                         </Link>
                       </Stack>
                     </Stack>
@@ -944,7 +963,7 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/coproduction/static/images/overview_step7.svg"
+                      src="/static/guide/overview_step7.svg"
                       height="450vw"
                     ></img>
                   </Grid>
@@ -987,7 +1006,7 @@ export default function TimeLine({ assets }) {
               }}
               id={"section_8"}
             >
-              <StepLabel  StepIconComponent={Flag} >
+              <StepLabel StepIconComponent={Flag}>
                 <Grid
                   container
                   direction="column"
@@ -996,59 +1015,61 @@ export default function TimeLine({ assets }) {
                 >
                   <Grid item>
                     <Typography variant="h3">
-                      {t("Well done! You're ready to start")}
+                      {t("Well done-Youre ready to start")}
                     </Typography>
 
                     <Typography variant="subtitle1">
-                      {t(
-                        "You completed all the preliminar phases and now you're ready to start your job using the Guide section."
-                      )}
+                      {t("You completed all the preliminar phases")}
                     </Typography>
                     <Typography variant="subtitle1">
                       {t(
-                        "Good luck for your process and remember, work inclusive."
+                        "Good luck for your process and remember, work inclusive"
                       )}
                     </Typography>
-                    
                   </Grid>
 
                   <Stack
-                        direction="row"
-                        justifyContent="center"
-                        alignItems="center"
-                        divider={<Divider orientation="vertical" flexItem />}
-                        spacing={2}
-                      >
-                        <Button
-                        onClick={() =>
-                          navigate(
-                            `/dashboard/coproductionprocesses/${process.id}/guide`
-                          )
-                        }
-                        
-                        variant="contained"
-                        sx={{ maxWidth: "500px", mt: 2 }}
-                      >
-                        {t("Go to guide section and start your job")}
-                      </Button>
-                        <Link href="#" onClick={setHideguidechecklist}>
-                          Hide this guide.
-                        </Link>
-                      </Stack>
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                    divider={<Divider orientation="vertical" flexItem />}
+                    spacing={2}
+                  >
+                    <Button
+                      onClick={() =>
+                        navigate(
+                          `/dashboard/coproductionprocesses/${process.id}/guide`
+                        )
+                      }
+                      variant="contained"
+                      sx={{ maxWidth: "500px", mt: 2 }}
+                    >
+                      {t("Go to guide section and start your job")}
+                    </Button>
+                    <Link href="#" onClick={setHideguidechecklist}>
+                      {t("Hide this guide")}
+                    </Link>
+                  </Stack>
 
-
-                 
                   <Grid item>
                     <img
-                      src="/coproduction/static/images/overview_step8.svg"
+                      src="/static/guide/overview_step8.svg"
                       height="450px"
                     ></img>
                   </Grid>
-
-                 
                 </Grid>
               </StepLabel>
             </Step>
+          )}
+          {isLightboxOpen && (
+            <Lightbox onClose={handleCloseLightbox}>
+              <RewardSettings
+                onClose={handleCloseLightbox}
+                activateReward={() => {
+                  setIsRewardingAtivated(true);
+                }}
+              />
+            </Lightbox>
           )}
 
           {/* <Step active completed={!!dataFulfilled}>
@@ -1237,6 +1258,28 @@ export default function TimeLine({ assets }) {
         loading={selectorTypeLoading}
         setLoading={setSelectorTypeLoading}
       />
+
+        <Dialog key='dialogOrg' open={openOrganizations} onClose={handleCloseOrganizations} fullWidth maxWidth="xl">
+            
+        <DialogTitle sx={{ textAlign: "center", m: 2 }}>
+          {t("Organizations")}
+        </DialogTitle>
+        <DialogContent dividers>
+            <Box sx={{ minHeight: "93vh" }}>
+         
+              <OrganizationsDialog />
+            </Box>
+            </DialogContent>
+            <DialogActions sx={{ justifyContent: "center" }}>
+          <Button
+         
+            onClick={handleCloseOrganizations}
+          >
+            {t("Close")}
+            
+          </Button>
+        </DialogActions>
+          </Dialog> 
     </>
   );
 }

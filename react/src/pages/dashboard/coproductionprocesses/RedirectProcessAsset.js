@@ -23,10 +23,12 @@ const RedirectProcessAsset = () => {
     assetsApi.get(assetId).then((res) => {
       if (mounted.current) {
         console.log(res);
-
         const selectedAsset = res;
+
+        let redirectLink='';
+
         let completelinktoAsset = "";
-        // if (selectedAsset.type === "internalasset") {
+         if (selectedAsset.type === "internalasset") {
         //   const backend = selectedAsset["software_response"]["backend"];
         //   const linktoAsset =
         //     backend + "/" + selectedAsset["external_asset_id"];
@@ -34,13 +36,15 @@ const RedirectProcessAsset = () => {
         //   //alert(`${linktoAsset}/view`);
 
         //   completelinktoAsset = `${linktoAsset}/view`;
-        // } else {
+          redirectLink=selectedAsset.link+'/view';
+         } else {
         //   //alert(asset.uri);
         //   completelinktoAsset = selectedAsset.uri;
-        // }
+          redirectLink=selectedAsset.uri;
+         }
         // alert("Navegate to: " + completelinktoAsset);
         //navigate(selectedAsset.link);
-        window.location.replace(selectedAsset.link+'/view');
+        window.location.replace(redirectLink);
       }
     });
   }, []);

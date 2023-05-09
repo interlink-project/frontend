@@ -18,6 +18,8 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import StepConnector, {
   stepConnectorClasses,
 } from "@mui/material/StepConnector";
+import { useSelector } from "react-redux";
+import { useCustomTranslation } from "hooks/useDependantTranslation";
 
 const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -88,10 +90,15 @@ function ColorlibStepIcon(props) {
 //const steps = [false, false, false, false, false, false, false, false]
 
 export default function CustomizedSteppers(props) {
+
+  const { process } = useSelector((state) => state.process);
+  const t = useCustomTranslation(process.language);
+  
+
   const steps = props.completeStates;
   const activeStep = props.selectedStateIndex;
   const onClickEvent= props.onClick;
-  const titles=["Organizations","Settings","Type","Schema","Rewards","Permissions","Resources","Finish"]
+  const titles=[t("Organizations"),t("Settings"),t("Type"),t("Schema"),t("Rewards"),t("Permissions"),t("Resources"),t("Finish")]
 
   const handleStep = (stepFase) => {
     let fase = Number(stepFase["index"]) + 1;

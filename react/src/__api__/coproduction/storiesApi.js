@@ -8,11 +8,13 @@ class StoriesApi extends GeneralApi {
     super('coproduction/api/v1/stories');
   }
 
-  async create(extractedData,processId,cloneId){
+  async create(extractedData,process,cloneId){
+      const processId=process.id;
       const newStory={
         data_story:extractedData,
         state:true,
         rating:3,
+        logotype:'/coproduction'+process.logotype,
         coproductionprocess_cloneforpub_id:cloneId
       };
       console.log(newStory);

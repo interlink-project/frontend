@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   List,
   Paper,
   ListItem,
@@ -49,13 +50,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { getProcess, updateProcess } from "slices/process";
 import * as Yup from "yup";
-import { coproductionProcessesApi, storiesApi, gamesApi } from "__api__";
+import { coproductionProcessesApi, storiesApi, gamesApi, tagsApi } from "__api__";
 import { withStyles } from "@mui/styles";
-import { getSelectedStory } from "slices/general";
+import { getSelectedStory, getTags } from "slices/general";
 import { Link } from "react-router-dom";
 import InterlinkAnimation from "components/home/InterlinkLoading";
 import { styled } from "@mui/material/styles";
 import Lightbox from "../../../../../components/Lightbox";
+import CreateSchema from "components/dashboard/SchemaSelector";
 import RewardSettings from "./RewardSettings";
 
 const SettingsTab = () => {
@@ -64,11 +66,20 @@ const SettingsTab = () => {
   const [storiesList, setStoriesList] = useState([]);
   const [jsonPropertiesFile, setJsonPropertiesFile] = useState(null);
   const [editMode, setEditMode] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [openDialogSchema, setOpenDialogSchema] = useState(false);
 
-  const [isLightboxOpen, setIsLightboxOpen] = useState(true);
+  const handleCloseDialogSchema = () => {
+    setOpenDialogSchema(false);
+  };
 
   const handleOpenLightbox = () => {
-    setIsLightboxOpen(true);
+    if (!process.game_id) {
+      setIsLightboxOpen(true);
+    }
+    if (process.game_id) {
+      changeRewarding(false);
+    }
   };
 
   const handleCloseLightbox = () => {
@@ -77,7 +88,6 @@ const SettingsTab = () => {
 
   const [dialogOpenPublicationExample, setDialogOpenPublicationExample] =
     useState(false);
-  const [gameId, setGameId] = useState(null);
 
   const { process, hasSchema, isAdministrator, tree } = useSelector(
     (state) => state.process
@@ -93,6 +103,11 @@ const SettingsTab = () => {
   const mounted = useMounted();
   const t = useCustomTranslation(process.language);
 
+  const { tags } = useSelector(
+    (state) => state.general
+  );
+  const [selectedTags, setSelectedTags] = useState([]);
+  console.log(process);
   //Dialogs:
   const [publishDialogOpen, setPublishDialogOpen] = useState(false);
 
@@ -103,7 +118,7 @@ const SettingsTab = () => {
     setIsCloning(true);
     coproductionProcessesApi
       .copy(process.id, "Copy of ")
-      .then(() => navigate("/dashboard"));
+      .then(() => navigate("/dashboard/projects"));
   };
 
   const onPublish = () => {
@@ -114,7 +129,7 @@ const SettingsTab = () => {
   const onRemove = () => {
     coproductionProcessesApi
       .delete(process.id)
-      .then(() => navigate("/dashboard"));
+      .then(() => navigate("/dashboard/projects"));
   };
   const onCoproductionProcessClear = () => {
     coproductionProcessesApi
@@ -205,11 +220,8 @@ const SettingsTab = () => {
     </>
   );
 
-  const toggleIncentivesRewards = async () => {
-    setIsIncentiveModuleActive((prev) => !prev);
-
-    //Active the incentive and rewards
-    const values = { incentive_and_rewards_state: !isIncentiveModuleActive };
+  const changeRewarding = async (status) => {
+    const values = { incentive_and_rewards_state: status };
     if (values.incentive_and_rewards_state) {
       const taskList = prepareGameTemplate(tree);
       let res = await gamesApi.setGame(process.id, taskList);
@@ -247,9 +259,21 @@ const SettingsTab = () => {
   };
 
   const toggleGuideHide = async () => {
+    if (isGuideHidden) {
+      //Before hide the guide check you have selected a schema:
+
+      if (!hasSchema) {
+        alert(t("To hide the guide checklist you must select a schema."));
+        setOpenDialogSchema(true);
+        return false;
+      }
+
+    }
+
     setIsGuideHidden((prev) => !prev);
 
-    //Active the incentive and rewards
+
+    //Hide guide startup checklist
     const values = { hideguidechecklist: isGuideHidden };
 
     try {
@@ -301,7 +325,7 @@ const SettingsTab = () => {
           setJsonPropertiesFile(extractedData);
 
           // console.log(objJson);
-          storiesApi.create(extractedData, process.id, clone_id).then((res) => {
+          storiesApi.create(extractedData, process, clone_id).then((res) => {
             setStoriesList((storiesList) => [...storiesList, res.data]);
             setIsPublishing(false);
             navigate(
@@ -317,6 +341,9 @@ const SettingsTab = () => {
       setStoriesList(res);
       //console.log(storiesList);
     });
+    if (process.tags.length > 0) {
+      setSelectedTags(process.tags);
+    }
   }, []);
 
   const handleDeleteStory = (event, story_id) => {
@@ -432,6 +459,7 @@ const SettingsTab = () => {
             status: process.status || "",
             description: process.description || "",
             organization_desc: process.organization_desc || "",
+            tags: process.tags || [],
             aim: process.aim || "",
             idea: process.idea || "",
             challenges: process.challenges || "",
@@ -446,6 +474,19 @@ const SettingsTab = () => {
                                 challenges: Yup.string().required('required'), */
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+            console.log(values);
+            for (let tag of values.tags) {
+              if (!tag.id) {
+                await tagsApi.create({ name: tag }).then((res) => {
+                  if (res.status === 200) {
+                    values.tags.splice(values.tags.indexOf(tag), 1);
+                    values.tags.push(res.data);
+                  }
+                }).catch((err) => {
+                  console.error(err);
+                });
+              }
+            }
             try {
               dispatch(
                 updateProcess({
@@ -531,7 +572,7 @@ const SettingsTab = () => {
                 justifyContent="center"
                 spacing={2}
               >
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                   <TextField
                     label={t("NAME OF THE PROJECT")}
                     helperText={touched.name && errors.name}
@@ -544,7 +585,7 @@ const SettingsTab = () => {
                 </Grid>
                 <Grid
                   item
-                  xs={6}
+                  xs={4}
                   container
                   direction="row"
                   justifyContent="flex-start"
@@ -569,6 +610,59 @@ const SettingsTab = () => {
                     <MenuItem value="in_progress">{t("In progress")}</MenuItem>
                     <MenuItem value="finished">{t("Finished")}</MenuItem>
                   </Select>
+                </Grid>
+                <Grid
+                  item
+                  xs={4}
+                  container
+                  direction="row"
+                  justifyContent="flex-start"
+                >
+                  <Autocomplete
+                    multiple
+                    fullWidth
+                    selectOnFocus
+                    handleHomeEndKeys
+                    freeSolo
+                    id="autocomplete-tags"
+                    readOnly={!editMode}
+                    value={selectedTags}
+                    options={tags}
+                    noOptionsText="Enter to create a new option"
+                    getOptionLabel={(tag) => {
+                      // Value selected with enter, right from the input
+                      if (typeof tag === 'string') {
+                        return tag;
+                      }
+                      // Add "xxx" option created dynamically
+                      if (tag.inputValue) {
+                        return tag.inputValue;
+                      }
+                      // Regular option
+                      return tag.name;
+                    }}
+                    onChange={(event, newValue) => {
+                      if (typeof newValue === 'string') {
+                        setSelectedTags({
+                          name: newValue,
+                        });
+                      } else if (newValue && newValue.inputValue) {
+                        // Create a new value from the user input
+                        setSelectedTags({
+                          name: newValue.inputValue,
+                        });
+                      } else {
+                        setSelectedTags(newValue);
+                      }
+                      // console.log("Newvalue",newValue);
+                      setFieldValue("tags", newValue);
+                    }}
+
+                    renderOption={(props, tag) => <li {...props}>{tag.name}</li>}
+                    renderInput={(params) => (
+                      <TextField {...params} label={t("TAGS")} />
+                    )}
+                  />
                 </Grid>
 
                 <Grid item xs={12}>
@@ -831,18 +925,13 @@ const SettingsTab = () => {
                 sx={{ mt: 2 }}
                 action={
                   <>
-                    {/*
-                    <GoldSwitch
-                      checked={isIncentiveModuleActive}
-                      onChange={toggleIncentivesRewards}
-                      name="incentiveSwitch"
-                      inputProps={{ "aria-label": "secondary checkbox" }}
+                    <Button
                       disabled={!isAdministrator}
-                      color="secondary"
-                    />
-                    */}
-                    <Button variant="contained" onClick={handleOpenLightbox}>
-                      {t("Activate")}
+                      variant="contained"
+                      color={process.game_id ? "error" : "success"}
+                      onClick={handleOpenLightbox}
+                    >
+                      {process.game_id ? t("Deactivate") : t("Settings")}
                     </Button>
                   </>
                 }
@@ -854,7 +943,12 @@ const SettingsTab = () => {
               <div>
                 {isLightboxOpen && (
                   <Lightbox onClose={handleCloseLightbox}>
-                    <RewardSettings />
+                    <RewardSettings
+                      onClose={handleCloseLightbox}
+                      activateReward={() => {
+                        changeRewarding(true);
+                      }}
+                    />
                   </Lightbox>
                 )}
               </div>
@@ -997,7 +1091,7 @@ const SettingsTab = () => {
                 </Typography>
 
                 <Link
-                  to="/coproduction/static/stories/ExampleTemplate.json"
+                  to="/static/story/ExampleTemplate.json"
                   target="_blank"
                   download
                 >
@@ -1104,6 +1198,17 @@ const SettingsTab = () => {
           </Stack>
         </DialogContent>
       </Dialog>
+
+      {!hasSchema && (
+        <Dialog open={openDialogSchema} onClose={handleCloseDialogSchema} fullWidth maxWidth="xl">
+          <Box sx={{ minHeight: "93vh" }}>
+            <CreateSchema />
+          </Box>
+        </Dialog>
+      )}
+
+
+
     </Box>
   );
 };
