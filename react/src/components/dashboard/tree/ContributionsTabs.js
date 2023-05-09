@@ -299,7 +299,6 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
 
   const handleCloseTask = async () => {
     for (let row of rows) {
-      console.log(row);
       await gamesApi.addClaim(
         process.id,
         selectedTreeItem.id,
@@ -308,13 +307,16 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
         CONTRIBUTION_LEVELS[row.contribution]
       );
     }
+    
     gamesApi.completeTask(process.id, selectedTreeItem.id).then((res) => {
       console.log(res);
       setClosedTask(true);
     });
+    
     tasksApi.update(selectedTreeItem.id, { status: "finished" }).then((res) => {
       console.log(res);
     });
+    
   };
 
   useEffect(async () => {
@@ -432,7 +434,7 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
                     // disabled={!isAdministrator}
                     color="warning"
                     onClick={onClick}
-                    startIcon={<Delete />}
+                    startIcon={<Save />}
                   >
                     {t("Award points")}
                   </Button>

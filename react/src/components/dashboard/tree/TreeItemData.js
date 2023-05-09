@@ -185,7 +185,12 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     if (status !== element.status) {
       data.status = status;
       if (resetContributions) {
+
         //TODO: Method that removes the completion of a task in the game
+        gamesApi.revertTask(process.id, selectedTreeItem.id).then((res) => {
+          console.log(res);
+        });
+        setResetContributions(false);
       }
     }
     if (name !== element.name) {
@@ -625,7 +630,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
                   onChange={(event, newStatus) => {
                     console.log(status);
                     console.log(newStatus);
-                    if (status === "finished" && newStatus === "in_progress") {
+                    if (status === "finished" && newStatus === "in_progress" && process.game_id) {
                       setResetContributions(true);
                     }
                     setStatus(newStatus);
