@@ -210,7 +210,8 @@ const App = () => {
           event.includes("coproductionprocess") ||
           event.includes("permission")
         ) {
-          dispatch(getProcess(process.id, false, selectedTreeItem.id));
+          console.log(process);
+          dispatch(getProcess(process.id, false, selectedTreeItem.id? selectedTreeItem.id : null));
         } else if (event.includes("asset")) {
           const datosTemp = JSON.parse(message.data);
           // console.log(datosTemp)

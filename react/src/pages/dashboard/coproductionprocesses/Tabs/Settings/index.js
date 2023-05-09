@@ -107,7 +107,7 @@ const SettingsTab = () => {
     (state) => state.general
   );
   const [selectedTags, setSelectedTags] = useState([]);
-  const [inputTag, setInputTag] = useState("");
+  console.log(process);
   //Dialogs:
   const [publishDialogOpen, setPublishDialogOpen] = useState(false);
 
@@ -341,17 +341,9 @@ const SettingsTab = () => {
       setStoriesList(res);
       //console.log(storiesList);
     });
-    let tmp_tags = [];
-    process.tags_ids.map((tag) => {
-      tags.find((t) => {
-        console.log("tag",t.id, tag);
-        if (t.id === tag) {
-          tmp_tags.push(t);
-        }
-      })
-    });
-    console.log("TMP_TAGS",tmp_tags);
-    setSelectedTags(tmp_tags);
+    if (process.tags.length > 0) {
+      setSelectedTags(process.tags);
+    }
   }, []);
 
   const handleDeleteStory = (event, story_id) => {
@@ -467,6 +459,7 @@ const SettingsTab = () => {
             status: process.status || "",
             description: process.description || "",
             organization_desc: process.organization_desc || "",
+            tags: process.tags || [],
             aim: process.aim || "",
             idea: process.idea || "",
             challenges: process.challenges || "",
@@ -481,6 +474,19 @@ const SettingsTab = () => {
                                 challenges: Yup.string().required('required'), */
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+            console.log(values);
+            for (let tag of values.tags) {
+              if (!tag.id) {
+                await tagsApi.create({ name: tag }).then((res) => {
+                  if (res.status === 200) {
+                    values.tags.splice(values.tags.indexOf(tag), 1);
+                    values.tags.push(res.data);
+                  }
+                }).catch((err) => {
+                  console.error(err);
+                });
+              }
+            }
             try {
               dispatch(
                 updateProcess({
@@ -637,41 +643,25 @@ const SettingsTab = () => {
                     }}
                     onChange={(event, newValue) => {
                       if (typeof newValue === 'string') {
-                        setInputTag({
+                        setSelectedTags({
                           name: newValue,
                         });
-                        // console.log("newvalue input value", newValue.inputValue)
                       } else if (newValue && newValue.inputValue) {
                         // Create a new value from the user input
-                        setInputTag({
+                        setSelectedTags({
                           name: newValue.inputValue,
                         });
                       } else {
-                        setInputTag(newValue);
+                        setSelectedTags(newValue);
                       }
+                      // console.log("Newvalue",newValue);
+                      setFieldValue("tags", newValue);
                     }}
 
                     renderOption={(props, tag) => <li {...props}>{tag.name}</li>}
                     renderInput={(params) => (
                       <TextField {...params} label={t("TAGS")} />
                     )}
-                  // renderInput={(params) => (
-                  //   <TextField
-                  //     {...params}
-                  //     label={t("TAGS")}
-                  //     onKeyDown={(e) => {
-                  //       if (e.key === "Enter") {
-                  //         console.log(inputTag);
-                  //       }
-                  //       if (
-                  //         e.key === "Enter" &&
-                  //         tags.findIndex((o) => o.name === inputTag) === -1
-                  //       ) {
-                  //         setSelectedTags((o) => o.concat({ name: inputTag }));
-                  //       }
-                  //     }}
-                  //   />
-                  // )}
                   />
                 </Grid>
 
