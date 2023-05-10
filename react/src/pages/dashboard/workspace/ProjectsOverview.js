@@ -155,7 +155,7 @@ const ProjectsOverview = () => {
     {
       field: 'name',
       headerName: t("Name"),
-      flex: 1,
+      flex: 2,
       headerAlign: 'center',
       align: 'center',
       renderCell: (params) => {
