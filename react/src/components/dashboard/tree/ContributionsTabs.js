@@ -206,6 +206,7 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
   };
 
   //Obtain the contributions data
+  // TODO: use this method as the default one to get the contributions
   const getContributionsData = () => {
     tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
       if (res) {
@@ -305,7 +306,6 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
 
   const handleCloseTask = async () => {
     for (let row of rows) {
-      console.log(row);
       await gamesApi.addClaim(
         process.id,
         selectedTreeItem.id,
@@ -314,13 +314,16 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
         CONTRIBUTION_LEVELS[row.contribution]
       );
     }
+    
     gamesApi.completeTask(process.id, selectedTreeItem.id).then((res) => {
       console.log(res);
       setClosedTask(true);
     });
+    
     tasksApi.update(selectedTreeItem.id, { status: "finished" }).then((res) => {
       console.log(res);
     });
+    
   };
 
   useEffect(async () => {
@@ -332,8 +335,7 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
     } catch (e) {
       console.error(e);
     }
-    console.log("contributions", contributions);
-    console.log("task", task);
+
     if (typeof task !== "undefined" && task.completed) {
       setRows([]);
       setClosedTask(task.completed);
@@ -438,7 +440,7 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
                     // disabled={!isAdministrator}
                     color="warning"
                     onClick={onClick}
-                    startIcon={<Delete />}
+                    startIcon={<Save />}
                   >
                     {t("Award points")}
                   </Button>
@@ -572,8 +574,8 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
                         setSubmitting
                       );
                       //Refresh the list of contributions
-                      getContributionsData();
                     }
+                    getContributionsData();
                   } else {
                     setStatus({ success: false });
                     setErrors({ submit: err });

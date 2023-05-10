@@ -16,5 +16,6 @@ import { storiesApi } from './coproduction/storiesApi';
 import { usersApi } from './users';
 import { problemprofilesApi } from './catalogue/problemProfilesApi';
 import {recommenderApi} from './coproduction/recommenderApi';
-export { storiesApi, problemprofilesApi, permissionsApi, organizationsApi, usernotificationsApi,coproductionprocessnotificationsApi, assetsApi, knowledgeInterlinkersApi, softwareInterlinkersApi, coproductionProcessesApi, coproductionSchemasApi, teamsApi, usersApi, tasksApi, phasesApi, objectivesApi, interlinkersApi, recommenderApi };
-export { gamesApi } from './gamification/gamesApi';
+import {gamesApi} from './gamification/gamesApi';
+import { tagsApi } from './coproduction/tagsApi';
+export { storiesApi, tagsApi, problemprofilesApi, permissionsApi, gamesApi, organizationsApi, usernotificationsApi,coproductionprocessnotificationsApi, assetsApi, knowledgeInterlinkersApi, softwareInterlinkersApi, coproductionProcessesApi, coproductionSchemasApi, teamsApi, usersApi, tasksApi, phasesApi, objectivesApi, interlinkersApi, recommenderApi };

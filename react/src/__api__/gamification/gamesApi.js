@@ -57,6 +57,12 @@ class GamesApi extends GeneralApi {
     return res.data;
   }
 
+  async revertTask(processId, taskId) {
+    const res = await axiosInstance.delete(`/${this.url}/${processId}/${taskId}/revert`);
+    return res.data;
+  }
+ 
+
 };
 
 export const gamesApi = new GamesApi();
