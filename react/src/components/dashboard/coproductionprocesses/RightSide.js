@@ -109,16 +109,20 @@ const RightSide = ({ softwareInterlinkers }) => {
         }
       });
       if (isTask && mounted.current) {
-        tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
-          if (res) {
-            setContributions(res.assetsWithContribution);
-          }
-        });
+        getContributions();
       }
     }
   }, [selectedTreeItem]);
 
-  function obtenerNroContributions(contributions) {
+  const getContributions = async () => {
+    tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
+      if (res) {
+        setContributions(res.assetsWithContribution);
+      }
+    });
+  };
+
+  const getContributionNumber = (contributions) => {
     let nroContribution = 0;
     if (contributions) {
       if (contributions.length !== 0) {
@@ -526,9 +530,8 @@ const RightSide = ({ softwareInterlinkers }) => {
               {!isLocationCatalogue && (
                 <Tab
                   value="permissions"
-                  label={`${t("Permissions")} (${
-                    selectedTreeItem.permissions.length
-                  })`}
+                  label={`${t("Permissions")} (${selectedTreeItem.permissions.length
+                    })`}
                 />
               )}
               {!isLocationCatalogue &&
@@ -537,7 +540,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                 !process.is_part_of_publication && (
                   <Tab
                     value="contributions"
-                    label={`${t("Contributions")} (${obtenerNroContributions(
+                    label={`${t("Contributions")} (${getContributionNumber(
                       contributions
                     )})`}
                   />
@@ -575,7 +578,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                       <AssetsTable
                         language={process.language}
                         loading={loadingAssets}
-                        //assets={assetsList}
+                      //assets={assetsList}
                       />
                     </>
                   ) : (
@@ -886,6 +889,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                             setStatus({ success: true });
                             setSubmitting(false);
                             // getAssets();
+                            getContributions();
                             setClaimDialogOpen(false);
                           })
                           .catch((err) => {
@@ -1057,13 +1061,13 @@ const RightSide = ({ softwareInterlinkers }) => {
               contributions={contributions}
               setContributions={setContributions}
 
-              // element={selectedTreeItem}
-              // your_permissions={permissions && permissions.your_permissions}
-              // your_roles={permissions && permissions.your_roles}
-              // language={process.language}
-              // processId={process.id}
-              // element={selectedTreeItem}
-              // isAdministrator={isAdministrator}
+            // element={selectedTreeItem}
+            // your_permissions={permissions && permissions.your_permissions}
+            // your_roles={permissions && permissions.your_roles}
+            // language={process.language}
+            // processId={process.id}
+            // element={selectedTreeItem}
+            // isAdministrator={isAdministrator}
             />
           )}
         </Box>
