@@ -118,7 +118,7 @@ const ProjectsOverview = () => {
   const [coproductionProcessLoading, setCoproductionProcessLoading] =
     React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
-
+  const [pageSize, setPageSize] = React.useState(5);
   const navigate = useNavigate();
 
   const { t } = useTranslation();
@@ -430,7 +430,9 @@ const ProjectsOverview = () => {
               <DataGrid
                 rows={rows}
                 columns={columns}
-                pageSizeOptions={[5]}
+                pageSize={pageSize}
+                onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                rowsPerPageOptions={[5, 10, 20]}
                 disableSelectionOnClick
                 rowSelection={false}
                 disableRowSelectionOnClick={true}
