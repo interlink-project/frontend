@@ -314,16 +314,15 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
         CONTRIBUTION_LEVELS[row.contribution]
       );
     }
-    
+
     gamesApi.completeTask(process.id, selectedTreeItem.id).then((res) => {
       console.log(res);
       setClosedTask(true);
     });
-    
+
     tasksApi.update(selectedTreeItem.id, { status: "finished" }).then((res) => {
       console.log(res);
     });
-    
   };
 
   useEffect(async () => {
