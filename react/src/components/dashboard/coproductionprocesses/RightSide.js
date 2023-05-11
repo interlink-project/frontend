@@ -539,7 +539,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                 !process.is_part_of_publication && (
                   <Tab
                     value="contributions"
-                    label={`${t("Contributions")} (${getContributionNumber(
+                    label={`${t("Contributions")} (${obtenerNroContributions(
                       contributions
                     )})`}
                   />
