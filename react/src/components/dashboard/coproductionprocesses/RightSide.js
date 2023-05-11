@@ -539,7 +539,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                 !process.is_part_of_publication && (
                   <Tab
                     value="contributions"
-                    label={`${t("Contributions")} (${obtenerNroContributions(
+                    label={`${t("Contributions")} (${getContributionNumber(
                       contributions
                     )})`}
                   />
@@ -899,6 +899,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                             setStatus({ success: true });
                             setSubmitting(false);
                             // getAssets();
+                            getContributions();
                             setClaimDialogOpen(false);
                             //Refresh Contribution data
                             getContributionsData(selectedTreeItem.id);
