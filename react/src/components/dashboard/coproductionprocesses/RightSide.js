@@ -51,6 +51,7 @@ import {
 import NewAssetModal from "components/dashboard/coproductionprocesses/NewAssetModal";
 import { useLocation } from "react-router";
 import { getAssetsList_byTask } from "slices/general";
+import { getContributions } from "slices/general";
 import useAuth from "hooks/useAuth";
 
 import { REACT_APP_COMPLETE_DOMAIN } from "configuration";
@@ -60,7 +61,7 @@ const RightSide = ({ softwareInterlinkers }) => {
   const { process, isAdministrator, selectedTreeItem } = useSelector(
     (state) => state.process
   );
-  const { assetsList } = useSelector((state) => state.general);
+  const { assetsList, contributions } = useSelector((state) => state.general);
   const { user } = useAuth();
   const isTask = selectedTreeItem && selectedTreeItem.type === "task";
   const [step, setStep] = useState(0);
@@ -80,7 +81,7 @@ const RightSide = ({ softwareInterlinkers }) => {
   const [catalogueOpen, setCatalogueOpen] = useState(false);
   const { t } = useDependantTranslation();
   const dispatch = useDispatch();
-  const [contributions, setContributions] = useState([]);
+  // const [contributions, setContributions] = useState([]);
 
   const [permissions, setPermissions] = useState(null);
 
@@ -109,18 +110,19 @@ const RightSide = ({ softwareInterlinkers }) => {
         }
       });
       if (isTask && mounted.current) {
-        tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
-          if (res) {
-            setContributions(res.assetsWithContribution);
-          }
-        });
+        getContributionsData(selectedTreeItem.id);
       }
     }
   }, [selectedTreeItem]);
 
+  function getContributionsData(selectTreeItemId) {
+    dispatch(getContributions(selectTreeItemId));
+    //console.log("contributions", contributions);
+  }
+
   function obtenerNroContributions(contributions) {
     let nroContribution = 0;
-    if (contributions) {
+    if (contributions && contributions) {
       if (contributions.length !== 0) {
         for (var j = 0; j < contributions.length; j++) {
           let asset = contributions[j];
@@ -199,7 +201,7 @@ const RightSide = ({ softwareInterlinkers }) => {
   };
 
   const handleOpen = (asset) => {
-    console.log(asset);
+    //console.log(asset);
     if (asset.type === "internalasset") {
       const backend = asset["software_response"]["backend"];
       const linktoAsset = backend + "/" + asset["external_asset_id"];
@@ -228,7 +230,7 @@ const RightSide = ({ softwareInterlinkers }) => {
     setLoading("delete");
     //Obtain the name with the id
     // const nombreAsset = document.getElementById('bt-' + asset.id).innerHTML;
-    console.log(asset);
+    //console.log(asset);
     const nombreAsset = asset.internalData.name;
     localStorage.setItem("assetId", asset.id);
     const capitalizeAssetName = nombreAsset.replace(
@@ -806,6 +808,17 @@ const RightSide = ({ softwareInterlinkers }) => {
                         values,
                         { setErrors, setStatus, setSubmitting }
                       ) => {
+                        //Verify that the task is not closed
+                        if (selectedTreeItem.status == "finished") {
+                          setSubmitting(false);
+                          setClaimDialogOpen(false);
+                          return alert(
+                            t(
+                              "The task is closed you can't make a claim. Please contact to the administrator to reopen this task."
+                            )
+                          );
+                        }
+
                         setSubmitting(true);
 
                         //Defino el link del asset
@@ -887,6 +900,8 @@ const RightSide = ({ softwareInterlinkers }) => {
                             setSubmitting(false);
                             // getAssets();
                             setClaimDialogOpen(false);
+                            //Refresh Contribution data
+                            getContributionsData(selectedTreeItem.id);
                           })
                           .catch((err) => {
                             setStatus({ success: false });
@@ -1054,16 +1069,16 @@ const RightSide = ({ softwareInterlinkers }) => {
           )}
           {tabValue === "contributions" && (
             <ContributionsTabs
-              contributions={contributions}
-              setContributions={setContributions}
+            //contributions={contributions}
+            //setContributions={setContributions}
 
-              // element={selectedTreeItem}
-              // your_permissions={permissions && permissions.your_permissions}
-              // your_roles={permissions && permissions.your_roles}
-              // language={process.language}
-              // processId={process.id}
-              // element={selectedTreeItem}
-              // isAdministrator={isAdministrator}
+            // element={selectedTreeItem}
+            // your_permissions={permissions && permissions.your_permissions}
+            // your_roles={permissions && permissions.your_roles}
+            // language={process.language}
+            // processId={process.id}
+            // element={selectedTreeItem}
+            // isAdministrator={isAdministrator}
             />
           )}
         </Box>

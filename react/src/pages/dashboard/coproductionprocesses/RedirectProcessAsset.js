@@ -24,8 +24,8 @@ const RedirectProcessAsset = () => {
       .get(assetId)
       .then((res) => {
         if (mounted.current) {
-          console.log("Intenta ingresar en el asset");
-          console.log(res);
+          //console.log("Intenta ingresar en el asset");
+          //console.log(res);
           const selectedAsset = res;
 
           let redirectLink = "";

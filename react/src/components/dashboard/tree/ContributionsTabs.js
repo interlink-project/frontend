@@ -41,14 +41,18 @@ import {
   ViewList,
   Download,
 } from "@mui/icons-material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import ContributionCard from "./ContributionCard";
 import Papa from "papaparse";
 import { ExportToCsv } from "export-to-csv";
+import { getContributions } from "slices/general";
 
-const ContributionsTabs = ({ contributions, setContributions }) => {
+const ContributionsTabs = () => {
+  const { contributions } = useSelector((state) => state.general);
+  const dispatch = useDispatch();
+
   // Data for new contributions
   const [rows, setRows] = useState([]);
   const [contributor, setContributor] = useState(null);
@@ -208,11 +212,7 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
   //Obtain the contributions data
   // TODO: use this method as the default one to get the contributions
   const getContributionsData = () => {
-    tasksApi.getAssetsAndContributions(selectedTreeItem.id).then((res) => {
-      if (res) {
-        setContributions(res.assetsWithContribution);
-      }
-    });
+    dispatch(getContributions(selectedTreeItem.id));
   };
 
   const parseFile = (evt) => {
@@ -424,11 +424,7 @@ const ContributionsTabs = ({ contributions, setContributions }) => {
             ) : null}
           </Grid>
           {/* Table */}
-          <ContributionsTable
-            rows={rows}
-            assets={contributions}
-            closedTask={closedTask}
-          />
+          <ContributionsTable rows={rows} closedTask={closedTask} />
           {/* Button for closing the task and giving the points */}
           {process.game_id ? (
             <Box sx={{ p: 2, float: "right" }}>

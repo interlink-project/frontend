@@ -23,6 +23,7 @@ import getAssets from "./components/dashboard/coproductionprocesses/RightSide";
 import { getCoproductionProcesses, getTags } from "slices/general";
 import { getOrganizations } from "slices/general";
 import { getUnseenUserNotifications } from "slices/general";
+import { getContributions } from "slices/general";
 
 export const RemoveTrailingSlash = ({ ...rest }) => {
   const location = useLocation();
@@ -170,6 +171,13 @@ const App = () => {
       socket.onmessage = (message) => {
         const { event, name, extra } = JSON.parse(message.data);
         console.log(event, extra, name);
+
+        if (event.includes("contribution")) {
+          if (selectedTreeItem.id == extra.task_id) {
+            dispatch(getContributions(extra.task_id));
+          }
+        }
+
         if (event.includes("treeitem")) {
           if (event.includes("removed")) {
             if (selectedTreeItem.name === name) {
@@ -211,7 +219,13 @@ const App = () => {
           event.includes("permission")
         ) {
           console.log(process);
-          dispatch(getProcess(process.id, false, selectedTreeItem.id? selectedTreeItem.id : null));
+          dispatch(
+            getProcess(
+              process.id,
+              false,
+              selectedTreeItem.id ? selectedTreeItem.id : null
+            )
+          );
         } else if (event.includes("asset")) {
           const datosTemp = JSON.parse(message.data);
           // console.log(datosTemp)

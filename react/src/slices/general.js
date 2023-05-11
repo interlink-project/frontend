@@ -1,6 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { assetsApi,storiesApi,tagsApi,coproductionProcessesApi, organizationsApi, usernotificationsApi, coproductionprocessnotificationsApi, teamsApi, tasksApi } from '../__api__';
-import { subDays, subHours } from 'date-fns';
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  assetsApi,
+  storiesApi,
+  tagsApi,
+  coproductionProcessesApi,
+  organizationsApi,
+  usernotificationsApi,
+  coproductionprocessnotificationsApi,
+  teamsApi,
+  tasksApi,
+} from "../__api__";
+import { subDays, subHours } from "date-fns";
 
 const now = new Date();
 const initialState = {
@@ -12,23 +22,26 @@ const initialState = {
 
   organizations: [],
   loadingOrganizations: false,
-  
-  usernotifications:[],
+
+  usernotifications: [],
   loadingUserNotifications: false,
 
-  coproductionprocessnotifications:[],
+  coproductionprocessnotifications: [],
   loadingCoproductionProcessNotifications: false,
 
-  unseenusernotifications:[],
+  contributions: [],
+  loadingContributions: false,
+
+  unseenusernotifications: [],
   loadingUnseenUserNotifications: false,
 
-  selectedStory:null,
+  selectedStory: null,
   loadingSelectedStory: false,
 
-  assetsList:[],
-  loadingAssetsList:false,
+  assetsList: [],
+  loadingAssetsList: false,
 
-  userActivities:[],
+  userActivities: [],
   loadingUserActivities: false,
 
   tags: [],
@@ -36,7 +49,7 @@ const initialState = {
 };
 
 const slice = createSlice({
-  name: 'process',
+  name: "process",
   initialState,
   reducers: {
     setProcesses(state, action) {
@@ -99,7 +112,13 @@ const slice = createSlice({
     setLoadingTags(state, action) {
       state.loadingTags = action.payload;
     },
-  }
+    setContributions(state, action) {
+      state.contributions = action.payload;
+    },
+    setLoadingContributions(state, action) {
+      state.loadingContributions = action.payload;
+    },
+  },
 });
 
 export const { reducer } = slice;
@@ -118,27 +137,50 @@ export const getOrganizations = (search) => async (dispatch) => {
   dispatch(slice.actions.setLoadingOrganizations(false));
 };
 
+export const getContributions = (selectTreeItemId) => async (dispatch) => {
+  dispatch(slice.actions.setLoadingContributions(true));
+  const contributions_data = await tasksApi.getAssetsAndContributions(
+    selectTreeItemId
+  );
+  dispatch(
+    slice.actions.setContributions(contributions_data.assetsWithContribution)
+  );
+  dispatch(slice.actions.setLoadingContributions(false));
+};
+
 export const getUserNotifications = (search) => async (dispatch) => {
   dispatch(slice.actions.setLoadingUserNotifications(true));
-  const usernotifications_data = await usernotificationsApi.getUserNotifications({ search });
+  const usernotifications_data =
+    await usernotificationsApi.getUserNotifications({ search });
   dispatch(slice.actions.setUserNotifications(usernotifications_data));
   dispatch(slice.actions.setLoadingUserNotifications(false));
 };
 
 export const getUnseenUserNotifications = (search) => async (dispatch) => {
   dispatch(slice.actions.setLoadingUnseenUserNotifications(true));
-  const unseenusernotifications_data = await usernotificationsApi.getUnseenUserNotifications({ search });
-  dispatch(slice.actions.setUnseenUserNotifications(unseenusernotifications_data));
+  const unseenusernotifications_data =
+    await usernotificationsApi.getUnseenUserNotifications({ search });
+  dispatch(
+    slice.actions.setUnseenUserNotifications(unseenusernotifications_data)
+  );
   dispatch(slice.actions.setLoadingUnseenUserNotifications(false));
 };
 
-export const getCoproductionProcessNotifications = (search) => async (dispatch) => {
-  dispatch(slice.actions.setLoadingCoproductionProcessNotifications(true));
-  const coproductionprocessnotifications_data = await coproductionprocessnotificationsApi.getCoproductionProcessNotifications({ search });
-  //console.log(coproductionprocessnotifications_data);
-  dispatch(slice.actions.setCoproductionProcessNotifications(coproductionprocessnotifications_data));
-  dispatch(slice.actions.setLoadingCoproductionProcessNotifications(false));
-};
+export const getCoproductionProcessNotifications =
+  (search) => async (dispatch) => {
+    dispatch(slice.actions.setLoadingCoproductionProcessNotifications(true));
+    const coproductionprocessnotifications_data =
+      await coproductionprocessnotificationsApi.getCoproductionProcessNotifications(
+        { search }
+      );
+    //console.log(coproductionprocessnotifications_data);
+    dispatch(
+      slice.actions.setCoproductionProcessNotifications(
+        coproductionprocessnotifications_data
+      )
+    );
+    dispatch(slice.actions.setLoadingCoproductionProcessNotifications(false));
+  };
 
 export const getSelectedStory = (id) => async (dispatch) => {
   dispatch(slice.actions.setLoadingSelectedStory(true));
@@ -149,7 +191,9 @@ export const getSelectedStory = (id) => async (dispatch) => {
 
 export const getAssetsList_byTask = (task_id) => async (dispatch) => {
   dispatch(slice.actions.setLoadingAssetsList(true));
-  const selectedAssetsList_data = await assetsApi.getListAssetswithInternalInfo({'task_id':task_id});
+  const selectedAssetsList_data = await assetsApi.getListAssetswithInternalInfo(
+    { task_id: task_id }
+  );
   dispatch(slice.actions.setAssetsList(selectedAssetsList_data));
   dispatch(slice.actions.setLoadingAssetsList(false));
   // console.log('Los Assets son:');
@@ -158,7 +202,9 @@ export const getAssetsList_byTask = (task_id) => async (dispatch) => {
 
 export const getAssetsList_byCopro = (copro_id) => async (dispatch) => {
   dispatch(slice.actions.setLoadingAssetsList(true));
-  const selectedAssetsList_data = await coproductionProcessesApi.getAssets(copro_id);
+  const selectedAssetsList_data = await coproductionProcessesApi.getAssets(
+    copro_id
+  );
   dispatch(slice.actions.setAssetsList(selectedAssetsList_data));
   dispatch(slice.actions.setLoadingAssetsList(false));
   // console.log('Los Assets son:');
@@ -166,16 +212,24 @@ export const getAssetsList_byCopro = (copro_id) => async (dispatch) => {
 };
 
 export const getUserActivities = (params) => async (dispatch) => {
-  let callback = notification => notification.user_id === params.user_id;
+  let callback = (notification) => notification.user_id === params.user_id;
   let activity = [];
   dispatch(slice.actions.setLoadingUserActivities(true));
-  
-  for (let i=0; i<params.assets.length; i++){
-    let search = { 'coproductionprocess_id': params.coproductionprocess_id,'asset_id': params.assets[i].id} ;
-    const coproductionprocessnotifications_data = await coproductionprocessnotificationsApi.getCoproductionProcessNotifications({ search });
+
+  for (let i = 0; i < params.assets.length; i++) {
+    let search = {
+      coproductionprocess_id: params.coproductionprocess_id,
+      asset_id: params.assets[i].id,
+    };
+    const coproductionprocessnotifications_data =
+      await coproductionprocessnotificationsApi.getCoproductionProcessNotifications(
+        { search }
+      );
     // console.log(coproductionprocessnotifications_data);
     // const filtered = (coproductionprocessnotifications_data.filter(callback));
-    activity = activity.concat(coproductionprocessnotifications_data.filter(callback))
+    activity = activity.concat(
+      coproductionprocessnotifications_data.filter(callback)
+    );
   }
   //console.log(activity);
   dispatch(slice.actions.setUserActivities(activity));

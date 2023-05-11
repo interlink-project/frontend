@@ -1,22 +1,32 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Button, Dialog, IconButton, DialogContent } from '@mui/material';
-import { DataGrid, GridApi } from '@mui/x-data-grid';
-import clsx from 'clsx';
-import useMounted from 'hooks/useMounted';
+import { useState, useEffect, useCallback } from "react";
+import { Button, Dialog, IconButton, DialogContent } from "@mui/material";
+import { DataGrid, GridApi } from "@mui/x-data-grid";
+import clsx from "clsx";
+import useMounted from "hooks/useMounted";
 import { getUserActivities } from "slices/general";
-import { useDispatch, useSelector } from 'react-redux';
-import { Close, CopyAll, Delete, RecordVoiceOver, Download, Edit, KeyboardArrowDown, OpenInNew } from '@mui/icons-material';
-import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
-import { useCustomTranslation } from 'hooks/useDependantTranslation';
-import { gamesApi } from '__api__';
+import { useDispatch, useSelector } from "react-redux";
+import { getContributions } from "slices/general";
+import {
+  Close,
+  CopyAll,
+  Delete,
+  RecordVoiceOver,
+  Download,
+  Edit,
+  KeyboardArrowDown,
+  OpenInNew,
+} from "@mui/icons-material";
+import CoproNotifications from "components/dashboard/coproductionprocesses/CoproNotifications";
+import { useCustomTranslation } from "hooks/useDependantTranslation";
+import { gamesApi } from "__api__";
 
+export default function ContributionsTable({ rows, closedTask }) {
+  const { contributions } = useSelector((state) => state.general);
 
-
-export default function ContributionsTable({ rows, assets, closedTask }) {
   const [stateRows, setRows] = useState([]);
   const [pageSize, setPageSize] = useState(5);
   const [loading, setLoading] = useState(false);
-  const contribValues = ['Low', 'Average', 'High'];
+  const contribValues = ["Low", "Average", "High"];
 
   const [activitiesDialogOpen, setactivitiesDialogOpen] = useState(false);
 
@@ -24,22 +34,30 @@ export default function ContributionsTable({ rows, assets, closedTask }) {
   const { process, selectedTreeItem } = useSelector((state) => state.process);
   const t = useCustomTranslation(process.language);
 
-
   const handleClickHistory = (userId) => {
     console.log("Selected user: " + userId);
     if (userId == null) {
       return;
     }
     setactivitiesDialogOpen(true);
-    dispatch(getUserActivities({
-      'coproductionprocess_id': process.id, 'assets': assets, 'user_id': userId
-    }));
+    dispatch(
+      getUserActivities({
+        coproductionprocess_id: process.id,
+        assets: contributions,
+        user_id: userId,
+      })
+    );
   };
 
   const columns = [
-    { field: 'name', headerName: t('Name'), flex: 0.5, editable: false },
+    { field: "name", headerName: t("Name"), flex: 0.5, editable: false },
     {
-      field: 'activity', headerName: t('Activity'), flex: 0.3, editable: false, headerAlign: 'center', align: 'center',
+      field: "activity",
+      headerName: t("Activity"),
+      flex: 0.3,
+      editable: false,
+      headerAlign: "center",
+      align: "center",
       renderCell: (params) => {
         const onClick = (e) => {
           e.stopPropagation();
@@ -50,30 +68,31 @@ export default function ContributionsTable({ rows, assets, closedTask }) {
         return (
           <Button variant="contained" onClick={onClick} color="primary">
             {t("Activities")}
-          </Button>)
-      }
+          </Button>
+        );
+      },
     },
     {
-      field: 'contribution', headerName: t('Contribution'),
-      type: 'singleSelect',
+      field: "contribution",
+      headerName: t("Contribution"),
+      type: "singleSelect",
       flex: 1,
       editable: !closedTask,
       valueOptions: contribValues,
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: "center",
+      align: "center",
       cellClassName: (params) => {
         if (params.value == null) {
-          return '';
+          return "";
         }
 
-        return clsx('super-app', {
-          low: params.value === 'Low',
-          average: params.value === 'Average',
-          high: params.value === 'High',
+        return clsx("super-app", {
+          low: params.value === "Low",
+          average: params.value === "Average",
+          high: params.value === "High",
         });
       },
     },
-
   ];
 
   useEffect(() => {
@@ -85,7 +104,6 @@ export default function ContributionsTable({ rows, assets, closedTask }) {
       setRows([]);
     }
     setLoading(false);
-
   }, [rows]);
 
   return (
@@ -100,28 +118,29 @@ export default function ContributionsTable({ rows, assets, closedTask }) {
         loading={loading}
         columns={columns}
         onCellEditCommit={(props, event) => {
-          rows[rows.findIndex((row) => row.id === props.id)][props.field] = props.value;
+          rows[rows.findIndex((row) => row.id === props.id)][props.field] =
+            props.value;
         }}
         sx={{
           boxShadow: 1,
           // border: 1,
-          borderColor: 'primary.light',
-          '& .MuiDataGrid-cell:hover': {
-            color: 'primary.main',
+          borderColor: "primary.light",
+          "& .MuiDataGrid-cell:hover": {
+            color: "primary.main",
           },
-          '& .super-app.low': {
-            color: '#f44336',
-            fontWeight: '600',
+          "& .super-app.low": {
+            color: "#f44336",
+            fontWeight: "600",
           },
-          '& .super-app.average': {
-            color: '#077878',
-            fontWeight: '600',
+          "& .super-app.average": {
+            color: "#077878",
+            fontWeight: "600",
           },
-          '& .super-app.high': {
-            color: '#44c949',
-            fontWeight: '600',
+          "& .super-app.high": {
+            color: "#44c949",
+            fontWeight: "600",
           },
-          p: 2
+          p: 2,
         }}
       />
       <Dialog
@@ -129,10 +148,10 @@ export default function ContributionsTable({ rows, assets, closedTask }) {
         onClose={() => setactivitiesDialogOpen(false)}
       >
         <IconButton
-          aria-label='close'
+          aria-label="close"
           onClick={() => setactivitiesDialogOpen(false)}
           sx={{
-            position: 'absolute',
+            position: "absolute",
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500],
@@ -142,11 +161,9 @@ export default function ContributionsTable({ rows, assets, closedTask }) {
         </IconButton>
 
         <DialogContent sx={{ p: 3 }}>
-          <CoproNotifications
-            mode={'activity'} />
+          <CoproNotifications mode={"activity"} />
         </DialogContent>
       </Dialog>
     </>
   );
 }
-
