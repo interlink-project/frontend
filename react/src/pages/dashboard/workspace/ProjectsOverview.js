@@ -431,7 +431,7 @@ const ProjectsOverview = () => {
                 }}
                 sx={{
                   // pointer cursor on ALL rows
-                  "& .MuiDataGrid-row:hover: {
+                  "& .MuiDataGrid-row:hover": {
                     cursor: "pointer",
                   },
                 }}
