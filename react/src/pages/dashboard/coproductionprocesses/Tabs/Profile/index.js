@@ -11,6 +11,7 @@ import {
   Stack,
   Card,
   AvatarGroup,
+  useMediaQuery,
 } from "@mui/material";
 import {
   AccountTree,
@@ -42,6 +43,8 @@ import SwipeableViews from "react-swipeable-views";
 import moment from "moment";
 
 export default function Profile({}) {
+  const mdUp = useMediaQuery((theme) => theme.breakpoints.up("md"));
+
   const { process, isAdministrator, tree } = useSelector(
     (state) => state.process
   );
@@ -98,46 +101,30 @@ export default function Profile({}) {
         </Typography>
       </AppBar>
       <Paper>
-        <Grid container columns={{ xs: 12, md: 12 }} sx={{ m: 2 }} spacing={2}>
-          <Grid item xs={12} md={1} >
-            <Stack>
-              <Avatar
-                variant="rounded"
-                sx={{ width: "90px", height: "80px",ml:1 }}
-                src={process && process.logotype_link}
-              >
-                {" "}
-              </Avatar>
-              <Typography variant="h6" sx={{ mb: 2, ml: 1 }}>
-                <Chip
-                  label={t(process.status)}
-                  size="small"
-                  sx={{ width: "95px",mt: "-5px" }}
-                  color="primary"
-                />
-              </Typography>
-            </Stack>
-          </Grid>
+        {!mdUp ? (
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Avatar
+              variant="rounded"
+              sx={{ width: "90px", height: "90px", m: 1 }}
+              src={process && process.logotype_link}
+            />
 
-          <Grid item xs={12} md={7}>
-            <Typography variant="h5" sx={{ mb: 1, mt: 2 }}>
-              {process.name}
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 2, mt: 0 }}>
-              <b>{t("Created")}:</b> {moment(process.created_at).format("LL")}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <Stack
-              direction="column"
-              
-              alignItems="flex-end"
-              spacing={0}
-            >
-              <Typography variant="h7" sx={{ mb: 1,mr:2 }}>
+            <Stack direction="column">
+              <Typography variant="h5" sx={{ mb: 1, mt: 1 }}>
+                {process.name}
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 2, mt: 0 }}>
+                <b>{t("Created")}:</b> {moment(process.created_at).format("LL")}
+              </Typography>
+              <Typography variant="h7" sx={{ mb: 1, mr: 2 }}>
                 <b>Admin:</b>
               </Typography>
-              <AvatarGroup max={4}>
+              <AvatarGroup max={4} sx={{ mb: 1 }}>
                 {process.administrators.map((admin) => {
                   return (
                     <Avatar alt={admin.full_name} src={admin.picture}></Avatar>
@@ -146,7 +133,58 @@ export default function Profile({}) {
               </AvatarGroup>
             </Stack>
           </Grid>
-        </Grid>
+        ) : (
+          <Grid
+            container
+            columns={{ xs: 12, md: 12 }}
+            sx={{ m: 2 }}
+            spacing={2}
+          >
+            <Stack>
+              <Avatar
+                variant="rounded"
+                sx={{ width: "90px", height: "90px", m: 1 }}
+                src={process && process.logotype_link}
+              >
+                {" "}
+              </Avatar>
+              <Typography variant="h6" sx={{ mb: 2, ml: 1 }}>
+                <Chip
+                  label={t(process.status)}
+                  size="small"
+                  sx={{ width: "95px", mt: "-5px" }}
+                  color="primary"
+                />
+              </Typography>
+            </Stack>
+
+            <Grid item xs={12} md={7}>
+              <Typography variant="h5" sx={{ mb: 1, mt: 2 }}>
+                {process.name}
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 2, mt: 0 }}>
+                <b>{t("Created")}:</b> {moment(process.created_at).format("LL")}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Stack direction="column" alignItems="flex-end" spacing={0}>
+                <Typography variant="h7" sx={{ mb: 1, mr: 2 }}>
+                  <b>Admin:</b>
+                </Typography>
+                <AvatarGroup max={4}>
+                  {process.administrators.map((admin) => {
+                    return (
+                      <Avatar
+                        alt={admin.full_name}
+                        src={admin.picture}
+                      ></Avatar>
+                    );
+                  })}
+                </AvatarGroup>
+              </Stack>
+            </Grid>
+          </Grid>
+        )}
       </Paper>
 
       <Card variant="outlined" sx={{ p: 2, m: 2 }}>
