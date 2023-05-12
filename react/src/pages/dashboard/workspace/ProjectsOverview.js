@@ -16,7 +16,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid } from "@mui/x-data-grid";
 import { Add, Folder, MenuBook } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import AuthGuardSkeleton from "components/guards/AuthGuardSkeleton";
@@ -49,16 +49,11 @@ function ProcessRow({ process, t }) {
       hover
       sx={{ "& > *": { borderBottom: "unset" }, cursor: "pointer" }}
       onClick={() => {
-
         if (process.hideguidechecklist) {
-          navigate(`/dashboard/coproductionprocesses/${process.id}/profile`)
+          navigate(`/dashboard/coproductionprocesses/${process.id}/profile`);
+        } else {
+          navigate(`/dashboard/coproductionprocesses/${process.id}/overview`);
         }
-        else {
-          navigate(`/dashboard/coproductionprocesses/${process.id}/overview`)
-
-        }
-
-
       }}
     >
       <TableCell align="center">
@@ -126,108 +121,101 @@ const ProjectsOverview = () => {
   const mounted = useMounted();
   const { user, isAuthenticated } = useAuth();
 
-  const momentComparator = (a, b) => { return moment(a).diff(moment(b)); }
+  const momentComparator = (a, b) => {
+    return moment(a).diff(moment(b));
+  };
 
   const columns = [
     {
-      field: 'icon',
-      headerName: '',
+      field: "icon",
+      headerName: "",
       sortable: false,
       flex: 0.05,
       disableColumnMenu: true,
       renderCell: (params) => {
-        return (
-
-          params.row.is_part_of_publication ? <MenuBook sx={{ mr: 1 }} />
-            : params.row.logotype_link ? (
-              <Avatar
-                sx={{ height: "25px", width: "25px" }}
-                variant="rounded"
-                src={params.row.logotype_link}
-              />
-            ) : (
-              <Folder />
-            )
-
+        return params.row.is_part_of_publication ? (
+          <MenuBook sx={{ mr: 1 }} />
+        ) : params.row.logotype_link ? (
+          <Avatar
+            sx={{ height: "25px", width: "25px" }}
+            variant="rounded"
+            src={params.row.logotype_link}
+          />
+        ) : (
+          <Folder />
         );
-      }
+      },
     },
     {
-      field: 'name',
+      field: "name",
       headerName: t("Name"),
       flex: 2,
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: "center",
+      align: "center",
       renderCell: (params) => {
-        return (
-          <b>{params.row.name}</b>
-        );
-      }
-
+        return <b>{params.row.name}</b>;
+      },
     },
     {
-      field: 'tags',
+      field: "tags",
       headerName: t("Tags"),
       flex: 1,
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: "center",
+      align: "center",
       sortable: false,
       valueGetter: (params) => {
         if (params.value.length == 0) return t("No tags");
         let tmp_tags = [];
-        tmp_tags.push(params.value.map((tag) => (tag.name)));
+        tmp_tags.push(params.value.map((tag) => tag.name));
         return tmp_tags.toString();
       },
       renderCell: (params) => {
         return (
-
           <>
-            {
-              params.row.tags.length > 0 ? (
-                <Chip key={params.row.tags[0].name} label={params.row.tags[0].name} />
-              ) : (
-                <Typography sx={{ ml: 2 }}>{t("No tags")}</Typography>
-              )
-            }
-
+            {params.row.tags.length > 0 ? (
+              <Chip
+                key={params.row.tags[0].name}
+                label={params.row.tags[0].name}
+              />
+            ) : (
+              <Typography sx={{ ml: 2 }}>{t("No tags")}</Typography>
+            )}
           </>
         );
-      }
+      },
     },
     {
-      field: 'created',
+      field: "created",
       headerName: t("Created"),
       flex: 1,
-      align: 'center',
-      headerAlign: 'center',
-      valueGetter: (params) => { return params.row.created_at },
+      align: "center",
+      headerAlign: "center",
+      valueGetter: (params) => {
+        return params.row.created_at;
+      },
       sortComparator: momentComparator,
       renderCell: (params) => {
-        return (
-          moment(params.row.created_at).fromNow()
-        );
-      }
+        return moment(params.row.created_at).fromNow();
+      },
     },
     {
-      field: 'status',
+      field: "status",
       headerName: t("Status"),
       flex: 1,
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: "center",
+      align: "center",
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => {
-        return (
-          <StatusChip t={t} status={params.row.status} />
-        );
-      }
+        return <StatusChip t={t} status={params.row.status} />;
+      },
     },
     {
-      field: 'teams',
+      field: "teams",
       headerName: t("Teams"),
       flex: 1,
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: "center",
+      align: "center",
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => {
@@ -248,30 +236,22 @@ const ProjectsOverview = () => {
               </Stack>
             )}
           </AvatarGroup>
-        )
-      }
-
-
+        );
+      },
     },
     {
-      field: 'participation',
+      field: "participation",
       headerName: t("Roles"),
       flex: 1,
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: "center",
+      align: "center",
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => {
-        return (
-          params.row.participation.map((p) => (
-            <Chip key={p} label={p} />
-          )))
-      }
+        return params.row.participation.map((p) => <Chip key={p} label={p} />);
+      },
     },
-
-
-  ]
-
+  ];
 
   const rows = processes.map((process) => {
     return {
@@ -285,10 +265,8 @@ const ProjectsOverview = () => {
       is_part_of_publication: process.is_part_of_publication,
       logotype_link: process.logotype_link,
       hideguidechecklist: process.hideguidechecklist,
-    }
-  })
-
-
+    };
+  });
 
   const getCoproductionProcessesData = React.useCallback(
     async (search) => {
@@ -439,16 +417,24 @@ const ProjectsOverview = () => {
                 autoHeight
                 onRowClick={(params) => {
                   if (params.row.hideguidechecklist) {
-                    navigate(`/dashboard/coproductionprocesses/${params.row.id}/profile`)
-                  }
-                  else {
-                    navigate(`/dashboard/coproductionprocesses/${params.row.id}/overview`)
+                    navigate(
+                      `/dashboard/coproductionprocesses/${params.row.id}/profile`
+                    );
+                  } else {
+                    navigate(
+                      `/dashboard/coproductionprocesses/${params.row.id}/overview`
+                    );
                   }
                 }}
                 localeText={{
                   noRowsLabel: t("No coproduction processes found"),
                 }}
-
+                sx={{
+                  // pointer cursor on ALL rows
+                  "& .MuiDataGrid-row:hover: {
+                    cursor: "pointer",
+                  },
+                }}
               />
               {/* <TableContainer component={Paper} data-cy="table-process-header">
                 <Table>
