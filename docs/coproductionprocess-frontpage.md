@@ -4,3 +4,6 @@ The FRONT PAGE view showcases the main metadata associated to a co-production pr
 - What is the aim of the process
 - What challenges it addresses
 - What is the idea behind the co-production process' outcome envisaged
+
+
+![Front page view](images/frontpageview-init.png)
