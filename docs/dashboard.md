@@ -18,10 +18,11 @@ When a user clicks on button ["Access Collaborative Environment"](https://demo.i
 
 Before using the Collaborative environment, for first time, you must first login with your google credentials or create your own credentials at [https://demo.interlink-project.eu/](https://demo.interlink-project.eu/), i.e. the staging server of INTERLINK. **IMPORTANT**: All members of an envisaged team must logged into the platform before they can be added to a team. ![Login required screen](images/dashboard-loginrequired.PNG) ![AAC screen](images/aac-login-window.PNG)
 
-Once logged in, you are given access to the INTERLINK Dashboard view, where the user has access to three core main functionalities:
+Once logged in, you are given access to the INTERLINK Dashboard view, where the user has access to four core main functionalities:
 - [Workspace](https://demo.interlink-project.eu/dashboard): the user can see the co-production processess where s/he is taking part in or create new co-production processes if needed by clicking on top right hand side button named "+ Create new process". 
 - [Organizations](https://demo.interlink-project.eu/dashboard/organizations): the user can see the organizations that are registered in the collaborative environment and browse through the teams within the created organizations. Besides, the user can create new organizations by clicking on top left hand side button "+ Create new organization"
 -  [Catalogue](https://demo.interlink-project.eu/dashboard/interlinkers): the user is given access to the INTERLINKERs catalogue where s/he can browse through the available INTERLINKERs, filter them according to their "Nature", "Problem profile", "Minimum rating" or their title contents.
+-  [Stories](https://demo.interlink-project.eu/dashboard/stories): the user is given access to the SUCCESS CASES catalogue where s/he can browse through the available success cases, filter them according to their "Topic", "Minimum rating" or their title contents.
 
 ![INTERLINK Dashboard view](images/dashboard-view.png)
 
@@ -36,7 +37,9 @@ Once a new organization has been created, the user is shown in the dashboard's o
 
 ![Organizations view in dashboard](images/dashboard-organizations-view.png)
 
-The user may browse through the already created teams in an organization or create a new team by clicking on button "+ Create new team". An already existing team details can be modified by clicking on the blue "Edit" button. Notice that new members or administrators can be appointed to a team. New team members are suggested when typing part of their name or email address if they have already registered with the environment. Clicking on the button "+Create new team", the user is given the option of adding a logo to the team, its name, description and to select what type of team will be, i.e. representing "Public administration", "Citizens", "Non profit organization" or "For profit organization". After adding the metadata of the team, the user is given the option to add new members to such team.  
+The user may browse through the already created teams in an organization or create a new team by clicking on button "+ Create new team". An already existing team details can be modified by clicking on the blue "Edit" button. Notice that new members or administrators can be appointed to a team. New team members are suggested when typing part of their name or email address if they have already registered with the environment. Notice that bulk addition of members in a team is possible by clicking on button "Import from CSV" (clicking on the "i" - information logo the format in which the CSV must be imported is explained) Clicking on the button "+Create new team", the user is given the option of adding a logo to the team, its name, description and to select what type of team will be, i.e. representing "Public administration", "Citizens", "Non profit organization" or "For profit organization". After adding the metadata of the team, the user is given the option to add new members to such team. 
+
+Clicking on the tab "ADMINISTRATORS" new administrators for a given team can be appointed. Bulk addition of administrators to a team can be performed through "Import from CSV" blue button. 
 
 
 ![View of details of team in organization](images/dashboard-team-view.png)
