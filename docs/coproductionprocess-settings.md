@@ -27,3 +27,9 @@ Next screenshot shows how highlighted by a red frame appear destructive administ
 
 
 ![Admin actions overs coproduction process](images/coproductionprocess-settings-adminactions.png)
+![Cloning and activation actions overs coproduction process](images/coproductionprocess-settings-cloning-activating.png)
+![Cloning of coproduction process](images/coproductionprocess-cloning-popup.png)
+![Publication of succes case from coproduction process](images/coproductionprocess-usecasepub-popup.png)
+
+
+
