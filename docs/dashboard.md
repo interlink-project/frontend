@@ -33,7 +33,7 @@ Within "ORGANIZATIONS" section of dashboard, after the user clicks on "ORGANIZAT
 
 
 
-Once a new organization has been created, the user is shown in the dashboard's organization view those public teams or private teams the loged in user is administrator of.  
+Once a new organization has been created, the user is shown in the dashboard's organization view those public teams or private teams the logged in user is administrator of.  
 
 ![Organizations view in dashboard](images/dashboard-organizations-view.png)
 
