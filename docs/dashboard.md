@@ -22,7 +22,7 @@ Once logged in, you are given access to the INTERLINK Dashboard view, where the 
 - [Workspace](https://demo.interlink-project.eu/dashboard): the user can see the co-production processess where s/he is taking part in or create new co-production processes if needed by clicking on top right hand side button named "+ Create new process". 
 - [Organizations](https://demo.interlink-project.eu/dashboard/organizations): the user can see the organizations that are registered in the collaborative environment and browse through the teams within the created organizations. Besides, the user can create new organizations by clicking on top left hand side button "+ Create new organization"
 -  [Catalogue](https://demo.interlink-project.eu/dashboard/interlinkers): the user is given access to the INTERLINKERs catalogue where s/he can browse through the available INTERLINKERs, filter them according to their "Nature", "Problem profile", "Minimum rating" or their title contents.
--  [Stories](https://demo.interlink-project.eu/dashboard/stories): the user is given access to the SUCCESS CASES catalogue where s/he can browse through the available success cases, filter them according to their "Topic", "Minimum rating" or their title contents.
+-  [Stories](https://demo.interlink-project.eu/stories): the user is given access to the SUCCESS CASES catalogue where s/he can browse through the available success cases, filter them according to their "Topic", "Minimum rating" or their title contents.
 
 ![INTERLINK Dashboard view](images/dashboard-view.png)
 
