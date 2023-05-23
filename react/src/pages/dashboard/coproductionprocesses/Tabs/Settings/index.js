@@ -474,7 +474,7 @@ const SettingsTab = () => {
                                 challenges: Yup.string().required('required'), */
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-            console.log(values);
+            //console.log(values);
             for (let tag of values.tags) {
               if (!tag.id) {
                 
@@ -656,7 +656,7 @@ const SettingsTab = () => {
                       } else {
                         setSelectedTags(newValue);
                       }
-                      console.log("New Tags values:",newValue);
+                      //console.log("New Tags values:",newValue);
                       setFieldValue("tags", newValue);
                     }}
 
