@@ -9,6 +9,7 @@ import {
   teamsApi,
 } from "__api__";
 import {
+  Alert,
   IconButton,
   Box,
   Button,
@@ -19,11 +20,10 @@ import {
   Select,
   InputLabel,
   MenuItem,
-  DialogActions,
   TextField,
   Typography,
+  Snackbar,
   Grid,
-  FormControl,
   FormControlLabel,
   FormGroup,
   Checkbox,
@@ -34,8 +34,6 @@ import ConfirmationButton from "components/ConfirmationButton";
 import { LoadingButton } from "@mui/lab";
 import UserSearch from "../coproductionprocesses/UserSearch";
 import {
-  Delete,
-  Edit,
   Save,
   Close,
   ViewList,
@@ -61,8 +59,7 @@ const ContributionsTabs = () => {
   const [closedTask, setClosedTask] = useState(false);
   const [listTeams, setListTeams] = useState([]);
   const [listUsers, setListUsers] = useState([]);
-
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [alertNoComplexity, setAlertNoComplexity] = useState(false);
 
   const [claimDialogOpen, setClaimDialogOpen] = useState(false);
 
@@ -189,12 +186,12 @@ const ContributionsTabs = () => {
         if (responseData["excluded"].length > 0) {
           alert(
             t("We couldn't include") +
-              ": [" +
-              responseData["excluded"] +
-              "] " +
-              t(
-                "users because are not part of a team with permissions over this task. Please check the list of users and try again"
-              )
+            ": [" +
+            responseData["excluded"] +
+            "] " +
+            t(
+              "users because are not part of a team with permissions over this task. Please check the list of users and try again"
+            )
           );
         }
 
@@ -307,6 +304,7 @@ const ContributionsTabs = () => {
   };
 
   const handleCloseTask = async () => {
+    console.log("Closing task", rows);
     for (let row of rows) {
       await gamesApi.addClaim(
         process.id,
@@ -316,7 +314,8 @@ const ContributionsTabs = () => {
         CONTRIBUTION_LEVELS[row.contribution]
       );
     }
-
+    console.log("Claims done ")
+    
     gamesApi.completeTask(process.id, selectedTreeItem.id).then((res) => {
       console.log(res);
       setClosedTask(true);
@@ -397,7 +396,17 @@ const ContributionsTabs = () => {
       }
       setClosedTask(task.completed);
     }
+
   }, [contributions]);
+
+  useEffect(() => {
+    console.log("selectedTreeItem", selectedTreeItem)
+    if (selectedTreeItem.development === 0) {
+      setAlertNoComplexity(true);
+    } else {
+      setAlertNoComplexity(false);
+    }
+  }, [selectedTreeItem]);
 
   return (
     <>
@@ -536,13 +545,13 @@ const ContributionsTabs = () => {
                         if (usuario[0] === undefined) {
                           alert(
                             t("The user") +
-                              " " +
-                              listUsers[i] +
-                              " " +
-                              t(
-                                "haven't registered yet in the platform. Please, ask him to register and try again"
-                              ) +
-                              "."
+                            " " +
+                            listUsers[i] +
+                            " " +
+                            t(
+                              "haven't registered yet in the platform. Please, ask him to register and try again"
+                            ) +
+                            "."
                           );
                           return false;
                         } else {
@@ -598,8 +607,8 @@ const ContributionsTabs = () => {
                   <form onSubmit={handleSubmit}>
                     <Box sx={{ mt: 0 }}>
                       {!contributor &&
-                      listUsers.length == 0 &&
-                      checkboxValues.length == 0 ? (
+                        listUsers.length == 0 &&
+                        checkboxValues.length == 0 ? (
                         //Show all Options
                         <Box sx={{ mt: 0 }}>
                           <Typography
@@ -683,7 +692,7 @@ const ContributionsTabs = () => {
                               {"3.- " +
                                 t(
                                   "Add contribution from multiple users included in a file" +
-                                    "."
+                                  "."
                                 )}
                             </InputLabel>
                             <Stack direction="row" sx={{ mt: 2 }} spacing={0}>
@@ -969,6 +978,13 @@ const ContributionsTabs = () => {
               </Formik>
             </DialogContent>
           </Dialog>
+          {alertNoComplexity && <Alert
+
+            severity="warning"
+            sx={{ m: 1.35, float: "right", alignItems: "center" }}
+          >{t("This task does not have a complexity defined.")}
+          </Alert>
+          }
         </>
       ) : (
         <>
