@@ -26,7 +26,7 @@ Once logged in, you are given access to the INTERLINK Dashboard view, where the 
 
 ![INTERLINK Dashboard view](images/dashboard-view.png)
 
-Within "ORGANIZATIONS" section of dashboard, after the user clicks on "ORGANIZATIONS" top menu option, once a user hits "+ Create new organization", s/he is shown a pop-up window where a new organization details (Name, Description, publickly seen or private, who can create teams option and the default team type, namely, Citizens, Public administration, Non profit organization and For project organization) can be input.
+Within ["ORGANIZATIONS" section of dashboard](/docs/en/coproductionprocess-team.html), after the user clicks on "ORGANIZATIONS" top menu option, once a user hits "+ Create new organization", s/he is shown a pop-up window where a new organization details (Name, Description, publickly seen or private, who can create teams option and the default team type, namely, Citizens, Public administration, Non profit organization and For project organization) can be input.
 
 
 ![New organization creation in dashboard](images/dashboard-team-creation.png)
