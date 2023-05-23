@@ -47,10 +47,12 @@ import * as Yup from "yup";
 import ContributionCard from "./ContributionCard";
 import Papa from "papaparse";
 import { ExportToCsv } from "export-to-csv";
-import { getContributions } from "slices/general";
+import { getContributions, setContributionsListLevels } from "slices/general";
 
 const ContributionsTabs = () => {
-  const { contributions } = useSelector((state) => state.general);
+  const { contributions, contributionslistlevels } = useSelector(
+    (state) => state.general
+  );
   const dispatch = useDispatch();
 
   // Data for new contributions
@@ -323,6 +325,9 @@ const ContributionsTabs = () => {
     tasksApi.update(selectedTreeItem.id, { status: "finished" }).then((res) => {
       console.log(res);
     });
+
+    //Remove temporal list of contributions levels
+    dispatch(setContributionsListLevels([]));
   };
 
   useEffect(async () => {
@@ -908,7 +913,7 @@ const ContributionsTabs = () => {
                       >
                         {assetsList.map((el) => (
                           <MenuItem key={el.id} value={el}>
-                            {el.internalData.name}
+                            {el.internalData.name} Daniel
                           </MenuItem>
                         ))}
                       </Select>

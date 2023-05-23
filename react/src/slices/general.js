@@ -32,6 +32,9 @@ const initialState = {
   contributions: [],
   loadingContributions: false,
 
+  contributionslistlevels: [],
+  loadingContributionsListLevels: false,
+
   unseenusernotifications: [],
   loadingUnseenUserNotifications: false,
 
@@ -117,6 +120,12 @@ const slice = createSlice({
     },
     setLoadingContributions(state, action) {
       state.loadingContributions = action.payload;
+    },
+    setContributionsListLevels(state, action) {
+      state.contributionslistlevels = action.payload;
+    },
+    setLoadingContributionsListLevels(state, action) {
+      state.loadingContributionsListLevels = action.payload;
     },
   },
 });
@@ -242,5 +251,13 @@ export const getTags = () => async (dispatch) => {
   dispatch(slice.actions.setTags(tags_data));
   dispatch(slice.actions.setLoadingTags(false));
 };
+
+//Temporal list of contributions levels
+export const setContributionsListLevels =
+  (contributionLevels) => async (dispatch) => {
+    dispatch(slice.actions.setLoadingContributionsListLevels(true));
+    dispatch(slice.actions.setContributionsListLevels(contributionLevels));
+    dispatch(slice.actions.setLoadingContributionsListLevels(false));
+  };
 
 export default slice;
