@@ -50,7 +50,7 @@ import {
 } from "__api__";
 import NewAssetModal from "components/dashboard/coproductionprocesses/NewAssetModal";
 import { useLocation } from "react-router";
-import { getAssetsList_byTask } from "slices/general";
+import { getAssetsList_byTask, setContributionsListLevels } from "slices/general";
 import { getContributions } from "slices/general";
 import useAuth from "hooks/useAuth";
 
@@ -61,7 +61,7 @@ const RightSide = ({ softwareInterlinkers }) => {
   const { process, isAdministrator, selectedTreeItem } = useSelector(
     (state) => state.process
   );
-  const { assetsList, contributions } = useSelector((state) => state.general);
+  const { assetsList, contributions, contributionslistlevels } = useSelector((state) => state.general);
   const { user } = useAuth();
   const isTask = selectedTreeItem && selectedTreeItem.type === "task";
   const [step, setStep] = useState(0);
@@ -111,6 +111,8 @@ const RightSide = ({ softwareInterlinkers }) => {
       });
       if (isTask && mounted.current) {
         getContributionsData(selectedTreeItem.id);
+        //Empty contributions list levels Temporal Memory
+        dispatch(setContributionsListLevels([]));
       }
     }
   }, [selectedTreeItem]);

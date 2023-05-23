@@ -3,7 +3,7 @@ import { Button, Dialog, IconButton, DialogContent } from "@mui/material";
 import { DataGrid, GridApi } from "@mui/x-data-grid";
 import clsx from "clsx";
 import useMounted from "hooks/useMounted";
-import { getUserActivities } from "slices/general";
+import { getUserActivities, setContributionsListLevels } from "slices/general";
 import { useDispatch, useSelector } from "react-redux";
 import { getContributions } from "slices/general";
 import {
@@ -21,7 +21,9 @@ import { useCustomTranslation } from "hooks/useDependantTranslation";
 import { gamesApi } from "__api__";
 
 export default function ContributionsTable({ rows, closedTask }) {
-  const { contributions } = useSelector((state) => state.general);
+  const { contributions, contributionslistlevels } = useSelector(
+    (state) => state.general
+  );
 
   const [stateRows, setRows] = useState([]);
   const [pageSize, setPageSize] = useState(5);
@@ -97,9 +99,18 @@ export default function ContributionsTable({ rows, closedTask }) {
 
   useEffect(() => {
     setLoading(true);
+    let temporalRows = [];
     if (rows && rows.length > 0) {
-      console.log(rows);
-      setRows(rows);
+      //Set the complexity levels from temporal Memory:
+      temporalRows = rows.map((row) => {
+        let level = contributionslistlevels.find((obj) => obj.id === row.id);
+        if (level) {
+          row.contribution = level.contribution;
+        }
+        return row;
+      });
+
+      setRows(temporalRows);
     } else {
       setRows([]);
     }
@@ -120,11 +131,60 @@ export default function ContributionsTable({ rows, closedTask }) {
         onCellEditCommit={(props, event) => {
           rows[rows.findIndex((row) => row.id === props.id)][props.field] =
             props.value;
+
+          // Get the new values
+          let values = { id: props.id, contribution: props.value };
+          const index = contributionslistlevels.findIndex(
+            (obj) => obj.id === props.id
+          );
+          let listaTemporal = [];
+          if (Array.isArray(contributionslistlevels)) {
+            if (index === -1) {
+              listaTemporal = [...contributionslistlevels, values];
+            } else {
+              listaTemporal[index] = {
+                id: props.id,
+                contribution: props.value,
+              };
+            }
+            //Save selection in temporal memory (Redux):
+            dispatch(setContributionsListLevels(listaTemporal));
+          }
         }}
         sx={{
           boxShadow: 1,
           // border: 1,
           borderColor: "primary.light",
+          "& .super-app.low:after": {
+            content: "''",
+            display: "inline-block",
+            background:
+              "url(/static/graphics/chevronIcon.png) no-repeat center center",
+            backgroundSize: "10px",
+            width: "10px",
+            height: "10px",
+            marginLeft: "10px",
+          },
+          "& .super-app.average:after": {
+            content: "''",
+            display: "inline-block",
+            background:
+              "url(/static/graphics/chevronIcon.png) no-repeat center center",
+            backgroundSize: "10px",
+            width: "10px",
+            height: "10px",
+            marginLeft: "10px",
+          },
+          "& .super-app.high:after": {
+            content: "''",
+            display: "inline-block",
+            background:
+              "url(/static/graphics/chevronIcon.png) no-repeat center center",
+            backgroundSize: "10px",
+            width: "10px",
+            height: "10px",
+            marginLeft: "10px",
+          },
           "& .MuiDataGrid-cell:hover": {
             color: "primary.main",
           },
@@ -140,6 +200,7 @@ export default function ContributionsTable({ rows, closedTask }) {
             color: "#44c949",
             fontWeight: "600",
           },
+
           p: 2,
         }}
       />
