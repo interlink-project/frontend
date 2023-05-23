@@ -479,8 +479,7 @@ const SettingsTab = () => {
               if (!tag.id) {
                 await tagsApi.create({ name: tag }).then((res) => {
                   if (res.status === 200) {
-                    values.tags.splice(values.tags.indexOf(tag), 1);
-                    values.tags.push(res.data);
+                    values.tags.splice(values.tags.indexOf(tag), 1,res.data);
                   }
                 }).catch((err) => {
                   console.error(err);
@@ -656,7 +655,7 @@ const SettingsTab = () => {
                       } else {
                         setSelectedTags(newValue);
                       }
-                      // console.log("Newvalue",newValue);
+                      console.log("New Tags values:",newValue);
                       setFieldValue("tags", newValue);
                     }}
 
