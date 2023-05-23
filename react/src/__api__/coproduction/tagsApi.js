@@ -6,6 +6,10 @@ class TagsApi extends GeneralApi {
     super('coproduction/api/v1/tags');
   }
 
+  async createbyName(data) {
+    return axiosInstance.post(`/${this.url}/createbyName`, data);
+  }
+
 
 }
 
