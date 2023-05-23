@@ -477,7 +477,8 @@ const SettingsTab = () => {
             console.log(values);
             for (let tag of values.tags) {
               if (!tag.id) {
-                await tagsApi.create({ name: tag }).then((res) => {
+                
+                await tagsApi.createbyName({ name: tag }).then((res) => {
                   if (res.status === 200) {
                     values.tags.splice(values.tags.indexOf(tag), 1,res.data);
                   }
