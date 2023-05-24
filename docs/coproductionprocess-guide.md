@@ -32,41 +32,42 @@ Then, we can see in [WORKPLAN view](/docs/en/coproductionprocess-workplan.html) 
 The GUIDE view allows to instantiate INTERLINKERs to, hence, make progress in the co-production process. See tab RESOURCES within task view. For each of the tasks in the co-production phases you may select any of the recommended INTERLINKERs (through button "Instantiate task resource (result) through recommended INTERLINKERs (enablers)") or instantiate a new one based on the generic software INTERLINKERs provided when clicking on blue button "Instantiate task resource (result) through generic INTERLINKERs (enablers)" at the bottom of the view of a co-production task. 
 
 For intance, let's create a new document to define a collaboration agreement in a collaboration process.
-- Select a task in the GUIDE view, e.g. ENGAGE > Engage stakeholders > Create awareness and communication 
-- Notice the INTERLINKERs recommended by clicking on button "Instantiate task resource (result) through recommended INTERLINKERs (enablers)". You may select for instance "Consent Form Template" and then hit the blue button "Instantiate as resource to use in project"
+- Select a task in the GUIDE view, e.g. *ENGAGE > Engage stakeholders > Create awareness and communication* 
+- Notice the INTERLINKERs recommended by clicking on button *"Instantiate task resource (result) through recommended INTERLINKERs (enablers)"*. You may select for instance "Consent Form Template" and then hit the blue button "Instantiate as resource to use in project"
         ![Click on button Instantiate task resource (result) through recommended INTERLINKERs (enablers)](images/catalogueview-recommendedinterlinkers0.png)
 	![Notice INTERLINKERs recommended](images/catalogueview-recommendedinterlinkers.png)
 	![Instantiate INTERLINKERs recommended](images/catalogueview-instantiaterecommendedinterlinkers.png)
-- Select a task in the GUIDE view, e.g. ENGAGE > Define legal and ethical framework > Define a non-disclosure agreement (NDA)
-- Click on the blue button at the bottom entitled "Instantiate task resource (result) through generic INTERLINKERs (enablers)" to give place to a new Google Docs document
+- Select a task in the GUIDE view, e.g. *ENGAGE > Define legal and ethical framework > Define a non-disclosure agreement (NDA)*
+- Click on the blue button at the bottom entitled *"Instantiate task resource (result) through generic INTERLINKERs (enablers)"* to give place to a new Google Docs document
 	![Creating a new Google Docs](images/guideview-genericINTERLINKERinstantiation.png)
 - Select the type of document to create with the support of Google Drive INTERLINKER
 	![Select and name the Google Docs](images/googledrive-interlinker-init.png)
-- Realize about the new resource that appears at the top of the task description panel within its RESOURCE tab for each of the tasks above mentioned. For the case of ENGAGE > Engage Stakeholders > Create awareness and communication, you may see the result below:
+- Realize about the new resource that appears at the top of the task description panel within its RESOURCE tab for each of the tasks above mentioned. For the case of *ENGAGE > Engage Stakeholders > Create awareness and communication*, you may see the result below:
 	![New resource created](images/guideview-newresource-created.png)
 - Open it in Google Drive by clicking on the newly created resource name
 	![New resource created](images/googledrive-viewdocument.png)
 - You may repeat the process, selecting a recommended INTERLINKER instead:
 	- For instance, select *"Stakeholders Mapping Canvas"* INTERLINKER under task shown when navigating to *Engage > Identify Stakeholders*  
-	- Click on button “Instantiate task resource (result) through recommended INTERLINKERs (enablers)”
+	- Click on button *“Instantiate task resource (result) through recommended INTERLINKERs (enablers)”*
 	- Check the newly created resource appears at the top of the task description panel within RESOURCE tab
 	- Open the generated resource in the form of a presentation and add some modifications
 
-You may also assign PERMISSIONS to phases, objectives or tasks in the co-production tree. Let's select task ENGAGE > Engage stakeholders > Create awareness and communication and click on the TASK VIEW's PERMISSIONS tab. First, click on button "Add new permission to the task"
+## Permission assignment to a co-production tree item or the whole process
+You may also assign PERMISSIONS to phases, objectives or tasks in the co-production tree. Let's select task *ENGAGE > Engage stakeholders > Create awareness and communication* and click on the *TASK VIEW's PERMISSIONS tab*. First, click on button *"Add new permission to the task"*
 	![Assign team permissions to task](images/guideview-addpermissiontask0.png)
-Then, choose, among the available organizations, the one from which you want to appoint a TEAM to the task. Notice that you may use the button "+ Create new team" to create a brand new team if none of the already defined ones is suitable to take part and be granted permissions in the current coproduction process and selected task. 
+Then, choose, among the available organizations, the one from which you want to appoint a TEAM to the task. Notice that you may use the button *"+ Create new team"* to create a brand new team if none of the already defined ones is suitable to take part and be granted permissions in the current coproduction process and selected task. 
 	![Select team to assing permissions to task](images/guideview-addpermissiontask1.png)
 Next, grant the corresponding resource access (view, create, delete) permissions to members of the team for that task. 
 	![Choose resource access rights for task](images/guideview-addpermissiontask2.png)
 You should now see the granted permissions to the selected team for the task in question. 
 	![View team permissions for task](images/guideview-addpermissiontask3.png)
 
-If you visit the co-production process [TEAM view](/docs/en/coproductionprocess-team.html), by clicking on "Team" left hand side menu option, you should now see the permissions assigned to the before mentioned task. Importantly, notice the blue button "+Add new permission to the overall process" through which you can assign process global resource management permissions to the whole process. Notice that this had already been done for "MORElab research team" in the example. 
+If you visit the co-production process [TEAM view](/docs/en/coproductionprocess-team.html), by clicking on *"Team"* left hand side menu option, you should now see the permissions assigned to the before mentioned task. Importantly, notice the blue button *"+Add new permission to the overall process"* through which you can assign process global resource management permissions to the whole process. Notice that this had already been done for "MORElab research team" shown in the example. 
 	![View teams permissions in process](images/teamview-viewpermissions.png)
 
-Finally, you can see the progress achieved, so far, in a given co-production process by visiting the [OVERVIEW view](/docs/en/coproductionprocess-overview.html), by clicking on "Overview" menu item on the left hand-side menu option. In the case that you are administrator of the co-created process you will see two tabs, namely, PROGRES and NOTIFICATIONS. Users that are simply taking part in a coproduction process by being part of a team granted persmisions over coproduction tree items will only see the NOTIFICATIONS tab. Notice that the NOTIFICATIONS tab informs about all activities carried out by team members associated to the whole process or to specific tasks of the process. 
-	![Activities associated to a co-production process](images/coproductionproces-overview-notifications.PNG)
+Finally, you can see the progress achieved, so far, in a given co-production process by visiting the [OVERVIEW view](/docs/en/coproductionprocess-overview.html), by clicking on "Overview" menu item on the left hand-side menu option. In the case that you are administrator of the co-created process you will see two tabs, namely, *PROGRES* and *NOTIFICATIONS*. Users taking part in a co-production process by belonging to a team granted persmisions over coproduction tree items will only see the NOTIFICATIONS tab. Notice that the NOTIFICATIONS tab informs about all activities carried out by team members associated to the whole process or to specific tasks of the process. 
+	![Activities associated to a co-production process](images/coproductionproces-overview-notifications.png)
 
-Furthermore, resources generated as result of the progress in different process tasks are viewable through a a sortable and searchable table in the RESOURCES view. 
-	![Resources created so far](images/coproductionproces-resources.PNG)
+Furthermore, resources generated as result of the progress achieved in different process' tasks are viewable through a a sortable and searchable table in the [RESOURCES view](/docs/en/coproductionprocess-resources.html) view. 
+	![Resources created so far](images/coproductionproces-resources.png)
 
