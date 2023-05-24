@@ -57,9 +57,12 @@ Next, grant the corresponding resource access (view, create, delete) permissions
 You should now see the granted permissions to the selected team for the task in question. 
 	![View team permissions for task](images/guideview-addpermissiontask3.png)
 
-If you visit the co-production process [TEAM view](/docs/en/coproductionprocess-team.html), by clicking on "Team" left hand side menu option, you should now see the permissions assigned to the before mentioned task.
+If you visit the co-production process [TEAM view](/docs/en/coproductionprocess-team.html), by clicking on "Team" left hand side menu option, you should now see the permissions assigned to the before mentioned task. Importantly, notice the blue button "+Add new permission to the overall process" through which you can assign process global resource management permissions to the whole process. Notice that this had already been done for "MORElab research team" in the example. 
 	![View teams permissions in process](images/teamview-viewpermissions.png)
 
-Finally, you can see the progress achieved, so far, in a given co-production process by visiting the [OVERVIEW view](/docs/en/coproductionprocess-overview.html), by clicking on "Overview" menu item on the left hand-side menu option. In the case that you are administrator of the co-created process you will see two tabs, namely, PROGRES and RESOURCES. Users that are simply taking part in a coproduction process by being part of a team granted persmisions over coproduction tree items will only see the RESOURCES tab. 
-	![Resources created so far](images/coproductionproces-overview-NDA.PNG)
+Finally, you can see the progress achieved, so far, in a given co-production process by visiting the [OVERVIEW view](/docs/en/coproductionprocess-overview.html), by clicking on "Overview" menu item on the left hand-side menu option. In the case that you are administrator of the co-created process you will see two tabs, namely, PROGRES and NOTIFICATIONS. Users that are simply taking part in a coproduction process by being part of a team granted persmisions over coproduction tree items will only see the NOTIFICATIONS tab. Notice that the NOTIFICATIONS tab informs about all activities carried out by team members associated to the whole process or to specific tasks of the process. 
+	![Activities associated to a co-production process](images/coproductionproces-overview-notifications.PNG)
+
+Furthermore, resources generated as result of the progress in different process tasks are viewable through a a sortable and searchable table in the RESOURCES view. 
+	![Resources created so far](images/coproductionproces-resources.PNG)
 
