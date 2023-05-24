@@ -23,6 +23,7 @@
   height: 80%;
   width: 100%;
   font-family: "Segoe UI";
+  position: relative;
 }
 .holder {
   height: 100vh;
@@ -72,9 +73,9 @@
 
 .footer {
   position: fixed;
-  bottom: 9%;
+  bottom: 9.3%;
   padding-block: 1rem;
-  width: 80%;
+  width: 70%;
   background-color: #fff;
   left: 10%;
   border-top: 1px solid #e5e5e5;
@@ -94,6 +95,14 @@
 }
 .medals-image {
   max-width: 50%;
+  display: none;
+}
+
+.medals-image-pc {
+  display: block;
+  max-width: 25%;
+  position: absolute;
+  right: 18%;
 }
 @media (max-width: 600px) {
   .medals-image {
@@ -101,6 +110,9 @@
   }
 }
 @media (max-width: 900px) {
+  .medals-image-pc {
+    display: none;
+  }
   .skip-reward {
     text-align: center;
     padding-right: 0;
@@ -111,6 +123,7 @@
 
   .medals-image {
     max-width: 80%;
+    display: block;
   }
 
   .col-reward-right {
@@ -122,4 +135,8 @@
   .footer p {
     font-size: 0.8rem;
   }
+}
+
+.image-container {
+  pointer-events: none;
 }

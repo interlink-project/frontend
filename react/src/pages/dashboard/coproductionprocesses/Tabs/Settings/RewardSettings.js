@@ -15,13 +15,27 @@ const RewardSettings = (props) => {
   const [individualChart, setIndividualChart] = useState(true);
   const [classicChart, setClassicChart] = useState(true);
 
+  const leftColumn = useRef(null);
+  const rightColumn = useRef(null);
+  const imageRef = useRef(null);
+
   const { t } = useTranslation();
   return (
     <>
+      <Box
+        alt="Medals"
+        component="img"
+        src={`/static/reward/Medals.svg`}
+        className="medals-image-pc imageContainer"
+        ref={imageRef}
+      />
       <Grid container className="col-reward-setting">
-        <Grid item sm={12} md={6} className="col-reward-left">
+        <Grid item sm={12} md={6} className="col-reward-left" ref={leftColumn}>
           <Grid container md={12}>
-            <Typography variant="h1" style={{ fontWeight: 700 }}>
+            <Typography
+              variant="h1"
+              style={{ fontWeight: 700, color: "black" }}
+            >
               {t("Reward System")}
             </Typography>
             <Typography sx={{ my: "2rem" }} style={{ fontWeight: 600 }}>
@@ -107,43 +121,43 @@ const RewardSettings = (props) => {
               <Typography variant="body1" className="reward-left-text">
                 {t(
                   "Once finished a task you will have to set the contribution of every collaborator assigning a level of contribution based on four levels"
-                )+":"}
-                </Typography>
-                <Box className="box-reward">
-                  <li>
-                    <Typography variant="body1">
-                      •{" "}
-                      <span style={{ color: "#F44336" }}>
-                        {t("No contribution")}
-                      </span>
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography variant="body1">
-                      •{" "}
-                      <span style={{ color: "#FF7A00" }}>
-                        {t("Low contribution")}
-                      </span>
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography variant="body1">
-                      •{" "}
-                      <span style={{ color: "#FFE607" }}>
-                        {t("Medium contribution")}
-                      </span>
-                    </Typography>
-                  </li>
-                  <li>
-                    <Typography variant="body1">
-                      •{" "}
-                      <span style={{ color: "#44C949" }}>
-                        {t("High contribution")}
-                      </span>
-                    </Typography>
-                  </li>
-                </Box>
-              
+                ) + ":"}
+              </Typography>
+              <Box className="box-reward">
+                <li>
+                  <Typography variant="body1">
+                    •{" "}
+                    <span style={{ color: "#F44336" }}>
+                      {t("No contribution")}
+                    </span>
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1">
+                    •{" "}
+                    <span style={{ color: "#FF7A00" }}>
+                      {t("Low contribution")}
+                    </span>
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1">
+                    •{" "}
+                    <span style={{ color: "#FFE607" }}>
+                      {t("Medium contribution")}
+                    </span>
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1">
+                    •{" "}
+                    <span style={{ color: "#44C949" }}>
+                      {t("High contribution")}
+                    </span>
+                  </Typography>
+                </li>
+              </Box>
+
               <Box
                 className="mt-1 mb-1"
                 alt="Reward image 3"
@@ -169,9 +183,10 @@ const RewardSettings = (props) => {
                 )}
                 .
                 <strong>
-                  {" "+t(
-                    "Remember that in any case the admins will see the Leaderboard"
-                  )}
+                  {" " +
+                    t(
+                      "Remember that in any case the admins will see the Leaderboard"
+                    )}
                   .
                 </strong>
                 <p>
@@ -299,18 +314,25 @@ const RewardSettings = (props) => {
             </Grid>
           </Grid> */}
         </Grid>
-        <Grid item md={12} className="col-reward-right">
+        <Grid item md={12} className="col-reward-right" ref={rightColumn}>
           <Box
             alt="Medals"
             component="img"
             src={`/static/reward/Medals.svg`}
-            className="medals-image"
+            className="medals-image imageContainer"
+            ref={imageRef}
           />
         </Grid>
       </Grid>
       <Grid container className="footer">
         <Grid item md={8} sm={12}>
-          <Typography variant="body1" className="footer-instruction">
+          <Typography
+            variant="body1"
+            className="footer-instruction"
+            style={{
+              color: "black",
+            }}
+          >
             {t(
               "If you change your mind during the process, you can disable this function in the settings"
             )}
