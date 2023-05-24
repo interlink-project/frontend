@@ -13,19 +13,22 @@ The "Use schema" blue button below must be pressed for the schema to be assigned
    
 As result, notice the activation of Guide view menu item on the left hand side: ![Beware of emergence of Guide view menu item on left hand side](images/guideview-menuitememergence.png)
 
+## Editing the co-production tree
+
 Some of the actions that you may carry out in the GUIDE view are: 
    - *You may customize the selected schema provided tree to the specific needs of your co-production process*. Notice the PENCIL icon on the top right hand side of tab "INFORMATION ABOUT THE TASK". At the bottom of this screen a "Remove task" is available. Besides, you are able to add new phases, objectives & tasks, by clicking on "+" symbol next to the right most phase of a process, in the example SUSTAIN. Check below how a task is removed after having clicked on the PENCIL icon which appears on the right hand side of the task visualization panel.
    ![View after removal of task](images/guideview-after-taskremoval.png)
    ![Task view in GUIDE view](images/guideview-removetask-0.png)
    ![About to remove a task](images/guideview-removetask.png)
    - *Remember that specific co-production trees can be defined and, hence, selected* (e.g. [VARAM case](https://github.com/interlink-project/interlinkers-data/tree/master/schemas/servicedescriptionenhancement)) as was done before with the "Default schema" of INTERLINK
-   - *You may also assign durations to tasks*
+   - *You may also assign durations to tasks* by editing the task and selected its start and end date. 
    ![Assigning duration to task](images/guideview-assignduration.png)
 
 Then, we can see in [WORKPLAN view](/docs/en/coproductionprocess-workplan.html) the time span defined, by clicking on the "Time planification" link in the [GUIDE view](/docs/en/coproductionprocess-guide.html) or clicking on the left hand side menu option named "Workplan". You may return to the Guide view, to see the task details by clicking on the name of the task in the WORKPLAN view, e.g. in the picture task "Create awareness and communication". 
    ![Workplan view](images/workplanview-taskduration.png)
    
-   
+## INTERLINKER instantiation
+
 The GUIDE view allows to instantiate INTERLINKERs to, hence, make progress in the co-production process. See tab RESOURCES within task view. For each of the tasks in the co-production phases you may select any of the recommended INTERLINKERs (through button "Instantiate task resource (result) through recommended INTERLINKERs (enablers)") or instantiate a new one based on the generic software INTERLINKERs provided when clicking on blue button "Instantiate task resource (result) through generic INTERLINKERs (enablers)" at the bottom of the view of a co-production task. 
 
 For intance, let's create a new document to define a collaboration agreement in a collaboration process.
