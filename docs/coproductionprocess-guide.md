@@ -15,9 +15,9 @@ As result, notice the activation of Guide view menu item on the left hand side: 
 
 Some of the actions that you may carry out in the GUIDE view are: 
    - *You may customize the selected schema provided tree to the specific needs of your co-production process*. Notice the PENCIL icon on the top right hand side of tab "INFORMATION ABOUT THE TASK". At the bottom of this screen a "Remove task" is available. Besides, you are able to add new phases, objectives & tasks, by clicking on "+" symbol next to the right most phase of a process, in the example SUSTAIN. Check below how a task is removed after having clicked on the PENCIL icon which appears on the right hand side of the task visualization panel.
+   ![View after removal of task](images/guideview-after-taskremoval.png)
    ![Task view in GUIDE view](images/guideview-removetask-0.png)
    ![About to remove a task](images/guideview-removetask.png)
-   ![View after removal of task](images/guideview-after-taskremoval.png)
    - *Remember that specific co-production trees can be defined and, hence, selected* (e.g. [VARAM case](https://github.com/interlink-project/interlinkers-data/tree/master/schemas/servicedescriptionenhancement)) as was done before with the "Default schema" of INTERLINK
    - *You may also assign durations to tasks*
    ![Assigning duration to task](images/guideview-assignduration.png)
