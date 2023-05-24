@@ -65,7 +65,22 @@ You should now see the granted permissions to the selected team for the task in 
 If you visit the co-production process [TEAM view](/docs/en/coproductionprocess-team.html), by clicking on *"Team"* left hand side menu option, you should now see the permissions assigned to the before mentioned task. Importantly, notice the blue button *"+Add new permission to the overall process"* through which you can assign process global resource management permissions to the whole process. Notice that this had already been done for "MORElab research team" shown in the example. 
 	![View teams permissions in process](images/teamview-viewpermissions.png)
 
-Finally, you can see the progress achieved, so far, in a given co-production process by visiting the [OVERVIEW view](/docs/en/coproductionprocess-overview.html), by clicking on "Overview" menu item on the left hand-side menu option. In the case that you are administrator of the co-created process you will see two tabs, namely, *PROGRES* and *NOTIFICATIONS*. Users taking part in a co-production process by belonging to a team granted persmisions over coproduction tree items will only see the NOTIFICATIONS tab. Notice that the NOTIFICATIONS tab informs about all activities carried out by team members associated to the whole process or to specific tasks of the process. 
+## Registering contributions to process tasks
+For each resource created which is associated to a task, team members participating in that task may "claim" different contributions over such resource. For that, they have to click on the 3 "." on the right hand side of the sortable and filterable resources table of a task, and select *"Claim"* option. 
+	![Select claim option over resource](images/guideview-taskresource-claim.png)
+
+As result, the user can declare what her actual contribution over the selected resource has been. After pressing the *"Claim"* button, the user may check that her claim has been registered by clicking on the blue *"Activities"* button which is shown in every resource's row.
+	![Declare details of claim](images/guideview-taskresource-claim-dialogue.png)
+	![Review claim in activities over resource](images/guideview-taskresource-claim-activity.png)	
+	
+Now, users can see what members of the team have done what by visting the *CONTRIBUTIONS* tab of a TASK view within GUIDE view. You can see how in the following screenshot the names of 4 contributors appear. This is beacuse apart from the claim introduced when selecting a resource in RESOURCES tab, the admin of the process has also clicked on the blue button *"Add contributor"* which gives place to a pop up where contributions for all members of a team in a given process may be declared, see the following snapshot. 
+	![Contributions associated to a task](images/guideview-task-contributions.png)	
+	![Declare a team contribution over a resource](images/guideview-taskresource-claim-team-activity.png)	
+	
+The orange *"Award points"* can be pressed be pressed by a process admin to grant points to those having contributed to a given process task. The [LEADERBOARD view](/docs/en/coproductionprocess-leaderboard.html) offers more details about how incentivization works in INTERLINK. 
+
+## Overview and resources of a co-production process
+Finally, you can see the progress achieved, so far, in a given co-production process, thanks to the interaction with the GUIDE view, by visiting the [OVERVIEW view](/docs/en/coproductionprocess-overview.html), by clicking on "Overview" menu item on the left hand-side menu option. In the case that you are administrator of the co-created process you will see two tabs, namely, *PROGRES* and *NOTIFICATIONS*. Users taking part in a co-production process by belonging to a team granted persmisions over coproduction tree items will only see the NOTIFICATIONS tab. Notice that the NOTIFICATIONS tab informs about all activities carried out by team members associated to the whole process or to specific tasks of the process. 
 	![Activities associated to a co-production process](images/coproductionproces-overview-notifications.png)
 
 Furthermore, resources generated as result of the progress achieved in different process' tasks are viewable through a a sortable and searchable table in the [RESOURCES view](/docs/en/coproductionprocess-resources.html) view. 
