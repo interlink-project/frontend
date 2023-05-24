@@ -57,18 +57,14 @@ export default function SelectGovernanceModel({
   };
   const dispatch = useDispatch();
 
-  const { process } = useSelector(
-    (state) => state.process
-  );
+  const { process } = useSelector((state) => state.process);
 
   const mounted = useMounted();
 
   const [logotype] = useState(null);
 
- 
   function handleClick(name) {
     //alert(`You have selected the governance model, ${name}`);
-
 
     //Save Inter-governmental model
     const values = { intergovernmental_model: name };
@@ -89,8 +85,6 @@ export default function SelectGovernanceModel({
     } catch (err) {
       console.error(err);
     }
-
-
 
     handleClose();
   }
@@ -154,10 +148,14 @@ export default function SelectGovernanceModel({
       newStateGovernanceModels.push(newModel);
     }
     setListGovernanceModels(newStateGovernanceModels);
-  });
+  }, []);
 
   const listGovernanceCards = listGovernanceModels.map((governanceModel) => (
-    <Card key={governanceModel.code} className="h-50 d-flex flex-column" variant="outlined">
+    <Card
+      key={governanceModel.code}
+      className="h-50 d-flex flex-column"
+      variant="outlined"
+    >
       <CardContent>
         <Grid container spacing={2} xs={12} sx={{ ml: 0 }}>
           {governanceModel.recomended ? (
@@ -186,7 +184,11 @@ export default function SelectGovernanceModel({
       </CardContent>
       <CardActions>
         <Grid container justifyContent="flex-end">
-          <Button onClick={() => handleClick(governanceModel.code)} variant="contained" size="small">
+          <Button
+            onClick={() => handleClick(governanceModel.code)}
+            variant="contained"
+            size="small"
+          >
             {t("Select")}
           </Button>
         </Grid>
@@ -218,7 +220,6 @@ export default function SelectGovernanceModel({
             <ArrowBack />
           </IconButton>
         </DialogActions>
-       
       </Dialog>
     </>
   );
