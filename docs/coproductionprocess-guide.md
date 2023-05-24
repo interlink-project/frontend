@@ -28,11 +28,11 @@ Then, we can see in [WORKPLAN view](/docs/en/coproductionprocess-workplan.html) 
 The GUIDE view allows to instantiate INTERLINKERs to, hence, make progress in the co-production process. See tab RESOURCES within task view. For each of the tasks in the co-production phases you may select any of the recommended INTERLINKERs (through button "Instantiate task resource (result) through recommended INTERLINKERs (enablers)") or instantiate a new one based on the generic software INTERLINKERs provided when clicking on blue button "Instantiate task resource (result) through generic INTERLINKERs (enablers)" at the bottom of the view of a co-production task. 
 
 For intance, let's create a new document to define a collaboration agreement in a collaboration process.
-- Select a task in the GUIDE view, e.g. ENGAGE > Define legal and ethical framework > Define a non-disclosure agreement (NDA)
+- Select a task in the GUIDE view, e.g. ENGAGE > Engage stakeholders > Create awareness and communication 
 - Notice the INTERLINKERs recommended by clicking on button "Instantiate task resource (result) through recommended INTERLINKERs (enablers)". You may select for instance "Consent Form Template" and then hit the blue button "Instantiate as resource to use in project"
         ![Click on button Instantiate task resource (result) through recommended INTERLINKERs (enablers)](images/catalogueview-recommendedinterlinkers0.png)
 	![Notice INTERLINKERs recommended](images/catalogueview-recommendedinterlinkers.png)
-	![Instantiate INTERLINKERs recommended](images/catalogueview-instantiaterecommendedinterlinkers)
+	![Instantiate INTERLINKERs recommended](images/catalogueview-instantiaterecommendedinterlinkers.png)
 - Select a task in the GUIDE view, e.g. ENGAGE > Define legal and ethical framework > Define a non-disclosure agreement (NDA)
 - Click on the blue button at the bottom entitled "Instantiate task resource (result) through generic INTERLINKERs (enablers)" to give place to a new Google Docs document
 	![Creating a new Google Docs](images/guideview-genericINTERLINKERinstantiation.png)
