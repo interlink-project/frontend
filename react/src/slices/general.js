@@ -11,6 +11,7 @@ import {
   tasksApi,
 } from "../__api__";
 import { subDays, subHours } from "date-fns";
+import { set } from "store";
 
 const now = new Date();
 const initialState = {
@@ -34,6 +35,9 @@ const initialState = {
 
   contributionslistlevels: [],
   loadingContributionsListLevels: false,
+
+  datatempsave: [],
+  loadingDataTempSave: false,
 
   unseenusernotifications: [],
   loadingUnseenUserNotifications: false,
@@ -127,6 +131,13 @@ const slice = createSlice({
     setLoadingContributionsListLevels(state, action) {
       state.loadingContributionsListLevels = action.payload;
     },
+    setDataTempSave(state, action) {
+      state.datatempsave = action.payload;
+    },
+    setLoadingDataTempSave(state, action) {
+      state.loadingDataTempSave = action.payload;
+    }    
+
   },
 });
 
@@ -259,5 +270,15 @@ export const setContributionsListLevels =
     dispatch(slice.actions.setContributionsListLevels(contributionLevels));
     dispatch(slice.actions.setLoadingContributionsListLevels(false));
   };
+
+//Save data in temp
+export const setDataTempSave = (data) => async (dispatch) => {
+  dispatch(slice.actions.setLoadingDataTempSave(true));
+  dispatch(slice.actions.setDataTempSave(data));
+  dispatch(slice.actions.setLoadingDataTempSave(false));
+};
+   
+  
+
 
 export default slice;

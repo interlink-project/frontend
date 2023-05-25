@@ -41,6 +41,9 @@ import "react-date-range/dist/theme/default.css";
 import { DateRangePicker } from "react-date-range";
 import { addDays } from "date-fns";
 import * as locales from "react-date-range/dist/locale";
+import { setDataTempSave } from "slices/general";
+import { set } from "store";
+import { data } from "jquery";
 
 const apis = {
   task: tasksApi,
@@ -48,7 +51,7 @@ const apis = {
   phase: phasesApi,
 };
 
-const TreeItemData = ({ language, processId, element, assets }) => {
+const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,setSnackbarMessage }) => {
   const [dateRange, setDateRange] = useState([null, null]);
   const [status, setStatus] = useState("");
   const [name, setName] = useState("");
@@ -66,6 +69,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     selectedTreeItem,
     isAdministrator,
   } = useSelector((state) => state.process);
+  const { datatempsave } = useSelector((state) => state.general);
   const isTask = selectedTreeItem && selectedTreeItem.type === "task";
   const [resetContributions, setResetContributions] = useState(false);
 
@@ -125,7 +129,60 @@ const TreeItemData = ({ language, processId, element, assets }) => {
         },
       ]);
     }
+
+    //Loading temp save data if exist
+    if (datatempsave) {
+      const index = datatempsave.findIndex(
+        (item) => item.model === "task" && item.id === selectedTreeItem.id
+      );
+      if (index !== -1) {
+        setEditMode(true);
+        datatempsave[index].parameters.name
+          ? setName(datatempsave[index].parameters.name)
+          : setName(el.name);
+        datatempsave[index].parameters.description
+          ? setDescription(datatempsave[index].parameters.description)
+          : setDescription(el.description);
+        
+        setSnackbarMessage(t("This task "+selectedTreeItem.name+" has unsaved changes!"+"\n"));
+        setOpenSnackbar(true);
+
+      }else{
+
+        if(datatempsave.length>0){
+          let text="";
+          for(let i=0;i<datatempsave.length;i++){
+            if(datatempsave[i].model==="task"){
+              if(i==0){
+              text=text+"There are unsaved changes in the tasks: ["+datatempsave[i].parameters.name+"\n";
+              }else{
+                text=text+","+datatempsave[i].parameters.name;
+              }
+            }
+          }
+          text=text+"]. Please save or discard them before continuing.";
+          setSnackbarMessage(text);
+          setOpenSnackbar(true);
+          
+        }
+
+      }
+    }
+
   };
+
+  const discardTempInfoEvent = () => {
+    setEditMode(false);
+    //remove temp save data if exist
+    if (datatempsave) {
+      const index = datatempsave.findIndex(
+        (item) => item.model === "task" && item.id === selectedTreeItem.id
+      );
+      if (index !== -1) {
+        dispatch(setDataTempSave(datatempsave.filter((item) => item.id !== selectedTreeItem.id)));
+      }
+    }
+  }
 
   useEffect(() => {
     restart(element);
@@ -167,7 +224,6 @@ const TreeItemData = ({ language, processId, element, assets }) => {
             .toISOString()
             .slice(0, 10);
           end_date = selectionRangeState[0].endDate.toISOString().slice(0, 10);
-
         }
 
         if (start_date !== element.start_date) {
@@ -185,7 +241,6 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     if (status !== element.status) {
       data.status = status;
       if (resetContributions) {
-
         //TODO: Method that removes the completion of a task in the game
         gamesApi.revertTask(process.id, selectedTreeItem.id).then((res) => {
           console.log(res);
@@ -238,6 +293,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
         update(element.id);
       });
     }
+    discardTempInfoEvent();
   };
 
   const update = (selectedTreeItemId) => {
@@ -430,6 +486,32 @@ const TreeItemData = ({ language, processId, element, assets }) => {
     }
   };
 
+  function updateSaveTempDatos (datos= [], model, id, parameters) {
+    
+    const index = datos.findIndex((item) => item.model === model && item.id === id);
+
+  if (index === -1) {
+    // Object not found, add new object to array
+    const newDatos = [...datos, {
+      model: model,
+      id: id,
+      parameters: parameters,
+    }];
+    return newDatos;
+  } else {
+     // Object found, update parameters property
+     const newDatos = [...datos];
+     newDatos[index] = {
+       ...newDatos[index],
+       parameters: {
+         ...newDatos[index].parameters,
+         ...parameters,
+       },
+     };
+     return newDatos;
+  }
+  }
+
   return (
     <>
       {isAdministrator && !editMode && (
@@ -449,6 +531,12 @@ const TreeItemData = ({ language, processId, element, assets }) => {
         <TextField
           onChange={(event) => {
             setName(event.target.value);
+
+            //Save the change in the temp data
+            let datos=datatempsave;// Copy the data to a new variable
+            datos = updateSaveTempDatos(datos, "task", selectedTreeItem.id, { name: event.target.value });
+            dispatch(setDataTempSave(datos));
+            
           }}
           variant="standard"
           fullWidth
@@ -464,6 +552,11 @@ const TreeItemData = ({ language, processId, element, assets }) => {
         <TextField
           onChange={(event) => {
             setDescription(event.target.value);
+
+            //Save the change in the temp data
+            let datos=datatempsave;// Copy the data to a new variable
+            datos = updateSaveTempDatos(datos, "task", selectedTreeItem.id, { description: event.target.value });//Add new values
+            dispatch(setDataTempSave(datos));
           }}
           multiline
           fullWidth
@@ -630,7 +723,11 @@ const TreeItemData = ({ language, processId, element, assets }) => {
                   onChange={(event, newStatus) => {
                     console.log(status);
                     console.log(newStatus);
-                    if (status === "finished" && newStatus === "in_progress" && process.game_id) {
+                    if (
+                      status === "finished" &&
+                      newStatus === "in_progress" &&
+                      process.game_id
+                    ) {
                       setResetContributions(true);
                     }
                     setStatus(newStatus);
@@ -758,7 +855,7 @@ const TreeItemData = ({ language, processId, element, assets }) => {
             <Button
               size="small"
               variant="outlined"
-              onClick={() => setEditMode(false)}
+              onClick={discardTempInfoEvent}
               color="warning"
             >
               {t("Discard changes")}
