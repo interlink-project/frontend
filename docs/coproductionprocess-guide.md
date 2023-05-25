@@ -73,12 +73,21 @@ As result, the user can declare what her actual contribution over the selected r
 	![Declare details of claim](images/guideview-taskresource-claim-dialogue.png)
 	![Review claim in activities over resource](images/guideview-taskresource-claim-activity.png)	
 	
-Now, users can see what members of the team have done what by visting the *CONTRIBUTIONS* tab of a TASK view within GUIDE view. You can see how in the following screenshot the names of 4 contributors appear. This is beacuse apart from the claim introduced when selecting a resource in RESOURCES tab, the admin of the process has also clicked on the blue button *"Add contributor"* which gives place to a pop up where contributions for all members of a team in a given process may be declared, see the following snapshot. 
+Now, users can see what members of the team have done what by visting the *CONTRIBUTIONS* tab of a TASK view within GUIDE view. You can see how in the following screenshot the names of 3 contributors appear for a total of 4 contributions. This is beacuse apart from the claim introduced when selecting a resource in RESOURCES tab, the admin of the process has also clicked on the blue button *"Add contributor"* which gives place to a pop up where contributions for all members of a team in a given process may be declared, see the following snapshot. 
 	![Contributions associated to a task](images/guideview-task-contributions.png)	
 	![Declare a team contribution over a resource](images/guideview-taskresource-claim-team-activity.png)	
-	
-The orange *"Award points"* can be pressed be pressed by a process admin to grant points to those having contributed to a given process task. The [LEADERBOARD view](/docs/en/coproductionprocess-leaderboard.html) offers more details about how incentivization works in INTERLINK. Importantly, before this button is pressed, the admin has to ensure that the complexity level of the task has been established. This is because the points awarded to a contributor depend on the task complexity level and the user's contribution level. The following snapshot shows how to change the complexity level of a task. 
+Notice that it is possible that an admin user may change the contribution level assigned to each contributor in a task as shown below:
+	![Admin changes contribution level of users in a task](images/guideview-task-contributions-0.png)	
+When a user is using the CONTRIBUTIONS tab of the Task view within the Collaborative Environment's GUIDE VIEW, such user can review what activities each member of the team has performed. 
+	![Review of activities within CONTRIBUTIONS tab](images/guideview-task-contributions-1.png)	
+
+The orange *"Award points"* can be pressed by a process admin to grant points to those having contributed to a given process task. Importantly, before this button is pressed, the admin has to ensure that the complexity level of the task has been established. This is because the points awarded to a contributor depend on the task complexity level and the user's contribution level. The following snapshot shows how to change the complexity level of a task. 
 	![Change the complexity level of a task](images/guideview-task-change-complexity-level.png)
+
+Once the orange "Award points" is pressed, the user is alerted that, s/he must have previously assigned the "Complexity Level" of the task and to confirm whether point distribution among contributors wants to performed or not, and is warned that the task will be closed accordingly. As result, the team members associated to a task can see how contribution distribution has been shared among those participating. 
+	![Change the complexity level of a task](images/guideview-task-contributions-awarding.png)
+
+The [LEADERBOARD view](/docs/en/coproductionprocess-leaderboard.html) offers more details about how incentivization works in INTERLINK. It shows how task contribution levels are turned into awarding of points for collaborators. 
 
 ## Overview and resources of a co-production process
 Finally, you can see the progress achieved, so far, in a given co-production process, thanks to the interaction with the GUIDE view, by visiting the [OVERVIEW view](/docs/en/coproductionprocess-overview.html), by clicking on "Overview" menu item on the left hand-side menu option. In the case that you are administrator of the co-created process you will see two tabs, namely, *PROGRES* and *NOTIFICATIONS*. Users taking part in a co-production process by belonging to a team granted persmisions over coproduction tree items will only see the NOTIFICATIONS tab. Notice that the NOTIFICATIONS tab informs about all activities carried out by team members associated to the whole process or to specific tasks of the process. 
