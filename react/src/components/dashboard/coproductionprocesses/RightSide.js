@@ -15,6 +15,7 @@ import {
   Tabs,
   TextField,
   Typography,
+  Snackbar
 } from "@mui/material";
 import {
   Close,
@@ -61,6 +62,8 @@ const RightSide = ({ softwareInterlinkers }) => {
   const { process, isAdministrator, selectedTreeItem } = useSelector(
     (state) => state.process
   );
+  const [openSnackbar,setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
   const { assetsList, contributions, contributionslistlevels } = useSelector((state) => state.general);
   const { user } = useAuth();
   const isTask = selectedTreeItem && selectedTreeItem.type === "task";
@@ -87,6 +90,14 @@ const RightSide = ({ softwareInterlinkers }) => {
 
   const location = useLocation();
   const isLocationCatalogue = location.pathname.startsWith("/stories/");
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
+
 
   useEffect(() => {
     if (isLocationCatalogue) {
@@ -500,6 +511,7 @@ const RightSide = ({ softwareInterlinkers }) => {
 
   return (
     selectedTreeItem && (
+      <>
       <Grid item xl={8} lg={8} md={9} xs={12}>
         <Box sx={{ p: 2 }}>
           <Paper sx={{ bgcolor: "background.default" }}>
@@ -555,6 +567,9 @@ const RightSide = ({ softwareInterlinkers }) => {
               processId={process.id}
               element={selectedTreeItem}
               assets={assets}
+              setOpenSnackbar={setOpenSnackbar}
+              setSnackbarMessage={setSnackbarMessage}
+
             />
           )}
           {tabValue === "permissions" && (
@@ -1094,6 +1109,24 @@ const RightSide = ({ softwareInterlinkers }) => {
           asset={selectedAsset}
         />
       </Grid>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        key={"top" + "center"}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="error"
+          sx={{ width: "100%", fontSize: "1rem", fontWeight: "600" }}
+         
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+      </>
+      
     )
   );
 };
