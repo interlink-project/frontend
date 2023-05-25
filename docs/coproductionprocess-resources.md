@@ -1,4 +1,4 @@
-# RESOURCES view
+# Resources of a co-production process
 
 The RESOURCES view displays the current set of resources instantiated within a coproduction-process. The following actions can be performed over the resources listed:
 - Visit the INTERLINKER with which a given resource has been created, by clicking on the link with the name of the INTERLINKER.
