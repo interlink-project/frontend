@@ -1,7 +1,6 @@
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import {
   Alert,
-  Grid,
   Box,
   Button,
   Chip,
@@ -13,7 +12,6 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Typography,
-  Select,
   MenuItem,
 } from "@mui/material";
 import { Edit } from "@mui/icons-material";
@@ -22,7 +20,7 @@ import ConfirmationButton from "components/ConfirmationButton";
 import { FinishedIcon, InProgressIcon } from "components/dashboard/assets";
 import { useCustomTranslation } from "hooks/useDependantTranslation";
 import moment from "moment";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import {
@@ -33,7 +31,6 @@ import {
 import { tree_items_translations } from "utils/someCommonTranslations";
 import { gamesApi, objectivesApi, phasesApi, tasksApi } from "__api__";
 import { AwaitingIcon, statusIcon, StatusText } from "../../Icons";
-import { coproductionprocessnotificationsApi } from "__api__";
 import { assetsApi } from "__api__";
 
 import "react-date-range/dist/styles.css";
@@ -42,7 +39,7 @@ import { DateRangePicker } from "react-date-range";
 import { addDays } from "date-fns";
 import * as locales from "react-date-range/dist/locale";
 import { setDataTempSave } from "slices/general";
-import { set } from "store";
+import { updateSaveTempDatos } from 'utils/tempDataSave';
 import { data } from "jquery";
 
 const apis = {
@@ -52,7 +49,7 @@ const apis = {
 };
 
 const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,setSnackbarMessage }) => {
-  const [dateRange, setDateRange] = useState([null, null]);
+  //const [dateRange, setDateRange] = useState([null, null]);
   const [status, setStatus] = useState("");
   const [name, setName] = useState("");
   const [listAssetsNames, setListAssetsNames] = useState("");
@@ -78,7 +75,7 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
   const t = useCustomTranslation(language);
   const { trackEvent } = useMatomo();
 
-  const [selectionRangeState, setSelectionRangeState] = useState([
+  const [selectionRangeDatePicker, setSelectionRangeDatePicker] = useState([
     {
       startDate: new Date(),
       endDate: addDays(new Date(), 0),
@@ -87,33 +84,34 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
   ]);
   const [changeTheDate, setChangeTheDate] = useState(false);
 
-  const handleSelect = (ranges) => {
-    console.log(ranges);
+  const handleSelectDatePicker = (ranges) => {
 
     setChangeTheDate(true);
-    setSelectionRangeState([ranges.selection]);
-    // {
-    //   selection: {
-    //     startDate: [native Date Object],
-    //     endDate: [native Date Object],
-    //   }
-    // }
+    setSelectionRangeDatePicker([ranges.selection]);
+ 
+    let rangesTemp=
+      {
+        startDate: ranges.selection.startDate.toISOString(), // Convert Date object to ISO string
+        endDate: ranges.selection.endDate.toISOString(), 
+        key: "selection",
+      };
+
+    //Save the change in the temp data
+    let datos = updateSaveTempDatos(datatempsave, "task", selectedTreeItem.id, selectedTreeItem.name, { date_ranges: rangesTemp});
+    dispatch(setDataTempSave(datos));
   };
 
   const restart = (el) => {
     setName(el.name);
     setDescription(el.description);
-    //setManagement(el.management);
+
     setDevelopment(el.development);
-    //setExploitation(el.exploitation);
+
     setStatus(el.status);
-    setDateRange([
-      el.start_date ? new Date(el.start_date) : null,
-      el.end_date ? new Date(el.end_date) : null,
-    ]);
+
 
     if (el.start_date && el.end_date) {
-      setSelectionRangeState([
+      setSelectionRangeDatePicker([
         {
           startDate: el.start_date ? new Date(el.start_date) : null,
           endDate: el.end_date ? new Date(el.end_date) : null,
@@ -121,7 +119,7 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
         },
       ]);
     } else {
-      setSelectionRangeState([
+      setSelectionRangeDatePicker([
         {
           startDate: null,
           endDate: null,
@@ -143,29 +141,73 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
         datatempsave[index].parameters.description
           ? setDescription(datatempsave[index].parameters.description)
           : setDescription(el.description);
+        datatempsave[index].parameters.complexityLevel
+          ? setDevelopment(datatempsave[index].parameters.complexityLevel)
+          : setDevelopment(el.development);
+        datatempsave[index].parameters.status
+          ? setStatus(datatempsave[index].parameters.status)
+          : setStatus(el.status);
+        if(datatempsave[index].parameters.date_ranges){
+
+          let rangesTemp=
+          {
+            startDate: new Date(datatempsave[index].parameters.date_ranges.startDate), // Convert Date object to ISO string
+            endDate: new Date(datatempsave[index].parameters.date_ranges.endDate), 
+            key: "selection",
+          };
+
+
+          setSelectionRangeDatePicker([
+            rangesTemp
+          ]);
+          setChangeTheDate(true);
+        }else{
+          setSelectionRangeDatePicker([
+            {
+              startDate: el.start_date ? new Date(el.start_date) : null,
+              endDate: el.end_date ? new Date(el.end_date) : null,
+              key: "selection",
+            },
+          ]);
+        }
+          
+        let fieldList = "";
         
-        setSnackbarMessage(t("This task "+selectedTreeItem.name+" has unsaved changes!"+"\n"));
+        for (const key in datatempsave[index].parameters) {
+          if (fieldList !== "") {
+            fieldList +=  ", " ;
+          } 
+            fieldList +=  key ;
+        };
+        fieldList += "]";
+
+      
+        setSnackbarMessage(
+          t("The fields")+": [" +
+          fieldList +
+              t(" has unsaved changes! Please save or discard the changes." )
+        );
+
         setOpenSnackbar(true);
-
-      }else{
-
-        if(datatempsave.length>0){
-          let text="";
-          for(let i=0;i<datatempsave.length;i++){
-            if(datatempsave[i].model==="task"){
-              if(i==0){
-              text=text+"There are unsaved changes in the tasks: ["+datatempsave[i].parameters.name+"\n";
-              }else{
-                text=text+","+datatempsave[i].parameters.name;
+      } else {
+        if (datatempsave.length > 0) {
+          let text = "";
+          for (let i = 0; i < datatempsave.length; i++) {
+            if (datatempsave[i].model === "task") {
+              if (i == 0) {
+                text =
+                  text +
+                  "There are unsaved changes in the tasks: [" +
+                  datatempsave[i].model_name;
+              } else {
+                text = text + "," + datatempsave[i].model_name;
               }
             }
           }
-          text=text+"]. Please save or discard them before continuing.";
+          text = text + "]. ";
           setSnackbarMessage(text);
           setOpenSnackbar(true);
-          
         }
-
       }
     }
 
@@ -186,44 +228,35 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
 
   useEffect(() => {
     restart(element);
-    setChangeTheDate(false);
   }, [editMode]);
 
   useEffect(() => {
     setEditMode(false);
     restart(element);
-    // if (element.type === 'task') {
-    //   tasksApi.getAssetsAndContributions(selectedTreeItem.id).then(datos => {
-    //     setTaskDataContributions(datos);
-    //   })
-    // }
   }, [element]);
 
   const saveData = () => {
     const data = {};
     // Do not update because the message received through sockets triggers the update
-    // dispatch(setUpdatingTree(true));
-
-    // const start_date = dateRange[0] && dateRange[0].toISOString().slice(0, 10);
-    // const end_date = dateRange[1] && dateRange[1].toISOString().slice(0, 10);
+    
     if (changeTheDate) {
-      if (selectionRangeState[0].startDate && selectionRangeState[0].endDate) {
+      if (selectionRangeDatePicker[0].startDate && selectionRangeDatePicker[0].endDate) {
         let start_date = null;
         let end_date = null;
 
         if (!data.start_date) {
-          start_date = addDays(selectionRangeState[0].startDate, 1)
+          start_date = addDays(selectionRangeDatePicker[0].startDate, 1)
             .toISOString()
             .slice(0, 10);
 
-          end_date = addDays(selectionRangeState[0].endDate, 1)
+          end_date = addDays(selectionRangeDatePicker[0].endDate, 1)
             .toISOString()
             .slice(0, 10);
         } else {
-          start_date = selectionRangeState[0].startDate
+          start_date = selectionRangeDatePicker[0].startDate
             .toISOString()
             .slice(0, 10);
-          end_date = selectionRangeState[0].endDate.toISOString().slice(0, 10);
+          end_date = selectionRangeDatePicker[0].endDate.toISOString().slice(0, 10);
         }
 
         if (start_date !== element.start_date) {
@@ -254,9 +287,7 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
     if (description !== element.description) {
       data.description = description;
     }
-    // if (management !== element.management) {
-    //   data.management = parseInt(management);
-    // }
+    
     if (development !== element.development) {
       data.development = parseInt(development);
       if (process.game_id) {
@@ -272,9 +303,7 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
         });
       }
     }
-    // if (exploitation !== element.exploitation) {
-    //   data.exploitation = parseInt(exploitation);
-    // }
+    
     trackEvent({
       category: processId,
       action: "update-treeitem",
@@ -335,136 +364,11 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
     });
   };
 
-  // console.log('Te assets are:');
-  // console.log(assets);
 
   let listAssets = [];
 
-  const includeObjectNames = (text) => {
-    //Search and reemplace que assetName and icon
-    const paramsPattern = /[^{}]+(?=})/g;
-    let extractParams = text.match(paramsPattern);
-    //Loop over each parameter value and replace in the text
-    if (extractParams) {
-      extractParams = [...new Set(extractParams)];
-      for (let i = 0; i < extractParams.length; i++) {
-        if (extractParams[i].includes(":")) {
-          // console.log('----->'+extractParams[i]);
-          const entidadName = extractParams[i].split(":")[0];
-          const entidadId = extractParams[i].split(":")[1];
-
-          if (entidadName == "assetid") {
-            //Obtain the asset name:
-
-            if (!listAssets.includes(entidadId)) {
-              listAssets.push(entidadId);
-              //alert('retrive the data');
-              assetsApi.getInternal(entidadId).then((res) => {
-                const assetdata = res;
-                const assetName = assetdata.name.replace(
-                  /(^\w{1})|(\s+\w{1})/g,
-                  (letter) => letter.toUpperCase()
-                );
-                const nodes = document.getElementsByClassName(
-                  "lk_" + entidadId
-                );
-
-                for (let i = 0; i < nodes.length; i++) {
-                  nodes[i].innerHTML = assetName;
-                }
-
-                const nodes2 = document.getElementsByClassName(
-                  "im_" + entidadId
-                );
-                for (let i = 0; i < nodes.length; i++) {
-                  nodes2[i].src = assetdata.icon;
-                }
-              });
-            }
-          }
-        }
-      }
-    }
-
-    return text;
-  };
-  /* const includeObjectNames = (text) => {
-
-    //Search and reemplace que assetName and icon
-    const paramsPattern = /[^{}]+(?=})/g;
-    let extractParams = text.match(paramsPattern);
-    //Loop over each parameter value and replace in the text
-    if (extractParams) {
-
-      for (let i = 0; i < extractParams.length; i++) {
-        if (extractParams[i].includes(":")) {
-          // console.log('----->'+extractParams[i]);
-          const entidadName = extractParams[i].split(":")[0];
-          const entidadId = extractParams[i].split(":")[1];
-
-          if (entidadName == "assetid") {
-            //Obtain the asset name:
-            const xhr = new XMLHttpRequest();
-
-            if (!listAssets.includes(entidadId)) {
-              listAssets.push(entidadId);
-              xhr.open(
-                "GET",
-                `/coproduction/api/v1/assets/internal/${entidadId}`,
-                true
-              ); // `false` makes the request synchronous
-              xhr.onload = (e) => {
-
-                if (xhr.readyState === 4) {
-                  if (xhr.status === 200) {
-                    const assetdata = JSON.parse(xhr.responseText);
-                    const assetName = assetdata.name.replace(
-                      /(^\w{1})|(\s+\w{1})/g,
-                      (letter) => letter.toUpperCase()
-                    );
-                    const nodes = document.getElementsByClassName(
-                      "lk_" + entidadId
-                    );
-
-                    if (nodes.length > 0) {
-                      for (let i = 0; i < nodes.length; i++) {
-                        nodes[i].innerHTML = assetName;
-                      }
-                    }
-
-                    const nodes2 = document.getElementsByClassName(
-                      "im_" + entidadId
-                    );
-                    if (nodes2.length > 0) {
-                      for (let i = 0; i < nodes.length; i++) {
-                        nodes2[i].src = assetdata.icon;
-                      }
-                    }
-
-
-                  } else {
-                    console.error(xhr.statusText);
-                  }
-
-                }
-              };
-              xhr.onerror = (e) => {
-                console.error(xhr.statusText);
-              };
-              xhr.send(null);
-            }
-          }
-        }
-      }
-
-    }
-
-    return text;
-  }; */
-
-  if (isTask) {
-  }
-
+  
+  
   const treeitem_translations = tree_items_translations(t);
 
   const complexityLevelsF = (status) => {
@@ -486,32 +390,7 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
     }
   };
 
-  function updateSaveTempDatos (datos= [], model, id, parameters) {
-    
-    const index = datos.findIndex((item) => item.model === model && item.id === id);
-
-  if (index === -1) {
-    // Object not found, add new object to array
-    const newDatos = [...datos, {
-      model: model,
-      id: id,
-      parameters: parameters,
-    }];
-    return newDatos;
-  } else {
-     // Object found, update parameters property
-     const newDatos = [...datos];
-     newDatos[index] = {
-       ...newDatos[index],
-       parameters: {
-         ...newDatos[index].parameters,
-         ...parameters,
-       },
-     };
-     return newDatos;
-  }
-  }
-
+  
   return (
     <>
       {isAdministrator && !editMode && (
@@ -533,8 +412,7 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
             setName(event.target.value);
 
             //Save the change in the temp data
-            let datos=datatempsave;// Copy the data to a new variable
-            datos = updateSaveTempDatos(datos, "task", selectedTreeItem.id, { name: event.target.value });
+            let datos = updateSaveTempDatos(datatempsave, "task",  selectedTreeItem.id,selectedTreeItem.name, { name: event.target.value });
             dispatch(setDataTempSave(datos));
             
           }}
@@ -554,8 +432,7 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
             setDescription(event.target.value);
 
             //Save the change in the temp data
-            let datos=datatempsave;// Copy the data to a new variable
-            datos = updateSaveTempDatos(datos, "task", selectedTreeItem.id, { description: event.target.value });//Add new values
+            let datos = updateSaveTempDatos(datatempsave, "task",  selectedTreeItem.id, selectedTreeItem.name, { description: event.target.value });//Add new values
             dispatch(setDataTempSave(datos));
           }}
           multiline
@@ -582,31 +459,6 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
           {editMode ? (
             <>
               <Box justifyContent="center" sx={{ mt: 2, gap: 10, margin: 2 }}>
-                {/* <TextField
-          id="management_txt"
-          select
-          label={t('Management')}
-          value={management}
-          type="number"
-          sx={{ mt: 2, gap: 10, margin: 2, minWidth: 120 }}
-          onChange={(event) => {
-            setManagement(event.target.value);
-          }}
-        
-        >
-          
-          <MenuItem key='mi_m_1' value='33'>
-            {t('light')}
-          </MenuItem>
-          <MenuItem key='mi_m_2' value='66'>
-            {t('normal')}
-          </MenuItem>
-          <MenuItem key='mi_m_3' value='100'>
-            {t('substancial')}
-          </MenuItem>
-          
-        </TextField> */}
-
                 <TextField
                   id="development_txt"
                   select
@@ -616,6 +468,10 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
                   sx={{ mt: 2, gap: 10, margin: 2, minWidth: 120 }}
                   onChange={(event) => {
                     setDevelopment(event.target.value);
+
+                    //Save the change in the temp data
+                    let datos = updateSaveTempDatos(datatempsave, "task",  selectedTreeItem.id, selectedTreeItem.name, { complexityLevel: event.target.value });//Add new values
+                    dispatch(setDataTempSave(datos));
                   }}
                 >
                   <MenuItem key="mi_d_1" value="0">
@@ -638,30 +494,7 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
                   </MenuItem>
                 </TextField>
 
-                {/* <TextField
-          id="exploitation_txt"
-          select
-          label={t('Exploitation')}
-          value={exploitation}
-          type="number"
-          sx={{ mt: 2, gap: 10, margin: 2, minWidth: 120 }}
-          onChange={(event) => {
-            setExploitation(event.target.value);
-          }}
-     
-        >
-          
-          <MenuItem key='mi_e_1' value='33'>
-            {t('light')}
-          </MenuItem>
-          <MenuItem key='mi_e_2' value='66'>
-            {t('normal')}
-          </MenuItem>
-          <MenuItem key='mi_e_3' value='100'>
-            {t('substancial')}
-          </MenuItem>
-          
-        </TextField> */}
+               
               </Box>
             </>
           ) : (
@@ -731,6 +564,11 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
                       setResetContributions(true);
                     }
                     setStatus(newStatus);
+
+                     //Save the change in the temp data
+                     let datos = updateSaveTempDatos(datatempsave, "task", selectedTreeItem.id, selectedTreeItem.name, { status: newStatus });//Add new values
+                     dispatch(setDataTempSave(datos));
+
                   }}
                 >
                   <ToggleButton value="awaiting">
@@ -784,39 +622,12 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
               {element.type === "task" ? (
                 <Box justifyContent="center" sx={{ mt: 2 }}>
                   <DateRangePicker
-                    ranges={selectionRangeState}
-                    onChange={handleSelect}
+                    ranges={selectionRangeDatePicker}
+                    onChange={handleSelectDatePicker}
                     locale={locales[language]}
                   />
 
-                  {/*  <LocalizationProvider
-                    dateAdapter={AdapterDayjs}
-                    localeText={{ start: "Desktop start", end: "Desktop end" }}
-                  >
-                    
-                    <DesktopDateRangePicker
-                      startText="Start date"
-                      endText="End date"
-                      value={dateRange}
-                      onChange={(newValue) => {
-                        setDateRange(newValue);
-                      }}
-                      renderInput={(startProps, endProps) => (
-                        <Stack
-                          spacing={3}
-                          direction="row"
-                          sx={{
-                            width: "100%",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }}
-                        >
-                          <TextField {...startProps} />
-                          <TextField {...endProps} />
-                        </Stack>
-                      )}
-                    />
-                  </LocalizationProvider> */}
+                 
                 </Box>
               ) : (
                 <Alert severity="warning" sx={{ mt: 1 }}>
@@ -826,13 +637,14 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
             </>
           ) : (
             <Box sx={{ mt: 2 }}>
-              {dateRange[0] !== null ? (
+              {selectionRangeDatePicker[0] !== null ? (
                 <>
                   <b>{t("Start")}: </b>
-                  {moment(dateRange[0]).format("LL")}
+                  {moment(selectionRangeDatePicker[0].startDate).format("LL")}
                   <br />
+                  
                   <b>{t("End")}: </b>
-                  {moment(dateRange[1]).format("LL")}
+                  {moment(selectionRangeDatePicker[0].endDate).format("LL")}
                 </>
               ) : (
                 <Alert severity="warning">{t("Not set")}</Alert>
