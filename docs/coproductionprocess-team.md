@@ -5,7 +5,7 @@ Before using the Collaborative environment, you must first login with your googl
 - [VARAM pilot's deployment of Collaborative Environment](https://varam.interlink-project.eu/)
 - [Zaragoza pilot's deployment of Collaborative Environment](https://zgz.interlink-project.eu/)
 
-**IMPORTANT**: All members of an envisaged team must have logged into the platform before they can be added to a team. Besides, as we will see, every team defined in INTERLINK must be first bound to an ORGANIZATION. ![Login required screen](images/dashboard-loginrequired.PNG) ![AAC screen](images/aac-login-window.PNG)
+**IMPORTANT**: All members of an envisaged team must have logged into the platform before they can be added to a team. Besides, as we will see, every team defined in INTERLINK must be first bound to an ORGANIZATION. ![Login required screen](images/dashboard-loginrequired.png) ![AAC screen](images/aac-login-window.PNG)
 
 To illustrate organization and team management, let's consider two possible users that want to take part in different co-production processes. In the figure you can see two members who after having logged in are shown the coproduction processes on which they are currently involved. In this case, the processes named "Zaragoza Apps4Good" and "New coproduction process" are shown to both. Notice that a user is bound to a co-production process (and, therefore, sees a coproduction process) in two possible manners:
 - The user has been appointed as admin of the process through the [SETTINGS view](/docs/en/coproductionprocess-setting.html) of the coproduction process. 
