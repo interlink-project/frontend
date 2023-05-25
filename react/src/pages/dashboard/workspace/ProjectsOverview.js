@@ -436,69 +436,6 @@ const ProjectsOverview = () => {
                   },
                 }}
               />
-              {/* <TableContainer component={Paper} data-cy="table-process-header">
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="center" />
-                      <TableCell align="center">{t("Name")}</TableCell>
-                      <TableCell align="center">{t("Created")}</TableCell>
-                      <TableCell align="center">{t("Status")}</TableCell>
-                      <TableCell align="center">{t("Teams")}</TableCell>
-                      <TableCell align="center">
-                        {t("Your participation in the process")}
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {processes.length > 0 &&
-                      processes.map((process) => (
-                        <React.Fragment key={process.id}>
-                          <ProcessRow process={process} t={t} />
-                        </React.Fragment>
-                      ))}
-                  </TableBody>
-                </Table>
-              </TableContainer> */}
-              {processes.length === 0 && (
-                <>
-                  {loadingProcesses ? (
-                    <CentricCircularProgress datacy="table-process-body" />
-                  ) : (
-                    <Paper
-                      sx={{ p: 2, textAlign: "center", minHeight: "50vh" }}
-                    >
-                      <Box
-                        style={{
-                          position: "absolute",
-                          left: "50%",
-                          top: "50%",
-                          transform: "translate(-50%, -50%)",
-                        }}
-                      >
-                        <Typography
-                          sx={{ my: 2 }}
-                          variant="h5"
-                          data-cy="empty-process-list"
-                        >
-                          {t("Empty")}
-                        </Typography>
-                        <Button
-                          onClick={() =>
-                            setCoproductionProcessCreatorOpen(true)
-                          }
-                          sx={{ my: 3, width: 400 }}
-                          variant="contained"
-                          size="small"
-                          data-cy="create-process-button"
-                        >
-                          {t("Create a new co-production process")}
-                        </Button>
-                      </Box>
-                    </Paper>
-                  )}
-                </>
-              )}
               <CoproductionprocessCreate
                 open={coproductionProcessCreatorOpen}
                 setOpen={setCoproductionProcessCreatorOpen}
