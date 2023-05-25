@@ -16,7 +16,7 @@ Every user can create a new organization. See in the following screenshot how us
 
 ![Creating a new organization](images/organizationview-createneworganization.png)
 
-Notice that option "Who can create teams" in an organization can have any of the following values: "Only the administrators of the organization" (default), "Members of at least a team in the organization" or "Anyone (the organization must be public)". Besides, be aware that apart from the title and description, an organization can be declared as PUBLIC, i.e. every logged in user can see it and have a default type for the teams that are created within a given organization. The possible options being "Citizens", "Public administration", "Non profit organization" or "For profit organization". 
+Notice that option "Who can create teams" in an organization can have any of the following values: "Only the administrators of the organization" (default), "Members of at least a team in the organization" or "Anyone (the organization must be public)". Besides, be aware that apart from the title and description, an organization can be declared as PUBLIC, i.e. every logged in user can see it, and have a default type for the teams that are created within a given organization. The possible options being "Citizens", "Public administration", "Non profit organization" or "For profit organization". 
 ![Creating a new organization](images/organizationview-createneworganization2.png)
 
 After hitting the "Create" button a new ORGANIZATION with no teams associated to it appears. 
