@@ -7,12 +7,12 @@ Before using the Collaborative environment, you must first login with your googl
 
 **IMPORTANT**: All members of an envisaged team must have logged into the platform before they can be added to a team. Besides, as we will see, every team defined in INTERLINK must be first bound to an ORGANIZATION. ![Login required screen](images/dashboard-loginrequired.png) ![AAC screen](images/aac-login-window.PNG)
 
-To illustrate organization and team management, let's consider two possible users that want to take part in different co-production processes. In the figure you can see two members who after having logged in are shown the coproduction processes on which they are currently involved. In this case, the processes named "Zaragoza Apps4Good" and "New coproduction process" are shown to both. Notice that a user is bound to a co-production process (and, therefore, sees a coproduction process) in two possible manners:
-- The user has been appointed as admin of the process through the [SETTINGS view](/docs/en/coproductionprocess-setting.html) of the coproduction process. 
+To illustrate organization and team management, let's consider two possible users that want to take part in different co-production processes. In the figure you can see two members who after having logged in are shown the coproduction processes on which they are currently involved. In this case, the common process named "Sample project" is shown to both. Notice that a user is bound to a co-production process (and, therefore, sees a co-production process) in two possible manners:
+- The user has been appointed as admin of the process through the [SETTINGS view](/docs/en/coproductionprocess-setting.html) of the co-production process. 
 - The user has been added to a team who has been granted permissions over some nodes in a given co-production process.
 ![Two user sessions](images/team-management-two-users-login.png) 
 
-Every user can create a new organization. See in the following screenshot how user "Diego López-de-Ipiña" can create a new organization by clicking on "+Create new organization" blue button. However, a user who is not the administrator of an ORGANIZATION, e.g. "FBK" case, cannot, by default, create a new team by clicking the blue button "+ Create a new team", which in this case is deactivated. 
+Every user can create a new organization. See in the following screenshot how user "Diego López-de-Ipiña" can create a new organization by clicking on "+Create new organization" blue button. However, a user who is not the administrator of an ORGANIZATION, e.g. "Universidad de Deusto" case, cannot, by default, create a new team by clicking the blue button "+ Create a new team", which in this case is deactivated. 
 
 ![Creating a new organization](images/organizationview-createneworganization.png)
 
@@ -29,7 +29,15 @@ Going back to the other user "Diego López-de-Ipiña" who is the administrator o
 
 ![New team in organization](images/organizationview-createnewteam.png)
 ![Add members to team in organization](images/organizationview-createnewteam1.png)
-![Show new team in organization](images/organizationview-createnewteam2.png)
+
+Besides, bulk upload of members to a team can be carried out by using the blue button *"Import from CSV"*. Notice that the "i" icon provides infromation and a file sample with the format of the CSV to upload with the names and email addresses of new to be members of a team. Importantly, the Collaborative Environment only allows to add as members of a team, those users who have previously logged into the system. Only known users can be part of a team. 
+![Add members to team in organization](images/organizationview-createnewteam2.png)
+![Show new team in organization](images/organizationview-createnewteam3.png)
+Very interestingly, newly added members of a team receive a notification by email. 
+![Notification of being added to team](images/organizationview-emailteammember.png)
+
+Besides, users visiting a public organization may request being added to a team by clicking on the the blue button "Apply to join the team" within the view of a team of an organization.
+![Apply to be member of organization's team](images/organizationview-applyjointeam.png)
 
 The creator of a team may edit the details of team by clicking on top of the name of the team. The following dialogue shows up:
 ![View team details](images/organizationview-editteam.png)
