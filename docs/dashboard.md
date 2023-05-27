@@ -16,7 +16,7 @@ When a user clicks on button ["Access Collaborative Environment"](https://demo.i
 - [VARAM pilot's deployment of Collaborative Environment](https://varam.interlink-project.eu/)
 - [Zaragoza pilot's deployment of Collaborative Environment](https://zgz.interlink-project.eu/)
 
-Before using the Collaborative environment, for first time, you must first login with your google credentials or create your own credentials at [https://demo.interlink-project.eu/](https://demo.interlink-project.eu/), i.e. the staging server of INTERLINK. **IMPORTANT**: All members of an envisaged team must logged into the platform before they can be added to a team. ![Login required screen](images/dashboard-loginrequired.PNG) ![AAC screen](images/aac-login-window.PNG)
+Before using the Collaborative environment, for first time, you must first login with your google credentials or create your own credentials at [https://demo.interlink-project.eu/](https://demo.interlink-project.eu/), i.e. the staging server of INTERLINK. **IMPORTANT**: All members of an envisaged team must logged into the platform before they can be added to a team. ![Login required screen](images/dashboard-loginrequired.png) ![AAC screen](images/aac-login-window.PNG)
 
 Once logged in, you are given access to the INTERLINK Dashboard view, where the user has access to four core main functionalities:
 - [Workspace](https://demo.interlink-project.eu/dashboard): the user can see the co-production processess where s/he is taking part in or create new co-production processes if needed by clicking on top right hand side button named "+ Create new process". 
