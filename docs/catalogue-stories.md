@@ -1,5 +1,7 @@
-# Catalogue of INTERLINKERs
-The [INTERLINKER catalogue](https://demo.interlink-project.eu/catal) provides a one-stop-shop for know-how enabling co-production. It has been populated with knowledge and software INTERLINKERs leveraging resources generated in previous EU projects, social innovation initiatives, and service design best practices like: [WeLive](https://cordis.europa.eu/project/id/645845), [Silearning.eu](https://www.silearning.eu/), [servicedesigntools.org](https://servicedesigntools.org/), [DesignersItalia](https://designers.italia.it/),  [IDEO](https://www.ideo.com/eu) or [Engage2020](http://www.engage2020.eu/). 
+# Catalogue of Sucess Cases
+The [Success cases catalogue](https://demo.interlink-project.eu/stories) provides a one-stop-shop to review co-production processes' success cases. It has been populated with good examples of co-production processes which can serve as reference for those embarking in the task of setting up and configuring a new co-production process. Important
+
+knowledge and software INTERLINKERs leveraging resources generated in previous EU projects, social innovation initiatives, and service design best practices like: [WeLive](https://cordis.europa.eu/project/id/645845), [Silearning.eu](https://www.silearning.eu/), [servicedesigntools.org](https://servicedesigntools.org/), [DesignersItalia](https://designers.italia.it/),  [IDEO](https://www.ideo.com/eu) or [Engage2020](http://www.engage2020.eu/). 
 
 Some resources have been adapted to the specific needs of co-production; others are being created from scratch based on project research results. 
 
