@@ -12,11 +12,16 @@ INTERLINK user manual
 
    dashboard.md
    catalogue-interlinkers.md
+   catalogue-stories.md
+   coproductionprocess-frontpage.md
    coproductionprocess-overview.md
+   coproductionprocess-resources.md
    coproductionprocess-guide.md
+   coproductionprocess-leaderboard.md
    coproductionprocess-workplan.md
    coproductionprocess-team.md
    coproductionprocess-settings.md
+   
    
 
 Indices and tables
