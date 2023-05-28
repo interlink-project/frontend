@@ -7,7 +7,8 @@ You may access the Success Cases catalogue by clicking on STORIES top menu optio
 - Filter by selecting options on Topic filter or the minimal rating associated to a success case. 
 	![Filtered success cases](images/successcases-filtering.png)
 - Review contents of an Success Cases by clicking on the title of one of the displayed Success Cases. You main review what offers the selected Success Cases by visiting the "Process Overview" left hand side menu option.
-	![Review contents of success case](images/successcases-browsing.png)
+        ![Review contents of success case's metadata](images/succcesscases-browsing-metadata.png)
+	![Review contents of success case's process](images/successcases-browsing.png)
 -  You may see the actual process behind this success story by clicking on the left hand side menu option "Resources"
 	![View the process details associated to a Success Case](images/succcesscases-processview.png)
 -  You may clone the co-production process behing a Success Case by clicking on red button "Clone the process"
