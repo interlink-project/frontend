@@ -1,25 +1,14 @@
 import PropTypes from 'prop-types';
 import { Box, Button, Card, CardContent, Grid, Paper, Rating, TextField, Typography, Stack, CircularProgress, Dialog } from '@mui/material';
-import StoryReviewCard from './StoryReviewCard';
+import PublicCoproductionReviewCard from './PublicCoproductionReviewCard';
 import { useEffect, useState } from 'react';
 import axiosInstance from 'axiosInstance';
-import { ratingsApi } from '__api__/coproduction/ratingsApi';
+import { ratingsApi } from '__api__/catalogue/ratingsApi';
 import { LoadingButton } from '@mui/lab';
 import useAuth from 'hooks/useAuth';
 import { useTranslation } from 'react-i18next';
-import { usersApi } from '__api__';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { getSelectedStory } from 'slices/general';
-
-
-const StoryRatings = ({ story }) => {
-
-
-  const dispatch = useDispatch();
-  
-
-
+const PublicCoproductionRatings = ({ publiccoproduction }) => {
   const [loading, setLoading] = useState(true);
   const [ratings, setRatings] = useState([]);
 
@@ -39,22 +28,13 @@ const StoryRatings = ({ story }) => {
     _setNewCommentDialog(bool);
   };
 
-  const update = async() => {
-    dispatch(getSelectedStory(story.id));
+  const update = () => {
     setLoading(true);
-    let res= await ratingsApi.getMulti(story.id,"story")
-    setLoading(false);
-
-   
-    //Add users info
-    for(let i=0;i<res.items.length;i++){
-      let user=await usersApi.get(res.items[i].user_id);
-      res.items[i].user=user;
-    }
-    
-    setRatings(res.items);
-    setNewCommentDialog(false);
-    
+    ratingsApi.getMulti(publiccoproduction.id).then((res) => {
+      setLoading(false);
+      setRatings(res.items);
+      setNewCommentDialog(false);
+    });
   };
   useEffect(() => {
     update();
@@ -115,13 +95,12 @@ const StoryRatings = ({ story }) => {
       </Card>
       {isAuthenticated && (
       <Button
-        variant='contained'
+        variant='text'
         fullWidth
         onClick={() => setNewCommentDialog(true)}
-        sx={{ mt: 2 }}
-        size="medium"
+        sx={{ mt: 1 }}
       >
-        {t('Rate this story')}
+        {t('rate-publiccoproduction')}
       </Button>
       )}
 
@@ -130,7 +109,7 @@ const StoryRatings = ({ story }) => {
           key={rating.id}
           sx={{ mt: 2 }}
         >
-          <StoryReviewCard
+          <PublicCoproductionReviewCard
             authorAvatar={rating.user.picture}
             authorName={rating.user.full_name}
             title={rating.title}
@@ -177,8 +156,7 @@ const StoryRatings = ({ story }) => {
             loading={loading}
             variant='contained'
             size='small'
-            onClick={() => {
-              ratingsApi.create(title, text, value, story.id,"story").then(update)}}
+            onClick={() => ratingsApi.create(title, text, value, publiccoproduction.id).then(update)}
           >
             {t('Send')}
           </LoadingButton>
@@ -190,8 +168,8 @@ const StoryRatings = ({ story }) => {
   );
 };
 
-StoryRatings.propTypes = {
+PublicCoproductionRatings.propTypes = {
   ratings: PropTypes.array
 };
 
-export default StoryRatings;
+export default PublicCoproductionRatings;

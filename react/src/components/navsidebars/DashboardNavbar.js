@@ -48,16 +48,22 @@ const pages = [
     path: "/dashboard",
     dataCy: "Workspace-page",
   },
+  
   {
     label: i18n.t("Organizations"),
     path: "/dashboard/organizations",
     dataCy: "Organizations-page",
   },
   {
-    label: i18n.t("Catalogue"),
+    label: i18n.t("Interlinkers"),
     path: "/dashboard/interlinkers",
     dataCy: "Catalogue-page",
   },
+  // {
+  //   label: i18n.t("Public-CoProductions"),
+  //   path: "/publiccoproductions",
+  //   dataCy: "PublicCoproductions-page",
+  // },
   {
     label: i18n.t("Stories"),
     path: "/stories",

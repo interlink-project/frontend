@@ -37,13 +37,13 @@ import TimeLine from "components/dashboard/coproductionprocesses/TimeLine";
 //import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
 import {
   getCoproductionProcessNotifications,
-  getSelectedStory,
+  getSelectedPublicCoproduction,
 } from "slices/general";
 import useAuth from "hooks/useAuth";
 // import { cleanProcess } from 'slices/process';
 import { defaultReduceAnimations } from "@mui/lab/CalendarPicker/CalendarPicker";
-import StoryReviews from "components/dashboard/stories/profile/StoryReviews";
-import { storiesApi } from "__api__";
+import PublicCoproductionReviews from "components/dashboard/publiccoproductions/profile/PublicCoproductionReviews";
+import { publiccoproductionsApi } from "__api__";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/styles";
@@ -99,17 +99,17 @@ function TwoColumnsText(props) {
   );
 }
 
-export default function OverviewStory({}) {
+export default function OverviewPublicCoproduction({}) {
   const theme = useTheme();
   const mobileDevice = useMediaQuery(theme.breakpoints.down("sm"));
   const largeDevice = useMediaQuery(theme.breakpoints.down("lg"));
   const xlargeDevice = useMediaQuery(theme.breakpoints.down("xl"));
 
-  const { selectedStory } = useSelector((state) => state.general);
+  const { selectedPublicCoproduction } = useSelector((state) => state.general);
 
   var userLang = navigator.language.substring(0, 2);
 
-  //const t = useCustomTranslation(selectedStory.story_language);
+  //const t = useCustomTranslation(selectedPublicCoproduction.story_language);
 
   const t = useCustomTranslation(userLang);
 
@@ -126,18 +126,18 @@ export default function OverviewStory({}) {
 
   useEffect(() => {
     const id = window.location.pathname.split("/")[2];
-    if (selectedStory) {
-      if (selectedStory.id != id) {
-        dispatch(getSelectedStory(id));
+    if (selectedPublicCoproduction) {
+      if (selectedPublicCoproduction.id != id) {
+        //dispatch(getSelectedPublicCoproduction(id));
        
       } //else{
     } else {
-      dispatch(getSelectedStory(id));
+      //dispatch(getSelectedPublicCoproduction(id));
     }
 
-    // storiesApi.getStoriesbyId(id).then((res) => {
+    // publiccoproductionsApi.getStoriesbyId(id).then((res) => {
     //   res.data=JSON.parse(res.data_story)
-    //   selectedStory=res
+    //   selectedPublicCoproduction=res
 
     // });
     //}
@@ -147,20 +147,20 @@ export default function OverviewStory({}) {
   //Every time another story is selected then the data info of the process is loaded
   useEffect(() =>{
     //console.log("La STORY A CAMBIADO:")
-    if(selectedStory){
-      //console.log(selectedStory.coproductionprocess_cloneforpub_id)
-      dispatch(getProcessCatalogue(selectedStory.coproductionprocess_cloneforpub_id))
+    if(selectedPublicCoproduction){
+      //console.log(selectedPublicCoproduction.coproductionprocess_cloneforpub_id)
+      dispatch(getProcessCatalogue(selectedPublicCoproduction.coproductionprocess_cloneforpub_id))
     }
     
-  },[selectedStory])
+  },[selectedPublicCoproduction])
 
   return (
     <Box sx={{ pb: 3, justifyContent: "center" }}>
-      {selectedStory && (
+      {selectedPublicCoproduction && (
         <>
           <AppBar sx={{ position: "relative" }}>
             <Typography variant="h6" sx={{ p: 2 }}>
-              {t("Success Story Overview")}
+              {t("Success PublicCoproduction Overview")}
             </Typography>
           </AppBar>
           {
@@ -177,7 +177,7 @@ export default function OverviewStory({}) {
                 <Tab value="showcase" label={t("Showcase")} />
                 {/* )} */}
 
-                <Tab value="reviews" label={t("Reviews")} />
+                {/* <Tab value="reviews" label={t("Reviews")} /> */}
               </Tabs>
             </Paper>
           }
@@ -199,26 +199,26 @@ export default function OverviewStory({}) {
                     maxWidth: { xs: 350, md: 250 },
                     mr: 2,
                   }}
-                  alt={selectedStory.data_story.title}
-                  src={selectedStory.logotype}
+                  alt={selectedPublicCoproduction.data_story.title}
+                  src={selectedPublicCoproduction.logotype}
                 />
 
                 <Typography color="textSecondary" variant="h4">
-                  {selectedStory.data_story.title}
+                  {selectedPublicCoproduction.data_story.title}
                 </Typography>
               </Grid>
 
              
 
-              {selectedStory.data_story.tags != "" && (
+              {selectedPublicCoproduction.data_story.tags != "" && (
                 <Grid item xs={6} md={6} lg={3} xl={3} sx={{ m: 3 }}>
                   <Typography
                     color="textPrimary"
                     variant="subtitle2"
                     align="center"
                   >
-                    {selectedStory.data_story.tags &&
-                      selectedStory.data_story.tags
+                    {selectedPublicCoproduction.data_story.tags &&
+                      selectedPublicCoproduction.data_story.tags
                         .split(",")
                         .map((el) => (
                           <Chip
@@ -239,7 +239,7 @@ export default function OverviewStory({}) {
                 align="center"
                 sx={{ mb: 3, mr: 3, ml: 3 }}
               >
-                {selectedStory.data_story.short_description}
+                {selectedPublicCoproduction.data_story.short_description}
               </Typography>
 
 
@@ -252,23 +252,23 @@ export default function OverviewStory({}) {
                 sx={{ mt: 3,mb:3,ml:5 }}
               >
                 <Typography color="textSecondary" variant="subtitle2">
-                  Start: {selectedStory.data_story.start_at}
+                  Start: {selectedPublicCoproduction.data_story.start_at}
                 </Typography>
                 <Typography color="textSecondary" variant="subtitle2">
-                  End: {selectedStory.data_story.end_at}
+                  End: {selectedPublicCoproduction.data_story.end_at}
                 </Typography>
               </Grid>
 
               <Divider />
 
               <TwoColumnsText
-                text={selectedStory.data_story.description}
+                text={selectedPublicCoproduction.data_story.description}
                 mobileDevice={mobileDevice}
                 largeDevice={largeDevice}
                 xlargeDevice={xlargeDevice}
               />
 
-              {selectedStory.data_story.objectives != "" && (
+              {selectedPublicCoproduction.data_story.objectives != "" && (
                 <>
                   <Divider />
                   <Typography
@@ -279,7 +279,7 @@ export default function OverviewStory({}) {
                     Objectives
                   </Typography>
                   <TwoColumnsText
-                    text={selectedStory.data_story.objectives}
+                    text={selectedPublicCoproduction.data_story.objectives}
                     mobileDevice={mobileDevice}
                     largeDevice={largeDevice}
                     xlargeDevice={xlargeDevice}
@@ -287,7 +287,7 @@ export default function OverviewStory({}) {
                 </>
               )}
 
-              {selectedStory.data_story.results != "" && (
+              {selectedPublicCoproduction.data_story.results != "" && (
                 <>
                   <Divider />
                   <Typography
@@ -298,7 +298,7 @@ export default function OverviewStory({}) {
                     Results
                   </Typography>
                   <TwoColumnsText
-                    text={selectedStory.data_story.results}
+                    text={selectedPublicCoproduction.data_story.results}
                     mobileDevice={mobileDevice}
                     largeDevice={largeDevice}
                     xlargeDevice={xlargeDevice}
@@ -306,7 +306,7 @@ export default function OverviewStory({}) {
                 </>
               )}
 
-              {selectedStory.data_story.lessons_learned != "" && (
+              {selectedPublicCoproduction.data_story.lessons_learned != "" && (
                 <>
                   <Divider />
                   <Typography
@@ -317,7 +317,7 @@ export default function OverviewStory({}) {
                     Lessons Learned
                   </Typography>
                   <TwoColumnsText
-                    text={selectedStory.data_story.lessons_learned}
+                    text={selectedPublicCoproduction.data_story.lessons_learned}
                     mobileDevice={mobileDevice}
                     largeDevice={largeDevice}
                     xlargeDevice={xlargeDevice}
@@ -325,7 +325,7 @@ export default function OverviewStory({}) {
                 </>
               )}
 
-              {selectedStory.data_story.incentives != "" && (
+              {selectedPublicCoproduction.data_story.incentives != "" && (
                 <>
                   <Divider />
                   <Typography
@@ -336,7 +336,7 @@ export default function OverviewStory({}) {
                     Incentives
                   </Typography>
                   <TwoColumnsText
-                    text={selectedStory.data_story.incentives}
+                    text={selectedPublicCoproduction.data_story.incentives}
                     mobileDevice={mobileDevice}
                     largeDevice={largeDevice}
                     xlargeDevice={xlargeDevice}
@@ -358,7 +358,7 @@ export default function OverviewStory({}) {
                 alignItems="stretch"
                 sx={{ m: 3 }}
               >
-                {selectedStory.data_story.materials.map((material) => (
+                {selectedPublicCoproduction.data_story.materials.map((material) => (
                   <Card sx={{ minWidth: 275 }}>
                     <CardHeader
                       avatar={(() => {
@@ -395,7 +395,7 @@ export default function OverviewStory({}) {
                 justifyContent="center"
                 alignItems="stretch"
               >
-                {selectedStory.data_story.owners.map((owner) => (
+                {selectedPublicCoproduction.data_story.owners.map((owner) => (
                   <Card sx={{ minWidth: 275, m: 2 }}>
                     <CardHeader
                       avatar={
@@ -444,7 +444,7 @@ export default function OverviewStory({}) {
                   maxWidth={(theme) => theme.breakpoints.values.md}
                   sx={{ m: 5, textAlign: "justify" }}
                 >
-                  {selectedStory.data_story.licenses}
+                  {selectedPublicCoproduction.data_story.licenses}
                 </Typography>
               </Grid>
 
@@ -466,7 +466,7 @@ export default function OverviewStory({}) {
                 alignItems="center"
                 
               >
-                {selectedStory.data_story.countries.split(',').map((country) => (
+                {selectedPublicCoproduction.data_story.countries.split(',').map((country) => (
                   <Card sx={{ minWidth: 275, m: 2 }}>
                     
                     <CardContent>
@@ -489,7 +489,7 @@ export default function OverviewStory({}) {
           {tab === "reviews" ? (
             <Box sx={{ p: 3, justifyContent: "center" }}>
               Review Tab
-              <StoryReviews story={selectedStory} />
+              <PublicCoproductionReviews story={selectedPublicCoproduction} />
             </Box>
           ) : (
             <></>
