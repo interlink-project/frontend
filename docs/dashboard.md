@@ -1,5 +1,15 @@
 # Dashboard
 
+---
+**NOTE**
+
+The following PDF documents offer tutorials on functionality associated to the Collaborative Environment:
+- ["HOW TO LOGIN / REGISTER TO THE COLLABORATIVE ENVIRONMENT?"](https://drive.google.com/file/d/1ajTcrvQfrnJwvCQYyH9axSlAyu8QXvrP/view?usp=sharing) 
+- ["TUTORIAL FOR THE COLLABORATIVE ENVIRONMENT - Participant version -"](https://drive.google.com/file/d/1gNDmQLoolPoBPR1PcUjwOxSYha45N366/view?usp=sharing) 
+- ["TUTORIAL FOR THE COLLABORATIVE ENVIRONMENT - Administrator version -"](https://drive.google.com/file/d/1t_nq2VY08F6B5RpT1MaL_4jGDIVFZhi9/view?usp=sharing) 
+
+---
+
 When a user accesses one to the INTERLINK collaborative front-end encounters a page informing about:
 - [INTERLINK project](https://demo.interlink-project.eu/) (top menu option "Project")
 - The [Collaborative Environment](https://demo.interlink-project.eu/platform) ("Collaborative Environment" top menu option) giving details about the Collaborative Environment made available by the project
