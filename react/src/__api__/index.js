@@ -18,4 +18,5 @@ import { problemprofilesApi } from './catalogue/problemProfilesApi';
 import {recommenderApi} from './coproduction/recommenderApi';
 import {gamesApi} from './gamification/gamesApi';
 import { tagsApi } from './coproduction/tagsApi';
-export { storiesApi, tagsApi, problemprofilesApi, permissionsApi, gamesApi, organizationsApi, usernotificationsApi,coproductionprocessnotificationsApi, assetsApi, knowledgeInterlinkersApi, softwareInterlinkersApi, coproductionProcessesApi, coproductionSchemasApi, teamsApi, usersApi, tasksApi, phasesApi, objectivesApi, interlinkersApi, recommenderApi };
+import { ratingsApi} from './coproduction/ratingsApi';
+export { storiesApi, tagsApi, problemprofilesApi, permissionsApi, gamesApi, organizationsApi, usernotificationsApi,coproductionprocessnotificationsApi, assetsApi, knowledgeInterlinkersApi, softwareInterlinkersApi, coproductionProcessesApi, coproductionSchemasApi, teamsApi, usersApi, tasksApi, phasesApi, objectivesApi, interlinkersApi, recommenderApi,ratingsApi };

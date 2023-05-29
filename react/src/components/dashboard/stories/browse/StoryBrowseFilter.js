@@ -11,58 +11,29 @@ import { Search } from "@mui/icons-material";
 import { useCustomTranslation } from "hooks/useDependantTranslation";
 import useMounted from "hooks/useMounted";
 import React, { useEffect, useState } from "react";
-//import { problemprofilesApi } from '__api__';
 import MultiSelect from "../../../MultiSelect";
+import { tagsApi } from "__api__";
 
 const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
   const [inputValue, setInputValue] = useState(filters.search);
-  //const [loadingProblemProfiles, setLoadingProblemProfiles] = useState(true);
   const mounted = useMounted();
   const t = useCustomTranslation(language);
-  const [problemProfiles, setProblemProfiles] = useState([]);
+  const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    // problemprofilesApi.getMulti({}, language).then((res) => {
-    //   if (mounted.current) {
-    //     setProblemProfiles(res);
-    //     setLoadingProblemProfiles(false);
-    //   }
-    // });
-    setProblemProfiles([]);
+    tagsApi.getMulti({}, language).then((res) => {
+      if (mounted.current) {
+        setTags(res);
+      }
+    });
   }, [language]);
 
-  //   const problemprofilesMultiselect = {
-  //     label: t('Problem profiles'),
-  //     options: problemProfiles.map((pp) => ({
-  //       label: `${pp.id} - ${pp.name}`,
-  //       value: pp.id
-  //     }))
-  //   };
-
-  const keywordMultiselect = {
+  const topicsMultiselect = {
     label: t("Topic"),
-    options: [
-      {
-        label: t("Childcare"),
-        value: "childcare",
-      },
-      {
-        label: t("Work-Life Balance"),
-        value: "work-life",
-      },
-      {
-        label: t("Children"),
-        value: "children",
-      },
-      {
-        label: t("Mobility"),
-        value: "mobility",
-      },
-      {
-        label: t("School"),
-        value: "school",
-      },
-    ],
+    options: tags.map((pp) => ({
+      label: ` ${pp.name}`,
+      value: pp.name,
+    })),
   };
 
   const changeFilter = (key, value) => {
@@ -126,25 +97,14 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
           }}
         >
           <MultiSelect
-            label={keywordMultiselect.label}
+            label={topicsMultiselect.label}
             onChange={(e) => changeFilter("keyword", e)}
-            options={keywordMultiselect.options}
+            options={topicsMultiselect.options}
             value={filters.keyword}
             datacy="keyword-multiselect"
             datacyOption="keyword-multiselect-option"
           />
-          {/* <Divider
-            orientation='vertical'
-            flexItem
-            sx={{ mx: 2 }}
-          />  */}
 
-          {/* <MultiSelect
-            label={problemprofilesMultiselect.label}
-            onChange={(e) => changeFilter('problemprofiles', e)}
-            options={problemprofilesMultiselect.options}
-            value={filters.problemprofiles}
-          />  */}
           <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
           <Typography variant="body2" sx={{ mx: 1 }}>
             <b>{t("Minimum rating")}:</b>
@@ -155,18 +115,7 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
             data-cy="rating-filter"
           />
           <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
-          {/* <Typography variant="body2" sx={{ mr: 1 }}><b>Order by:</b></Typography>
-        <Select
-          labelId={selectOptions.label}
-          label={selectOptions.label}
-          onChange={console.log}
-          value={<Rating value={5} />}
-          sx={{ width: "100px", height: "40px" }}
-        >
-          {selectOptions.options.map((opt) => <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>)}
-        </Select> */}
         </Box>
-        {/* {(loading || loadingProblemProfiles) && <LinearProgress />} */}
       </Card>
       <Box sx={{ mt: 1 }}>
         {filters.search && (
@@ -176,33 +125,28 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
             onDelete={() => changeFilter("search", "")}
           />
         )}
-        {filters.keyword.map((keyword) => (
-          <Chip
-            key={`active-filter-${keyword}`}
-            sx={{ mr: 1, mt: 1 }}
-            label={`${t("Topic")}: ${
-              keywordMultiselect.options.find(
-                (option) => option.value === keyword
-              ).label
-            }`}
-            onDelete={() =>
-              changeFilter(
-                "keyword",
-                filters.keyword.filter((nt) => nt !== keyword)
-              )
-            }
-            data-cy={`active-topic-filter-${keyword}`}
-          />
-        ))}
-        {/*
-        {filters.problemprofiles && filters.problemprofiles.map((pp) => (
-          <Chip
-            key={`active-filter-${pp}`}
-            sx={{ mr: 1, mt: 1 }}
-            label={`${t('Problem profile')}: ${pp}`}
-            onDelete={() => changeFilter('problemprofiles', filters.problemprofiles.filter((problemprofile) => problemprofile !== pp))}
-          />
-        ))} */}
+        {filters.keyword &&
+          filters.keyword.map((keyword) => {
+            const etiquetaBuscar = topicsMultiselect.options.find(
+              (option) => option.value === keyword
+            ).label;
+            return (
+              <Chip
+                key={`active-filter-${keyword}`}
+                sx={{ mr: 1, mt: 1 }}
+                // label={`${t('Topic')}: ${keyword}`}
+                label={`${t("Topic")}: ${etiquetaBuscar}`}
+                onDelete={() =>
+                  changeFilter(
+                    "keyword",
+                    filters.keyword.filter((nt) => nt !== keyword)
+                  )
+                }
+                data-cy={`active-topic-filter-${keyword}`}
+              />
+            );
+          })}
+
         {filters.rating && (
           <Chip
             sx={{ mr: 1, mt: 1 }}

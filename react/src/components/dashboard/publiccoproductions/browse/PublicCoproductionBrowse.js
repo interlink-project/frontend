@@ -3,20 +3,20 @@ import { Box } from '@mui/material';
 
 import { useState } from 'react';
 import { getLanguage } from 'translations/i18n';
-import StoryBrowseFilter from './StoryBrowseFilter';
-import StoryResults from './StoryResults';
+import PublicCoproductionBrowseFilter from './PublicCoproductionBrowseFilter';
+import PublicCoproductionResults from './PublicCoproductionResults';
 
 const initialDefaultFilters = {
 
   //problemprofiles: [],
   //nature: ['softwareinterlinker', 'knowledgeinterlinker', 'externalsoftwareinterlinker', 'externalknowledgeinterlinker'],
-  keyword: [],
+  keyword: ['childcare'],
   
   rating: null,
 };
    // const initialDefaultFilters = {};
 
-const StoryBrowse = ({ language = getLanguage(), initialFilters = {}, onStoryClick }) => {
+const PublicCoproductionBrowse = ({ language = getLanguage(), initialFilters = {}, onPublicCoproductionClick }) => {
   // const mounted = useMounted();
   // const t = useCustomTranslation(language)
 
@@ -35,7 +35,7 @@ const StoryBrowse = ({ language = getLanguage(), initialFilters = {}, onStoryCli
   return (
     <>
       <Box sx={{ mt: 3 }}>
-        <StoryBrowseFilter
+        <PublicCoproductionBrowseFilter
           loading={loading}
           language={language}
           filters={filters}
@@ -44,16 +44,16 @@ const StoryBrowse = ({ language = getLanguage(), initialFilters = {}, onStoryCli
       </Box>
 
       <Box sx={{ mt: 6 }}>
-        <StoryResults
+        <PublicCoproductionResults
           loading={loading}
           setLoading={setLoading}
           language={language}
           filters={filters}
-          onStoryClick={onStoryClick}
+          onPublicCoproductionClick={onPublicCoproductionClick}
         />
       </Box>
     </>
   );
 };
 
-export default StoryBrowse;
+export default PublicCoproductionBrowse;

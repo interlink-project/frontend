@@ -16,15 +16,15 @@ import { useEffect, useState } from "react";
 import { getLanguage } from "translations/i18n";
 //import { interlinkersApi } from '__api__';
 import { TransitionGroup } from "react-transition-group";
-import StoryCard from "./StoryCard";
+import PublicCoproductionCard from "./PublicCoproductionCard";
 import { storiesApi } from "__api__";
 
-const StoryResults = ({
+const PublicCoproductionResults = ({
   loading: propLoading = null,
   setLoading: propSetLoading = null,
   language = getLanguage(),
   filters = {},
-  onStoryClick,
+  onPublicCoproductionClick,
   defaultMode = "list",
   defaultSize = 9,
 }) => {
@@ -54,9 +54,6 @@ const StoryResults = ({
   const loadServerRows = async (page, loadedRows) => {
     setLoading(true);
     try {
-      //alert(JSON.stringify(filters, null, 2))
-      //console.log(JSON.stringify(filters, null, 2))
-
       storiesApi
         .getMulti({ page: page + 1, size, ...filters }, language)
         .then((res) => {
@@ -158,12 +155,12 @@ const StoryResults = ({
       <Grid container spacing={3}>
         {mode === "grid" ? (
           <>
-            {loadedRows.map((story, i) => (
-              <Grid item key={story.id} md={4} sm={6} xs={12}>
-                <StoryCard
+            {loadedRows.map((publiccoproduction, i) => (
+              <Grid item key={publiccoproduction.id} md={4} sm={6} xs={12}>
+                <PublicCoproductionCard
                   language={language}
-                  story={story}
-                  onStoryClick={onStoryClick}
+                  publiccoproduction={publiccoproduction}
+                  onPublicCoproductionClick={onPublicCoproductionClick}
                   mode={mode}
                 />
               </Grid>
@@ -172,14 +169,14 @@ const StoryResults = ({
         ) : (
           <>
             <TransitionGroup>
-              {loadedRows.map((story, i) => (
+              {loadedRows.map((publiccoproduction, i) => (
                 <Collapse sx={{ mt: 4, ml: 3 }}>
-                  <StoryCard
+                  <PublicCoproductionCard
                     language={language}
-                    story={story}
-                    onStoryClick={onStoryClick}
+                    publiccoproduction={publiccoproduction}
+                    onPublicCoproductionClick={onPublicCoproductionClick}
                     mode={mode}
-                    data-cy={`story-card-${story?.id}`}
+                    data-cy={`publiccoproduction-card-${publiccoproduction?.id}`}
                   />
                 </Collapse>
               ))}
@@ -207,4 +204,4 @@ const StoryResults = ({
   );
 };
 
-export default StoryResults;
+export default PublicCoproductionResults;

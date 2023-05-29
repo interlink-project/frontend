@@ -1,16 +1,14 @@
 import { useMediaQuery, useTheme } from '@mui/material';
 import { styled } from '@mui/styles';
-import ProcessSidebar from 'components/navsidebars/ProcessSidebar';
-import StorySidebar from 'components/navsidebars/StorySidebar';
-
+//import ProcessSidebar from 'components/navsidebars/ProcessSidebar';
+import PublicCoproductionSidebar from 'components/navsidebars/PublicCoproductionSidebar';
 import useAuth from 'hooks/useAuth';
 import { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import DashboardMobileAppbar from '../navsidebars/DashboardMobileAppbar';
 import DashboardNavbar from '../navsidebars/DashboardNavbar';
-import PublicCoproductionSidebar from 'components/navsidebars/PublicCoproductionSidebar';
 
-const DashboardLayoutRoot = styled('div')(({ theme }) => ({
+const PublicCoproductionLayoutRoot = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   display: 'flex',
   height: '100%',
@@ -18,7 +16,7 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   width: '100%',
 }));
 
-const DashboardLayoutWrapperWithNavbar = styled('div')(({ theme }) => ({
+const PublicCoproductionLayoutWrapperWithNavbar = styled('div')(({ theme }) => ({
   display: 'flex',
   flex: '1 1 auto',
   overflow: 'hidden',
@@ -36,20 +34,20 @@ const MobileLayoutWrapper = styled('div')(({ theme }) => ({
 
 }));
 
-const DashboardLayoutWrapper = styled('div')(({ theme }) => ({
+const PublicCoproductionLayoutWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   flex: '1 1 auto',
   overflow: 'hidden',
   paddingTop: '64px',
 }));
 
-const DashboardLayoutContainer = styled('div')({
+const PublicCoproductionLayoutContainer = styled('div')({
   display: 'flex',
   flex: '1 1 auto',
   overflow: 'hidden'
 });
 
-const DashboardLayoutContent = styled('div')({
+const PublicCoproductionLayoutContent = styled('div')({
   flex: '1 1 auto',
   height: '100%',
   overflow: 'auto',
@@ -57,43 +55,27 @@ const DashboardLayoutContent = styled('div')({
   WebkitOverflowScrolling: 'touch'
 });
 
-const DashboardLayout = () => {
+const PublicCoproductionLayout = () => {
   const [isSidebarMobileOpen, setIsSidebarMobileOpen] = useState(false);
   const location = useLocation();
   const { isAuthenticated } = useAuth();
   const theme = useTheme();
   const onMobile = !useMediaQuery(theme.breakpoints.up('sm'));
 
-  const coproductionProcessLocation = location.pathname.indexOf('/dashboard/coproductionprocesses/') > -1;
-  const storyLocation = location.pathname.indexOf('/dashboard/stories/') > -1;
-  const publiccoproductionLocation = location.pathname.indexOf('/dashboard/publiccoproduction/') > -1;
+  const publiccoproductionLocation = location.pathname.indexOf('/stories/') > -1;
 
   const content = (
-    <DashboardLayoutContainer>
-      <DashboardLayoutContent>
+    <PublicCoproductionLayoutContainer>
+      <PublicCoproductionLayoutContent>
         <Outlet />
-      </DashboardLayoutContent>
-    </DashboardLayoutContainer>
+      </PublicCoproductionLayoutContent>
+    </PublicCoproductionLayoutContainer>
   );
 
   return (
-    <DashboardLayoutRoot>
-      {coproductionProcessLocation && (
+    <PublicCoproductionLayoutRoot>
       
-      <ProcessSidebar
-        onMobileClose={() => setIsSidebarMobileOpen(false)}
-        openMobile={!onMobile && isSidebarMobileOpen}
-      />
-      )}
       
-      {storyLocation && (
-      
-      <StorySidebar
-        onMobileClose={() => setIsSidebarMobileOpen(false)}
-        openMobile={!onMobile && isSidebarMobileOpen}
-      />
-      )}
-
       {publiccoproductionLocation && (
       
       <PublicCoproductionSidebar
@@ -114,18 +96,17 @@ const DashboardLayout = () => {
           <>
            
             <DashboardNavbar
-              showOpenMenuButton={coproductionProcessLocation}
+              showOpenMenuButton={publiccoproductionLocation}
               onSidebarMobileOpen={() => setIsSidebarMobileOpen(true)}
             />
             
-            
              
-            {coproductionProcessLocation ? <DashboardLayoutWrapperWithNavbar>{content}</DashboardLayoutWrapperWithNavbar> : <DashboardLayoutWrapper>{content}</DashboardLayoutWrapper>}
+            {publiccoproductionLocation ? <PublicCoproductionLayoutWrapperWithNavbar>{content}</PublicCoproductionLayoutWrapperWithNavbar> : <PublicCoproductionLayoutWrapper>{content}</PublicCoproductionLayoutWrapper>}
              </>
         )}
 
-    </DashboardLayoutRoot>
+    </PublicCoproductionLayoutRoot>
   );
 };
 
-export default DashboardLayout;
+export default PublicCoproductionLayout;
