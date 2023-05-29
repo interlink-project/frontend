@@ -27,7 +27,15 @@ Next screenshot shows how highlighted by a red frame appear destructive administ
 
 
 ![Admin actions overs coproduction process](images/coproductionprocess-settings-adminactions.png)
-Notice that in yellow background appear those constructive actions that from an existing process either create a copy of it ("Clone co-production process") or publish it the "Use Case Catalogue". Finally, in blue background appear the "incentivization" and "guiding" actions configurable in a process. The section "Reward System" allows a process admin to set up incentization in that process. The section "Show process startup guide" allows the verbose wizard shown in the ["Overview" view](/docs/en/coproductionprocess-overview.html) to be deactivated, i.e. its tab "PROGRESS" disappears.
+Notice that in yellow background appear those constructive actions that from an existing process either create a copy of it ("Clone co-production process") or publish it the "Use Case Catalogue". Finally, in blue background appear the "incentivization" and "guiding" actions configurable in a process. 
+
+The section "Reward System" allows a process admin to set up incentization in that process. The green button "Settings" 
+![Cloning and activation actions overs coproduction process](images/coproductionprocess-settings-incentives-activating.png)
+A pop up window appears which allows a co-production process admin to configure whether a "Leaderboard" and a "My profile" boards will be shown to every user or only the "My profile" board for every specific user will be shown. By clicking on "Activate this function" button incentives are activated for this process. 
+![Cloning and activation actions overs coproduction process](images/coproductionprocess-settings-incentives-configuring.png)
+Notice in the following snapshot how "Incentives" label appears under the process name and how the red button "Deactivate" appears now in the "Reward system" section of settings. 
+
+The section "Show process startup guide" allows the verbose wizard shown in the ["Overview" view](/docs/en/coproductionprocess-overview.html) to be deactivated, i.e. its tab "PROGRESS" disappears.
 ![Cloning and activation actions overs coproduction process](images/coproductionprocess-settings-cloning-activating.png)
 ![Cloning of coproduction process](images/coproductionprocess-cloning-popup.png)
 ![Publication of succes case from coproduction process](images/coproductionprocess-usecasepub-popup.png)
