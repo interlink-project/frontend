@@ -7,7 +7,7 @@ The [GUIDE view](/docs/en/coproductionprocess-guide.html) displays a co-producti
 ---
 **NOTE**
 
-The PDF document ["SETTING OUT FOR YOUR CO-PRODUCTION JOURNEY"](https://drive.google.com/file/d/1wAVxaZwChieh7hOfqjBnpCqPnXT8za8W/view?usp=sharing) provides uggestions on how to take full advantage of the INTERLINK Collaborative Environment for your co-production processes.
+The PDF document ["SETTING OUT FOR YOUR CO-PRODUCTION JOURNEY"](https://drive.google.com/file/d/1wAVxaZwChieh7hOfqjBnpCqPnXT8za8W/view?usp=sharing) provides suggestions on how to take full advantage of the INTERLINK Collaborative Environment for your co-production processes.
 
 ---
 
