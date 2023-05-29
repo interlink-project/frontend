@@ -4,6 +4,13 @@ The GUIDE view can be considered the main view of a co-production process. It is
 
 The [GUIDE view](/docs/en/coproductionprocess-guide.html) displays a co-production tree, allowing the co-production team members to browse through the phases of a co-production process, its corresponding objectives, the tasks that help accomplishing those objectives and the INTERLINKERs that are recommended to aid team members completing tasks of the co-production process. Very importantly, from the GUIDE view, users can instantiate the recommended INTERLINKERs for a task or create new instances from a range of generic INTERLINKERs.
 
+---
+**NOTE**
+
+The PDF document ["SETTING OUT FOR YOUR CO-PRODUCTION JOURNEY"](https://drive.google.com/file/d/1wAVxaZwChieh7hOfqjBnpCqPnXT8za8W/view?usp=sharing) provides uggestions on how to take full advantage of the INTERLINK Collaborative Environment for your co-production processes.
+
+---
+
 After creating a new co-production process, the creator (which is the default administrator of the process) is requested to choose a co-production process schema. Notice that there is flexibility to choose the best fitting schema (you may check the available co-production schemas in our [interlinkers-data/tree/master/schemas](https://github.com/interlink-project/interlinkers-data/tree/master/schemas) repo). The left-hand-side "Guide" menu item is not enabled until a schema has been chosen. The following 4 snapshosts show how the INTERLINK ["Default schema"](https://github.com/interlink-project/interlinkers-data/tree/master/schemas/default)) for a co-production process is chosen and, hence, the Guide left hand side menu option is activated. It all starts when within the [OVERVIEW view](/docs/en/coproductionprocess-overview.html), a user hits the "Select an schema" button. This is, from the "Roadmap Guide" suite of buttons in OVERVIEW, the user chooses the "wrench" icon, fourth one from the left hand side. 
 
    ![View before schema has been selected](images/guideview-defineschema0.png)
