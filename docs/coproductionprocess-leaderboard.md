@@ -7,6 +7,6 @@ The LEADERBOARD sub-view showcases the overall standings of a co-production proc
 ![Leaderboard's leaderboard sub-view](images/leaderboardview-init.png)
 
 
-As mentioned, depending on the settings of the reward system, a given co-production process will see both the global leaderboard and their profile, or, exclusively their profile. Notice that the "MY PROFILE" sub-view of the leaderboard, shown for every user, summarizes what have been the contributions of a user in a given process, i.e. in what tasks she has taken part and how many points she has got for her participation in each task of the co-production process. Besides, this sub-view indicates the position of this user in comparison with other collaborators, in terms of her contribution level compared to others. 
+As mentioned, depending on the settings of the reward system, a given co-production process participant will see both the global leaderboard and their profile, or, exclusively their profile. Notice that the "MY PROFILE" sub-view of the leaderboard, shown for every user, summarizes what have been the contributions of a user in a given process, i.e. in what tasks she has taken part and how many points she has got for her participation in each task of the co-production process. Besides, this sub-view indicates the position of this user in comparison with other collaborators, in terms of her contribution level compared to others. 
 
 ![Leaderboard's my profile sub-view](images/leaderboardview-myprofile.png)
