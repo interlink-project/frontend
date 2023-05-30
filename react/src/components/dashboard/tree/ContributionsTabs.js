@@ -329,73 +329,75 @@ const ContributionsTabs = () => {
     dispatch(setContributionsListLevels([]));
   };
 
-  useEffect(async () => {
-    console.log("contributions", contributions);
-    let task;
+  useEffect(() => {
+    //console.log("contributions", contributions);
+    //alert("Recarga el listado de contribuciones");
+    setRows([]);
+
+    // declare the data fetching function
+    const fetchData = async () => {
+      let task = await gamesApi.getTask(process.id, selectedTreeItem.id);
+      
+      if (typeof task !== "undefined" && task.completed) {
+   
+        setClosedTask(task.completed);
+        console.log("tasks dentro de closed task", task);
+        let r = [];
+        for (let player of task.players) {
+          r.push({
+            id: player.id,
+            name: player.name,
+            contribution: Object.keys(CONTRIBUTION_LEVELS).find(
+              (key) => CONTRIBUTION_LEVELS[key] === player.development
+            ),
+            contrib_value: player.development,
+          });
+        }
+        setRows(r);
+      } else {
+        if (contributions.length === 0) {
+          console.log("NO CONTRIBUTIONS");
+          setClosedTask(task.completed);
+          return;
+        }
+        let total_contribs = 0;
+        let contribs = {};
+        for (let i = 0; i < contributions.length; i++) {
+          for (let j = 0; j < contributions[i].contributors.length; j++) {
+            if (!contribs[contributions[i].contributors[j].user_id]) {
+              contribs[contributions[i].contributors[j].user_id] = 1;
+            } else {
+              contribs[contributions[i].contributors[j].user_id] += 1;
+            }
+            total_contribs += 1;
+          }
+        }
+  
+       
+        let tempListRows=[];
+        for (let id in contribs) {
+
+          const userTemp=await usersApi.get(id);
+
+          tempListRows.push({
+            id: id,
+              name: userTemp.full_name,
+              contribution: mapContributions(total_contribs, contribs[id]),
+              contrib_value: contribs[id],});
+
+        }
+        setRows(tempListRows);
+        setClosedTask(task.completed);
+      }
+    }
 
     try {
-      task = await gamesApi.getTask(process.id, selectedTreeItem.id);
+      fetchData();
     } catch (e) {
       console.error(e);
     }
 
-    if (typeof task !== "undefined" && task.completed) {
-      setRows([]);
-      setClosedTask(task.completed);
-      console.log("tasks dentro de closed task", task);
-      let r = [];
-      for (let player of task.players) {
-        r.push({
-          id: player.id,
-          name: player.name,
-          contribution: Object.keys(CONTRIBUTION_LEVELS).find(
-            (key) => CONTRIBUTION_LEVELS[key] === player.development
-          ),
-          contrib_value: player.development,
-        });
-      }
-      setRows(r);
-    } else {
-      if (contributions.length === 0) {
-        console.log("NO CONTRIBUTIONS");
-        setRows([]);
-        setClosedTask(task.completed);
-        return;
-      }
-      let total_contribs = 0;
-      let contribs = {};
-      for (let i = 0; i < contributions.length; i++) {
-        for (let j = 0; j < contributions[i].contributors.length; j++) {
-          if (!contribs[contributions[i].contributors[j].user_id]) {
-            contribs[contributions[i].contributors[j].user_id] = 1;
-          } else {
-            contribs[contributions[i].contributors[j].user_id] += 1;
-          }
-          total_contribs += 1;
-        }
-      }
-
-      setRows([]);
-      for (let id in contribs) {
-        usersApi
-          .get(id)
-          .then((res) => {
-            setRows((rows) => [
-              ...rows,
-              {
-                id: id,
-                name: res.full_name,
-                contribution: mapContributions(total_contribs, contribs[id]),
-                contrib_value: contribs[id],
-              },
-            ]);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
-      setClosedTask(task.completed);
-    }
+   
 
   }, [contributions]);
 
