@@ -1,11 +1,11 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField, Snackbar, Alert } from '@mui/material';
 import { KeyboardArrowRight } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import useMounted from 'hooks/useMounted';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { objectivesApi, phasesApi, tasksApi } from '__api__';
+import { gamesApi, objectivesApi, phasesApi, tasksApi } from '__api__';
 
 // Create the constant
 const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
@@ -21,6 +21,8 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
     const mounted = useMounted();
     const { t } = useTranslation();
     const { treeitems, process } = useSelector((state) => state.process);
+
+    const [updatedAlert, setUpdatedAlert] = useState(false);
 
     const apis = {
         task: tasksApi,
@@ -44,6 +46,14 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
 
     ]
 
+    const handleOpenSnackbar = () => {
+        setUpdatedAlert(true);
+    };
+
+    const handleCloseParseMsn = () => {
+        setUpdatedAlert(false);
+    };
+
     const sendOnCreate = (data) => {
         console.log(mounted)
         if (mounted.current) {
@@ -57,14 +67,14 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
 
     const handleNext = async () => {
         setLoading(true)
-        var item={}
-        if(prerequistes_id!=''){
+        var item = {}
+        if (prerequistes_id != '') {
             item = {
                 name,
                 description,
                 "prerequisites_ids": [prerequistes_id]
             }
-        }else{
+        } else {
             item = {
                 name,
                 description
@@ -75,9 +85,9 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
         if (type === "phase") {
             item["coproductionprocess_id"] = process.id;
             item["is_part_of_codelivery"] = true;
-        }else if (type === "objective"){
+        } else if (type === "objective") {
             item["phase_id"] = parentid;
-        }else if (type === "task"){
+        } else if (type === "task") {
             item["objective_id"] = parentid;
         }
         console.log(item);
@@ -85,6 +95,11 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
             item
         ).then(res => {
             console.log(res);
+            if (type === "task" && process.game_id) {
+                gamesApi.updateGame(process.id, res.data).then(res2 => {
+                    handleOpenSnackbar();
+                });
+            }
             sendOnCreate(res.data);
         }).catch(err => {
             console.log(err);
@@ -208,6 +223,17 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
                     </LoadingButton>
                 </DialogActions>
             </Dialog>
+            <Snackbar
+                open={updatedAlert}
+                autoHideDuration={6000}
+                onClose={handleCloseParseMsn}
+            >
+                <Alert onClose={handleCloseParseMsn} severity="success">
+                    {t(
+                        "Task added to the incentivisation game successfully"
+                    )}
+                </Alert>
+            </Snackbar>
         </>
     );
 };
