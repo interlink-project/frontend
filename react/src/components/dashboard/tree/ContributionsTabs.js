@@ -330,9 +330,12 @@ const ContributionsTabs = () => {
   };
 
   useEffect(() => {
+    let isSubscribed = true;
     //console.log("contributions", contributions);
     //alert("Recarga el listado de contribuciones");
+    if (isSubscribed) {
     setRows([]);
+    }
 
     // declare the data fetching function
     const fetchData = async () => {
@@ -353,7 +356,9 @@ const ContributionsTabs = () => {
             contrib_value: player.development,
           });
         }
+        if (isSubscribed) {
         setRows(r);
+        }
       } else {
         if (contributions.length === 0) {
           console.log("NO CONTRIBUTIONS");
@@ -381,23 +386,26 @@ const ContributionsTabs = () => {
 
           tempListRows.push({
             id: id,
-              name: userTemp.full_name,
+              name: userTemp.full_name+' ('+contribs[id]+')',
               contribution: mapContributions(total_contribs, contribs[id]),
               contrib_value: contribs[id],});
 
         }
+
+        if (isSubscribed) {
         setRows(tempListRows);
+        }
         setClosedTask(task.completed);
       }
     }
 
-    try {
-      fetchData();
-    } catch (e) {
-      console.error(e);
-    }
+    // call the function
+    fetchData()
+    // make sure to catch any error
+    .catch(console.error);;
 
-   
+    // cancel any future `setData`
+    return () => isSubscribed = false;
 
   }, [contributions]);
 
