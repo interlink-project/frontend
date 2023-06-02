@@ -64,7 +64,7 @@ const CreateSchema = () => {
     coproductionProcessesApi.setSchema(process.id, coproductionschema.id, process.language).then((res) => {
       if (mounted.current) {
         trackEvent({
-          category: process.id,
+          category: process.name,
           action: 'use-schema',
           name: coproductionschema.id
         });
@@ -84,7 +84,7 @@ const CreateSchema = () => {
   const setSelectedSchema = (schema) => {
     if (schema && schema.hasOwnProperty('id')) {
       trackEvent({
-        category: process.id,
+        category: process.name,
         action: 'schema-preview',
         name: schema.id
       });

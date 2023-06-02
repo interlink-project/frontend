@@ -245,10 +245,30 @@ const App = () => {
   }, [selectedTreeItem]);
 
   // ANALYTICS
-  const { enableLinkTracking, trackPageView } = useMatomo();
+  const { enableLinkTracking, trackPageView, pushInstruction } = useMatomo();
   enableLinkTracking();
   useEffect(() => {
-    trackPageView();
+  
+    //If the user is logged in, send the user data to Matomo
+    if (
+      auth.isInitialized &&
+      auth.user &&
+      auth.user._id &&
+      auth.user.email &&
+      auth.user.full_name
+    ) {
+      pushInstruction("setUserId", auth.user.email);
+      const customDimensions = {
+        user_id: auth.user._id,
+        user_email: auth.user.email,
+        user_full_name: auth.user.full_name,
+      };
+      trackPageView(customDimensions);
+    } else {
+      trackPageView();
+    }
+    
+    
   }, [window.location.href]);
 
   return settings.loaded ? (

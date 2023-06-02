@@ -19,6 +19,9 @@ import { getTree, setUpdatingTree } from 'slices/process';
 import { tree_items_translations } from 'utils/someCommonTranslations';
 import { objectivesApi, phasesApi, tasksApi } from '__api__';
 import { AwaitingIcon, statusIcon, StatusText } from '../../Icons';
+import { useSelector } from 'react-redux';
+import useAuth from 'hooks/useAuth';
+
 
 const apis = {
   task: tasksApi,
@@ -27,6 +30,7 @@ const apis = {
 };
 
 const TreeItemData = ({ language, processId, element }) => {
+  const { process } = useSelector((state) => state.process);
   const [dateRange, setDateRange] = useState([null, null]);
   const [status, setStatus] = useState('');
   const [name, setName] = useState('');
@@ -38,6 +42,7 @@ const TreeItemData = ({ language, processId, element }) => {
   const dispatch = useDispatch();
   const t = useCustomTranslation(language);
   const { trackEvent } = useMatomo();
+  const { user } = useAuth();
 
   const restart = (el) => {
     setName(el.name);
@@ -77,9 +82,13 @@ const TreeItemData = ({ language, processId, element }) => {
       data.description = description;
     }
     trackEvent({
-      category: processId,
+      category: process.name,
       action: 'update-treeitem',
       name: element.id,
+      customDimensions: [
+        {
+          usertype: 'citizen'
+        } // type
     });
     apis[element.type].update(element.id, data).then(() => {
       update(element.id);
@@ -92,7 +101,7 @@ const TreeItemData = ({ language, processId, element }) => {
 
   const deleteTreeItem = () => {
     trackEvent({
-      category: processId,
+      category: process.name,
       action: 'delete-treeitem',
       name: element.id,
     });

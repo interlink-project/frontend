@@ -105,7 +105,7 @@ const CoproductionProcessProfile = () => {
 
   const _setSelectedTreeItem = (item, callback) => {
     trackEvent({
-      category: process.id,
+      category: process.name,
       action: 'tree-item-selected',
       name: item.id
     });

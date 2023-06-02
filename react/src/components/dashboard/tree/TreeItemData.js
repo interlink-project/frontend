@@ -305,7 +305,7 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
     }
     
     trackEvent({
-      category: processId,
+      category: process.name,
       action: "update-treeitem",
       name: element.id,
     });
@@ -334,7 +334,7 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
 
   const deleteTreeItem = () => {
     trackEvent({
-      category: processId,
+      category: process.name,
       action: "delete-treeitem",
       name: element.id,
     });

@@ -29,6 +29,7 @@ import {
   Share,
 } from "@mui/icons-material";
 
+import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { LoadingButton } from "@mui/lab";
 import { AssetsTable } from "components/dashboard/assets";
 import InterlinkerBrowse from "components/dashboard/interlinkers/browse/InterlinkerBrowse";
@@ -57,6 +58,7 @@ import useAuth from "hooks/useAuth";
 
 import { REACT_APP_COMPLETE_DOMAIN } from "configuration";
 import AssetsShare from "./AssetsShare";
+
 
 const RightSide = ({ softwareInterlinkers }) => {
   const { process, isAdministrator, selectedTreeItem } = useSelector(
@@ -90,6 +92,7 @@ const RightSide = ({ softwareInterlinkers }) => {
 
   const location = useLocation();
   const isLocationCatalogue = location.pathname.startsWith("/stories/");
+  const { trackEvent } = useMatomo();
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === "clickaway") {
@@ -920,6 +923,13 @@ const RightSide = ({ softwareInterlinkers }) => {
                             setClaimDialogOpen(false);
                             //Refresh Contribution data
                             getContributionsData(selectedTreeItem.id);
+
+                            //Register an event in matomo
+                            trackEvent({
+                              category: process.name,
+                              action: "claim-contribution",
+                              name: res.id,
+                            });
                           })
                           .catch((err) => {
                             setStatus({ success: false });

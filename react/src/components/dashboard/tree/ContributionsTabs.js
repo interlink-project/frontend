@@ -402,7 +402,7 @@ const ContributionsTabs = () => {
     // call the function
     fetchData()
     // make sure to catch any error
-    .catch(console.error);;
+    .catch(console.error);
 
     // cancel any future `setData`
     return () => isSubscribed = false;
