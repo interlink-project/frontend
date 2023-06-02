@@ -719,7 +719,7 @@ const ContributionsTabs = () => {
                                   textAlign: "center",
                                 }}
                               >
-                                {t("Cargar users from csv file")}
+                                {t("Load users from csv file")}
                                 <input
                                   type="file"
                                   accept=".csv"
@@ -932,7 +932,7 @@ const ContributionsTabs = () => {
                       >
                         {assetsList.map((el) => (
                           <MenuItem key={el.id} value={el}>
-                            {el.internalData.name} Daniel
+                            {el.internalData.name}
                           </MenuItem>
                         ))}
                       </Select>

@@ -430,5 +430,11 @@
     "E-mail file fomating": "Formateo de archivos de correo electrónico",
     "The file must be a CSV file with one column containing all the mails to be added. Here you can download an example file.": "El archivo debe ser un archivo CSV con una columna que contenga todos los correos a añadir. Aquí puede descargar un archivo de ejemplo.",
     "Download example": "Descargar ejemplo",
-    "Check the complexity of the task before closing it.": "Revisa la complejidad de la tarea antes de cerrarla."
+    "Check the complexity of the task before closing it.": "Revisa la complejidad de la tarea antes de cerrarla.",
+    "Task added to the incentivisation game successfully": "Tarea añadida al juego de incentivación correctamente",
+    "The link has been copied to the clipboard": "El enlace ha sido copiado al portapapeles",
+    "No coproduction processes found": "No se han encontrado procesos de coproducción",
+    "No tags": "Sin tag",
+    "Load users from csv file": "Cargar usaurios desde archivo CSV",
+    "This task does not have a complexity defined.": "Esta tarea no tiene una complejidad definida."
 }
