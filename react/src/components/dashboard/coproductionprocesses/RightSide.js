@@ -929,6 +929,12 @@ const RightSide = ({ softwareInterlinkers }) => {
                               category: process.name,
                               action: "claim-contribution",
                               name: res.id,
+                              customDimensions: [
+                                {
+                                  id: 1,
+                                  value: 'developer',
+                                },
+                              ]
                             });
                           })
                           .catch((err) => {
