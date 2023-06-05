@@ -531,7 +531,10 @@ const RightSide = ({ softwareInterlinkers }) => {
         for (let j = 0; j < listAllowedTeams.length; j++) {
           if (user.teams_ids[i] === listAllowedTeams[j].id) {
             const user_team = await teamsApi.get(user.teams_ids[i]);
+        
+            if (!listofRoles.includes(user_team.type)){
             listofRoles.push(user_team.type);
+            }
           }
         }
       }
