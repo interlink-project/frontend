@@ -311,20 +311,7 @@ const RightSide = ({ softwareInterlinkers }) => {
     setAnchorEl(null);
     setClaimDialogOpen(true);
 
-    //Set the possible roles:
-    let listofRoles = [];
-    setUserRoles([]);
-    async function getRoles(asset) {
-      for (let i = 0; i < user.teams_ids.length; i++) {
-        if(user.teams_ids[i] in selectedTreeItem.teams){
-          const user_team = await teamsApi.get(user.teams_ids[i]);
-          listofRoles.push(user_team.type);
-        }
-      }
-      setUserRoles(listofRoles);
-    }
-    getRoles(asset);
-
+    
     
 
   };
@@ -535,7 +522,25 @@ const RightSide = ({ softwareInterlinkers }) => {
   };
 
 
+  useEffect(() => {
+    let listofRoles = [];
+    setUserRoles([]);
+    async function getRoles() {
+      for (let i = 0; i < user.teams_ids.length; i++) {
+        const listAllowedTeams=selectedTreeItem.teams;
+        for (let j = 0; j < listAllowedTeams.length; j++) {
+          if (user.teams_ids[i] === listAllowedTeams[j].id) {
+            const user_team = await teamsApi.get(user.teams_ids[i]);
+            listofRoles.push(user_team.type);
+          }
+        }
+      }
+      setUserRoles(listofRoles);
+    }
+    getRoles();
 
+   
+  }, [selectedTreeItem]);
 
   
   

@@ -217,32 +217,39 @@ const ContributionsTabs = () => {
               getRoles(user_id,false);
             }
           } else {
+
             const user_temp = await usersApi.get(user_id);
-
             let listofRoles = [];
-
+    
             for (let i = 0; i < user_temp.teams_ids.length; i++) {
-              const role = await teamsApi.get(user_temp.teams_ids[i]);
-              listofRoles.push(role.type);
+              const listAllowedTeams=selectedTreeItem.teams;
+              for (let j = 0; j < listAllowedTeams.length; j++) {
+                if (user_temp.teams_ids[i] === listAllowedTeams[j].id) {
+                  const user_team = await teamsApi.get(user_temp.teams_ids[i]);
+                  listofRoles.push(user_team.type);
+                }
+              }
             }
 
             let action_role_value = "";
             if (listofRoles.length > 0) {
               action_role_value = listofRoles[0].type;
+
+              //Register an event in matomo
+              trackEvent({
+                category: process.name,
+                action: "claim-contribution",
+                name: selectedAsset.id,
+                customDimensions: [
+                  {
+                    id: 1,
+                    value: action_role_value,
+                  },
+                ],
+              });
             }
 
-            //Register an event in matomo
-            trackEvent({
-              category: process.name,
-              action: "claim-contribution",
-              name: selectedAsset.id,
-              customDimensions: [
-                {
-                  id: 1,
-                  value: action_role_value,
-                },
-              ],
-            });
+           
           }
         }
 
