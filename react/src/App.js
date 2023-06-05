@@ -258,12 +258,12 @@ const App = () => {
       auth.user.full_name
     ) {
       pushInstruction("setUserId", auth.user.email);
-      const customDimensions = {
-        user_id: auth.user._id,
-        user_email: auth.user.email,
-        user_full_name: auth.user.full_name,
-      };
-      trackPageView(customDimensions);
+      // const customDimensions = {
+      //   id: 1,
+      //   value:'developer'
+      // };
+      //trackPageView(customDimensions);
+      trackPageView();
     } else {
       trackPageView();
     }

@@ -46,8 +46,12 @@ import ContributionCard from "./ContributionCard";
 import Papa from "papaparse";
 import { ExportToCsv } from "export-to-csv";
 import { getContributions, setContributionsListLevels } from "slices/general";
+import { useMatomo } from "@datapunt/matomo-tracker-react";
+import { is } from "date-fns/locale";
 
 const ContributionsTabs = () => {
+
+  const { trackEvent } = useMatomo();
   const { contributions, contributionslistlevels } = useSelector(
     (state) => state.general
   );
@@ -152,8 +156,10 @@ const ContributionsTabs = () => {
     const paramListJson = JSON.stringify(parametersList);
 
     let dataToSend = {};
+    let listUsuarios=[];
     if (!isListUsers) {
       //Solamente guardo info de 1 usuario
+      listUsuarios=[user.id];
       dataToSend = {
         coproductionprocess_id: process.id,
         notification_event: "add_contribution_asset",
@@ -165,7 +171,8 @@ const ContributionsTabs = () => {
       };
     } else {
       //En el caso que sea una lista de usuarios:
-      const listUsuarios = user.join(",");
+      listUsuarios = user.join(",");
+      
       dataToSend = {
         coproductionprocess_id: process.id,
         notification_event: "add_contribution_asset",
@@ -186,12 +193,12 @@ const ContributionsTabs = () => {
         if (responseData["excluded"].length > 0) {
           alert(
             t("We couldn't include") +
-            ": [" +
-            responseData["excluded"] +
-            "] " +
-            t(
-              "users because are not part of a team with permissions over this task. Please check the list of users and try again"
-            )
+              ": [" +
+              responseData["excluded"] +
+              "] " +
+              t(
+                "users because are not part of a team with permissions over this task. Please check the list of users and try again"
+              )
           );
         }
 
@@ -199,6 +206,49 @@ const ContributionsTabs = () => {
         setSubmitting(false);
         // getAssets();
         handleCloseDialog();
+
+        //Register an event in matomo
+        async function getRoles(user_id, isTeamsSelected = false) {
+          if (isTeamsSelected) {
+           
+            const team_temp = await teamsApi.get(user_id);
+            const listOfUsers = team_temp.user_ids;
+            for (user of listOfUsers) {
+              getRoles(user_id,false);
+            }
+          } else {
+            const user_temp = await usersApi.get(user_id);
+
+            let listofRoles = [];
+
+            for (let i = 0; i < user_temp.teams_ids.length; i++) {
+              const role = await teamsApi.get(user_temp.teams_ids[i]);
+              listofRoles.push(role.type);
+            }
+
+            let action_role_value = "";
+            if (listofRoles.length > 0) {
+              action_role_value = listofRoles[0].type;
+            }
+
+            //Register an event in matomo
+            trackEvent({
+              category: process.name,
+              action: "claim-contribution",
+              name: selectedAsset.id,
+              customDimensions: [
+                {
+                  id: 1,
+                  value: action_role_value,
+                },
+              ],
+            });
+          }
+        }
+
+        for (const user_id of listUsuarios) {
+          getRoles(user_id,isTeams);
+        }
       })
       .catch((err) => {
         console.log(err);

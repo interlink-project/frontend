@@ -49,6 +49,7 @@ import {
   coproductionprocessnotificationsApi,
   tasksApi,
   gamesApi,
+  teamsApi,
 } from "__api__";
 import NewAssetModal from "components/dashboard/coproductionprocesses/NewAssetModal";
 import { useLocation } from "react-router";
@@ -68,6 +69,7 @@ const RightSide = ({ softwareInterlinkers }) => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const { assetsList, contributions, contributionslistlevels } = useSelector((state) => state.general);
   const { user } = useAuth();
+  const [userRoles, setUserRoles] = useState([]);
   const isTask = selectedTreeItem && selectedTreeItem.type === "task";
   const [step, setStep] = useState(0);
   const [assets, setAssets] = useState([]);
@@ -512,637 +514,680 @@ const RightSide = ({ softwareInterlinkers }) => {
     return actions;
   };
 
+
+  useEffect(() => {
+    let listofRoles = [];
+    async function getRoles() {
+      for (let i = 0; i < user.teams_ids.length; i++) {
+        const role = await teamsApi.get(user.teams_ids[i]);
+        listofRoles.push(role.type);
+      }
+      setUserRoles(listofRoles);
+    }
+    getRoles();
+
+  }, []);
+
+  
+  
+
   return (
     selectedTreeItem && (
       <>
-      <Grid item xl={8} lg={8} md={9} xs={12}>
-        <Box sx={{ p: 2 }}>
-          <Paper sx={{ bgcolor: "background.default" }}>
-            <Tabs
-              value={tabValue}
-              onChange={handleTabChange}
-              aria-label="guide-right-side-tabs"
-              sx={{ mb: 2 }}
-              centered
-            >
-              <Tab
-                wrapped
-                value="data"
-                label={information_translations[selectedTreeItem.type]}
-              />
-              <Tab
-                value="assets"
-                disabled={!isTask}
-                //label={t('Resources') + (isTask ? ` ${loadingAssets ? '(...)' : ''}` : '')}
-                label={
-                  t("Resources") +
-                  (isTask
-                    ? ` (${loadingAssets ? "..." : assetsList.length})`
-                    : "")
-                }
-              />
-
-              {!isLocationCatalogue && (
+        <Grid item xl={8} lg={8} md={9} xs={12}>
+          <Box sx={{ p: 2 }}>
+            <Paper sx={{ bgcolor: "background.default" }}>
+              <Tabs
+                value={tabValue}
+                onChange={handleTabChange}
+                aria-label="guide-right-side-tabs"
+                sx={{ mb: 2 }}
+                centered
+              >
                 <Tab
-                  value="permissions"
-                  label={`${t("Permissions")} (${
-                    selectedTreeItem.permissions.length
-                  })`}
+                  wrapped
+                  value="data"
+                  label={information_translations[selectedTreeItem.type]}
                 />
-              )}
-              {!isLocationCatalogue &&
-                isTask &&
-                isAdministrator &&
-                !process.is_part_of_publication && (
+                <Tab
+                  value="assets"
+                  disabled={!isTask}
+                  //label={t('Resources') + (isTask ? ` ${loadingAssets ? '(...)' : ''}` : '')}
+                  label={
+                    t("Resources") +
+                    (isTask
+                      ? ` (${loadingAssets ? "..." : assetsList.length})`
+                      : "")
+                  }
+                />
+
+                {!isLocationCatalogue && (
                   <Tab
-                    value="contributions"
-                    label={`${t("Contributions")} (${obtenerNroContributions(
-                      contributions
-                    )})`}
+                    value="permissions"
+                    label={`${t("Permissions")} (${
+                      selectedTreeItem.permissions.length
+                    })`}
                   />
                 )}
-            </Tabs>
-          </Paper>
-
-          {tabValue === "data" && (
-            <TreeItemData
-              language={process.language}
-              processId={process.id}
-              element={selectedTreeItem}
-              assets={assets}
-              setOpenSnackbar={setOpenSnackbar}
-              setSnackbarMessage={setSnackbarMessage}
-
-            />
-          )}
-          {tabValue === "permissions" && (
-            <PermissionsTable
-              your_permissions={permissions && permissions.your_permissions}
-              your_roles={permissions && permissions.your_roles}
-              onChanges={() =>
-                dispatch(getProcess(process.id, false, selectedTreeItem.id))
-              }
-              language={process.language}
-              processId={process.id}
-              element={selectedTreeItem}
-              isAdministrator={isAdministrator}
-            />
-          )}
-          {tabValue === "assets" && (
-            <>
-              <Box>
-                <Box sx={{ mt: 2 }}>
-                  {isLocationCatalogue ? (
-                    <>
-                      <AssetsTable
-                        language={process.language}
-                        loading={loadingAssets}
-                        //assets={assetsList}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      {permissions && (
-                        <>
-                          {can.view ? (
-                            <AssetsTable
-                              language={process.language}
-                              loading={loadingAssets}
-                              getActions={getAssetsActions}
-                            />
-                          ) : (
-                            <Alert severity="error">
-                              {t(
-                                "You do not have access to the resources of this task"
-                              )}
-                            </Alert>
-                          )}
-                        </>
-                      )}
-
-                      <Box sx={{ textAlign: "center", width: "100%" }}>
-                        <Stack spacing={2}>
-                          <Button
-                            id="basic-button"
-                            aria-controls={open ? "basic-menu" : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={open ? "true" : undefined}
-                            onClick={() => setCatalogueOpen(true)}
-                            variant="contained"
-                            sx={{ mt: 2 }}
-                            disabled={!can.create}
-                          >
-                            <>{t("Open catalogue")}</>
-                          </Button>
-                          <Button
-                            id="basic-button"
-                            aria-controls={open ? "basic-menu" : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={open ? "true" : undefined}
-                            onClick={handleClick}
-                            variant="contained"
-                            endIcon={<KeyboardArrowDown />}
-                            disabled={!can.create}
-                          >
-                            <>{t("Initiate procedure")}</>
-                          </Button>
-                        </Stack>
-                      </Box>
-                    </>
+                {!isLocationCatalogue &&
+                  isTask &&
+                  isAdministrator &&
+                  !process.is_part_of_publication && (
+                    <Tab
+                      value="contributions"
+                      label={`${t("Contributions")} (${obtenerNroContributions(
+                        contributions
+                      )})`}
+                    />
                   )}
-                </Box>
+              </Tabs>
+            </Paper>
 
-                <Dialog
-                  open={catalogueOpen}
-                  onClose={() => setCatalogueOpen(false)}
-                  maxWidth="lg"
-                  fullWidth
-                >
-                  <IconButton
-                    aria-label="close"
-                    onClick={() => setCatalogueOpen(false)}
-                    sx={{
-                      position: "absolute",
-                      right: 8,
-                      top: 8,
-                      color: (theme) => theme.palette.grey[500],
-                    }}
-                  >
-                    <Close />
-                  </IconButton>
-                  <Box
-                    sx={{
-                      minWidth: "70vh",
-                      p: 7,
-                      backgroundColor: "background.default",
-                    }}
-                  >
-                    <InterlinkerBrowse
-                      language={process.language}
-                      initialFilters={{
-                        problemprofiles: selectedTreeItem.problemprofiles,
-                      }}
-                      onInterlinkerClick={(interlinker) => {
-                        setCatalogueOpen(false);
-                        setStep(0);
-                        setSelectedInterlinker(interlinker);
-                        setNewAssetDialogOpen(true);
-                      }}
-                    />
+            {tabValue === "data" && (
+              <TreeItemData
+                language={process.language}
+                processId={process.id}
+                element={selectedTreeItem}
+                assets={assets}
+                setOpenSnackbar={setOpenSnackbar}
+                setSnackbarMessage={setSnackbarMessage}
+              />
+            )}
+            {tabValue === "permissions" && (
+              <PermissionsTable
+                your_permissions={permissions && permissions.your_permissions}
+                your_roles={permissions && permissions.your_roles}
+                onChanges={() =>
+                  dispatch(getProcess(process.id, false, selectedTreeItem.id))
+                }
+                language={process.language}
+                processId={process.id}
+                element={selectedTreeItem}
+                isAdministrator={isAdministrator}
+              />
+            )}
+            {tabValue === "assets" && (
+              <>
+                <Box>
+                  <Box sx={{ mt: 2 }}>
+                    {isLocationCatalogue ? (
+                      <>
+                        <AssetsTable
+                          language={process.language}
+                          loading={loadingAssets}
+                          //assets={assetsList}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {permissions && (
+                          <>
+                            {can.view ? (
+                              <AssetsTable
+                                language={process.language}
+                                loading={loadingAssets}
+                                getActions={getAssetsActions}
+                              />
+                            ) : (
+                              <Alert severity="error">
+                                {t(
+                                  "You do not have access to the resources of this task"
+                                )}
+                              </Alert>
+                            )}
+                          </>
+                        )}
+
+                        <Box sx={{ textAlign: "center", width: "100%" }}>
+                          <Stack spacing={2}>
+                            <Button
+                              id="basic-button"
+                              aria-controls={open ? "basic-menu" : undefined}
+                              aria-haspopup="true"
+                              aria-expanded={open ? "true" : undefined}
+                              onClick={() => setCatalogueOpen(true)}
+                              variant="contained"
+                              sx={{ mt: 2 }}
+                              disabled={!can.create}
+                            >
+                              <>{t("Open catalogue")}</>
+                            </Button>
+                            <Button
+                              id="basic-button"
+                              aria-controls={open ? "basic-menu" : undefined}
+                              aria-haspopup="true"
+                              aria-expanded={open ? "true" : undefined}
+                              onClick={handleClick}
+                              variant="contained"
+                              endIcon={<KeyboardArrowDown />}
+                              disabled={!can.create}
+                            >
+                              <>{t("Initiate procedure")}</>
+                            </Button>
+                          </Stack>
+                        </Box>
+                      </>
+                    )}
                   </Box>
-                </Dialog>
-                <Dialog
-                  open={externalAssetOpen}
-                  onClose={() => setExternalAssetOpen(false)}
-                >
-                  <DialogContent sx={{ p: 2 }}>
-                    <Formik
-                      initialValues={{
-                        name: "",
-                        uri: "",
-                      }}
-                      validationSchema={Yup.object().shape({
-                        name: Yup.string()
-                          .min(3, "Must be at least 3 characters")
-                          .max(255)
-                          .required("Required"),
-                        uri: Yup.string()
-                          .min(3, "Must be at least 3 characters")
-                          .required("Required"),
-                      })}
-                      onSubmit={(
-                        values,
-                        { setErrors, setStatus, setSubmitting }
-                      ) => {
-                        setSubmitting(true);
-                        assetsApi
-                          .create_external(
-                            selectedTreeItem.id,
-                            null,
-                            values.name,
-                            values.uri
-                          )
-                          .then((res) => {
-                            setStatus({ success: true });
-                            setSubmitting(false);
-                            getAssets();
-                            setExternalAssetOpen(false);
-                          })
-                          .catch((err) => {
-                            setStatus({ success: false });
-                            setErrors({ submit: err });
-                            setSubmitting(false);
-                          });
+
+                  <Dialog
+                    open={catalogueOpen}
+                    onClose={() => setCatalogueOpen(false)}
+                    maxWidth="lg"
+                    fullWidth
+                  >
+                    <IconButton
+                      aria-label="close"
+                      onClick={() => setCatalogueOpen(false)}
+                      sx={{
+                        position: "absolute",
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
                       }}
                     >
-                      {({
-                        errors,
-                        handleBlur,
-                        handleChange,
-                        handleSubmit,
-                        isSubmitting,
-                        setFieldValue,
-                        setFieldTouched,
-                        touched,
-                        values,
-                      }) => (
-                        <form onSubmit={handleSubmit}>
-                          <Box sx={{ mt: 2 }}>
-                            <TextField
-                              required
-                              error={Boolean(touched.name && errors.name)}
-                              fullWidth
-                              helperText={touched.name && errors.name}
-                              label="Name"
-                              name="name"
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              onClick={() => setFieldTouched("name")}
-                              value={values.name}
-                              variant="outlined"
-                            />
-                            <TextField
-                              required
-                              sx={{ mt: 2 }}
-                              error={Boolean(touched.uri && errors.uri)}
-                              fullWidth
-                              helperText={touched.uri && errors.uri}
-                              label="URI"
-                              name="uri"
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              onClick={() => setFieldTouched("uri")}
-                              value={values.uri}
-                              variant="outlined"
-                            />
-                            <LoadingButton
-                              sx={{ mt: 2 }}
-                              variant="contained"
-                              fullWidth
-                              loading={isSubmitting}
-                              onClick={handleSubmit}
-                            >
-                              {t("Create")}
-                            </LoadingButton>
-                          </Box>
-                        </form>
-                      )}
-                    </Formik>
-                  </DialogContent>
-                </Dialog>
-
-                <Dialog
-                  open={claimDialogOpen}
-                  onClose={() => setClaimDialogOpen(false)}
-                >
-                  <IconButton
-                    aria-label="close"
-                    onClick={() => setClaimDialogOpen(false)}
-                    sx={{
-                      position: "absolute",
-                      right: 8,
-                      top: 8,
-                      color: (theme) => theme.palette.grey[500],
-                    }}
-                  >
-                    <Close />
-                  </IconButton>
-
-                  <DialogContent sx={{ p: 2 }}>
-                    <Formik
-                      initialValues={{
-                        title: "",
-                        description: "",
-                        claim_type: "",
+                      <Close />
+                    </IconButton>
+                    <Box
+                      sx={{
+                        minWidth: "70vh",
+                        p: 7,
+                        backgroundColor: "background.default",
                       }}
-                      validationSchema={Yup.object().shape({
-                        title: Yup.string()
-                          .min(3, "Must be at least 3 characters")
-                          .max(255)
-                          .required("Required"),
-                        description: Yup.string()
-                          .min(3, "Must be at least 3 characters")
-                          .required("Required"),
-                      })}
-                      onSubmit={(
-                        values,
-                        { setErrors, setStatus, setSubmitting }
-                      ) => {
-                        //Verify that the task is not closed
-                        if (selectedTreeItem.status == "finished") {
-                          setSubmitting(false);
-                          setClaimDialogOpen(false);
-                          return alert(
-                            t(
-                              "The task is closed you can't make a claim. Please contact to the administrator to reopen this task."
+                    >
+                      <InterlinkerBrowse
+                        language={process.language}
+                        initialFilters={{
+                          problemprofiles: selectedTreeItem.problemprofiles,
+                        }}
+                        onInterlinkerClick={(interlinker) => {
+                          setCatalogueOpen(false);
+                          setStep(0);
+                          setSelectedInterlinker(interlinker);
+                          setNewAssetDialogOpen(true);
+                        }}
+                      />
+                    </Box>
+                  </Dialog>
+                  <Dialog
+                    open={externalAssetOpen}
+                    onClose={() => setExternalAssetOpen(false)}
+                  >
+                    <DialogContent sx={{ p: 2 }}>
+                      <Formik
+                        initialValues={{
+                          name: "",
+                          uri: "",
+                        }}
+                        validationSchema={Yup.object().shape({
+                          name: Yup.string()
+                            .min(3, "Must be at least 3 characters")
+                            .max(255)
+                            .required("Required"),
+                          uri: Yup.string()
+                            .min(3, "Must be at least 3 characters")
+                            .required("Required"),
+                        })}
+                        onSubmit={(
+                          values,
+                          { setErrors, setStatus, setSubmitting }
+                        ) => {
+                          setSubmitting(true);
+                          assetsApi
+                            .create_external(
+                              selectedTreeItem.id,
+                              null,
+                              values.name,
+                              values.uri
                             )
-                          );
-                        }
-
-                        setSubmitting(true);
-
-                        //Defino el link del asset
-                        let selectedAssetLink = "";
-                        let selectedAssetIcon = "";
-                        let selectedShowIcon = "";
-                        let selectedShowLink = "";
-
-                        if (selectedAsset.type == "externalasset") {
-                          //Is external
-                          selectedAssetLink = selectedAsset.uri;
-
-                          if (selectedAsset.icon_path) {
-                            selectedAssetIcon = selectedAsset.icon_path;
-                          } else {
-                            selectedAssetIcon =
-                              "/static/graphics/external_link.svg";
-                          }
-
-                          selectedShowIcon = "";
-                          selectedShowLink = "hidden";
-                        } else {
-                          if (selectedAsset.link) {
-                            //Is internal
-                            selectedAssetLink = selectedAsset.link + "/view";
-                          } else {
-                            const backend =
-                              selectedAsset["software_response"]["backend"];
-                            const linkAsset =
-                              backend +
-                              "/" +
-                              selectedAsset["external_asset_id"] +
-                              "/view";
-                            selectedAssetLink = linkAsset;
-                            selectedAssetIcon =
-                              selectedAsset["internalData"]["icon"];
-                          }
-                          selectedShowIcon = "";
-                          selectedShowLink = "hidden";
-                        }
-
-                        function escape(htmlStr) {
-                          return htmlStr
-                            .replace(/&/g, "&amp;")
-                            .replace(/</g, "&lt;")
-                            .replace(/>/g, "&gt;")
-                            .replace(/"/g, "&quot;")
-                            .replace(/'/g, "&#39;");
-                        }
-
-                        const parametersList = {
-                          assetId: selectedAsset.id,
-                          assetName: "{assetid:" + selectedAsset.id + "}",
-                          assetLink: selectedAssetLink,
-                          assetIcon: selectedAssetIcon,
-                          commentTitle: escape(values.title),
-                          commentDescription: escape(values.description),
-                          treeitem_id: selectedTreeItem.id,
-                          treeItemName: escape(selectedTreeItem.name),
-                          copro_id: process.id,
-                          showIcon: selectedShowIcon,
-                          showLink: selectedShowLink,
-                        };
-
-                        const paramListJson = JSON.stringify(parametersList);
-                        // console.log(parametersList)
-                        const dataToSend = {
-                          coproductionprocess_id: process.id,
-                          notification_event: "add_contribution_asset",
-                          asset_id: selectedAsset.id,
-                          parameters: paramListJson,
-                          claim_type: "Development",
-                        };
-
-                        coproductionprocessnotificationsApi
-                          .createbyEvent(dataToSend)
-                          .then((res) => {
-                            setStatus({ success: true });
-                            setSubmitting(false);
-                            // getAssets();
-                            getContributions();
-                            setClaimDialogOpen(false);
-                            //Refresh Contribution data
-                            getContributionsData(selectedTreeItem.id);
-
-                            //Register an event in matomo
-                            trackEvent({
-                              category: process.name,
-                              action: "claim-contribution",
-                              name: res.id,
-                              customDimensions: [
-                                {
-                                  id: 1,
-                                  value: 'developer',
-                                },
-                              ]
+                            .then((res) => {
+                              setStatus({ success: true });
+                              setSubmitting(false);
+                              getAssets();
+                              setExternalAssetOpen(false);
+                            })
+                            .catch((err) => {
+                              setStatus({ success: false });
+                              setErrors({ submit: err });
+                              setSubmitting(false);
                             });
-                          })
-                          .catch((err) => {
-                            setStatus({ success: false });
-                            setErrors({ submit: err });
-                            console.log(err);
-                            setSubmitting(false);
-                          });
+                        }}
+                      >
+                        {({
+                          errors,
+                          handleBlur,
+                          handleChange,
+                          handleSubmit,
+                          isSubmitting,
+                          setFieldValue,
+                          setFieldTouched,
+                          touched,
+                          values,
+                        }) => (
+                          <form onSubmit={handleSubmit}>
+                            <Box sx={{ mt: 2 }}>
+                              <TextField
+                                required
+                                error={Boolean(touched.name && errors.name)}
+                                fullWidth
+                                helperText={touched.name && errors.name}
+                                label="Name"
+                                name="name"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                onClick={() => setFieldTouched("name")}
+                                value={values.name}
+                                variant="outlined"
+                              />
+                              <TextField
+                                required
+                                sx={{ mt: 2 }}
+                                error={Boolean(touched.uri && errors.uri)}
+                                fullWidth
+                                helperText={touched.uri && errors.uri}
+                                label="URI"
+                                name="uri"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                onClick={() => setFieldTouched("uri")}
+                                value={values.uri}
+                                variant="outlined"
+                              />
+                              <LoadingButton
+                                sx={{ mt: 2 }}
+                                variant="contained"
+                                fullWidth
+                                loading={isSubmitting}
+                                onClick={handleSubmit}
+                              >
+                                {t("Create")}
+                              </LoadingButton>
+                            </Box>
+                          </form>
+                        )}
+                      </Formik>
+                    </DialogContent>
+                  </Dialog>
+
+                  <Dialog
+                    open={claimDialogOpen}
+                    onClose={() => setClaimDialogOpen(false)}
+                  >
+                    <IconButton
+                      aria-label="close"
+                      onClick={() => setClaimDialogOpen(false)}
+                      sx={{
+                        position: "absolute",
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
                       }}
                     >
-                      {({
-                        errors,
-                        handleBlur,
-                        handleChange,
-                        handleSubmit,
-                        isSubmitting,
-                        setFieldValue,
-                        setFieldTouched,
-                        touched,
-                        values,
-                      }) => (
-                        <form onSubmit={handleSubmit}>
-                          <Box sx={{ mt: 3 }}>
-                            <Typography variant="h6" component="h2">
-                              Introduce the details of your contribution:
-                            </Typography>
-                            <TextField
-                              required
-                              error={Boolean(touched.title && errors.title)}
-                              fullWidth
-                              helperText={touched.title && errors.title}
-                              label="Title"
-                              name="title"
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              onClick={() => setFieldTouched("title")}
-                              value={values.title}
-                              variant="outlined"
-                              sx={{ mt: 3 }}
-                            />
-                            <TextField
-                              required
-                              sx={{ mt: 2 }}
-                              rows={4}
-                              multiline
-                              error={Boolean(
-                                touched.description && errors.description
-                              )}
-                              fullWidth
-                              helperText={
-                                touched.description && errors.description
-                              }
-                              label="Description"
-                              name="description"
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              onClick={() => setFieldTouched("description")}
-                              value={values.description}
-                              variant="outlined"
-                            />
+                      <Close />
+                    </IconButton>
 
-                            {/* <TextField
-                              required
-                              sx={{ mt: 2 }}
-                              select
-                              fullWidth
-                              label="Claim Type"
-                              name="claim_type"
-                              value={values.claim_type}
-                              onChange={handleChange}
-                              error={Boolean(touched.claim_type && errors.claim_type)}
-                              helperText={touched.claim_type && errors.claim_type}
-                              variant='outlined'
-                            >
+                    <DialogContent sx={{ p: 2 }}>
+                      <Formik
+                        initialValues={{
+                          title: "",
+                          description: "",
+                          action_role: "",
+                        }}
+                        validationSchema={Yup.object().shape({
+                          title: Yup.string()
+                            .min(3, "Must be at least 3 characters")
+                            .max(255)
+                            .required("Required"),
+                          description: Yup.string()
+                            .min(3, "Must be at least 3 characters")
+                            .required("Required")
+                        })}
+                        onSubmit={(
+                          values,
+                          { setErrors, setStatus, setSubmitting }
+                        ) => {
+                          //Verify that the task is not closed
+                          if (selectedTreeItem.status == "finished") {
+                            setSubmitting(false);
+                            setClaimDialogOpen(false);
+                            return alert(
+                              t(
+                                "The task is closed you can't make a claim. Please contact to the administrator to reopen this task."
+                              )
+                            );
+                          }
 
+                          setSubmitting(true);
 
-                              <MenuItem value="Management">{t('Management')}</MenuItem>
+                          //Defino el link del asset
+                          let selectedAssetLink = "";
+                          let selectedAssetIcon = "";
+                          let selectedShowIcon = "";
+                          let selectedShowLink = "";
+
+                          if (selectedAsset.type == "externalasset") {
+                            //Is external
+                            selectedAssetLink = selectedAsset.uri;
+
+                            if (selectedAsset.icon_path) {
+                              selectedAssetIcon = selectedAsset.icon_path;
+                            } else {
+                              selectedAssetIcon =
+                                "/static/graphics/external_link.svg";
+                            }
+
+                            selectedShowIcon = "";
+                            selectedShowLink = "hidden";
+                          } else {
+                            if (selectedAsset.link) {
+                              //Is internal
+                              selectedAssetLink = selectedAsset.link + "/view";
+                            } else {
+                              const backend =
+                                selectedAsset["software_response"]["backend"];
+                              const linkAsset =
+                                backend +
+                                "/" +
+                                selectedAsset["external_asset_id"] +
+                                "/view";
+                              selectedAssetLink = linkAsset;
+                              selectedAssetIcon =
+                                selectedAsset["internalData"]["icon"];
+                            }
+                            selectedShowIcon = "";
+                            selectedShowLink = "hidden";
+                          }
+
+                          function escape(htmlStr) {
+                            return htmlStr
+                              .replace(/&/g, "&amp;")
+                              .replace(/</g, "&lt;")
+                              .replace(/>/g, "&gt;")
+                              .replace(/"/g, "&quot;")
+                              .replace(/'/g, "&#39;");
+                          }
+
+                          const parametersList = {
+                            assetId: selectedAsset.id,
+                            assetName: "{assetid:" + selectedAsset.id + "}",
+                            assetLink: selectedAssetLink,
+                            assetIcon: selectedAssetIcon,
+                            commentTitle: escape(values.title),
+                            commentDescription: escape(values.description),
+                            treeitem_id: selectedTreeItem.id,
+                            treeItemName: escape(selectedTreeItem.name),
+                            copro_id: process.id,
+                            showIcon: selectedShowIcon,
+                            showLink: selectedShowLink,
+                          };
+
+                          const paramListJson = JSON.stringify(parametersList);
+                          // console.log(parametersList)
+                          const dataToSend = {
+                            coproductionprocess_id: process.id,
+                            notification_event: "add_contribution_asset",
+                            asset_id: selectedAsset.id,
+                            parameters: paramListJson,
+                            claim_type: "Development",
+                          };
+
+                          let action_role_value="";
+                          if(userRoles.length==1){
+                            action_role_value=userRoles[0].type;
+                          }else if(userRoles.length>1){
+                            action_role_value=values.action_role;
+                          }
+                            
+                          //alert(action_role_value)
+
+                          coproductionprocessnotificationsApi
+                            .createbyEvent(dataToSend)
+                            .then((res) => {
+                              setStatus({ success: true });
+                              setSubmitting(false);
+                              // getAssets();
+                              getContributions();
+                              setClaimDialogOpen(false);
+                              //Refresh Contribution data
+                              getContributionsData(selectedTreeItem.id);
+
+                              //Register an event in matomo
+                              trackEvent({
+                                category: process.name,
+                                action: "claim-contribution",
+                                name: res.id,
+                                customDimensions: [
+                                  {
+                                    id: 1,
+                                    value: action_role_value,
+                                  },
+                                ],
+                              });
+                            })
+                            .catch((err) => {
+                              setStatus({ success: false });
+                              setErrors({ submit: err });
+                              console.log(err);
+                              setSubmitting(false);
+                            });
+                        }}
+                      >
+                        {({
+                          errors,
+                          handleBlur,
+                          handleChange,
+                          handleSubmit,
+                          isSubmitting,
+                          setFieldValue,
+                          setFieldTouched,
+                          touched,
+                          values,
+                        }) => (
+                          <form onSubmit={handleSubmit}>
+                            <Box sx={{ mt: 3 }}>
+                              <Typography variant="h6" component="h2">
+                                Introduce the details of your contribution:
+                              </Typography>
+                              <TextField
+                                required
+                                error={Boolean(touched.title && errors.title)}
+                                fullWidth
+                                helperText={touched.title && errors.title}
+                                label="Title"
+                                name="title"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                onClick={() => setFieldTouched("title")}
+                                value={values.title}
+                                variant="outlined"
+                                sx={{ mt: 3 }}
+                              />
+                              <TextField
+                                required
+                                sx={{ mt: 2 }}
+                                rows={4}
+                                multiline
+                                error={Boolean(
+                                  touched.description && errors.description
+                                )}
+                                fullWidth
+                                helperText={
+                                  touched.description && errors.description
+                                }
+                                label="Description"
+                                name="description"
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                onClick={() => setFieldTouched("description")}
+                                value={values.description}
+                                variant="outlined"
+                              />
+
+                              {userRoles.length > 1 && (
+                                <TextField
+                                  required
+                                  sx={{ mt: 2 }}
+                                  select
+                                  fullWidth
+                                  label="Action Role"
+                                  name="action_role"
+                                  value={values.action_role}
+                                  onChange={handleChange}
+                                  error={Boolean(
+                                    touched.action_role && errors.action_role
+                                  )}
+                                  helperText={
+                                    touched.action_role && errors.action_role
+                                  }
+                                  variant="outlined"
+                                >
+                                  {userRoles.map((option) => {
+                                    const optionLabel = option
+                                      .replace(/_/g, " ")
+                                      .split(" ")
+                                      .map(
+                                        (word) =>
+                                          word.charAt(0).toUpperCase() +
+                                          word.slice(1)
+                                      )
+                                      .join(" ");
+                                    return (
+                                    <MenuItem
+                                      key={"mi-" + option}
+                                      value={option}
+                                    >
+                                      {t(optionLabel)}
+                                    </MenuItem>
+                                  )})}
+                                  {/* <MenuItem value="Management">{t('Management')}</MenuItem>
                               <MenuItem value="Development">{t('Development')}</MenuItem>
-                              <MenuItem value="Exploitation">{t('Exploitation')}</MenuItem>
+                              <MenuItem value="Exploitation">{t('Exploitation')}</MenuItem> */}
+                                </TextField>
+                              )}
+                              <LoadingButton
+                                sx={{ mt: 2 }}
+                                variant="contained"
+                                fullWidth
+                                loading={isSubmitting}
+                                onClick={handleSubmit}
+                              >
+                                {t("Claim")}
+                              </LoadingButton>
+                            </Box>
+                          </form>
+                        )}
+                      </Formik>
+                    </DialogContent>
+                  </Dialog>
 
-                                      
-                                    </TextField> */}
-                            <LoadingButton
-                              sx={{ mt: 2 }}
-                              variant="contained"
-                              fullWidth
-                              loading={isSubmitting}
-                              onClick={handleSubmit}
-                            >
-                              {t("Claim")}
-                            </LoadingButton>
-                          </Box>
-                        </form>
-                      )}
-                    </Formik>
-                  </DialogContent>
-                </Dialog>
-
-                <Menu
-                  id="basic-menu"
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleMenuClose}
-                  MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                  }}
-                >
-                  <MenuItem
-                    onClick={() => {
-                      setExternalAssetOpen(true);
-                      handleMenuClose();
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleMenuClose}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
                     }}
                   >
-                    <Avatar
-                      src="https://cdn-icons-png.flaticon.com/512/282/282100.png"
-                      sx={{ mr: 2, height: "20px", width: "20px" }}
-                    />
-                    {t("Link an external resource")}
-                  </MenuItem>
-                  {softwareInterlinkers.map((si) => (
                     <MenuItem
-                      key={si.id}
                       onClick={() => {
-                        setStep(1);
-                        setSelectedInterlinker(si);
-                        setNewAssetDialogOpen(true);
+                        setExternalAssetOpen(true);
                         handleMenuClose();
                       }}
                     >
                       <Avatar
-                        variant="rounded"
-                        src={si.logotype_link}
+                        src="https://cdn-icons-png.flaticon.com/512/282/282100.png"
                         sx={{ mr: 2, height: "20px", width: "20px" }}
                       />
-                      {si.instantiate_text}
+                      {t("Link an external resource")}
                     </MenuItem>
-                  ))}
-                </Menu>
-              </Box>
-              {selectedInterlinker && (
-                <NewAssetModal
-                  handleUserClose={() => {
-                    setNewAssetDialogOpen(false);
-                    setTimeout(() => {
-                      setStep(0);
-                    }, 1000);
-                    setCatalogueOpen(true);
-                  }}
-                  handleFinish={() => {
-                    setNewAssetDialogOpen(false);
-                    setTimeout(() => {
-                      setStep(0);
-                    }, 1000);
-                  }}
-                  open={newAssetDialogOpen}
-                  activeStep={step}
-                  setStep={setStep}
-                  selectedInterlinker={selectedInterlinker}
-                  treeitem={selectedTreeItem}
-                  onCreate={() =>
-                    dispatch(getTree(process.id, selectedTreeItem.id))
-                  }
-                />
-              )}
-            </>
-          )}
-          {tabValue === "contributions" && (
-            <ContributionsTabs
-            //contributions={contributions}
-            //setContributions={setContributions}
+                    {softwareInterlinkers.map((si) => (
+                      <MenuItem
+                        key={si.id}
+                        onClick={() => {
+                          setStep(1);
+                          setSelectedInterlinker(si);
+                          setNewAssetDialogOpen(true);
+                          handleMenuClose();
+                        }}
+                      >
+                        <Avatar
+                          variant="rounded"
+                          src={si.logotype_link}
+                          sx={{ mr: 2, height: "20px", width: "20px" }}
+                        />
+                        {si.instantiate_text}
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </Box>
+                {selectedInterlinker && (
+                  <NewAssetModal
+                    handleUserClose={() => {
+                      setNewAssetDialogOpen(false);
+                      setTimeout(() => {
+                        setStep(0);
+                      }, 1000);
+                      setCatalogueOpen(true);
+                    }}
+                    handleFinish={() => {
+                      setNewAssetDialogOpen(false);
+                      setTimeout(() => {
+                        setStep(0);
+                      }, 1000);
+                    }}
+                    open={newAssetDialogOpen}
+                    activeStep={step}
+                    setStep={setStep}
+                    selectedInterlinker={selectedInterlinker}
+                    treeitem={selectedTreeItem}
+                    onCreate={() =>
+                      dispatch(getTree(process.id, selectedTreeItem.id))
+                    }
+                  />
+                )}
+              </>
+            )}
+            {tabValue === "contributions" && (
+              <ContributionsTabs
+              //contributions={contributions}
+              //setContributions={setContributions}
 
-            // element={selectedTreeItem}
-            // your_permissions={permissions && permissions.your_permissions}
-            // your_roles={permissions && permissions.your_roles}
-            // language={process.language}
-            // processId={process.id}
-            // element={selectedTreeItem}
-            // isAdministrator={isAdministrator}
-            />
-          )}
-        </Box>
+              // element={selectedTreeItem}
+              // your_permissions={permissions && permissions.your_permissions}
+              // your_roles={permissions && permissions.your_roles}
+              // language={process.language}
+              // processId={process.id}
+              // element={selectedTreeItem}
+              // isAdministrator={isAdministrator}
+              />
+            )}
+          </Box>
 
-        <AssetsShare
-          open={assetsShareOpen}
-          setOpen={setAssetsShareOpen}
-          loading={assetsShareLoading}
-          setLoading={setAssetsShareLoading}
-          asset={selectedAsset}
-        />
-      </Grid>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={4000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        key={"top" + "center"}
-      >
-        <Alert
+          <AssetsShare
+            open={assetsShareOpen}
+            setOpen={setAssetsShareOpen}
+            loading={assetsShareLoading}
+            setLoading={setAssetsShareLoading}
+            asset={selectedAsset}
+          />
+        </Grid>
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={4000}
           onClose={handleCloseSnackbar}
-          severity="error"
-          sx={{ width: "100%", fontSize: "1rem", fontWeight: "600" }}
-         
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          key={"top" + "center"}
         >
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+          <Alert
+            onClose={handleCloseSnackbar}
+            severity="error"
+            sx={{ width: "100%", fontSize: "1rem", fontWeight: "600" }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
       </>
-      
     )
   );
 };
