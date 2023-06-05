@@ -59,6 +59,7 @@ import useAuth from "hooks/useAuth";
 
 import { REACT_APP_COMPLETE_DOMAIN } from "configuration";
 import AssetsShare from "./AssetsShare";
+import { set } from "store";
 
 
 const RightSide = ({ softwareInterlinkers }) => {
@@ -70,6 +71,8 @@ const RightSide = ({ softwareInterlinkers }) => {
   const { assetsList, contributions, contributionslistlevels } = useSelector((state) => state.general);
   const { user } = useAuth();
   const [userRoles, setUserRoles] = useState([]);
+  const [userTeams, setUserTeams] = useState([]);
+
   const isTask = selectedTreeItem && selectedTreeItem.type === "task";
   const [step, setStep] = useState(0);
   const [assets, setAssets] = useState([]);
@@ -307,6 +310,23 @@ const RightSide = ({ softwareInterlinkers }) => {
 
     setAnchorEl(null);
     setClaimDialogOpen(true);
+
+    //Set the possible roles:
+    let listofRoles = [];
+    setUserRoles([]);
+    async function getRoles(asset) {
+      for (let i = 0; i < user.teams_ids.length; i++) {
+        if(user.teams_ids[i] in selectedTreeItem.teams){
+          const user_team = await teamsApi.get(user.teams_ids[i]);
+          listofRoles.push(user_team.type);
+        }
+      }
+      setUserRoles(listofRoles);
+    }
+    getRoles(asset);
+
+    
+
   };
 
   const handleEdit = (asset) => {
@@ -515,18 +535,7 @@ const RightSide = ({ softwareInterlinkers }) => {
   };
 
 
-  useEffect(() => {
-    let listofRoles = [];
-    async function getRoles() {
-      for (let i = 0; i < user.teams_ids.length; i++) {
-        const role = await teamsApi.get(user.teams_ids[i]);
-        listofRoles.push(role.type);
-      }
-      setUserRoles(listofRoles);
-    }
-    getRoles();
 
-  }, []);
 
   
   
