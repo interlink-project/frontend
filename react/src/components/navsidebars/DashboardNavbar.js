@@ -55,7 +55,7 @@ const pages = [
     dataCy: "Organizations-page",
   },
   {
-    label: i18n.t("Interlinkers"),
+    label: i18n.t("Catalogue"),
     path: "/dashboard/interlinkers",
     dataCy: "Catalogue-page",
   },
