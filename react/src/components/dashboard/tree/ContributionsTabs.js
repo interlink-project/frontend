@@ -226,7 +226,9 @@ const ContributionsTabs = () => {
               for (let j = 0; j < listAllowedTeams.length; j++) {
                 if (user_temp.teams_ids[i] === listAllowedTeams[j].id) {
                   const user_team = await teamsApi.get(user_temp.teams_ids[i]);
-                  listofRoles.push(user_team.type);
+                  if (!listofRoles.includes(user_team.type)){
+                    listofRoles.push(user_team.type);
+                  }
                 }
               }
             }
