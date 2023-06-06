@@ -109,7 +109,7 @@ export default function Overview({ }) {
             )}
             
             { !process.is_part_of_publication &&(
-            <Tab value="notifications" label={`${t("Notifications")} (${ notificationsList.length}) `} />
+            <Tab value="notifications" label={`${t("Activities")} (${ notificationsList.length}) `} />
             )}
           </Tabs>
         </Paper>
