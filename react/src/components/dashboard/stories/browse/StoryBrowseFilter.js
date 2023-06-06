@@ -12,7 +12,7 @@ import { useCustomTranslation } from "hooks/useDependantTranslation";
 import useMounted from "hooks/useMounted";
 import React, { useEffect, useState } from "react";
 import MultiSelect from "../../../MultiSelect";
-import { tagsApi } from "__api__";
+import { keywordsApi } from "__api__";
 
 const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
   const [inputValue, setInputValue] = useState(filters.search);
@@ -21,7 +21,7 @@ const StoryBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    tagsApi.getMulti({}, language).then((res) => {
+    keywordsApi.getMulti({}, language).then((res) => {
       if (mounted.current) {
         setTags(res);
       }
