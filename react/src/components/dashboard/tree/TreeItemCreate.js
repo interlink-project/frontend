@@ -177,7 +177,7 @@ const TreeItemCreate = ({ open, setOpen, loading, setLoading, onCreate }) => {
                                 onChange={(event) => {
                                     setPrerequistes_id(event.target.value);
                                 }}
-                                label={t("Prerequisite item")}
+                                label={t("Previous item")}
                             >
                                 {type === "phase" &&
                                     treeitems.filter(el => el.type === type && !el.is_disabled).map(el => <MenuItem key={el.id} value={el.id}>{el.name}</MenuItem>)
