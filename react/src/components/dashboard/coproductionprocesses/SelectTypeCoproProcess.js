@@ -1,26 +1,15 @@
 import React from "react";
 import {
-  Avatar,
   Box,
   Grid,
-  Item,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   CardContent,
-  Button,
-  CardActions,
   Card,
-  FormControl,
-  IconButton,
   Input,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
   Typography,
-  Stack,
   Chip,
 } from "@mui/material";
 
@@ -31,6 +20,8 @@ import { getLanguage, LANGUAGES } from "translations/i18n";
 import { recommenderApi } from "__api__";
 import { Done, Delete, Close, KeyboardArrowRight } from "@mui/icons-material";
 import SelectGovernanceModel from "./SelectGovernanceModel";
+import { useSelector } from 'react-redux';
+import { useCustomTranslation } from 'hooks/useDependantTranslation';
 
 export default function SelectTypeCoproProcess({
   open,
@@ -38,8 +29,9 @@ export default function SelectTypeCoproProcess({
   loading,
   setLoading,
 }) {
-  const [language, setLanguage] = useState(getLanguage());
-  const { t } = useTranslation();
+  const { process } = useSelector((state) => state.process);
+  
+  const t = useCustomTranslation(process.language);
 
   const [listKeywords, setListKeywords] = useState(
     t("list-tags-governance-predefined").split(",")
@@ -59,10 +51,6 @@ export default function SelectTypeCoproProcess({
 
   const handleNext = async () => {
     setLoading(true);
-    console.log({
-      language,
-    });
-
     //Actions for next
     //Save the tags related to the process.
     //Create the training data
