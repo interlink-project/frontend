@@ -33,7 +33,7 @@ import {
   KeyboardArrowDown,
   OpenInNew,
 } from "@mui/icons-material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import {
   Article,
   MoreVert as MoreVertIcon,
@@ -456,6 +456,33 @@ const Assets = ({ language, loading, getActions = null }) => {
     };
   });
 
+  const QuickSearchToolbar = () => {
+    return (
+      <Box
+        sx={{
+          pl: 1,
+          pr: 1,
+          pb: 2,
+          pt: 1,
+          display: 'flex',
+        }}
+      >
+        <GridToolbarQuickFilter
+          style={{ flex: 1 }}
+
+          quickFilterParser={(searchInput) =>
+            searchInput
+              .split(',')
+              .map((value) => value.trim())
+              .filter((value) => value !== '')
+          }
+          debounceMs={600}
+        />
+      </Box>
+    );
+
+  };
+
   return (
     <>
       {!loading ? (
@@ -479,7 +506,13 @@ const Assets = ({ language, loading, getActions = null }) => {
             <DataGrid
               rows={rows}
               columns={columns}
+              components={{
+                Toolbar: QuickSearchToolbar,
+              }}
               pageSize={pageSize}
+              disableColumnFilter
+              disableColumnSelector
+              disableDensitySelector
               onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
               rowsPerPageOptions={[5, 10, 20]}
               disableSelectionOnClick

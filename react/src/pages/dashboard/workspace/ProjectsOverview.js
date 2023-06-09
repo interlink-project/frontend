@@ -16,7 +16,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, GridToolbarQuickFilter } from "@mui/x-data-grid";
 import { Add, Folder, MenuBook } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import AuthGuardSkeleton from "components/guards/AuthGuardSkeleton";
@@ -125,6 +125,33 @@ const ProjectsOverview = () => {
     return moment(a).diff(moment(b));
   };
 
+  const QuickSearchToolbar = () => {
+    return (
+      <Box
+        sx={{
+          pl: 1,
+          pr: 1,
+          pb: 2,
+          pt: 1,
+          display: 'flex',
+        }}
+      >
+        <GridToolbarQuickFilter
+          style={{ flex: 1 }}
+
+          quickFilterParser={(searchInput) =>
+            searchInput
+              .split(',')
+              .map((value) => value.trim())
+              .filter((value) => value !== '')
+          }
+          debounceMs={600}
+        />
+      </Box>
+    );
+
+  };
+
   const columns = [
     {
       field: "icon",
@@ -132,6 +159,7 @@ const ProjectsOverview = () => {
       sortable: false,
       flex: 0.05,
       disableColumnMenu: true,
+      filterable: false,
       renderCell: (params) => {
         return params.row.is_part_of_publication ? (
           <MenuBook sx={{ mr: 1 }} />
@@ -155,6 +183,7 @@ const ProjectsOverview = () => {
       renderCell: (params) => {
         return <b>{params.row.name}</b>;
       },
+      valueGetter: (params) => { return params.row.name },
     },
     {
       field: "tags",
@@ -163,6 +192,8 @@ const ProjectsOverview = () => {
       headerAlign: "center",
       align: "center",
       sortable: false,
+      disableColumnMenu: true,
+      filterable: false,
       valueGetter: (params) => {
         if (params.value.length == 0) return t("No tags");
         let tmp_tags = [];
@@ -190,6 +221,7 @@ const ProjectsOverview = () => {
       flex: 1,
       align: "center",
       headerAlign: "center",
+      filterable: false,
       valueGetter: (params) => {
         return params.row.created_at;
       },
@@ -206,6 +238,7 @@ const ProjectsOverview = () => {
       align: "center",
       sortable: false,
       disableColumnMenu: true,
+      filterable: false,
       renderCell: (params) => {
         return <StatusChip t={t} status={params.row.status} />;
       },
@@ -218,6 +251,7 @@ const ProjectsOverview = () => {
       align: "center",
       sortable: false,
       disableColumnMenu: true,
+      filterable: false,
       renderCell: (params) => {
         return (
           <AvatarGroup max={5} variant="rounded">
@@ -247,6 +281,7 @@ const ProjectsOverview = () => {
       align: "center",
       sortable: false,
       disableColumnMenu: true,
+      filterable: false,
       renderCell: (params) => {
         return params.row.participation.map((p) => <Chip key={p} label={p} />);
       },
@@ -397,21 +432,19 @@ const ProjectsOverview = () => {
               </Grid>
             </Grid>
             <Box sx={{ mt: 4 }}>
-              {/* <Box sx={{ mb: 2 }}>
-                <SearchBox
-                  loading={loadingProcesses}
-                  inputValue={searchValue}
-                  setInputValue={setSearchValue}
-                  datacy={"search-process"}
-                />
-              </Box> */}
               <DataGrid
                 rows={rows}
                 columns={columns}
+                components={{
+                  Toolbar: QuickSearchToolbar,
+                }}
                 pageSize={pageSize}
                 onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                 rowsPerPageOptions={[5, 10, 20]}
                 disableSelectionOnClick
+                disableColumnFilter
+                disableColumnSelector
+                disableDensitySelector
                 rowSelection={false}
                 disableRowSelectionOnClick={true}
                 autoHeight
