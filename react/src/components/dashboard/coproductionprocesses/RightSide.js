@@ -589,7 +589,8 @@ const RightSide = ({ softwareInterlinkers }) => {
                 {!isLocationCatalogue &&
                   isTask &&
                   isAdministrator &&
-                  !process.is_part_of_publication && (
+                  !process.is_part_of_publication &&
+                  process.game_id && (
                     <Tab
                       value="contributions"
                       label={`${t("Contributions")} (${obtenerNroContributions(
