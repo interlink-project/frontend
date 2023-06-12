@@ -55,12 +55,12 @@ export const routes = [
         children: [
           {
             path: '',
-            element: <AuthGuard><PublicCoproductionProfile /></AuthGuard>
+            element: <PublicCoproductionProfile />
             ,
           },
           {
             path: ':tab',
-            element: <AuthGuard><PublicCoproductionProfile /></AuthGuard>
+            element: <PublicCoproductionProfile />
           },
         ]
       }

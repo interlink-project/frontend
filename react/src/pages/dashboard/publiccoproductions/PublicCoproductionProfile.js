@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useParams } from 'react-router-dom';
 import OverviewPubliccoproduction from './Tabs/Overview';
+import ProfilePubliccoproduction from './Tabs/Profile';
 import { getProcess, setSelectedTreeItem } from 'slices/process';
 import Treeview from './Tabs/Treeview';
 import {
@@ -148,7 +149,8 @@ const PublicCoproductionProfile = () => {
   const tabs = [
     { label: t('Overview'), value: 'overview' },
     { label: t('RoadMap'), value: 'roadmap' },
-    { label: t('Resources'), value: 'resources' }
+    { label: t('Resources'), value: 'resources' },
+    { label: t('Profile'), value: 'profile' }
   ];
 
   return (
@@ -182,6 +184,15 @@ const PublicCoproductionProfile = () => {
                   >
                     <Card sx={style}>
                         <OverviewPubliccoproduction />
+                     
+                    </Card>
+                  </TabPanel>
+                  <TabPanel
+                    value={tab}
+                    index='profile'
+                  >
+                    <Card sx={style}>
+                        <ProfilePubliccoproduction />
                      
                     </Card>
                   </TabPanel>

@@ -65,7 +65,7 @@ const PublicCoproductionSidebar = (props) => {
       items: [
         {
           title: t("Process Overview"),
-          path: `/publiccoproductions/${publiccoproductionId}/overview`,
+          path: `/publiccoproductions/${publiccoproductionId}/profile`,
           icon: <Balcony />,
           disabled: false,
         },

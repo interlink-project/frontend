@@ -8,6 +8,10 @@ import React from "react";
 import useMounted from "hooks/useMounted";
 import { useNavigate } from "react-router-dom";
 
+import SelectTypeCoproProcess from "components/dashboard/coproductionprocesses/SelectTypeCoproProcess";
+import { useDispatch } from "react-redux";
+import { getProcess } from "slices/process";
+
 const PublicCoproductionCatalogue = () => {
   const [open, setOpen] = useState(false);
   const [publiccoproduction, setPublicCoproduction] = useState(null);
@@ -17,6 +21,7 @@ const PublicCoproductionCatalogue = () => {
 
   const mounted = useMounted();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -81,8 +86,9 @@ const PublicCoproductionCatalogue = () => {
               // });
 
               setPublicCoproduction(publiccoproduction);
+              
               handleClickOpen();
-              navigate(publiccoproduction.id + "/overview");
+              navigate(publiccoproduction.id + "/profile");
             }}
           />
         </Container>
