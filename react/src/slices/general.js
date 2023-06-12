@@ -45,6 +45,9 @@ const initialState = {
   selectedStory: null,
   loadingSelectedStory: false,
 
+  selectedPubliccoproduction: null,
+  loadingSelectedPubliccoproduction: false,
+
   assetsList: [],
   loadingAssetsList: false,
 
@@ -95,6 +98,13 @@ const slice = createSlice({
     setLoadingSelectedStory(state, action) {
       state.loadingSelectedStory = action.payload;
     },
+    setSelectedPubliccoproduction(state, action) {
+      state.selectedPubliccoproduction = action.payload;
+    },
+    setLoadingSelectedPubliccoproduction(state, action) {
+      state.loadingSelectedPubliccoproduction = action.payload;
+    },
+
     setAssetsList(state, action) {
       state.assetsList = action.payload;
     },
@@ -207,6 +217,13 @@ export const getSelectedStory = (id) => async (dispatch) => {
   const selectedStory_data = await storiesApi.getStoriesbyId(id);
   dispatch(slice.actions.setSelectedStory(selectedStory_data));
   dispatch(slice.actions.setLoadingSelectedStory(false));
+};
+
+export const getSelectedPubliccoproduction = (id) => async (dispatch) => {
+  dispatch(slice.actions.setLoadingSelectedPubliccoproduction(true));
+  const selectedPubliccoproduction_data = await coproductionProcessesApi.get(id);
+  dispatch(slice.actions.setSelectedPubliccoproduction(selectedPubliccoproduction_data));
+  dispatch(slice.actions.setLoadingSelectedPubliccoproduction(false));
 };
 
 export const getAssetsList_byTask = (task_id) => async (dispatch) => {

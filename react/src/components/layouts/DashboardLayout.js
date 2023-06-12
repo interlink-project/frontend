@@ -66,7 +66,7 @@ const DashboardLayout = () => {
 
   const coproductionProcessLocation = location.pathname.indexOf('/dashboard/coproductionprocesses/') > -1;
   const storyLocation = location.pathname.indexOf('/dashboard/stories/') > -1;
-  const publiccoproductionLocation = location.pathname.indexOf('/dashboard/publiccoproduction/') > -1;
+  const publiccoproductionLocation = location.pathname.indexOf('/dashboard/publiccoproductions/') > -1;
 
   const content = (
     <DashboardLayoutContainer>

@@ -62,7 +62,7 @@ const PublicCoproductionLayout = () => {
   const theme = useTheme();
   const onMobile = !useMediaQuery(theme.breakpoints.up('sm'));
 
-  const publiccoproductionLocation = location.pathname.indexOf('/stories/') > -1;
+  const publiccoproductionLocation = location.pathname.indexOf('/publiccoproductions/') > -1;
 
   const content = (
     <PublicCoproductionLayoutContainer>

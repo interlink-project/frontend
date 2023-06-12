@@ -60,34 +60,24 @@ const PublicCoproductionResults = ({
         .getPublicProcesses({ page: page + 1, size, ...filters }, language)
         .then((res) => {
           
+          console.log(res);
           if (mounted.current) {
             setLoading(false);
             setPage(page + 1);
-            setTotal(res.total);
+            setTotal(res.items.lenght);
             setLoadedRows(
               [...loadedRows, ...res.items].filter(
                 (element, index, self) =>
                   self.indexOf((el) => el.id === element.id) !== index
               )
             );
-            //console.log(loadedRows)
-            // if (filters.search) {
-            //   trackSiteSearch({
-            //     keyword: filters.hasOwnProperty('search') ? filters.search : '',
-            //     category: 'interlinkers',
-            //     count: res.total
-            //   });
-            // }
+
           }
         });
     } catch (err) {
       console.error("Failed to load data: ", err);
     }
 
-    // setLoadedRows(storiesList);
-    // setLoading(false);
-    // setPage(page + 1);
-    // setTotal(storiesList.length);
   };
 
   const handleLoadMore = async () => {
@@ -129,7 +119,7 @@ const PublicCoproductionResults = ({
             },
           }}
           variant="h6"
-          data-cy={`stories-catalogue-total-${total}`}
+          data-cy={`publiccoproductions-catalogue-total-${total}`}
         >
           {t("Processes found", { total })}
         </Typography>
@@ -192,6 +182,7 @@ const PublicCoproductionResults = ({
           xs={12}
           sx={{ justifyContent: "center", textAlign: "center" }}
         >
+         
           {hasNextPage && (
             <LoadingButton
               loading={loading}

@@ -41,7 +41,7 @@ const WelcomeView = Loadable(lazy(() => import('../pages/dashboard/workspace/Pro
 
 export const routes = [
   {
-    path: 'publiccoproduction',
+    path: 'publiccoproductions',
     element: (
       <PublicCoproductionLayout />
     ),

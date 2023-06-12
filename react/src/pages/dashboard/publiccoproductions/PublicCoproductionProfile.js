@@ -14,21 +14,15 @@ import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useParams } from 'react-router-dom';
-import OverviewStory from './Tabs/Overview';
+import OverviewPubliccoproduction from './Tabs/Overview';
 import { getProcess, setSelectedTreeItem } from 'slices/process';
 import Treeview from './Tabs/Treeview';
 import {
   getCoproductionProcessNotifications,
-  getSelectedStory,
+  getSelectedPubliccoproduction,
 } from "slices/general";
 import { getProcessCatalogue } from "slices/process";
-//import { getStory } from 'slices/process';
 
-// import RoadMap from './Tabs/RoadMap';
-// import Overview from './Tabs/Overview';
-// import SettingsTab from './Tabs/Settings';
-// import TeamTab from './Tabs/Team';
-// import Resources from './Tabs/Resources';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -52,11 +46,11 @@ const style = {
   flexDirection: 'column',
 };
 
-const TabsMobile = ({ tabs, tab, story }) => {
-  const logoExists = story && story.logotype;
+const TabsMobile = ({ tabs, tab, publiccoproduction }) => {
+  const logoExists = publiccoproduction && publiccoproduction.logotype;
   const navigate = useNavigate();
 
-  return story && (
+  return publiccoproduction && (
   <Card sx={{ mb: 1 }}>
     <CardHeader
       avatar={(
@@ -64,9 +58,10 @@ const TabsMobile = ({ tabs, tab, story }) => {
           variant='rounded'
           sx={logoExists ? {} : { bgcolor: red[500] }}
           aria-label='recipe'
-          src={logoExists && story.logotype}
+          src={logoExists && publiccoproduction.logotype}
         >
-          {story && !logoExists && story.data_story.name}
+          {publiccoproduction && !logoExists && publiccoproduction.name}
+          
         </Avatar>
       )}
       action={(
@@ -74,12 +69,12 @@ const TabsMobile = ({ tabs, tab, story }) => {
           <MoreVert />
         </IconButton>
       )}
-      title={story && story.data_story.name}
-      subheader={story && story.data_story.name}
+      title={publiccoproduction && publiccoproduction.name}
+      subheader={publiccoproduction && publiccoproduction.name}
     />
     <Tabs
       indicatorColor='secondary'
-      onChange={(event, value) => navigate(`/publiccoproductions/${story.id}/${value}`)}
+      onChange={(event, value) => navigate(`/publiccoproductions/${publiccoproduction.id}/${value}`)}
       value={tab}
       aria-label='Coproduction tabs'
       centered
@@ -97,61 +92,41 @@ const TabsMobile = ({ tabs, tab, story }) => {
   );
 };
 
-const StoryProfile = () => {
-  const { storyId, tab = 'overview' } = useParams();
+const PublicCoproductionProfile = () => {
+  const { publiccoproductionId, tab = 'overview' } = useParams();
   const dispatch = useDispatch();
   const mounted = useMounted();
   const { trackEvent } = useMatomo();
   
   const { process, hasSchema, loading } = useSelector((state) => state.process);
-  const { selectedStory } = useSelector((state) => state.general);
+  const { selectedPubliccoproduction } = useSelector((state) => state.general);
 
 
   useEffect(() => {
     const id = window.location.pathname.split("/")[2];
-    if (selectedStory) {
-      if (selectedStory.id != id) {
-        dispatch(getSelectedStory(id));
+    if (selectedPubliccoproduction) {
+      if (selectedPubliccoproduction.id != id) {
+        dispatch(getSelectedPubliccoproduction(id));
        
       } //else{
     } else {
-      dispatch(getSelectedStory(id));
+      dispatch(getSelectedPubliccoproduction(id));
     }
 
-    // publiccoproductionsApi.getpubliccoproductionsbyId(id).then((res) => {
-    //   res.data=JSON.parse(res.data_story)
-    //   selectedStory=res
-
-    // });
-    //}
+  
   }, []);
 
 
-  //Every time another story is selected then the data info of the process is loaded
+  //Every time another publiccoproduction is selected then the data info of the process is loaded
   useEffect(() =>{
     //console.log("La STORY A CAMBIADO:")
-    if(selectedStory){
-      //console.log(selectedStory.coproductionprocess_cloneforpub_id)
-      dispatch(getProcessCatalogue(selectedStory.coproductionprocess_cloneforpub_id))
+    if(selectedPubliccoproduction){
+      //console.log(selectedPubliccoproduction.coproductionprocess_cloneforpub_id)
+      dispatch(getProcessCatalogue(selectedPubliccoproduction.coproductionprocess_cloneforpub_id))
     }
     
-  },[selectedStory])
+  },[selectedPubliccoproduction])
 
-
-  /* const story={
-    id:'1',
-    title:'Families Share @ Work',
-    name:'Families Share @ Work',
-    description:'Story description is that it has a more-or-less normal distribution of letters, as opposed to using  making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
-    isLiked:false,
-    likes:0,
-    logotype_link:'/static/coproductionprocesses/f8c68b18-a8ce-4101-9067-40474c90c4ff.png',
-    updated_at:'2021-08-23',
-    created_at:'2021-08-23',
-    rating:10,
-    tags:['salud','dinero','amor']
-
-}; */
 
   const theme = useTheme();
   const showMobileTabs = !useMediaQuery(theme.breakpoints.up('lg'));
@@ -166,24 +141,9 @@ const StoryProfile = () => {
     dispatch(setSelectedTreeItem(item, callback));
   };
 
-  // const getStory = useCallback(async () => {
-  //   try {
-  //     if (mounted.current) {
-  //       dispatch(getStory(storyId));
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // }, [mounted]);
+  
 
-  // useEffect(() => {
-  //   getStory();
-  // }, [getStory]);
-
- 
-
-
-  const t = useCustomTranslation(selectedStory && selectedStory.language);
+  const t = useCustomTranslation(selectedPubliccoproduction && selectedPubliccoproduction.language);
 
   const tabs = [
     { label: t('Overview'), value: 'overview' },
@@ -210,10 +170,10 @@ const StoryProfile = () => {
             <TabsMobile
               tabs={tabs}
               tab={tab}
-              story={selectedStory}
+              publiccoproduction={selectedPubliccoproduction}
             />
             )}
-            { !selectedStory ? <MainSkeleton />
+            { !selectedPubliccoproduction ? <MainSkeleton />
               : (
                 <>
                   <TabPanel
@@ -221,7 +181,7 @@ const StoryProfile = () => {
                     index='overview'
                   >
                     <Card sx={style}>
-                        <OverviewStory />
+                        <OverviewPubliccoproduction />
                      
                     </Card>
                   </TabPanel>
@@ -272,4 +232,4 @@ const StoryProfile = () => {
   );
 };
 
-export default StoryProfile;
+export default PublicCoproductionProfile;

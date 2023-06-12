@@ -1,14 +1,25 @@
 import PropTypes from 'prop-types';
 import { Box, Button, Card, CardContent, Grid, Paper, Rating, TextField, Typography, Stack, CircularProgress, Dialog } from '@mui/material';
-import PublicCoproductionReviewCard from './PublicCoproductionReviewCard';
+import PubliccoproductionReviewCard from './PublicCoproductionReviewCard';
 import { useEffect, useState } from 'react';
 import axiosInstance from 'axiosInstance';
-import { ratingsApi } from '__api__/catalogue/ratingsApi';
+import { ratingsApi } from '__api__/coproduction/ratingsApi';
 import { LoadingButton } from '@mui/lab';
 import useAuth from 'hooks/useAuth';
 import { useTranslation } from 'react-i18next';
+import { usersApi } from '__api__';
 
-const PublicCoproductionRatings = ({ publiccoproduction }) => {
+import { useDispatch, useSelector } from 'react-redux';
+import { getSelectedPubliccoproduction } from 'slices/general';
+
+
+const PubliccoproductionRatings = ({ publiccoproduction }) => {
+
+
+  const dispatch = useDispatch();
+  
+
+
   const [loading, setLoading] = useState(true);
   const [ratings, setRatings] = useState([]);
 
@@ -28,13 +39,22 @@ const PublicCoproductionRatings = ({ publiccoproduction }) => {
     _setNewCommentDialog(bool);
   };
 
-  const update = () => {
+  const update = async() => {
+    dispatch(getSelectedPubliccoproduction(publiccoproduction.id));
     setLoading(true);
-    ratingsApi.getMulti(publiccoproduction.id).then((res) => {
-      setLoading(false);
-      setRatings(res.items);
-      setNewCommentDialog(false);
-    });
+    let res= await ratingsApi.getMulti(publiccoproduction.id,"publiccoproduction")
+    setLoading(false);
+
+   
+    //Add users info
+    for(let i=0;i<res.items.length;i++){
+      let user=await usersApi.get(res.items[i].user_id);
+      res.items[i].user=user;
+    }
+    
+    setRatings(res.items);
+    setNewCommentDialog(false);
+    
   };
   useEffect(() => {
     update();
@@ -95,12 +115,13 @@ const PublicCoproductionRatings = ({ publiccoproduction }) => {
       </Card>
       {isAuthenticated && (
       <Button
-        variant='text'
+        variant='contained'
         fullWidth
         onClick={() => setNewCommentDialog(true)}
-        sx={{ mt: 1 }}
+        sx={{ mt: 2 }}
+        size="medium"
       >
-        {t('rate-publiccoproduction')}
+        {t('Rate this publiccoproduction')}
       </Button>
       )}
 
@@ -109,7 +130,7 @@ const PublicCoproductionRatings = ({ publiccoproduction }) => {
           key={rating.id}
           sx={{ mt: 2 }}
         >
-          <PublicCoproductionReviewCard
+          <PubliccoproductionReviewCard
             authorAvatar={rating.user.picture}
             authorName={rating.user.full_name}
             title={rating.title}
@@ -156,7 +177,8 @@ const PublicCoproductionRatings = ({ publiccoproduction }) => {
             loading={loading}
             variant='contained'
             size='small'
-            onClick={() => ratingsApi.create(title, text, value, publiccoproduction.id).then(update)}
+            onClick={() => {
+              ratingsApi.create(title, text, value, publiccoproduction.id,"publiccoproduction").then(update)}}
           >
             {t('Send')}
           </LoadingButton>
@@ -168,8 +190,8 @@ const PublicCoproductionRatings = ({ publiccoproduction }) => {
   );
 };
 
-PublicCoproductionRatings.propTypes = {
+PubliccoproductionRatings.propTypes = {
   ratings: PropTypes.array
 };
 
-export default PublicCoproductionRatings;
+export default PubliccoproductionRatings;

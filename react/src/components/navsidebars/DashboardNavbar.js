@@ -56,7 +56,7 @@ const pages = [
   },
   {
     label: i18n.t("Processes"),
-    path: "/publiccoproduction",
+    path: "/publiccoproductions",
     dataCy: "PublicCoproductions-page",
   },
   {

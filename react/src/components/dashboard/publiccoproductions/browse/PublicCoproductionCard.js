@@ -437,7 +437,7 @@ const PublicCoproductionCard = ({ language, publiccoproduction, mode, onPublicCo
     : {
         component: RouterLink,
         onClick: onPublicCoproductionClick,
-        to: `/dashboard/stories/${publiccoproduction.id}`,
+        to: `/dashboard/publiccoproductions/${publiccoproduction.id}`,
       };
   return (
     <Card

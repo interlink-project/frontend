@@ -46,10 +46,10 @@ const PublicCoproductionSidebar = (props) => {
 
   const [loadingDialogOpen, setLoadingDialogOpen] = useState(false);
 
-  const { selectedPublicCoproduction } = useSelector((state) => state.general);
+  const { selectedPubliccoproduction } = useSelector((state) => state.general);
   let publiccoproductionId = 1;
-  if (selectedPublicCoproduction) {
-    publiccoproductionId = selectedPublicCoproduction.id;
+  if (selectedPubliccoproduction) {
+    publiccoproductionId = selectedPubliccoproduction.id;
   }
   const { t } = useDependantTranslation();
 
@@ -70,12 +70,12 @@ const PublicCoproductionSidebar = (props) => {
           disabled: false,
         },
 
-        {
-          title: t("Resources"),
-          path: `/publiccoproductions/${publiccoproductionId}/resources`,
-          icon: <PermMedia />,
-          // disabled: !hasSchema
-        },
+        // {
+        //   title: t("Resources"),
+        //   path: `/publiccoproductions/${publiccoproductionId}/resources`,
+        //   icon: <PermMedia />,
+        //   // disabled: !hasSchema
+        // },
         // {
         //   title: t('RoadMap'),
         //   path: `/publiccoproductions/${publiccoproductionId}/roadmap`,
@@ -87,17 +87,18 @@ const PublicCoproductionSidebar = (props) => {
   ];
 
   const onClone = () => {
-    setLoadingDialogOpen(true);
-    coproductionProcessesApi
-      .copy(
-        selectedPublicCoproduction.coproductionprocess_cloneforpub_id,
-        "Clone of_ ",
-        "publiccoproduction"
-      )
-      .then(() => {
-        setLoadingDialogOpen(false);
-        navigate("/dashboard");
-      });
+    alert("You have succefully apllied to this coproduction process.")
+    // setLoadingDialogOpen(true);
+    // coproductionProcessesApi
+    //   .copy(
+    //     selectedPubliccoproduction.coproductionprocess_cloneforpub_id,
+    //     "Clone of_ ",
+    //     "publiccoproduction"
+    //   )
+    //   .then(() => {
+    //     setLoadingDialogOpen(false);
+    //     navigate("/dashboard");
+    //   });
   };
 
   const logoStyle = {
@@ -132,7 +133,7 @@ const PublicCoproductionSidebar = (props) => {
               onClick={() => navigate("/dashboard")}
             />
           )}
-          {selectedPublicCoproduction && (
+          {selectedPubliccoproduction && (
             <Stack
               direction="column"
               justifyContent="center"
@@ -145,9 +146,9 @@ const PublicCoproductionSidebar = (props) => {
               <Avatar
                 variant="rounded"
                 sx={{ width: "80px", height: "80px" }}
-                src={selectedPublicCoproduction.logotype}
+                src={'/coproduction'+selectedPubliccoproduction.logotype}
               >
-                {/*               {(!selectedPublicCoproduction || !selectedPublicCoproduction.logo) && <Folder />}
+                {/*               {(!selectedPubliccoproduction || !selectedPubliccoproduction.logo) && <Folder />}
               {' '} */}
               </Avatar>
               {/*  ) : ( */}
@@ -160,13 +161,14 @@ const PublicCoproductionSidebar = (props) => {
                 sx={{ textAlign: "center", width: "100%" }}
                 variant="h6"
               >
-                {selectedPublicCoproduction.data_publiccoproduction.title}
+                {selectedPubliccoproduction.name}
                 {/*  {!loading && !updating && process ? process.name : <Skeleton />} */}
               </Typography>
 
-              <Rating readOnly size="small" value={selectedPublicCoproduction.rating || 0} />
+              <Rating readOnly size="small" value={selectedPubliccoproduction.rating || 0} />
             </Stack>
           )}
+      
 
           <Divider />
 
@@ -178,22 +180,21 @@ const PublicCoproductionSidebar = (props) => {
             {/*  {!loading && !updating && process ? process.name : <Skeleton />} */}
           </Typography>
 
-          {selectedPublicCoproduction ? (
+          {selectedPubliccoproduction ? (
             <>
-              {selectedPublicCoproduction.data_publiccoproduction.keywords != "" && (
+              {selectedPubliccoproduction.tags != "" && (
                 <Grid item xs={6} md={6} lg={3} xl={3} sx={{ m: 3 }}>
                   <Typography
                     color="textPrimary"
                     variant="subtitle2"
                     align="center"
                   >
-                    {selectedPublicCoproduction.data_publiccoproduction.keywords &&
-                      selectedPublicCoproduction.data_publiccoproduction.keywords
-                        .split(",")
+                    {selectedPubliccoproduction.tags &&
+                      selectedPubliccoproduction.tags
                         .map((el) => (
                           <Chip
-                            label={el}
-                            key={el}
+                            label={el.name}
+                            key={el.id}
                             size="small"
                             variant="outlined"
                             sx={{ mr: 1 }}
@@ -248,7 +249,7 @@ const PublicCoproductionSidebar = (props) => {
                         onClick={onClick}
                         startIcon={<EmojiObjects />}
                       >
-                        {t("Clone the Process")}
+                        {t("Apply to be part of this coproduction")}
                       </Button>
                     )}
                     ButtonComponent={({ onClick }) => (
