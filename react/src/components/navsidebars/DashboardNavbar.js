@@ -55,15 +55,16 @@ const pages = [
     dataCy: "Organizations-page",
   },
   {
+    label: i18n.t("Processes"),
+    path: "/publiccoproduction",
+    dataCy: "PublicCoproductions-page",
+  },
+  {
     label: i18n.t("Catalogue"),
     path: "/dashboard/interlinkers",
     dataCy: "Catalogue-page",
   },
-  // {
-  //   label: i18n.t("Public-CoProductions"),
-  //   path: "/publiccoproductions",
-  //   dataCy: "PublicCoproductions-page",
-  // },
+  
   {
     label: i18n.t("Stories"),
     path: "/stories",

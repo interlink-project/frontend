@@ -17,7 +17,7 @@ import { getLanguage } from "translations/i18n";
 //import { interlinkersApi } from '__api__';
 import { TransitionGroup } from "react-transition-group";
 import PublicCoproductionCard from "./PublicCoproductionCard";
-import { storiesApi } from "__api__";
+import { coproductionProcessesApi } from "__api__";
 
 const PublicCoproductionResults = ({
   loading: propLoading = null,
@@ -54,9 +54,12 @@ const PublicCoproductionResults = ({
   const loadServerRows = async (page, loadedRows) => {
     setLoading(true);
     try {
-      storiesApi
-        .getMulti({ page: page + 1, size, ...filters }, language)
+      //console.log("filters", filters);
+      
+      coproductionProcessesApi
+        .getPublicProcesses({ page: page + 1, size, ...filters }, language)
         .then((res) => {
+          
           if (mounted.current) {
             setLoading(false);
             setPage(page + 1);
@@ -67,7 +70,7 @@ const PublicCoproductionResults = ({
                   self.indexOf((el) => el.id === element.id) !== index
               )
             );
-            console.log(loadedRows)
+            //console.log(loadedRows)
             // if (filters.search) {
             //   trackSiteSearch({
             //     keyword: filters.hasOwnProperty('search') ? filters.search : '',
@@ -128,7 +131,7 @@ const PublicCoproductionResults = ({
           variant="h6"
           data-cy={`stories-catalogue-total-${total}`}
         >
-          {t("stories-catalogue-total", { total })}
+          {t("Processes found", { total })}
         </Typography>
         <Box
           sx={{

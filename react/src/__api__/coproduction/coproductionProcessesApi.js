@@ -1,11 +1,24 @@
 import axiosInstance from 'axiosInstance';
-import GeneralApi from '../general';
+import GeneralApi, { removeEmpty } from '../general';
 import { coproductionSchemasApi } from '../catalogue/coproductionSchemasApi';
 import { getLanguage } from 'translations/i18n';
 
 class CoproductionProcessesApi extends GeneralApi {
   constructor() {
     super('coproduction/api/v1/coproductionprocesses');
+  }
+
+
+  async getPublicProcesses(params = {}, language = getLanguage()) {
+    //console.log(`/${this.url}` + params);
+    //Get data of user_notifications
+    const res = await axiosInstance.get(`/${this.url}/public`, {
+      params: removeEmpty(params),
+      headers: {
+        "Accept-Language": language,
+      },
+    });
+    return res.data;
   }
 
   async getProcessCatalogue(id, language = getLanguage()) {

@@ -15,7 +15,7 @@ import { formatDistanceToNowStrict } from "date-fns";
 import { useCustomTranslation } from "hooks/useDependantTranslation";
 import { truncate } from "lodash";
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { HTMLtoText } from "utils/safeHTML";
 
@@ -32,9 +32,12 @@ const GridMode = ({ publiccoproduction, t, linkProps }) => (
         }}
       >
         {publiccoproduction.logotype ? (
-          <Avatar alt={t("Logotype")} src={publiccoproduction.logotype} variant="square">
-            {publiccoproduction.data.title}
+          <>
+          <Avatar alt={t("Logotype")} src={'/coproduction'+publiccoproduction.logotype} variant="square">
+            {publiccoproduction.name}
           </Avatar>
+     
+          </>
         ) : (
           <div />
         )}
@@ -43,9 +46,9 @@ const GridMode = ({ publiccoproduction, t, linkProps }) => (
             color="textPrimary"
             {...linkProps}
             variant="h6"
-            title={publiccoproduction.data.title}
+            title={publiccoproduction.name}
           >
-            {truncate(publiccoproduction.data.title, {
+            {truncate(publiccoproduction.name, {
               length: 100,
               separator: " ",
             })}
@@ -104,7 +107,7 @@ const GridMode = ({ publiccoproduction, t, linkProps }) => (
     >
       <Typography color="textSecondary" variant="body2">
         {HTMLtoText(
-          truncate(publiccoproduction.data.description, {
+          truncate(publiccoproduction.description, {
             length: 200,
             separator: " ",
           })
@@ -149,9 +152,9 @@ const GridMode = ({ publiccoproduction, t, linkProps }) => (
                 t={t}
                 publiccoproduction={publiccoproduction}
               /> */}
-               {publiccoproduction.data.tags &&
-          publiccoproduction.data.tags.split(",").map((el) => {
-            console.log(el);
+               {publiccoproduction.intergovernmental_model &&
+          publiccoproduction.intergovernmental_model.split(',').map((el) => {
+            //console.log(el);
             return (
               <Chip
                 label={el}
@@ -175,9 +178,9 @@ const GridMode = ({ publiccoproduction, t, linkProps }) => (
             }}
           >
             <Rating readOnly size="small" value={publiccoproduction.rating || 0} />
-            {publiccoproduction.data.ratings_count &&
+            {publiccoproduction.ratings_count &&
             <Typography color="textPrimary" sx={{ ml: 1 }}>
-                {publiccoproduction.data.ratings_count}
+                {publiccoproduction.ratings_count}
             </Typography>
             }
           </Box>
@@ -199,18 +202,18 @@ const GridMode = ({ publiccoproduction, t, linkProps }) => (
       </Typography>
 
 
-      <Typography
+       <Typography
         color="textPrimary"
         variant="subtitle2"
         sx={{ mb: 1, textAlign: "center" }}
       >
-      {publiccoproduction.data.keywords &&
-          publiccoproduction.data.keywords.split(",").map((el) => {
-            console.log(el);
+      {publiccoproduction.tags &&
+          publiccoproduction.tags.map((el) => {
+            //console.log(el);
             return (
               <Chip
-                label={el}
-                key={el}
+                label={el.name}
+                key={el.id}
                 size="small"
                 variant="outlined"
                 sx={{ mr: 1 }}
@@ -218,12 +221,12 @@ const GridMode = ({ publiccoproduction, t, linkProps }) => (
             );
           })}
 
-</Typography>
+</Typography> 
 
 
 {/* 
-      {publiccoproduction.data.tags &&
-        publiccoproduction.data.tags.map((el) => (
+      {publiccoproduction.tags &&
+        publiccoproduction.tags.map((el) => (
           <Chip
             label={el}
             key={el}
@@ -233,7 +236,7 @@ const GridMode = ({ publiccoproduction, t, linkProps }) => (
           />
         ))} */}
     </Box>
-    {publiccoproduction.data.snapshots_links && 
+    {publiccoproduction.snapshots_links && 
     <Box sx={{ bottom: 0 }}>
       <SwipeableTextMobileStepper
         images={publiccoproduction.snapshots_links}
@@ -253,11 +256,13 @@ const ListMode = ({ publiccoproduction, t, linkProps }) => (
             <>
               <Avatar
                 alt={t("Logotype")}
-                src={publiccoproduction.logotype}
+                src={'/coproduction'+publiccoproduction.logotype}
                 variant="rounded"
               >
-                {publiccoproduction.title}
+                {publiccoproduction.name}
+         
               </Avatar>
+             
             </>
           }
           title={
@@ -265,9 +270,10 @@ const ListMode = ({ publiccoproduction, t, linkProps }) => (
               color="textPrimary"
               {...linkProps}
               variant="h6"
-              title={publiccoproduction.data.title}
+              title={publiccoproduction.name}
             >
-              {publiccoproduction.data.title}
+              {publiccoproduction.name}
+           
             </Link>
           }
           subheader={
@@ -281,9 +287,9 @@ const ListMode = ({ publiccoproduction, t, linkProps }) => (
                   variant="subtitle2"
                   title="teamname"
                 >
-                  {publiccoproduction.data.owners &&
-                    publiccoproduction.data.owners.map((el) => {
-                      console.log(el);
+                  {publiccoproduction.owners &&
+                    publiccoproduction.owners.map((el) => {
+                      //console.log(el);
                       return (
                         <Chip
                           label={el.name}
@@ -316,7 +322,7 @@ const ListMode = ({ publiccoproduction, t, linkProps }) => (
         >
           <Typography color="textSecondary" variant="body2">
             {HTMLtoText(
-              truncate(publiccoproduction.data.description, {
+              truncate(publiccoproduction.description, {
                 length: 500,
                 separator: " ",
               })
@@ -338,13 +344,13 @@ const ListMode = ({ publiccoproduction, t, linkProps }) => (
           {t("Topics")}
         </Typography>
         <Typography color="textPrimary" variant="subtitle2">
-          {publiccoproduction.data.tags &&
-            publiccoproduction.data.keywords.split(",").map((el) => {
-              console.log(el);
+          {publiccoproduction.tags &&
+            publiccoproduction.tags.map((el) => {
+              //console.log(el);
               return (
                 <Chip
-                  label={el}
-                  key={el}
+                  label={el.name}
+                  key={el.id}
                   size="small"
                   variant="outlined"
                   sx={{ mr: 1 }}
@@ -353,12 +359,13 @@ const ListMode = ({ publiccoproduction, t, linkProps }) => (
             })}
         </Typography>
       </Grid>
+      
       <Grid item xs={6} md={6} lg={3} xl={3}>
         <Typography color="textPrimary" variant="subtitle2" sx={{ mb: 1 }}>
           {t("Rating")}
         </Typography>
         <Rating readOnly size="small" value={publiccoproduction.rating || 0} />
-      </Grid>
+      </Grid> 
       <Grid item xs={12} md={12} lg={6} xl={6}>
         <Typography
           color="textPrimary"
@@ -366,8 +373,8 @@ const ListMode = ({ publiccoproduction, t, linkProps }) => (
           sx={{ mb: 1, textAlign: "center" }}
         >
           {t("Type")}
-        </Typography>
-        {/*           {publiccoproduction.data.tags && publiccoproduction.tags.map(
+        </Typography> 
+                  {publiccoproduction.intergovernmental_model && publiccoproduction.intergovernmental_model.split(',').map(
              (el) => (
               <Chip
                 label={el}
@@ -378,9 +385,9 @@ const ListMode = ({ publiccoproduction, t, linkProps }) => (
               />
             ) 
 
-          )} */}
-        {publiccoproduction.data.tags &&
-          publiccoproduction.data.tags.split(",").map((el) => {
+          )} 
+       {/*  {publiccoproduction.tags &&
+          publiccoproduction.tags.split(",").map((el) => {
             console.log(el);
             return (
               <Chip
@@ -391,7 +398,7 @@ const ListMode = ({ publiccoproduction, t, linkProps }) => (
                 sx={{ mr: 1 }}
               />
             );
-          })}
+          })} */}
       </Grid>
     </Grid>
   </>
@@ -401,7 +408,8 @@ const PublicCoproductionCard = ({ language, publiccoproduction, mode, onPublicCo
   const [isLiked, setIsLiked] = useState(publiccoproduction.isLiked || false);
   const [likes, setLikes] = useState(publiccoproduction.likes || 0);
   const t = useCustomTranslation(language);
-  publiccoproduction.data = publiccoproduction.data_publiccoproduction;
+  
+
 
   const sameHeightCards = {
     minHeight: "200px",

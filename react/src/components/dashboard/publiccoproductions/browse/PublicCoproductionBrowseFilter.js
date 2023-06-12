@@ -11,59 +11,31 @@ import { Search } from "@mui/icons-material";
 import { useCustomTranslation } from "hooks/useDependantTranslation";
 import useMounted from "hooks/useMounted";
 import React, { useEffect, useState } from "react";
-//import { problemprofilesApi } from '__api__';
 import MultiSelect from "../../../MultiSelect";
+import { tagsApi } from "__api__";
 
 const PublicCoproductionBrowseFilter = ({ loading, filters, onFiltersChange, language }) => {
   const [inputValue, setInputValue] = useState(filters.search);
-  //const [loadingProblemProfiles, setLoadingProblemProfiles] = useState(true);
   const mounted = useMounted();
   const t = useCustomTranslation(language);
-  const [problemProfiles, setProblemProfiles] = useState([]);
+  const [tags, setTags] = useState([]);
 
   useEffect(() => {
-    // problemprofilesApi.getMulti({}, language).then((res) => {
-    //   if (mounted.current) {
-    //     setProblemProfiles(res);
-    //     setLoadingProblemProfiles(false);
-    //   }
-    // });
-    setProblemProfiles([]);
+    tagsApi.getMulti({}, language).then((res) => {
+      if (mounted.current) {
+        setTags(res);
+      }
+    });
   }, [language]);
 
-  //   const problemprofilesMultiselect = {
-  //     label: t('Problem profiles'),
-  //     options: problemProfiles.map((pp) => ({
-  //       label: `${pp.id} - ${pp.name}`,
-  //       value: pp.id
-  //     }))
-  //   };
-
-  const keywordMultiselect = {
+  const topicsMultiselect = {
     label: t("Topic"),
-    options: [
-      {
-        label: t("Childcare"),
-        value: "childcare",
-      },
-      {
-        label: t("Work-Life Balance"),
-        value: "work-life",
-      },
-      {
-        label: t("Children"),
-        value: "children",
-      },
-      {
-        label: t("Mobility"),
-        value: "mobility",
-      },
-      {
-        label: t("School"),
-        value: "school",
-      },
-    ],
+    options: tags.map((pp) => ({
+      label: ` ${pp.name}`,
+      value: pp.name,
+    })),
   };
+
 
   const changeFilter = (key, value) => {
     console.log("CHANGED", key, value);
@@ -126,25 +98,14 @@ const PublicCoproductionBrowseFilter = ({ loading, filters, onFiltersChange, lan
           }}
         >
           <MultiSelect
-            label={keywordMultiselect.label}
-            onChange={(e) => changeFilter("keyword", e)}
-            options={keywordMultiselect.options}
-            value={filters.keyword}
-            datacy="keyword-multiselect"
-            datacyOption="keyword-multiselect-option"
+            label={topicsMultiselect.label}
+            onChange={(e) => changeFilter("tag", e)}
+            options={topicsMultiselect.options}
+            value={filters.tag}
+            datacy="tag-multiselect"
+            datacyOption="tag-multiselect-option"
           />
-          {/* <Divider
-            orientation='vertical'
-            flexItem
-            sx={{ mx: 2 }}
-          />  */}
-
-          {/* <MultiSelect
-            label={problemprofilesMultiselect.label}
-            onChange={(e) => changeFilter('problemprofiles', e)}
-            options={problemprofilesMultiselect.options}
-            value={filters.problemprofiles}
-          />  */}
+          
           <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
           <Typography variant="body2" sx={{ mx: 1 }}>
             <b>{t("Minimum rating")}:</b>
@@ -155,18 +116,7 @@ const PublicCoproductionBrowseFilter = ({ loading, filters, onFiltersChange, lan
             data-cy="rating-filter"
           />
           <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
-          {/* <Typography variant="body2" sx={{ mr: 1 }}><b>Order by:</b></Typography>
-        <Select
-          labelId={selectOptions.label}
-          label={selectOptions.label}
-          onChange={console.log}
-          value={<Rating value={5} />}
-          sx={{ width: "100px", height: "40px" }}
-        >
-          {selectOptions.options.map((opt) => <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>)}
-        </Select> */}
         </Box>
-        {/* {(loading || loadingProblemProfiles) && <LinearProgress />} */}
       </Card>
       <Box sx={{ mt: 1 }}>
         {filters.search && (
@@ -176,33 +126,28 @@ const PublicCoproductionBrowseFilter = ({ loading, filters, onFiltersChange, lan
             onDelete={() => changeFilter("search", "")}
           />
         )}
-        {filters.keyword.map((keyword) => (
-          <Chip
-            key={`active-filter-${keyword}`}
-            sx={{ mr: 1, mt: 1 }}
-            label={`${t("Topic")}: ${
-              keywordMultiselect.options.find(
-                (option) => option.value === keyword
-              ).label
-            }`}
-            onDelete={() =>
-              changeFilter(
-                "keyword",
-                filters.keyword.filter((nt) => nt !== keyword)
-              )
-            }
-            data-cy={`active-topic-filter-${keyword}`}
-          />
-        ))}
-        {/*
-        {filters.problemprofiles && filters.problemprofiles.map((pp) => (
-          <Chip
-            key={`active-filter-${pp}`}
-            sx={{ mr: 1, mt: 1 }}
-            label={`${t('Problem profile')}: ${pp}`}
-            onDelete={() => changeFilter('problemprofiles', filters.problemprofiles.filter((problemprofile) => problemprofile !== pp))}
-          />
-        ))} */}
+        {filters.tag &&
+          filters.tag.map((tag) => {
+            const etiquetaBuscar = topicsMultiselect.options.find(
+              (option) => option.value === tag
+            ).label;
+            return (
+              <Chip
+                key={`active-filter-${tag}`}
+                sx={{ mr: 1, mt: 1 }}
+                // label={`${t('Topic')}: ${tag}`}
+                label={`${t("Topic")}: ${etiquetaBuscar}`}
+                onDelete={() =>
+                  changeFilter(
+                    "tag",
+                    filters.tag.filter((nt) => nt !== tag)
+                  )
+                }
+                data-cy={`active-topic-filter-${tag}`}
+              />
+            );
+          })}
+        
         {filters.rating && (
           <Chip
             sx={{ mr: 1, mt: 1 }}

@@ -62,9 +62,9 @@ const PublicCoproductionCatalogue = () => {
                 <Typography
                   color="textPrimary"
                   variant="h5"
-                  data-cy="public-coproduction-catalogue"
+                  data-cy="Processes-Catalogue"
                 >
-                  {t("public-coproduction-catalogue")}
+                  {t("Processes Catalogue")}
                 </Typography>
               </Grid>
               <Grid item />
