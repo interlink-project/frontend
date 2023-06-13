@@ -98,7 +98,7 @@ const Catalogue = () => {
 
                 <Typography color="textSecondary" variant="h6" sx={{m:1}}>
                 {t(
-                    "Here you can find a list with the Interlinkers to be used in a coproduction process"
+                    "Here is an extensive list of Interlinkers specifically curated for use in coproduction processes"
                   )+'.'}
                 </Typography>
                 
