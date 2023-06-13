@@ -29,6 +29,9 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
       return;
     }
 
+    //Got all admin emails:
+    const adminEmails = selectedPubliccoproduction.administrators.map((admin) => admin.email);
+
     // Sent the email with this information
     const infotoSend = {
       name: name,
@@ -38,6 +41,7 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
       more_info: more_info,
       coproductionId: selectedPubliccoproduction.id,
       coproductionName: selectedPubliccoproduction.name,
+      adminEmails: adminEmails,
     };
     alert(JSON.stringify(infotoSend));
     console.log(infotoSend);
