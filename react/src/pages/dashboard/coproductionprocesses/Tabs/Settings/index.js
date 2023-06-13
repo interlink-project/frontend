@@ -1014,7 +1014,7 @@ const SettingsTab = () => {
             {/* Make it public to anyone to see information about the process */}
             <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
               <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-                {t("Show process in the public catalogue")}
+                {t("Open the process to new participants")}
               </Typography>
               <Alert
                 severity="info"
@@ -1033,7 +1033,7 @@ const SettingsTab = () => {
                 }
               >
                 {t(
-                  "This option will show the process in  the public catalogue"
+                  "This option will allow new participants to join the process"
                 )}
               </Alert>
             </Card>

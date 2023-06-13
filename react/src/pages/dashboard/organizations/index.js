@@ -120,13 +120,11 @@ const Organizations = () => {
               xs={12}
             >
               <Grid item>
-                <Typography color="textSecondary" variant="overline">
-                  {t("Organizations")}
-                </Typography>
+                
                 <Typography color="textPrimary" variant="h5">
-                  {t("Organizations and teams present in the platform")}
+                  {t("Organizations").toUpperCase()}
                 </Typography>
-                <Typography color="textSecondary" variant="subtitle2">
+                <Typography color="textSecondary"  variant="h6" sx={{m:1}}>
                   {t(
                     "Here you can find the different organizations that are working on the platform"
                   )}

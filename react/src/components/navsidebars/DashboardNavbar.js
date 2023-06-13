@@ -55,12 +55,7 @@ const pages = [
     dataCy: "Organizations-page",
   },
   {
-    label: i18n.t("Processes"),
-    path: "/publiccoproductions",
-    dataCy: "PublicCoproductions-page",
-  },
-  {
-    label: i18n.t("Catalogue"),
+    label: i18n.t("Interlinkers"),
     path: "/dashboard/interlinkers",
     dataCy: "Catalogue-page",
   },
@@ -70,6 +65,12 @@ const pages = [
     path: "/stories",
     dataCy: "Stories-page",
   },
+  
+  {
+    label: i18n.t("Join"),
+    path: "/publiccoproductions",
+    dataCy: "PublicCoproductions-page",
+  }
 ];
 const DashboardNavbar = (props) => {
   const { onSidebarMobileOpen, showOpenMenuButton, ...other } = props;

@@ -87,20 +87,26 @@ const Catalogue = () => {
               xs={12}
             >
               <Grid item>
-                <Typography
-                  color="textSecondary"
-                  variant="overline"
-                  data-cy="Catalogue-page-title"
-                >
-                  {t("Catalogue")}
-                </Typography>
+               
                 <Typography
                   color="textPrimary"
                   variant="h5"
                   data-cy="interlinkers-catalogue"
                 >
-                  {t("interlinkers-catalogue")}
+                  {t("interlinkers-catalogue").toUpperCase()}
                 </Typography>
+
+                <Typography color="textSecondary" variant="h6" sx={{m:1}}>
+                {t(
+                    "Here you can find a list with the Interlinkers to be used in a coproduction process"
+                  )+'.'}
+                </Typography>
+                
+
+
+
+
+                
               </Grid>
               <Grid item />
             </Grid>

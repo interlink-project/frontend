@@ -5,6 +5,11 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogTitle,
+  Select,
+  InputLabel,
+  MenuItem,
+  TextField,
   IconButton,
   Chip,
   Divider,
@@ -18,7 +23,7 @@ import {
 // import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {
   Close,
-  EmojiObjects,
+  Hail,
   ArrowBack,
   PermMedia,
   Balcony,
@@ -35,6 +40,10 @@ import ConfirmationButton from "components/ConfirmationButton";
 import { coproductionProcessesApi } from "__api__";
 import InterlinkAnimation from "components/home/InterlinkLoading";
 import { styled } from "@mui/material/styles";
+import ApplytoCoproductionDialog from "components/dashboard/publiccoproductions/profile/ApplytoCoproductionDialog";
+import ApplytoCoproductionDialogV2 from "components/dashboard/publiccoproductions/profile/ApplytoCoproductionDialogV2";
+import { set } from "store";
+
 
 const PublicCoproductionSidebar = (props) => {
   const { onMobileClose, openMobile } = props;
@@ -45,6 +54,7 @@ const PublicCoproductionSidebar = (props) => {
   //const processId = process && process.id;
 
   const [loadingDialogOpen, setLoadingDialogOpen] = useState(false);
+  const [applyDialogOpen, setApplyDialogOpen] = useState(false);
 
   const { selectedPubliccoproduction } = useSelector((state) => state.general);
   let publiccoproductionId = 1;
@@ -61,14 +71,15 @@ const PublicCoproductionSidebar = (props) => {
 
   const sections = [
     {
+      id: 1,
       title: "",
       items: [
-        {
-          title: t("Process Overview"),
-          path: `/publiccoproductions/${publiccoproductionId}/profile`,
-          icon: <Balcony />,
-          disabled: false,
-        },
+        // {
+        //   title: t("Process Overview"),
+        //   path: `/publiccoproductions/${publiccoproductionId}/profile`,
+        //   icon: <Balcony />,
+        //   disabled: false,
+        // },
 
         // {
         //   title: t("Resources"),
@@ -87,7 +98,8 @@ const PublicCoproductionSidebar = (props) => {
   ];
 
   const onClone = () => {
-    alert("You have succefully apllied to this coproduction process.")
+    //alert("You have succefully apllied to this coproduction process.")
+    setApplyDialogOpen(true);
     // setLoadingDialogOpen(true);
     // coproductionProcessesApi
     //   .copy(
@@ -224,10 +236,11 @@ const PublicCoproductionSidebar = (props) => {
 
           <Divider />
           <Box sx={{ p: 2 }}>
-            {sections.map((section) => (
+            
               <>
+              {sections.map((section) => (
                 <NavSection
-                  key={section.title}
+                  key={section.id}
                   pathname={location.pathname}
                   sx={{
                     "& + &": {
@@ -237,7 +250,8 @@ const PublicCoproductionSidebar = (props) => {
                   }}
                   {...section}
                 />
-                <Divider />
+                ))}
+                
 
                 <Box sx={{ textAlign: "center", width: "100%", mt: 3, mb: 3 }}>
                   <ConfirmationButton
@@ -245,9 +259,10 @@ const PublicCoproductionSidebar = (props) => {
                       <Button
                         variant="contained"
                         //disabled={!isAdministrator}
-                        color="error"
+                        color="success"
                         onClick={onClick}
-                        startIcon={<EmojiObjects />}
+                        size="large"
+                        startIcon={<Hail />}
                       >
                         {t("Apply to be part of this coproduction")}
                       </Button>
@@ -257,7 +272,7 @@ const PublicCoproductionSidebar = (props) => {
                         sx={{ mt: 1 }}
                         fullWidth
                         variant="contained"
-                        color="error"
+                        color="success"
                         onClick={onClick}
                       >
                         {t("Yes")}
@@ -269,7 +284,7 @@ const PublicCoproductionSidebar = (props) => {
                   />
                 </Box>
               </>
-            ))}
+            
           </Box>
         </Scrollbar>
       </Box>
@@ -307,6 +322,9 @@ const PublicCoproductionSidebar = (props) => {
           </Stack>
         </DialogContent>
       </Dialog>
+
+    <ApplytoCoproductionDialogV2 open={applyDialogOpen} handleClose={() => setApplyDialogOpen(false)} />
+
     </>
   );
 

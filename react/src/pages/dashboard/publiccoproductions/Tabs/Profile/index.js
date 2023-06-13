@@ -90,7 +90,7 @@ export default function Profile({}) {
 
   const listAdmins = () => {
     return selectedPubliccoproduction.administrators.map((admin) => {
-      <Avatar alt={admin.full_name} src={admin.picture}></Avatar>;
+      <Avatar alt={admin.full_name} key={admin.id} src={admin.picture}></Avatar>;
     });
   };
 
@@ -122,11 +122,7 @@ export default function Profile({}) {
 
 {tab === "showcase" ? (
     <Box sx={{ pb: 3 }}>
-      <AppBar sx={{ position: "relative" }}>
-        <Typography variant="h6" sx={{ p: 2 }}>
-          {t("Front Page")}
-        </Typography>
-      </AppBar>
+     
       <Paper>
         {!mdUp ? (
           <Grid
@@ -154,7 +150,7 @@ export default function Profile({}) {
               <AvatarGroup max={4} sx={{ mb: 1 }}>
                 {selectedPubliccoproduction.administrators.map((admin) => {
                   return (
-                    <Avatar alt={admin.full_name} src={admin.picture}></Avatar>
+                    <Avatar alt={admin.full_name} key={admin.id} src={admin.picture}></Avatar>
                   );
                 })}
               </AvatarGroup>
@@ -204,6 +200,7 @@ export default function Profile({}) {
                       <Avatar
                         alt={admin.full_name}
                         src={admin.picture}
+                        key={admin.id}
                       ></Avatar>
                     );
                   })}

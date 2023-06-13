@@ -163,7 +163,7 @@ const PublicCoproductionResults = ({
           <>
             <TransitionGroup>
               {loadedRows.map((publiccoproduction, i) => (
-                <Collapse sx={{ mt: 4, ml: 3 }}>
+                <Collapse key={'coll_'+publiccoproduction.id} sx={{ mt: 4, ml: 3 }}>
                   <PublicCoproductionCard
                     language={language}
                     publiccoproduction={publiccoproduction}

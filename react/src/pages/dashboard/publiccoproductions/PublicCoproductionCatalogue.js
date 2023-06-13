@@ -57,19 +57,18 @@ const PublicCoproductionCatalogue = () => {
               xs={12}
             >
               <Grid item>
-                <Typography
-                  color="textSecondary"
-                  variant="overline"
-                  data-cy="catalogue-title"
-                >
-                  {t("Catalogue")}
-                </Typography>
+                
                 <Typography
                   color="textPrimary"
                   variant="h5"
                   data-cy="Processes-Catalogue"
                 >
-                  {t("Processes Catalogue")}
+                  {t("Open Processes Catalogue").toUpperCase()}
+                </Typography>
+                <Typography color="textSecondary" variant="h6" sx={{m:1}}>
+                {t(
+                    "This is a list of process who are looking for participants. You can join them and start to collaborate with other people."
+                  )+'.'}
                 </Typography>
               </Grid>
               <Grid item />

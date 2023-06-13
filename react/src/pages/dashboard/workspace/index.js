@@ -138,7 +138,7 @@ const MyWorkspace = () => {
                   </Typography>
 
                   <Typography
-                    color="textSecondary"
+                    color="textPrimary"
                     variant="h6"
                     sx={{ mt: 3 }}
                     data-cy="first-question-title"
@@ -173,7 +173,7 @@ const MyWorkspace = () => {
                   </Button>
 
                   <Typography
-                    color="textSecondary"
+                    color="textPrimary"
                     variant="h6"
                     sx={{ mt: 3 }}
                     data-cy="second-question-title"
@@ -207,7 +207,7 @@ const MyWorkspace = () => {
                   </Button>
 
                   <Typography
-                    color="textSecondary"
+                    color="textPrimary"
                     variant="h6"
                     sx={{ mt: 3 }}
                     data-cy="third-question-title"

@@ -60,7 +60,7 @@ export const routes = [
           },
           {
             path: ':tab',
-            element: <PublicCoproductionProfile />
+            element: <AuthGuard><PublicCoproductionProfile /></AuthGuard>
           },
         ]
       }
