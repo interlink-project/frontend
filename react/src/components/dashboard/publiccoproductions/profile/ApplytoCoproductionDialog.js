@@ -1,183 +1,234 @@
-import {
-  IconButton,
-  Box,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  TextField,
-  Typography,
-  Button,
-} from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import { Alert, TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton } from "@mui/material";
 import { Close } from "@mui/icons-material";
-import { LoadingButton } from "@mui/lab";
-import { Formik,useField } from "formik";
-import * as Yup from "yup";
+import { useSelector } from 'react-redux';
 
-const ApplytoCoproductionDialog = ({ open, handleClose, t }) => {
-  // const validationSchema = Yup.object().shape({
-  //   name: Yup.string().required("Required"),
-  //   email: Yup.string().email("Invalid email").required("Required"),
-  //   emailConfirm: Yup.string()
-  //     .oneOf([Yup.ref("email"), null], "Emails must match")
-  //     .required("Required"),
-  //   phone: Yup.string(),
-  //   process_name: Yup.string().required("Required"),
-  //   process_id: Yup.string().required("Required"),
-  // });
-
-  const MyTextField = ({ label, type, ...props }) => {
-    const [field, meta] = useField(props);
-    const errorText = meta.error && meta.touched ? meta.error : "";
+const ApplytoCoproductionDialog = ({ open, handleClose }) => {
+  const { selectedPubliccoproduction } = useSelector((state) => state.general);
   
-    return <TextField label={label} type={type} {...field} helperText={errorText} error={!!errorText} fullWidth />;
+  useEffect(() => {
+    clearFields();
+  }, [open]);
+
+  // State variables
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailConfirm, setEmailConfirm] = useState('');
+  const [phone, setPhone] = useState('');
+  const [skills, setSkills] = useState('');
+  const [more_info, setMore_info] = useState('');
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // Form submission handler
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Validations:
+    if (!validateForm()) {
+      return;
+    }
+
+    // Sent the email with this information
+    const infotoSend = {
+      name: name,
+      email: email,
+      phone: phone,
+      skills: skills,
+      more_info: more_info,
+      coproductionId: selectedPubliccoproduction.id,
+      coproductionName: selectedPubliccoproduction.name,
+    };
+    alert(JSON.stringify(infotoSend));
+    console.log(infotoSend);
+  };
+
+  // Form cancellation handler
+  const handleCancel = (e) => {
+    e.preventDefault();
+
+    // Clearing form fields
+    clearFields();
+  };
+
+  const clearFields = () => {
+    setName('');
+    setEmail('');
+    setEmailConfirm('');
+    setPhone('');
+    setSkills('');
+    setMore_info('');
+  };
+
+  // Email validation function
+  const isEmailValid = (email) => {
+    // Use a regular expression to check the email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Form validation function
+  const validateForm = () => {
+    let valid = true;
+
+    // Validations:
+    if (name === '') {
+      setIsError(true);
+      setErrorMessage('Name is required');
+      valid = false;
+    }
+    if (email === '') {
+      setIsError(true);
+      setErrorMessage('Email is required');
+      valid = false;
+    } else if (!isEmailValid(email)) {
+      setIsError(true);
+      setErrorMessage('Please enter a valid email address');
+      valid = false;
+    }
+    if (emailConfirm === '') {
+      setIsError(true);
+      setErrorMessage('Email confirmation is required');
+      valid = false;
+    } else if (email !== emailConfirm) {
+      setIsError(true);
+      setErrorMessage('Emails do not match');
+      valid = false;
+    }
+
+    // Clearing error message and resetting error state
+    if (valid) {
+      setErrorMessage('');
+      setIsError(false);
+    }
+
+    return valid;
   };
 
   return (
-    <>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle sx={{ textAlign: "left", m: 1 }}>
-          <Typography>{t("Apply to be part of the coproduction")}</Typography>
-        </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={() => handleClose()}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <Close />
-        </IconButton>
-
-        <DialogContent sx={{ p: 2 }} dividers>
-          <Formik
-            initialValues={{
-              user: "",
-              teams: "",
-              file: "",
-              asset: "",
-              title: "",
-              description: "",
-            }}
-            validationSchema={Yup.object().shape({
-              title: Yup.string()
-                .min(3, "Must be at least 3 characters")
-                .max(255)
-                .required("Required"),
-              description: Yup.string()
-                .min(3, "Must be at least 3 characters")
-                .required("Required"),
-
-              asset: Yup.object().required("Required"),
-            })}
-            onSubmit={(
-              values,
-              { setErrors, setStatus, setSubmitting }
-            ) => {
-              alert("Lets send the contribution to the server!!");
-              // Get the values from the form using (values.user)
-            }}
-          >
-            {({
-              errors,
-              handleBlur,
-              handleChange,
-              handleSubmit,
-              isSubmitting,
-              setFieldValue,
-              setFieldTouched,
-              touched,
-              values,
-            }) => (
-              <form onSubmit={handleSubmit}>
-
-                
-                <Box sx={{ mt: 0 }}>
-                  {/* <Typography   sx={{ mt: 2 }}>
-                {t("Select the Resource")}
-              </Typography> */}
-
-                  {/* <Select
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>Apply to this co-production process</DialogTitle>
+      <IconButton
+        aria-label="close"
+        onClick={handleClose}
+        sx={{
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      >
+        <Close />
+      </IconButton>
+      <DialogContent>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextField
                 required
-                error={Boolean(touched.asset && errors.asset)}
-                helperText={touched.asset && errors.asset}
-                onBlur={handleBlur}
-                labelId="resource-select-label"
-                id="resource-select"
-                value={values.asset}
-                name="asset"
-                onChange={handleChange}
-                onClick={() => setFieldTouched("asset")}
-                // onChange={(event) => {
-                //     setAsset(event.target.value);
-                // }}
-                sx={{ width: "100%", mt: 1 }}
-              >
-                {assetsList.map((el) => (
-                  <MenuItem key={el.id} value={el}>
-                    {el.internalData.name}
-                  </MenuItem>
-                ))}
-              </Select> */}
-
-                  <Typography sx={{ mt: 2 }}>
-                    {t("Fill in contribution information")}
-                  </Typography>
-
-                  <TextField
-                    required
-                    error={Boolean(touched.title && errors.title)}
-                    fullWidth
-                    helperText={touched.title && errors.title}
-                    label={t("Title")}
-                    name="title"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    onClick={() => setFieldTouched("title")}
-                    value={values.title}
-                    variant="outlined"
-                    sx={{ mt: 1 }}
-                  />
-
-                  <TextField
-                    required
-                    sx={{ mt: 2 }}
-                    rows={4}
-                    multiline
-                    error={Boolean(touched.description && errors.description)}
-                    fullWidth
-                    helperText={touched.description && errors.description}
-                    label={t("Description")}
-                    name="description"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    onClick={() => setFieldTouched("description")}
-                    value={values.description}
-                    variant="outlined"
-                  />
-
-                  <LoadingButton
-                    sx={{ mt: 2 }}
-                    variant="contained"
-                    fullWidth
-                    loading={isSubmitting}
-            
-                  >
-                    {t("Apply")}
-                  </LoadingButton>
-
-                
-                  
-                  
-                </Box>
-              </form>
-            )}
-          </Formik>
-        </DialogContent>
-      </Dialog>
-    </>
+                fullWidth
+                label="Name"
+                name="name"
+                onChange={(e) => {
+                  setName(e.target.value);
+                  validateForm();
+                }}
+                value={name}
+                variant="outlined"
+                sx={{ mt: 1 }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                label="Email"
+                name="email"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  validateForm();
+                }}
+                value={email}
+                variant="outlined"
+                sx={{ mt: 1 }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                label="Confirm Email"
+                name="emailConfirm"
+                onChange={(e) => {
+                  setEmailConfirm(e.target.value);
+                  validateForm();
+                }}
+                value={emailConfirm}
+                variant="outlined"
+                sx={{ mt: 1 }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Phone"
+                name="phone"
+                onChange={(e) => {
+                  setPhone(e.target.value);
+                  validateForm();
+                }}
+                value={phone}
+                variant="outlined"
+                sx={{ mt: 1 }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Please provide details of your skills and experience"
+                name="skills"
+                onChange={(e) => {
+                  setSkills(e.target.value);
+                  validateForm();
+                }}
+                value={skills}
+                variant="outlined"
+                multiline
+                rows={4}
+                sx={{ mt: 1 }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Please feel free to provide any additional information or ask any further questions"
+                name="more_info"
+                onChange={(e) => {
+                  setMore_info(e.target.value);
+                  validateForm();
+                }}
+                value={more_info}
+                variant="outlined"
+                multiline
+                rows={4}
+                sx={{ mt: 1 }}
+              />
+            </Grid>
+          </Grid>
+        </form>
+      </DialogContent>
+      <DialogActions>
+        {isError && (
+          <Alert variant="outlined" severity="error" sx={{ m: 1 }}>
+            {errorMessage}
+          </Alert>
+        )}
+        <Button onClick={handleCancel}>Cancel</Button>
+        <Button variant="contained" color="primary" onClick={handleSubmit}>
+          Submit
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

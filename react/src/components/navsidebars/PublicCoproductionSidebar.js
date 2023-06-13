@@ -40,9 +40,8 @@ import ConfirmationButton from "components/ConfirmationButton";
 import { coproductionProcessesApi } from "__api__";
 import InterlinkAnimation from "components/home/InterlinkLoading";
 import { styled } from "@mui/material/styles";
-import ApplytoCoproductionDialog from "components/dashboard/publiccoproductions/profile/ApplytoCoproductionDialog";
-import ApplytoCoproductionDialogV2 from "components/dashboard/publiccoproductions/profile/ApplytoCoproductionDialogV2";
 import { set } from "store";
+import ApplytoCoproductionDialog from "components/dashboard/publiccoproductions/profile/ApplytoCoproductionDialog";
 
 
 const PublicCoproductionSidebar = (props) => {
@@ -97,7 +96,7 @@ const PublicCoproductionSidebar = (props) => {
     },
   ];
 
-  const onClone = () => {
+  const onApply = () => {
     //alert("You have succefully apllied to this coproduction process.")
     setApplyDialogOpen(true);
     // setLoadingDialogOpen(true);
@@ -254,34 +253,18 @@ const PublicCoproductionSidebar = (props) => {
                 
 
                 <Box sx={{ textAlign: "center", width: "100%", mt: 3, mb: 3 }}>
-                  <ConfirmationButton
-                    Actionator={({ onClick }) => (
+                  
                       <Button
                         variant="contained"
                         //disabled={!isAdministrator}
                         color="success"
-                        onClick={onClick}
+                        onClick={onApply}
                         size="large"
                         startIcon={<Hail />}
                       >
                         {t("Apply to be part of this coproduction")}
                       </Button>
-                    )}
-                    ButtonComponent={({ onClick }) => (
-                      <Button
-                        sx={{ mt: 1 }}
-                        fullWidth
-                        variant="contained"
-                        color="success"
-                        onClick={onClick}
-                      >
-                        {t("Yes")}
-                      </Button>
-                    )}
-                    //onClick={onRemove}
-                    onClick={onClone}
-                    text={t("Are you sure?")}
-                  />
+                   
                 </Box>
               </>
             
@@ -323,7 +306,7 @@ const PublicCoproductionSidebar = (props) => {
         </DialogContent>
       </Dialog>
 
-    <ApplytoCoproductionDialogV2 open={applyDialogOpen} handleClose={() => setApplyDialogOpen(false)} />
+    <ApplytoCoproductionDialog open={applyDialogOpen} handleClose={() => setApplyDialogOpen(false)} />
 
     </>
   );
