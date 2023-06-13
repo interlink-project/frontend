@@ -31,8 +31,8 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
 
     //Got all admin emails:
     const adminEmails = selectedPubliccoproduction.administrators.map((admin) => admin.email);
-
-    // Sent the email with this information
+   
+    // Sens the email with this information
     const infotoSend = {
       name: name,
       email: email,
@@ -45,6 +45,8 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
     };
     alert(JSON.stringify(infotoSend));
     console.log(infotoSend);
+
+    
   };
 
   // Form cancellation handler
@@ -53,6 +55,7 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
 
     // Clearing form fields
     clearFields();
+    handleClose();
   };
 
   const clearFields = () => {
