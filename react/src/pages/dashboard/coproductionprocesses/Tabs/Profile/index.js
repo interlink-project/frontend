@@ -190,7 +190,7 @@ export default function Profile({}) {
       <Card variant="outlined" sx={{ p: 2, m: 2 }}>
         <Stack direction="row" sx={{ ml: 2 }}>
           <Typography variant="h6" sx={{ mb: 2 }} color="primary">
-            {t("Description of the project")}
+            {t("Description of the process")}
           </Typography>
           <Description color="primary" sx={{ ml: 1 }} />
         </Stack>
@@ -202,7 +202,7 @@ export default function Profile({}) {
       <Card variant="outlined" sx={{ p: 2, m: 2 }}>
         <Stack direction="row" sx={{ ml: 2 }}>
           <Typography variant="h6" sx={{ mb: 2 }} color="primary">
-            {t("Aim of the project")}
+            {t("Aim of the process")}
           </Typography>
           <EmojiObjects color="primary" sx={{ ml: 1 }} />
         </Stack>
@@ -214,7 +214,7 @@ export default function Profile({}) {
       <Card variant="outlined" sx={{ p: 2, m: 2 }}>
         <Stack direction="row" sx={{ ml: 2 }}>
           <Typography variant="h6" sx={{ mb: 2 }} color="primary">
-            {t("Challenges of the project")}
+            {t("Challenges of the process")}
           </Typography>
           <FlashOn color="primary" sx={{ ml: 1 }} />
         </Stack>
@@ -226,7 +226,7 @@ export default function Profile({}) {
       <Card variant="outlined" sx={{ p: 2, m: 2 }}>
         <Stack direction="row" sx={{ ml: 2 }}>
           <Typography variant="h6" sx={{ mb: 2 }} color="primary">
-            {t("Idea of the project")}
+            {t("Idea of the process")}
           </Typography>
           <TipsAndUpdates color="primary" sx={{ ml: 1 }} />
         </Stack>

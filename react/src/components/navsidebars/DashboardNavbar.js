@@ -2,6 +2,8 @@ import {
   AppBar,
   Box,
   Button,
+  Menu,
+  MenuItem,
   IconButton,
   Toolbar,
   Typography,
@@ -26,6 +28,7 @@ import SettingsPopover from "./SettingsPopover";
 import React from "react";
 import useAuth from "../../hooks/useAuth";
 import UserNotificationsPopover from "./UserNotificationsPopover";
+import MenuCatalogue from "./MenuCatalogue";
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   ...(theme.palette.mode === "light" && {
@@ -44,33 +47,33 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
 const pages = [
   {
     sx: { ml: 2 },
+    id: "workspace",
     label: i18n.t("Workspace"),
     path: "/dashboard",
     dataCy: "Workspace-page",
   },
   
   {
+    id: "organizations",
     label: i18n.t("Organizations"),
     path: "/dashboard/organizations",
     dataCy: "Organizations-page",
   },
   {
-    label: i18n.t("Interlinkers"),
+    id: "catalogue",
+    label: i18n.t("Catalogue"),
     path: "/dashboard/interlinkers",
     dataCy: "Catalogue-page",
   },
   
   {
+    id: "stories",
     label: i18n.t("Stories"),
     path: "/stories",
     dataCy: "Stories-page",
   },
   
-  {
-    label: i18n.t("Join"),
-    path: "/publiccoproductions",
-    dataCy: "PublicCoproductions-page",
-  }
+  
 ];
 const DashboardNavbar = (props) => {
   const { onSidebarMobileOpen, showOpenMenuButton, ...other } = props;
@@ -105,8 +108,14 @@ const DashboardNavbar = (props) => {
             <DashboardNavbarLogo />
           </RouterLink>
         )}
+  
+
+
         {pages.map((page) => (
-          <Button
+          page.id === "catalogue" ? (
+            <MenuCatalogue page={page} />
+          ) : (
+            <Button
             key={page.path}
             sx={{ ml: 2, ...page.sx }}
             component={RouterLink}
@@ -122,6 +131,9 @@ const DashboardNavbar = (props) => {
               {page.label}
             </Typography>
           </Button>
+          )
+            
+         
         ))}
         <Box
           sx={{
