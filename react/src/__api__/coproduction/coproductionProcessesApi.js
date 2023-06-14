@@ -58,6 +58,10 @@ class CoproductionProcessesApi extends GeneralApi {
     }
   }
 
+  async emailApplyToBeContributor(data) {
+    return axiosInstance.post(`/${this.url}/emailApplyToBeContributor`, data);
+  }
+
   async getTree(id) {
     if (id) {
       const res = await axiosInstance.get(`/${this.url}/${id}/tree`);

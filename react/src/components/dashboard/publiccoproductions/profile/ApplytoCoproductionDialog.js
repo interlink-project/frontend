@@ -1,24 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Alert,
+  TextField,
+  Button,
+  InputLabel,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+} from "@mui/material";
 import { Close } from "@mui/icons-material";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
+
+import { coproductionProcessesApi } from "__api__";
 
 const ApplytoCoproductionDialog = ({ open, handleClose }) => {
   const { selectedPubliccoproduction } = useSelector((state) => state.general);
-  
+
   useEffect(() => {
     clearFields();
   }, [open]);
 
   // State variables
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [emailConfirm, setEmailConfirm] = useState('');
-  const [phone, setPhone] = useState('');
-  const [skills, setSkills] = useState('');
-  const [more_info, setMore_info] = useState('');
+  const [razon, setRazon] = useState("");
   const [isError, setIsError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Form submission handler
   const handleSubmit = (e) => {
@@ -30,23 +38,22 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
     }
 
     //Got all admin emails:
-    const adminEmails = selectedPubliccoproduction.administrators.map((admin) => admin.email);
-   
+    const adminEmails = selectedPubliccoproduction.administrators.map(
+      (admin) => admin.email
+    );
+
     // Sens the email with this information
     const infotoSend = {
-      name: name,
-      email: email,
-      phone: phone,
-      skills: skills,
-      more_info: more_info,
-      coproductionId: selectedPubliccoproduction.id,
+      razon: razon,
+      processId: selectedPubliccoproduction.id,
       coproductionName: selectedPubliccoproduction.name,
+      link: '/dashboard/coproductionprocesses/'+selectedPubliccoproduction.id+'/team',
       adminEmails: adminEmails,
     };
     alert(JSON.stringify(infotoSend));
     console.log(infotoSend);
 
-    
+    coproductionProcessesApi.emailApplyToBeContributor(infotoSend);
   };
 
   // Form cancellation handler
@@ -59,19 +66,7 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
   };
 
   const clearFields = () => {
-    setName('');
-    setEmail('');
-    setEmailConfirm('');
-    setPhone('');
-    setSkills('');
-    setMore_info('');
-  };
-
-  // Email validation function
-  const isEmailValid = (email) => {
-    // Use a regular expression to check the email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    setRazon("");
   };
 
   // Form validation function
@@ -79,33 +74,16 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
     let valid = true;
 
     // Validations:
-    if (name === '') {
+    if (razon === "") {
       setIsError(true);
-      setErrorMessage('Name is required');
+      setErrorMessage(
+        "Include a short description of your interest in this co-production process"
+      );
       valid = false;
     }
-    if (email === '') {
-      setIsError(true);
-      setErrorMessage('Email is required');
-      valid = false;
-    } else if (!isEmailValid(email)) {
-      setIsError(true);
-      setErrorMessage('Please enter a valid email address');
-      valid = false;
-    }
-    if (emailConfirm === '') {
-      setIsError(true);
-      setErrorMessage('Email confirmation is required');
-      valid = false;
-    } else if (email !== emailConfirm) {
-      setIsError(true);
-      setErrorMessage('Emails do not match');
-      valid = false;
-    }
-
     // Clearing error message and resetting error state
     if (valid) {
-      setErrorMessage('');
+      setErrorMessage("");
       setIsError(false);
     }
 
@@ -114,107 +92,40 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Apply to this co-production process</DialogTitle>
+      <DialogTitle sx={{ mt: 1,fontWeight: "bold" }}>
+        Apply to this co-production process
+      </DialogTitle>
       <IconButton
         aria-label="close"
         onClick={handleClose}
         sx={{
           position: "absolute",
-          right: 8,
-          top: 8,
+          right: 0,
+          top: 0,
           color: (theme) => theme.palette.grey[500],
         }}
       >
         <Close />
       </IconButton>
-      <DialogContent>
+      <DialogContent dividers>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                label="Name"
-                name="name"
-                onChange={(e) => {
-                  setName(e.target.value);
-                  validateForm();
-                }}
-                value={name}
-                variant="outlined"
-                sx={{ mt: 1 }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                label="Email"
-                name="email"
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  validateForm();
-                }}
-                value={email}
-                variant="outlined"
-                sx={{ mt: 1 }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                label="Confirm Email"
-                name="emailConfirm"
-                onChange={(e) => {
-                  setEmailConfirm(e.target.value);
-                  validateForm();
-                }}
-                value={emailConfirm}
-                variant="outlined"
-                sx={{ mt: 1 }}
-              />
-            </Grid>
-            <Grid item xs={12}>
+              <InputLabel
+                id="add-contribution-label"
+                sx={{ m: 1, fontWeight: "bold" }}
+              >
+                {"Why do you want to be part of this co-production process?" + "."}
+              </InputLabel>
               <TextField
                 fullWidth
-                label="Phone"
-                name="phone"
+                label="Type your answer here"
+                name="Razon"
                 onChange={(e) => {
-                  setPhone(e.target.value);
+                  setRazon(e.target.value);
                   validateForm();
                 }}
-                value={phone}
-                variant="outlined"
-                sx={{ mt: 1 }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Please provide details of your skills and experience"
-                name="skills"
-                onChange={(e) => {
-                  setSkills(e.target.value);
-                  validateForm();
-                }}
-                value={skills}
-                variant="outlined"
-                multiline
-                rows={4}
-                sx={{ mt: 1 }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Please feel free to provide any additional information or ask any further questions"
-                name="more_info"
-                onChange={(e) => {
-                  setMore_info(e.target.value);
-                  validateForm();
-                }}
-                value={more_info}
+                value={razon}
                 variant="outlined"
                 multiline
                 rows={4}
