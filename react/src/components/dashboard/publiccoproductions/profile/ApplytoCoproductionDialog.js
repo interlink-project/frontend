@@ -50,10 +50,13 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
       link: '/dashboard/coproductionprocesses/'+selectedPubliccoproduction.id+'/team',
       adminEmails: adminEmails,
     };
-    alert(JSON.stringify(infotoSend));
+    //alert(JSON.stringify(infotoSend));
     console.log(infotoSend);
 
     coproductionProcessesApi.emailApplyToBeContributor(infotoSend);
+    alert('Message sent successfully!')
+    clearFields();
+    handleClose();
   };
 
   // Form cancellation handler
@@ -115,7 +118,7 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
                 id="add-contribution-label"
                 sx={{ m: 1, fontWeight: "bold" }}
               >
-                {"Why do you want to be part of this co-production process?" + "."}
+                {"Explain why you would like to join this co-production process" + "."}
               </InputLabel>
               <TextField
                 fullWidth
