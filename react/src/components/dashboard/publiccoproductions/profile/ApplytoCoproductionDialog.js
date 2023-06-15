@@ -55,7 +55,7 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
     console.log(infotoSend);
 
     coproductionProcessesApi.emailApplyToBeContributor(infotoSend);
-    alert('Message sent successfully!')
+    //alert('Message sent successfully!')
     clearFields();
     handleClose();
   };
