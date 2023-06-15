@@ -221,7 +221,7 @@ export const getSelectedStory = (id) => async (dispatch) => {
 
 export const getSelectedPubliccoproduction = (id) => async (dispatch) => {
   dispatch(slice.actions.setLoadingSelectedPubliccoproduction(true));
-  const selectedPubliccoproduction_data = await coproductionProcessesApi.get(id);
+  const selectedPubliccoproduction_data = await coproductionProcessesApi.getPublicbyId(id);
   dispatch(slice.actions.setSelectedPubliccoproduction(selectedPubliccoproduction_data));
   dispatch(slice.actions.setLoadingSelectedPubliccoproduction(false));
 };

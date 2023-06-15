@@ -121,7 +121,7 @@ const PubliccoproductionRatings = ({ publiccoproduction }) => {
         sx={{ mt: 2 }}
         size="medium"
       >
-        {t('Rate this publiccoproduction')}
+        {t('Rate this public co-production process')}
       </Button>
       )}
 

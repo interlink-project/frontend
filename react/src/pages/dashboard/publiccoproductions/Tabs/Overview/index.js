@@ -143,7 +143,7 @@ export default function OverviewPubliccoproduction({}) {
         <>
           <AppBar sx={{ position: "relative" }}>
             <Typography variant="h6" sx={{ p: 2 }}>
-              {t("Public Coproduction Overview")}
+              {t("Public co-production process")}
             </Typography>
           </AppBar>
           {

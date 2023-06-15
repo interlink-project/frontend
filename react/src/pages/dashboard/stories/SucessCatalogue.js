@@ -63,7 +63,7 @@ const SuccessCatalogue = () => {
 
                 <Typography color="textSecondary" variant="h6" sx={{m:1}}>
                 {t(
-                    "Here, you'll discover a selection of successful coproduction case studies, which could serve as valuable references for your own coproduction endeavors"
+                    "Here you have a selection of success cases in co-production, which could be used as inspiration for your co-production needs"
                   )+'.'}
                 </Typography>
               </Grid>

@@ -10,6 +10,7 @@ import {
   DialogTitle,
   Grid,
   IconButton,
+  Typography,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import { useSelector } from "react-redux";
@@ -113,12 +114,16 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
       <DialogContent dividers>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid item xs={12} >
               <InputLabel
                 id="add-contribution-label"
-                sx={{ m: 1, fontWeight: "bold" }}
+                sx={{ m: 1, fontWeight: "bold", whiteSpace: "normal"  }}
               >
-                {"Explain why you would like to join this co-production process" + "."}
+                
+
+                {"Explain why you would like to join this co-production process and how you could support it as co-producer" + "."}
+               
+                
               </InputLabel>
               <TextField
                 fullWidth

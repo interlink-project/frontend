@@ -48,6 +48,18 @@ export default class GeneralApi {
     }
   }
 
+  async getPublicbyId(id, language = getLanguage()) {
+    if (id) {
+      const res = await axiosInstance.get(`/${this.url}/public/${id}`, {
+        headers: {
+          "Accept-Language": language,
+        },
+      });
+      //console.log('get call', res.data, 'in', language);
+      return res.data;
+    }
+  }
+
   async delete(id) {
     if (id) {
       const res = await axiosInstance.delete(`/${this.url}/${id}`);

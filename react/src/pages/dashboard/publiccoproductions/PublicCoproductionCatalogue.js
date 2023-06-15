@@ -67,7 +67,7 @@ const PublicCoproductionCatalogue = () => {
                 </Typography>
                 <Typography color="textSecondary" variant="h6" sx={{m:1}}>
                 {t(
-                    "This is a list of process who are looking for participants. You can join them and start to collaborate with other people."
+                    "Here there is a list of public processes you can join in case you think that you can collaborate"
                   )+'.'}
                 </Typography>
               </Grid>
@@ -83,7 +83,6 @@ const PublicCoproductionCatalogue = () => {
               //   action: 'publiccoproduction-open',
               //   name: publiccoproduction.id
               // });
-
               setPublicCoproduction(publiccoproduction);
               
               handleClickOpen();

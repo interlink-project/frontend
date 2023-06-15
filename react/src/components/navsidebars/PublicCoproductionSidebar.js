@@ -262,7 +262,7 @@ const PublicCoproductionSidebar = (props) => {
                         size="large"
                         startIcon={<Hail />}
                       >
-                        {t("Apply to be part of this coproduction")}
+                        {t("Join this co-production process")}
                       </Button>
                    
                 </Box>
