@@ -10,6 +10,7 @@ import StepLabel from "@mui/material/StepLabel";
 import DataSaverOffIcon from "@mui/icons-material/DataSaverOff";
 import ConstructionIcon from "@mui/icons-material/Construction";
 import BuildIcon from "@mui/icons-material/Build";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import WidgetsIcon from "@mui/icons-material/Widgets";
@@ -67,13 +68,13 @@ function ColorlibStepIcon(props) {
   const { active, completed, className } = props;
 
   const icons = {
-    1: <GroupsIcon />,
+    1: <ConstructionIcon />,
     2: <DataSaverOffIcon />,
-    3: <ConstructionIcon />,
-    4: <BuildIcon />,
-    5: <MilitaryTechIcon />,
+    3: <AccountTreeIcon />,
+    4: <GroupsIcon />,
+    5: <WidgetsIcon />,
     6: <BusinessCenterIcon />,
-    7: <WidgetsIcon />,
+    7: <MilitaryTechIcon />,
     8: <FlagIcon />,
   };
 
@@ -98,7 +99,7 @@ export default function CustomizedSteppers(props) {
   const steps = props.completeStates;
   const activeStep = props.selectedStateIndex;
   const onClickEvent= props.onClick;
-  const titles=[t("Organizations"),t("Settings"),t("Type"),t("Schema"),t("Rewards"),t("Permissions"),t("Resources"),t("Finish")]
+  const titles=[t("Settings"),t("Type"),t("Schema"),t("Organizations"),t("Resources"),t("Permissions"),t("Rewards"),t("Finish")]
 
   const handleStep = (stepFase) => {
     let fase = Number(stepFase["index"]) + 1;

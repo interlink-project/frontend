@@ -44,6 +44,7 @@ import {
   DataSaverOff,
   Flag,
   ArrowBack,
+  AccountTree,
 } from "@mui/icons-material";
 import Organizations from "pages/dashboard/organizations";
 import OrganizationsDialog, {OganizationsDialog} from "pages/dashboard/organizations/indexDialog"
@@ -285,10 +286,10 @@ export default function TimeLine({ assets }) {
   const hasCompletedAll = checker(temp_completeStates);
 
   const completeStates = [
-    process.hasAddAnOrganization, //Has Organizations? He decide!.
     !!dataFulfilled || administratorsFulfilled,
     process.intergovernmental_model!=null, //Did you decide the type (If has a schema it means it has a type)
     hasSchema,
+    process.hasAddAnOrganization, //Has Organizations? He decide!.
     process.incentive_and_rewards_state, //Have you active the rewards?
     permissionsFullfilled, //Have you grant permissions to a team in all process?
     process.skipResourcesStep || newAssetsFullfilled,
@@ -329,18 +330,9 @@ export default function TimeLine({ assets }) {
           sx={{ mx: 2, mt: 2 }}
           // connector={<ColorlibConnector />}
         >
-          {/* Step 1 */}
-          {/* <MyStepSection
-            title="Organizations and Teams"
-            subtitle="Ok firstly, if you haven't done so before, create your own organization and teams for your project. take into account that if you select your organization as public, it will be visible to all users of the platform. So once you created your organization, you will find inside it a button to create teams."
-            dataFulfilled={dataFulfilled}
-            linktoPage={`/dashboard/organizations`}
-            sectionName="section_1"
-            nextSectName="section_2"
-            picturePath="/coproduction/static/guide/overview_step1.svg"
-            pictureSize="450px"
-          /> */}
+         
 
+          {/* Step 1 */}
           {roadItemIndex == "section_1" && (
             <Step
               active
@@ -353,95 +345,9 @@ export default function TimeLine({ assets }) {
                   fontSize: "2.5rem",
                 },
               }}
-              id="section_1"
+              id={"section_1"}
             >
-              <StepLabel StepIconComponent={Groups}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6} sx={{ minHeight: "55vh" }}>
-                    <Stack spacing={1}>
-                      <Typography variant="h6">
-                        {t("Organizations and Teams")}
-                      </Typography>
-
-                      <Typography variant="subtitle1">
-                        {t("Ok firstly- if you")}
-                      </Typography>
-                      <Stack
-                        direction="row"
-                        justifyContent="left"
-                        alignItems="center"
-                        divider={<Divider orientation="vertical" flexItem />}
-                        spacing={2}
-                      >
-                        <Button
-                          onClick={() => setOpenOrganizations(true)}
-                          size="small"
-                          variant="contained"
-                          sx={{ maxWidth: "200px" }}
-                        >
-                          {t("Go to organizations")}
-                        </Button>
-                        <Link href="#" onClick={setHasAddAnOrganization}>
-                          {t("already done")}
-                        </Link>
-                      </Stack>
-                    </Stack>
-
-                    <IconButton
-                      onClick={() => nextSect("section_2")}
-                      color="primary"
-                      sx={{ border: "1px", mt: 2 }}
-                      variant="outlined"
-                    >
-                      <ArrowForward />
-                    </IconButton>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <img
-                      src="/static/guide/overview_step1.svg"
-                      height="400vw"
-                    ></img>
-                  </Grid>
-
-                  {/*                   <Grid
-                    container
-                    spacing={0}
-                    direction="column"
-                    alignItems="center"
-                    justifyContent="center"
-                  >
-                    <Grid item xs={12}>
-                      <IconButton
-                        onClick={() => nextSect("section_2")}
-                        color="primary"
-                        sx={{ border: "1px" }}
-                        variant="outlined"
-                      >
-                        <ArrowDownwardIcon />
-                      </IconButton>
-                    </Grid>
-                  </Grid> */}
-                </Grid>
-              </StepLabel>
-            </Step>
-          )}
-
-          {/* Step 2 */}
-          {roadItemIndex == "section_2" && (
-            <Step
-              active
-              completed={!!dataFulfilled}
-              sx={{
-                "& .MuiStepLabel-iconContainer": {
-                  alignSelf: "baseline",
-                },
-                "& .MuiSvgIcon-root": {
-                  fontSize: "2.5rem",
-                },
-              }}
-              id={"section_2"}
-            >
-              <StepLabel StepIconComponent={DataSaverOff}>
+              <StepLabel StepIconComponent={Construction}>
                 <Grid container spacing={2}>
                   <Grid item xs={6} sx={{ minHeight: "55vh" }}>
                     <Stack spacing={1}>
@@ -468,16 +374,9 @@ export default function TimeLine({ assets }) {
                         {t("Go to settings section")}
                       </Button>
                     </Stack>
+                    
                     <IconButton
-                      onClick={() => nextSect("section_1")}
-                      color="primary"
-                      sx={{ border: "1px", mt: 2 }}
-                      variant="outlined"
-                    >
-                      <ArrowBack />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => nextSect("section_3")}
+                      onClick={() => nextSect("section_2")}
                       color="primary"
                       sx={{ border: "1px", mt: 2 }}
                       variant="outlined"
@@ -515,8 +414,8 @@ export default function TimeLine({ assets }) {
             </Step>
           )}
 
-          {/* Step 3 */}
-          {roadItemIndex == "section_3" && (
+          {/* Step 2 */}
+          {roadItemIndex == "section_2" && (
             <Step
               active
               completed={!!dataFulfilled}
@@ -528,9 +427,9 @@ export default function TimeLine({ assets }) {
                   fontSize: "2.5rem",
                 },
               }}
-              id={"section_3"}
+              id={"section_2"}
             >
-              <StepLabel StepIconComponent={Construction}>
+              <StepLabel StepIconComponent={DataSaverOff}>
                 <Grid container spacing={2}>
                   <Grid item xs={6} sx={{ minHeight: "55vh" }}>
                     <Stack spacing={1}>
@@ -565,7 +464,7 @@ export default function TimeLine({ assets }) {
                      
                     </Stack>
                     <IconButton
-                      onClick={() => nextSect("section_2")}
+                      onClick={() => nextSect("section_1")}
                       color="primary"
                       sx={{ border: "1px", mt: 2 }}
                       variant="outlined"
@@ -573,7 +472,7 @@ export default function TimeLine({ assets }) {
                       <ArrowBack />
                     </IconButton>
                     <IconButton
-                      onClick={() => nextSect("section_4")}
+                      onClick={() => nextSect("section_3")}
                       color="primary"
                       sx={{ border: "1px", mt: 2 }}
                       variant="outlined"
@@ -611,9 +510,8 @@ export default function TimeLine({ assets }) {
             </Step>
           )}
 
-          {/* Step 4 */}
-
-          {roadItemIndex == "section_4" && (
+          {/* Step 3 */}
+          {roadItemIndex == "section_3" && (
             <Step
               active
               completed={!!dataFulfilled}
@@ -625,9 +523,9 @@ export default function TimeLine({ assets }) {
                   fontSize: "2.5rem",
                 },
               }}
-              id={"section_4"}
+              id={"section_3"}
             >
-              <StepLabel StepIconComponent={Build}>
+              <StepLabel StepIconComponent={AccountTree}>
                 <Grid container spacing={2}>
                   <Grid item xs={6} sx={{ minHeight: "55vh" }}>
                     <Stack spacing={1}>
@@ -661,7 +559,7 @@ export default function TimeLine({ assets }) {
                       )}
                     </Stack>
                     <IconButton
-                      onClick={() => nextSect("section_3")}
+                      onClick={() => nextSect("section_2")}
                       color="primary"
                       sx={{ border: "1px", mt: 2 }}
                       variant="outlined"
@@ -669,7 +567,7 @@ export default function TimeLine({ assets }) {
                       <ArrowBack />
                     </IconButton>
                     <IconButton
-                      onClick={() => nextSect("section_5")}
+                      onClick={() => nextSect("section_4")}
                       color="primary"
                       sx={{ border: "1px", mt: 2 }}
                       variant="outlined"
@@ -707,7 +605,103 @@ export default function TimeLine({ assets }) {
             </Step>
           )}
 
+          {/* Step 4 */}
+          {roadItemIndex == "section_4" && (
+            <Step
+              active
+              completed={!!dataFulfilled}
+              sx={{
+                "& .MuiStepLabel-iconContainer": {
+                  alignSelf: "baseline",
+                },
+                "& .MuiSvgIcon-root": {
+                  fontSize: "2.5rem",
+                },
+              }}
+              id="section_4"
+            >
+              <StepLabel StepIconComponent={Groups}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6} sx={{ minHeight: "55vh" }}>
+                    <Stack spacing={1}>
+                      <Typography variant="h6">
+                        {t("Organizations and Teams")}
+                      </Typography>
+
+                      <Typography variant="subtitle1">
+                        {t("Ok firstly- if you")}
+                      </Typography>
+                      <Stack
+                        direction="row"
+                        justifyContent="left"
+                        alignItems="center"
+                        divider={<Divider orientation="vertical" flexItem />}
+                        spacing={2}
+                      >
+                        <Button
+                          onClick={() => setOpenOrganizations(true)}
+                          size="small"
+                          variant="contained"
+                          sx={{ maxWidth: "200px" }}
+                        >
+                          {t("Go to organizations")}
+                        </Button>
+                        <Link href="#" onClick={setHasAddAnOrganization}>
+                          {t("already done")}
+                        </Link>
+                      </Stack>
+                    </Stack>
+
+                    <IconButton
+                      onClick={() => nextSect("section_3")}
+                      color="primary"
+                      sx={{ border: "1px", mt: 2 }}
+                      variant="outlined"
+                    >
+                      <ArrowBack />
+                    </IconButton>
+
+                    <IconButton
+                      onClick={() => nextSect("section_5")}
+                      color="primary"
+                      sx={{ border: "1px", mt: 2 }}
+                      variant="outlined"
+                    >
+                      <ArrowForward />
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <img
+                      src="/static/guide/overview_step1.svg"
+                      height="400vw"
+                    ></img>
+                  </Grid>
+
+                  {/*                   <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Grid item xs={12}>
+                      <IconButton
+                        onClick={() => nextSect("section_2")}
+                        color="primary"
+                        sx={{ border: "1px" }}
+                        variant="outlined"
+                      >
+                        <ArrowDownwardIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid> */}
+                </Grid>
+              </StepLabel>
+            </Step>
+          )}
+
           {/* Step 5 */}
+
           {roadItemIndex == "section_5" && (
             <Step
               active
@@ -720,30 +714,51 @@ export default function TimeLine({ assets }) {
                   fontSize: "2.5rem",
                 },
               }}
-              id={"section_5"}
+              id={"section_7"}
             >
-              <StepLabel StepIconComponent={MilitaryTech}>
+              <StepLabel StepIconComponent={Widgets}>
                 <Grid container spacing={2}>
                   <Grid item xs={6} sx={{ minHeight: "55vh" }}>
                     <Stack spacing={1}>
                       <Typography variant="h6">
-                        {t("Give rewards to your collaborators")}
+                        {t("Your Interlinkers-Resources")}
                       </Typography>
 
                       <Typography variant="subtitle1">
-                        {t(
-                          "If you want to incentivize your collaborators to do their best"
-                        )}
+                        {t("Once you add a resource to a tree element")}
                       </Typography>
 
-                      <Button
-                        onClick={() => handleOpenLightbox()}
-                        size="small"
-                        variant="contained"
-                        sx={{ maxWidth: "200px" }}
+                      {dataFulfilled ? (
+                        <Alert severity="success">
+                          {t("The coproduction process data has been defined")}
+                        </Alert>
+                      ) : (
+                        <></>
+                      )}
+
+                      <Stack
+                        direction="row"
+                        justifyContent="left"
+                        alignItems="center"
+                        divider={<Divider orientation="vertical" flexItem />}
+                        spacing={2}
                       >
-                        {t("Go to the reward system tutorial")}
-                      </Button>
+                        <Button
+                          onClick={() =>
+                            navigate(
+                              `/dashboard/coproductionprocesses/${process.id}/resources`
+                            )
+                          }
+                          size="small"
+                          variant="contained"
+                          sx={{ maxWidth: "200px" }}
+                        >
+                          {t("Go to Resources section")}
+                        </Button>
+                        <Link href="#" onClick={setSkipResourcesStep}>
+                          {t("or just skip")}
+                        </Link>
+                      </Stack>
                     </Stack>
                     <IconButton
                       onClick={() => nextSect("section_4")}
@@ -764,12 +779,12 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/static/guide/overview_step5.svg"
-                      height="410vw"
+                      src="/static/guide/overview_step7.svg"
+                      height="450vw"
                     ></img>
                   </Grid>
 
-                  {/* <Grid
+                  {/*  <Grid
                     container
                     spacing={0}
                     direction="column"
@@ -778,7 +793,7 @@ export default function TimeLine({ assets }) {
                   >
                     <Grid item xs={12}>
                       <IconButton
-                        onClick={() => nextSect("section_6")}
+                        onClick={() => nextSect("section_8")}
                         color="primary"
                         sx={{ border: "1px" }}
                         variant="outlined"
@@ -791,7 +806,7 @@ export default function TimeLine({ assets }) {
               </StepLabel>
             </Step>
           )}
-
+          
           {/* Step 6 */}
 
           {roadItemIndex == "section_6" && (
@@ -884,8 +899,9 @@ export default function TimeLine({ assets }) {
             </Step>
           )}
 
-          {/* Step 7 */}
+          
 
+          {/* Step 7 */}
           {roadItemIndex == "section_7" && (
             <Step
               active
@@ -898,51 +914,30 @@ export default function TimeLine({ assets }) {
                   fontSize: "2.5rem",
                 },
               }}
-              id={"section_7"}
+              id={"section_5"}
             >
-              <StepLabel StepIconComponent={Widgets}>
+              <StepLabel StepIconComponent={MilitaryTech}>
                 <Grid container spacing={2}>
                   <Grid item xs={6} sx={{ minHeight: "55vh" }}>
                     <Stack spacing={1}>
                       <Typography variant="h6">
-                        {t("Your Interlinkers-Resources")}
+                        {t("Give rewards to your collaborators")}
                       </Typography>
 
                       <Typography variant="subtitle1">
-                        {t("Once you add a resource to a tree element")}
+                        {t(
+                          "If you want to incentivize your collaborators to do their best"
+                        )}
                       </Typography>
 
-                      {dataFulfilled ? (
-                        <Alert severity="success">
-                          {t("The coproduction process data has been defined")}
-                        </Alert>
-                      ) : (
-                        <></>
-                      )}
-
-                      <Stack
-                        direction="row"
-                        justifyContent="left"
-                        alignItems="center"
-                        divider={<Divider orientation="vertical" flexItem />}
-                        spacing={2}
+                      <Button
+                        onClick={() => handleOpenLightbox()}
+                        size="small"
+                        variant="contained"
+                        sx={{ maxWidth: "200px" }}
                       >
-                        <Button
-                          onClick={() =>
-                            navigate(
-                              `/dashboard/coproductionprocesses/${process.id}/resources`
-                            )
-                          }
-                          size="small"
-                          variant="contained"
-                          sx={{ maxWidth: "200px" }}
-                        >
-                          {t("Go to Resources section")}
-                        </Button>
-                        <Link href="#" onClick={setSkipResourcesStep}>
-                          {t("or just skip")}
-                        </Link>
-                      </Stack>
+                        {t("Go to the reward system tutorial")}
+                      </Button>
                     </Stack>
                     <IconButton
                       onClick={() => nextSect("section_6")}
@@ -963,12 +958,12 @@ export default function TimeLine({ assets }) {
                   </Grid>
                   <Grid item xs={6}>
                     <img
-                      src="/static/guide/overview_step7.svg"
-                      height="450vw"
+                      src="/static/guide/overview_step5.svg"
+                      height="410vw"
                     ></img>
                   </Grid>
 
-                  {/*  <Grid
+                  {/* <Grid
                     container
                     spacing={0}
                     direction="column"
@@ -977,7 +972,7 @@ export default function TimeLine({ assets }) {
                   >
                     <Grid item xs={12}>
                       <IconButton
-                        onClick={() => nextSect("section_8")}
+                        onClick={() => nextSect("section_6")}
                         color="primary"
                         sx={{ border: "1px" }}
                         variant="outlined"
