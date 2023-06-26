@@ -28,7 +28,7 @@ import SettingsPopover from "./SettingsPopover";
 import React from "react";
 import useAuth from "../../hooks/useAuth";
 import UserNotificationsPopover from "./UserNotificationsPopover";
-import MenuCatalogue from "./MenuCatalogue";
+
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   ...(theme.palette.mode === "light" && {
@@ -112,9 +112,7 @@ const DashboardNavbar = (props) => {
 
 
         {pages.map((page) => (
-          page.id === "catalogue" ? (
-            <MenuCatalogue page={page} />
-          ) : (
+
             <Button
             key={page.path}
             sx={{ ml: 2, ...page.sx }}
@@ -131,7 +129,6 @@ const DashboardNavbar = (props) => {
               {page.label}
             </Typography>
           </Button>
-          )
             
          
         ))}

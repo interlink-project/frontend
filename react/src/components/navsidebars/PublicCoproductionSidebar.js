@@ -98,6 +98,7 @@ const PublicCoproductionSidebar = (props) => {
 
   const onApply = () => {
     //alert("You have succefully apllied to this coproduction process.")
+    navigate("/publiccoproductions/"+selectedPubliccoproduction.id+"/apply");
     setApplyDialogOpen(true);
     // setLoadingDialogOpen(true);
     // coproductionProcessesApi

@@ -86,7 +86,7 @@ const PublicCoproductionCatalogue = () => {
               setPublicCoproduction(publiccoproduction);
               
               handleClickOpen();
-              navigate(publiccoproduction.id + "/profile");
+              navigate("/publiccoproductions/"+publiccoproduction.id + "/profile");
             }}
           />
         </Container>

@@ -8,6 +8,7 @@ import RedirectProcessAsset from 'pages/dashboard/coproductionprocesses/Redirect
 import PublicCoproductionLayout from 'components/layouts/PublicCoproductionLayout';
 import PublicCoproductionCatalogue from 'pages/dashboard/publiccoproductions/PublicCoproductionCatalogue';
 import PublicCoproductionProfile from 'pages/dashboard/publiccoproductions/PublicCoproductionProfile';
+import CatalogueSelector from 'components/dashboard/CatalogueSelector';
 
 
 const CoproductionProcessProfile = Loadable(
@@ -60,8 +61,13 @@ export const routes = [
           },
           {
             path: ':tab',
+            element: <PublicCoproductionProfile />
+          },
+          {
+            path: 'apply',
             element: <AuthGuard><PublicCoproductionProfile /></AuthGuard>
           },
+          
         ]
       }
     ]
@@ -153,7 +159,7 @@ export const routes = [
         children: [
           {
             path: '',
-            element: <Catalogue />,
+            element: <CatalogueSelector />,
           },
           {
             path: ':interlinkerId',

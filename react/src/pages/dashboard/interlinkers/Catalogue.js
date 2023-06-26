@@ -1,5 +1,5 @@
 import { useMatomo } from "@datapunt/matomo-tracker-react";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography,Tabs,Tab } from "@mui/material";
 import { InterlinkerDialog } from "components/dashboard/interlinkers";
 import InterlinkerBrowse from "components/dashboard/interlinkers/browse/InterlinkerBrowse";
 import { useState } from "react";
@@ -76,7 +76,7 @@ const Catalogue = () => {
           px: 1,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="lg">     
           <Grid container spacing={3}>
             <Grid
               alignItems="center"
@@ -87,7 +87,6 @@ const Catalogue = () => {
               xs={12}
             >
               <Grid item>
-               
                 <Typography
                   color="textPrimary"
                   variant="h5"
@@ -96,17 +95,11 @@ const Catalogue = () => {
                   {t("interlinkers-catalogue").toUpperCase()}
                 </Typography>
 
-                <Typography color="textSecondary" variant="h6" sx={{m:1}}>
-                {t(
+                <Typography color="textSecondary" variant="h6" sx={{ m: 1 }}>
+                  {t(
                     "Here you have a through list of INTERLINKERs specifically curated for their use within co-production processes"
-                  )+'.'}
+                  ) + "."}
                 </Typography>
-                
-
-
-
-
-                
               </Grid>
               <Grid item />
             </Grid>
