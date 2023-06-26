@@ -50,7 +50,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { getProcess, updateProcess } from "slices/process";
 import * as Yup from "yup";
-import { coproductionProcessesApi, storiesApi, gamesApi, tagsApi } from "__api__";
+import {
+  coproductionProcessesApi,
+  storiesApi,
+  gamesApi,
+  tagsApi,
+} from "__api__";
 import { withStyles } from "@mui/styles";
 import { getSelectedStory, getTags } from "slices/general";
 import { Link } from "react-router-dom";
@@ -59,6 +64,8 @@ import { styled } from "@mui/material/styles";
 import Lightbox from "../../../../../components/Lightbox";
 import CreateSchema from "components/dashboard/SchemaSelector";
 import RewardSettings from "./RewardSettings";
+import MakePublicDialog from "components/dashboard/coproductionprocesses/MakePublicDialog";
+import { set } from "store";
 
 const SettingsTab = () => {
   const [isCloning, setIsCloning] = useState(false);
@@ -68,9 +75,18 @@ const SettingsTab = () => {
   const [editMode, setEditMode] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [openDialogSchema, setOpenDialogSchema] = useState(false);
+  const [openDialogPublic, setOpenDialogPublic] = useState(false);
 
   const handleCloseDialogSchema = () => {
     setOpenDialogSchema(false);
+  };
+
+  const handleCloseDialogPublic = () => {
+    setOpenDialogPublic(false);
+  };
+
+  const handleSwitchEvent = () => {
+    setIsPublic(!isPublic);
   };
 
   const handleOpenLightbox = () => {
@@ -99,18 +115,14 @@ const SettingsTab = () => {
   const [isGuideHidden, setIsGuideHidden] = useState(
     !process.hideguidechecklist
   );
-  const [isPublic, setIsPublic] = useState(
-    process.is_public
-  );
+  const [isPublic, setIsPublic] = useState(process.is_public);
   const [logotype, setLogotype] = useState(null);
   const mounted = useMounted();
   const t = useCustomTranslation(process.language);
 
-  const { tags } = useSelector(
-    (state) => state.general
-  );
+  const { tags } = useSelector((state) => state.general);
   const [selectedTags, setSelectedTags] = useState([]);
-  
+
   //Dialogs:
   const [publishDialogOpen, setPublishDialogOpen] = useState(false);
 
@@ -270,11 +282,9 @@ const SettingsTab = () => {
         setOpenDialogSchema(true);
         return false;
       }
-
     }
 
     setIsGuideHidden((prev) => !prev);
-
 
     //Hide guide startup checklist
     const values = { hideguidechecklist: isGuideHidden };
@@ -299,26 +309,29 @@ const SettingsTab = () => {
 
   const toggleIsPublic = async () => {
 
-    setIsPublic(!isPublic);
-    //Hide guide startup checklist
-    const values = { is_public: !isPublic };
-    
-
-    try {
-      dispatch(
-        updateProcess({
-          id: process.id,
-          data: values,
-          logotype,
-          onSuccess: () => {
-            if (mounted.current) {
-              console.log(process);
-            }
-          },
-        })
-      );
-    } catch (err) {
-      console.error(err);
+    if (isPublic) {
+      setIsPublic(!isPublic);
+      //Hide guide startup checklist
+      const values = { is_public: !isPublic };
+      try {
+        dispatch(
+          updateProcess({
+            id: process.id,
+            data: values,
+            logotype,
+            onSuccess: () => {
+              if (mounted.current) {
+                console.log(process);
+              }
+            },
+          })
+        );
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      setOpenDialogPublic(true);
+      
     }
   };
 
@@ -505,14 +518,16 @@ const SettingsTab = () => {
             //console.log(values);
             for (let tag of values.tags) {
               if (!tag.id) {
-                
-                await tagsApi.createbyName({ name: tag }).then((res) => {
-                  if (res.status === 200) {
-                    values.tags.splice(values.tags.indexOf(tag), 1,res.data);
-                  }
-                }).catch((err) => {
-                  console.error(err);
-                });
+                await tagsApi
+                  .createbyName({ name: tag })
+                  .then((res) => {
+                    if (res.status === 200) {
+                      values.tags.splice(values.tags.indexOf(tag), 1, res.data);
+                    }
+                  })
+                  .catch((err) => {
+                    console.error(err);
+                  });
               }
             }
             try {
@@ -661,7 +676,7 @@ const SettingsTab = () => {
                     noOptionsText="Enter to create a new option"
                     getOptionLabel={(tag) => {
                       // Value selected with enter, right from the input
-                      if (typeof tag === 'string') {
+                      if (typeof tag === "string") {
                         return tag;
                       }
                       // Add "xxx" option created dynamically
@@ -672,7 +687,7 @@ const SettingsTab = () => {
                       return tag.name;
                     }}
                     onChange={(event, newValue) => {
-                      if (typeof newValue === 'string') {
+                      if (typeof newValue === "string") {
                         setSelectedTags({
                           name: newValue,
                         });
@@ -687,8 +702,9 @@ const SettingsTab = () => {
                       //console.log("New Tags values:",newValue);
                       setFieldValue("tags", newValue);
                     }}
-
-                    renderOption={(props, tag) => <li {...props}>{tag.name}</li>}
+                    renderOption={(props, tag) => (
+                      <li {...props}>{tag.name}</li>
+                    )}
                     renderInput={(params) => (
                       <TextField {...params} label={t("TAGS")} />
                     )}
@@ -1257,15 +1273,23 @@ const SettingsTab = () => {
       </Dialog>
 
       {!hasSchema && (
-        <Dialog open={openDialogSchema} onClose={handleCloseDialogSchema} fullWidth maxWidth="xl">
+        <Dialog
+          open={openDialogSchema}
+          onClose={handleCloseDialogSchema}
+          fullWidth
+          maxWidth="xl"
+        >
           <Box sx={{ minHeight: "93vh" }}>
             <CreateSchema />
           </Box>
         </Dialog>
       )}
 
-
-
+      <MakePublicDialog
+        open={openDialogPublic}
+        handleClose={handleCloseDialogPublic}
+        switchEvent={handleSwitchEvent}
+      />
     </Box>
   );
 };

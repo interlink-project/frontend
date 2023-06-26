@@ -1,149 +1,105 @@
 import {
-  Avatar,
-  IconButton,
   Grid,
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
   Chip,
-  Button,
   AppBar,
   Box,
-  Divider,
   Paper,
   Tab,
   Tabs,
   Typography,
+  Avatar,
+  Stack,
+  Card,
+  AvatarGroup,
+  useMediaQuery,
 } from "@mui/material";
 import {
   AccountTree,
+  Description,
+  PersonPin,
+  EmojiObjects,
+  FlashOn,
   OpenInNew,
-  MoreVert,
-  YouTube,
-  ArrowForward,
+  TipsAndUpdates,
 } from "@mui/icons-material";
-
+import { AssetsTable } from "components/dashboard/assets";
 import { useCustomTranslation } from "hooks/useDependantTranslation";
 import useMounted from "hooks/useMounted";
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate } from "react-router";
-import moment from 'moment';
+import { useNavigate } from "react-router";
+import { setSelectedTreeItemById } from "slices/process";
+import { coproductionProcessesApi } from "__api__";
 import TimeLine from "components/dashboard/coproductionprocesses/TimeLine";
+import CoproNotifications from "components/dashboard/coproductionprocesses/CoproNotifications";
 import {
+  getAssetsList_byCopro,
   getCoproductionProcessNotifications,
-  getSelectedPubliccoproduction,
 } from "slices/general";
 import useAuth from "hooks/useAuth";
+import { cleanProcess } from "slices/process";
 import { defaultReduceAnimations } from "@mui/lab/CalendarPicker/CalendarPicker";
+import SwipeableViews from "react-swipeable-views";
+import moment from "moment";
 import PublicCoproductionReviews from "components/dashboard/publiccoproductions/profile/PublicCoproductionReviews";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/styles";
-import { getProcessCatalogue } from "slices/process";
 
-function TwoColumnsText(props) {
-  const { text, mobileDevice, largeDevice, xlargeDevice, ...other } = props;
-  const sentences = text.split(/([^\.!\?]+[\.!\?]+)|([^\.!\?]+$)/g);
-  return (
-    <>
-      {mobileDevice ? (
-        <Typography color="textSecondary" variant="body2" sx={{ m: 2 }}>
-          {text}
-        </Typography>
-      ) : (
-        <>
-          {(largeDevice || xlargeDevice) ? (
-            
-            <Typography color="textSecondary" variant="body2" sx={{ m: 5 }}>
-              <Grid container spacing={{ xs: 2, md: 3 }}>
-                <Grid item xs={6} sx={{ textAlign: "justify" }}>
-                  {sentences.slice(0, sentences.length / 2)}
-                </Grid>
-                <Grid item xs={6} sx={{ textAlign: "justify" }}>
-                  {sentences.slice(sentences.length / 2, sentences.length)}
-                </Grid>
-              </Grid>
-            </Typography>
 
-          ) : (
-            <Typography color="textSecondary" variant="body2" sx={{ m: 5 }}>
-              <Grid container spacing={{ xs: 2, md: 3 }}>
-                <Grid item xs={4} sx={{ textAlign: "justify" }}>
-                  {sentences.slice(0, sentences.length / 3)}
-                </Grid>
-                <Grid item xs={4} sx={{ textAlign: "justify" }}>
-                  {sentences.slice(
-                    sentences.length / 3,
-                    sentences.length - sentences.length / 3
-                  )}
-                </Grid>
-                <Grid item xs={4} sx={{ textAlign: "justify" }}>
-                  {sentences.slice(
-                    sentences.length - sentences.length / 3,
-                    sentences.length
-                  )}
-                </Grid>
-              </Grid>
-            </Typography>          )}
-        </>
-      )}
-    </>
+export default function Profile({}) {
+  const mdUp = useMediaQuery((theme) => theme.breakpoints.up("md"));
+
+  const { selectedPubliccoproduction } = useSelector(
+    (state) => state.general
   );
-}
 
-export default function OverviewPubliccoproduction({}) {
-  const theme = useTheme();
-  const mobileDevice = useMediaQuery(theme.breakpoints.down("sm"));
-  const largeDevice = useMediaQuery(theme.breakpoints.down("lg"));
-  const xlargeDevice = useMediaQuery(theme.breakpoints.down("xl"));
-
-  const { selectedPubliccoproduction } = useSelector((state) => state.general);
-  var userLang = navigator.language.substring(0, 2);
-  const t = useCustomTranslation(userLang);
+  const logoExists = selectedPubliccoproduction && selectedPubliccoproduction.logotype;
+  const t = useCustomTranslation(selectedPubliccoproduction.language);
   const [tab, setTab] = useState("showcase");
-  const [loading, setLoading] = React.useState(true);
 
+  const [loading, setLoading] = React.useState(true);
   const mounted = useMounted();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = React.useState("");
 
+  const { user, isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    const id = window.location.pathname.split("/")[2];
-    if (selectedPubliccoproduction) {
-      if (selectedPubliccoproduction.id != id) {
-        dispatch(getSelectedPubliccoproduction(id));
-       
-      } //else{
-    } else {
-      dispatch(getSelectedPubliccoproduction(id));
+  React.useEffect(() => {
+    setLoading(true);
+
+    // coproductionselectedPubliccoproductionesApi.getAssets(selectedPubliccoproduction.id).then((res) => {
+    //   if (mounted.current) {
+    //     setAssets(res);
+    //     setLoading(false);
+    //   }
+    // });
+    dispatch(getAssetsList_byCopro(selectedPubliccoproduction.id));
+    setLoading(false);
+  }, [selectedPubliccoproduction]);
+  /* 
+  React.useEffect(() => {
+    if(tab === "notifications"){
+      //Load notifications when the tab change to notifications:
+      dispatch(getCoproductionselectedPubliccoproductionNotifications({'coproductionselectedPubliccoproduction_id':selectedPubliccoproduction.id,'asset_id':''}));
+
     }
+  }, [tab]); */
 
-   
-    console.log("selectedPubliccoproduction:", selectedPubliccoproduction);
-  }, []);
+  /*   const notificationsList = useSelector((state) => {
+      return state.general.coproductionselectedPubliccoproductionnotifications;
+  }); */
 
-
-  //Every time another publiccoproduction is selected then the data info of the process is loaded
-  useEffect(() =>{
-    //console.log("La STORY A CAMBIADO:")
-    if(selectedPubliccoproduction){
-      //console.log(selectedPubliccoproduction.coproductionprocess_cloneforpub_id)
-      dispatch(getProcessCatalogue(selectedPubliccoproduction.coproductionprocess_cloneforpub_id))
-    }
-    
-  },[selectedPubliccoproduction])
+  const listAdmins = () => {
+    return selectedPubliccoproduction.administrators.map((admin) => {
+      <Avatar alt={admin.full_name} key={admin.id} src={admin.picture}></Avatar>;
+    });
+  };
 
   return (
-    <Box sx={{ pb: 3, justifyContent: "center" }}>
-      {selectedPubliccoproduction && (
-        <>
-          <AppBar sx={{ position: "relative" }}>
+    <>
+    <AppBar sx={{ position: "relative" }}>
             <Typography variant="h6" sx={{ p: 2 }}>
-              {t("Public co-production process")}
+              {t("Public Coproduction Overview")}
             </Typography>
           </AppBar>
           {
@@ -164,102 +120,170 @@ export default function OverviewPubliccoproduction({}) {
               </Tabs>
             </Paper>
           }
-          {tab === "showcase" ? (
-            <Box sx={{ p: 3, justifyContent: "center", height: "100%" }}>
-              <Grid
-                container
-                spacing={1}
-                direction="row"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Box
-                  component="img"
-                  sx={{
-                    height: "100px",
-                    width: "auto",
-                    maxHeight: { xs: 233, md: 167 },
-                    maxWidth: { xs: 350, md: 250 },
-                    mr: 2,
-                  }}
-                  alt={selectedPubliccoproduction.name}
-                  src={'/coproduction'+selectedPubliccoproduction.logotype}
-                />
 
-                <Typography color="textSecondary" variant="h4">
-                  {selectedPubliccoproduction.name}
-                </Typography>
-              </Grid>
+{tab === "showcase" ? (
+    <Box sx={{ pb: 3 }}>
+     
+      <Paper>
+        {!mdUp ? (
+          <Grid
+            container
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Avatar
+              variant="rounded"
+              sx={{ width: "90px", height: "90px", m: 1 }}
+              src={selectedPubliccoproduction && selectedPubliccoproduction.logotype_link}
+            />
 
-             
-
-               {selectedPubliccoproduction.tags && (
-                <Grid item xs={6} md={6} lg={3} xl={3} sx={{ m: 3 }}>
-                  <Typography
-                    color="textPrimary"
-                    variant="subtitle2"
-                    align="center"
-                  >
-                    {selectedPubliccoproduction.tags &&
-                      selectedPubliccoproduction.tags
-                        .map((el) => (
-                          <Chip
-                            label={el.name}
-                            key={el.id}
-                            size="small"
-                            variant="outlined"
-                            sx={{ mr: 1 }}
-                          />
-                        ))}
-                  </Typography>
-                </Grid>
-              )} 
-
-              <Typography
-                color="textSecondary"
-                variant="h6"
-                align="center"
-                sx={{ mb: 3, mr: 3, ml: 3 }}
-              >
-                {selectedPubliccoproduction.description}
+            <Stack direction="column">
+              <Typography variant="h5" sx={{ mb: 1, mt: 1 }}>
+                {selectedPubliccoproduction.name}
               </Typography>
-
-
-              <Grid
-                container
-                spacing={3}
-                direction="column"
-                justifyContent="left"
-                alignItems="left"
-                sx={{ mt: 3,mb:3,ml:5 }}
+              <Typography variant="body1" sx={{ mb: 2, mt: 0 }}>
+                <b>{t("Created")}:</b> {moment(selectedPubliccoproduction.created_at).format("LL")}
+              </Typography>
+              <Typography variant="h7" sx={{ mb: 1, mr: 2 }}>
+                <b>Admin:</b>
+              </Typography>
+              <AvatarGroup max={4} sx={{ mb: 1 }}>
+                {selectedPubliccoproduction.administrators.map((admin) => {
+                  return (
+                    <Avatar alt={admin.full_name} key={admin.id} src={admin.picture}></Avatar>
+                  );
+                })}
+              </AvatarGroup>
+            </Stack>
+          </Grid>
+        ) : (
+          <Grid
+            container
+            columns={{ xs: 12, md: 12 }}
+            sx={{ m: 2 }}
+            spacing={2}
+          >
+            <Stack>
+              <Avatar
+                variant="rounded"
+                sx={{ width: "90px", height: "90px", m: 1 }}
+                src={selectedPubliccoproduction && selectedPubliccoproduction.logotype_link}
               >
-                <Typography color="textSecondary" variant="subtitle2">
-                  Created: {moment(selectedPubliccoproduction.created_at).format('MMMM Do YYYY')}
+                {" "}
+              </Avatar>
+              <Typography variant="h6" sx={{ mb: 2, ml: 1 }}>
+                <Chip
+                  label={t(selectedPubliccoproduction.status)}
+                  size="small"
+                  sx={{ width: "95px", mt: "-5px" }}
+                  color="primary"
+                />
+              </Typography>
+            </Stack>
+
+            <Grid item xs={12} md={7}>
+              <Typography variant="h5" sx={{ mb: 1, mt: 2 }}>
+                {selectedPubliccoproduction.name}
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 2, mt: 0 }}>
+                <b>{t("Created")}:</b> {moment(selectedPubliccoproduction.created_at).format("LL")}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Stack direction="column" alignItems="flex-end" spacing={0}>
+                <Typography variant="h7" sx={{ mb: 1, mr: 2 }}>
+                  <b>Admin:</b>
                 </Typography>
-                <Typography color="textSecondary" variant="subtitle2">
-                  Status: {selectedPubliccoproduction.status}
-                </Typography>
-              </Grid>
+                <AvatarGroup max={4}>
+                  {selectedPubliccoproduction.administrators.map((admin) => {
+                    return (
+                      <Avatar
+                        alt={admin.full_name}
+                        src={admin.picture}
+                        key={admin.id}
+                      ></Avatar>
+                    );
+                  })}
+                </AvatarGroup>
+              </Stack>
+            </Grid>
+          </Grid>
+        )}
+      </Paper>
 
-             
+      <Card variant="outlined" elevation={12}  square sx={{ p: 2, m: 2, bgcolor: 'background.default',  }} >
+        <Stack direction="row" sx={{ ml: 2 }}>
+          <Typography variant="h6" sx={{ mb: 2 }} color="primary">
+            {t("Requirements of the process")}
+          </Typography>
+          <PersonPin color="primary" sx={{ ml: 1 }} />
+        </Stack>
+        <Typography variant="body1" sx={{ mb: 2, ml: 2 }}>
+          {selectedPubliccoproduction.requirements}
+        </Typography>
+      </Card>
 
+      <Card variant="outlined" sx={{ p: 2, m: 2 }}>
+        <Stack direction="row" sx={{ ml: 2 }}>
+          <Typography variant="h6" sx={{ mb: 2 }} color="primary">
+            {t("Description of the process")}
+          </Typography>
+          <Description color="primary" sx={{ ml: 1 }} />
+        </Stack>
+        <Typography variant="body1" sx={{ mb: 2, ml: 2 }}>
+          {selectedPubliccoproduction.description}
+        </Typography>
+      </Card>
 
+      <Card variant="outlined" sx={{ p: 2, m: 2 }}>
+        <Stack direction="row" sx={{ ml: 2 }}>
+          <Typography variant="h6" sx={{ mb: 2 }} color="primary">
+            {t("Aim of the process")}
+          </Typography>
+          <EmojiObjects color="primary" sx={{ ml: 1 }} />
+        </Stack>
+        <Typography variant="body1" sx={{ mb: 2, ml: 2 }}>
+          {selectedPubliccoproduction.aim}
+        </Typography>
+      </Card>
 
-            </Box>
-          ) : (
-            <></>
-          )}
+      <Card variant="outlined" sx={{ p: 2, m: 2 }}>
+        <Stack direction="row" sx={{ ml: 2 }}>
+          <Typography variant="h6" sx={{ mb: 2 }} color="primary">
+            {t("Challenges of the process")}
+          </Typography>
+          <FlashOn color="primary" sx={{ ml: 1 }} />
+        </Stack>
+        <Typography variant="body1" sx={{ mb: 2, ml: 2 }}>
+          {selectedPubliccoproduction.challenges}
+        </Typography>
+      </Card>
 
-          {tab === "reviews" ? (
-            <Box sx={{ p: 3, justifyContent: "center" }}>
-              Review Tab
-              <PublicCoproductionReviews publiccoproduction={selectedPubliccoproduction} />
-            </Box>
-          ) : (
-            <></>
-          )}
-        </>
-      )}
+      <Card variant="outlined" sx={{ p: 2, m: 2 }}>
+        <Stack direction="row" sx={{ ml: 2 }}>
+          <Typography variant="h6" sx={{ mb: 2 }} color="primary">
+            {t("Idea of the process")}
+          </Typography>
+          <TipsAndUpdates color="primary" sx={{ ml: 1 }} />
+        </Stack>
+        <Typography variant="body1" sx={{ mb: 2, ml: 2 }}>
+          {selectedPubliccoproduction.idea}
+        </Typography>
+      </Card>
     </Box>
+    ) : (
+      <></>
+    )}
+
+    {tab === "reviews" ? (
+      <Box sx={{ p: 3, justifyContent: "center" }}>
+        Review Tab
+        <PublicCoproductionReviews publiccoproduction={selectedPubliccoproduction} />
+      </Box>
+    ) : (
+      <></>
+    )}
+    </>
   );
 }

@@ -16,6 +16,7 @@ import {
 import {
   AccountTree,
   Description,
+  PersonPin,
   EmojiObjects,
   FlashOn,
   OpenInNew,
@@ -210,6 +211,18 @@ export default function Profile({}) {
           </Grid>
         )}
       </Paper>
+
+      <Card variant="outlined" elevation={12}  square sx={{ p: 2, m: 2, bgcolor: 'background.default',  }} >
+        <Stack direction="row" sx={{ ml: 2 }}>
+          <Typography variant="h6" sx={{ mb: 2 }} color="primary">
+            {t("Requirements of the process")}
+          </Typography>
+          <PersonPin color="primary" sx={{ ml: 1 }} />
+        </Stack>
+        <Typography variant="body1" sx={{ mb: 2, ml: 2 }}>
+          {selectedPubliccoproduction.requirements}
+        </Typography>
+      </Card>
 
       <Card variant="outlined" sx={{ p: 2, m: 2 }}>
         <Stack direction="row" sx={{ ml: 2 }}>
