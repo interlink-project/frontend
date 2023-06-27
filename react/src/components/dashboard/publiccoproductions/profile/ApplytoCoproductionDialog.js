@@ -16,8 +16,10 @@ import { Close } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 
 import { coproductionProcessesApi } from "__api__";
+import { useTranslation } from "react-i18next";
 
 const ApplytoCoproductionDialog = ({ open, handleClose }) => {
+  const { t } = useTranslation();
   const { selectedPubliccoproduction } = useSelector((state) => state.general);
 
   useEffect(() => {
@@ -81,7 +83,7 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
     if (razon === "") {
       setIsError(true);
       setErrorMessage(
-        "Include a short description of your interest in this co-production process"
+        t("Include a short description of your interest in this co-production process")
       );
       valid = false;
     }
@@ -97,7 +99,7 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle sx={{ mt: 1,fontWeight: "bold" }}>
-        Apply to this co-production process
+        {t("Apply to this co-production process")}
       </DialogTitle>
       <IconButton
         aria-label="close"
@@ -121,7 +123,7 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
               >
                 
 
-                {"Explain why you would like to join this co-production process and how you could support it as co-producer" + "."}
+                {t("Explain why you would like to join this co-production process and how you could support it as co-producer") + "."}
                
                 
               </InputLabel>
@@ -149,9 +151,9 @@ const ApplytoCoproductionDialog = ({ open, handleClose }) => {
             {errorMessage}
           </Alert>
         )}
-        <Button onClick={handleCancel}>Cancel</Button>
+        <Button onClick={handleCancel}>{t("Cancel")}</Button>
         <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Submit
+        {t("Submit")}
         </Button>
       </DialogActions>
     </Dialog>

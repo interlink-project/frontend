@@ -215,7 +215,7 @@ export default function Profile({}) {
       <Card variant="outlined" elevation={12}  square sx={{ p: 2, m: 2, bgcolor: 'background.default',  }} >
         <Stack direction="row" sx={{ ml: 2 }}>
           <Typography variant="h6" sx={{ mb: 2 }} color="primary">
-            {t("Requirements of the process")}
+            {t("Why do we need your collaboration in this process")+"?"}
           </Typography>
           <PersonPin color="primary" sx={{ ml: 1 }} />
         </Stack>

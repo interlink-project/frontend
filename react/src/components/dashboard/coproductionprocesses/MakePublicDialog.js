@@ -16,10 +16,12 @@ import { Close } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProcess } from "slices/process";
 import useMounted from "hooks/useMounted";
+import { useTranslation } from "react-i18next";
 
 import { coproductionProcessesApi } from "__api__";
 
 const MakePublicDialog = ({ open, handleClose, switchEvent }) => {
+  const { t } = useTranslation();
 
   const mounted = useMounted();
 
@@ -122,7 +124,7 @@ const MakePublicDialog = ({ open, handleClose, switchEvent }) => {
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle sx={{ mt: 1,fontWeight: "bold" }}>
-      Specification of personnel requirements
+      {t("Specify what collaboration and by whom we need")}
       </DialogTitle>
       <IconButton
         aria-label="close"
@@ -146,14 +148,14 @@ const MakePublicDialog = ({ open, handleClose, switchEvent }) => {
               >
                 
 
-                {"We're keen to understand the ideal personnel profile for our co-production process. Could you please outline the essential skills, background, and experience you believe are crucial for contributors" + "?"}
+                {t("We want to identify possible new collaborators that can contribute with their knowledge and enthusiasm to realize this co-production process. Please outline skills, background knowledge and experience ideally sought by this collaborative process") + "?"}
                
                 
                 
               </InputLabel>
               <TextField
                 fullWidth
-                label="Type your answer here"
+                label="Type here"
                 name="Requirements"
                 onChange={(e) => {
                   setRequirements(e.target.value);
@@ -175,9 +177,9 @@ const MakePublicDialog = ({ open, handleClose, switchEvent }) => {
             {errorMessage}
           </Alert>
         )}
-        <Button onClick={handleCancel}>Cancel</Button>
+        <Button onClick={handleCancel}>{t("Cancel")}</Button>
         <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Submit
+          {t("Submit")}
         </Button>
       </DialogActions>
     </Dialog>
