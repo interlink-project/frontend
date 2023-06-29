@@ -11,7 +11,7 @@ class UserNotificationsApi extends GeneralApi {
     if (id) {
       //Get notification by usernotification id
       const res = await axiosInstance.get(`/${this.url}/${id}`);
-      //console.log('get notifications data', res.data);
+      //console.log('get notifications data by ID', res.data);
       return res.data;
     }
   }
@@ -35,7 +35,7 @@ class UserNotificationsApi extends GeneralApi {
         }
       }
     );
-    //console.log('getMulti call', res.data, 'in', language);
+    //console.log('listUserNotifications call', res.data, 'in', language);
 
     
 
@@ -44,6 +44,33 @@ class UserNotificationsApi extends GeneralApi {
     return datos;
   }
 
+
+    //Obtain the list of notification of a user
+    async getUserAplicationsbyCoproId(params = {}, language = getLanguage()) {
+
+      //console.log(`/coproduction/api/v1/usernotifications`+params+'  user_id: '+params['search']['user_id']);
+      
+      let datos={};
+  
+      //console.log(`/${this.url}/${params['search']['user_id']}/listUserNotifications`);
+  
+      //Get data of user_notifications
+      const res = await axiosInstance.get(
+        `/${this.url}/${params['search']['coproductionprocess_id']}/listUserAplicationsbyCoproId`, {
+          params: removeEmpty(params),
+          headers: {
+            'Accept-Language': language
+          }
+        }
+      );
+      //console.log('listUserNotifications call', res.data, 'in', language);
+  
+      
+  
+      datos=res.data;
+  
+      return datos;
+    }
   
 
    //Obtain the list of notification of a user

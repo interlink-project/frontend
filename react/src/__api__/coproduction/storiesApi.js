@@ -26,7 +26,7 @@ class StoriesApi extends GeneralApi {
     if (id) {
       //Get notification by coproductionprocessnotification id
       const res = await axiosInstance.get(`/${this.url}/${id}/story`);
-      console.log('get notifications data', res.data);
+      //console.log('get notifications data', res.data);
       return res.data;
     }
   }
@@ -35,7 +35,7 @@ class StoriesApi extends GeneralApi {
     if (id) {
       //Get notification by coproductionprocessnotification id
       const res = await axiosInstance.get(`/${this.url}/${id}/listStories`);
-      console.log('get notifications data', res.data);
+      //console.log('get notifications data', res.data);
       return res.data;
     }
   }
@@ -43,7 +43,7 @@ class StoriesApi extends GeneralApi {
   async getStories() {
    
     const res = await axiosInstance.get(`/${this.url}/listStories`);
-    console.log('get notifications data', res.data);
+    //console.log('get notifications data', res.data);
     return res.data;
   
   }
