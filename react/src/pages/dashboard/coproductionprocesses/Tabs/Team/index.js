@@ -28,6 +28,7 @@ import {
   Close,
   Delete,
   Archive,
+  Inventory,
   Edit,
 } from "@mui/icons-material";
 import { OrganizationChip, TreeItemTypeChip } from "components/Icons";
@@ -44,9 +45,11 @@ import PermissionCreate from "components/dashboard/coproductionprocesses/Permiss
 import ConfirmationButton from "components/ConfirmationButton";
 import { LoadingButton } from "@mui/lab";
 import { permissionsApi, usernotificationsApi } from "__api__";
-import { getUserAplicationsbyCoproId } from "slices/general";
+import { getUserAplicationsHistorybyCoproId, getUserAplicationsbyCoproId } from "slices/general";
 import useAuth from "hooks/useAuth";
 import moment from "moment";
+
+import { AppBar, LinearProgress, Tab, Tabs as MuiTabs } from "@mui/material";
 
 function TeamRow({
   t,
@@ -263,6 +266,14 @@ export default function TeamsTab() {
   const [creatingPermission, setCreatingPermission] = React.useState(false);
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
+  const [selectedTab, setSelectedTab] = React.useState("0");
+  const [showHistory, setShowHistory] = React.useState(false);
+
+  const style = {
+    minHeight: "90vh",
+    display: "flex",
+    flexDirection: "column",
+  };
 
   React.useEffect(() => {
     if (mounted) {
@@ -283,136 +294,281 @@ export default function TeamsTab() {
 
   const listUserNotificationsContainer = usernotifications.map(
     (notification) => {
-
       console.log(notification);
       const replacedString = notification.parameters.replace(/'/g, '"');
       const parameters = JSON.parse(replacedString);
+      
+      function archiveRequest() {
+        usernotificationsApi.setArchiveUserNotification({
+          usernotificationId: notification.id,
+        });
+        dispatch(
+          getUserAplicationsbyCoproId({ coproductionprocess_id: process.id })
+        );
+
+      }
+
       return (
-        <TableRow> 
+        <TableRow>
           <TableCell width="10%" align="center">
             {moment(notification.created_at).fromNow()}
           </TableCell>
           <TableCell align="left" component="th" scope="row">
             {parameters.razon}
           </TableCell>
+          <TableCell align="center">{parameters.userName}</TableCell>
+          <TableCell align="center">{parameters.userEmail}</TableCell>
           <TableCell align="center">
-            {parameters.userName}
-          </TableCell>
-          <TableCell align="center">
-            {parameters.userEmail}
-          </TableCell>
-          <TableCell align="center">
-            <IconButton>
+            {!notification.is_archived ? (
+            <IconButton onClick={() => archiveRequest()}>
               <Archive />
             </IconButton>
+            ) : (
+            <IconButton >
+              <Inventory color='error'/>
+            </IconButton>
+            )
+            }
           </TableCell>
         </TableRow>
       );
     }
   );
 
+  const onSelect = (value) => {
+    if (mounted.current) {
+      setSelectedTab(value);
+    }
+  };
+
+  const showArchivedRequests = () => {
+    dispatch(
+      getUserAplicationsHistorybyCoproId({ coproductionprocess_id: process.id })
+    );
+    setShowHistory(true);
+
+  };
+
+  const showRequests= () => {
+    dispatch(
+      getUserAplicationsbyCoproId({ coproductionprocess_id: process.id })
+    );
+    setShowHistory(false);
+
+  };
+
   return (
     <>
-      {isAdministrator && (
-        <Grid
-          alignItems="center"
-          container
-          justifyContent="space-between"
-          spacing={3}
-          item
-          xs={12}
-          sx={{ my: 2 }}
-        >
-          <Grid item></Grid>
-          <Grid item>
-            <Button
-              onClick={() => setOpenPermissionCreator(true)}
-              fullWidth
-              startIcon={<Add />}
-              variant="contained"
+      <Card sx={{ ...style, mb: 3 }}>
+        <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+          <Grid container>
+            <Grid item xl={12} lg={12} md={12} xs={12}></Grid>
+
+            <AppBar
+              position="static"
+              sx={{
+                color: "white",
+              }}
             >
-              {`${t("Add new permission to the overall process")}`}
-            </Button>
+              <MuiTabs
+                indicatorColor="secondary"
+                onChange={(event, value) => onSelect(value)}
+                value={selectedTab}
+                // centered
+                variant="scrollable"
+                textColor="inherit"
+                aria-label="Coproduction phases tabs"
+                sx={{
+                  "& .Mui-selected": {
+                    background: "#a4cbd8",
+                    color: "black",
+                  },
+                  "& .MuiTabs-flexContainer": {
+                    "justify-content": "center",
+                  },
+                }}
+              >
+                <Tab key="1" label={t("Teams")} value="0"></Tab>
+                {isAdministrator && (
+                  <Tab
+                    key="2"
+                    label={t("Collaboration Requests")}
+                    value="1"
+                  ></Tab>
+                )}
+              </MuiTabs>
+              {/* {loading && <LinearProgress />} */}
+            </AppBar>
           </Grid>
-        </Grid>
-      )}
-      {selectedTeam && (
-        <TeamProfile
-          teamId={selectedTeam}
-          open={!!selectedTeam}
-          setOpen={setSelectedTeam}
-          onChanges={() => console.log("refresh")}
-        />
-      )}
-      {process.enabled_teams.length > 0 ? (
-        <>
-          <Grid container spacing={3} sx={{ mb: 1 }}>
-            {process.enabled_teams.map((team) => (
-              <TeamRow
-                key={team.id}
-                t={t}
-                team={team}
-                process={process}
-                treeitems={treeitems}
-                setSelectedTeam={setSelectedTeam}
-                setSelectedTreeItem={setSelectedTreeItem}
+        </Box>
+
+        {/* Show the Teams Tab */}
+        {selectedTab === "0" && (
+          <>
+          <Grid item sx={{ textAlign: "left", m: 2 }}>
+                <Typography
+                  color="textPrimary"
+                  variant="h5"
+                  data-cy="welcome-to-user"
+                >
+                  {t("Teams Permissions")}
+                </Typography>
+                <Typography
+                  color="textSecondary"
+                  variant="subtitle2"
+                  
+                >
+                  {t("Here are listed the teams that have participation and permissions on the process") +
+                    "."}
+                </Typography>
+              </Grid>
+
+
+            {isAdministrator && (
+              <Grid
+                alignItems="center"
+                container
+                justifyContent="space-between"
+                spacing={3}
+                item
+                xs={12}
+                sx={{ my: 2 }}
+              >
+                <Grid item></Grid>
+                <Grid item>
+                  <Button
+                    onClick={() => setOpenPermissionCreator(true)}
+                    fullWidth
+                    startIcon={<Add />}
+                    variant="contained"
+                  >
+                    {`${t("Add new permission to the overall process")}`}
+                  </Button>
+                </Grid>
+              </Grid>
+            )}
+            {selectedTeam && (
+              <TeamProfile
+                teamId={selectedTeam}
+                open={!!selectedTeam}
+                setOpen={setSelectedTeam}
+                onChanges={() => console.log("refresh")}
               />
-            ))}
-          </Grid>
-        </>
-      ) : (
-        <>
-          <Alert severity="warning">
-            {t("There are no teams working on the coproduction process yet")}
-          </Alert>
-        </>
-      )}
-      <PermissionCreate
-        open={permissionCreatorOpen}
-        setOpen={setOpenPermissionCreator}
-        onCreate={update}
-        loading={creatingPermission}
-        setLoading={setCreatingPermission}
-        coproductionprocess={process}
-      />
-      <Divider sx={{ m: 2 }} />
+            )}
+            {process.enabled_teams.length > 0 ? (
+              <>
+                <Grid container spacing={3} sx={{ mb: 1 }}>
+                  {process.enabled_teams.map((team) => (
+                    <TeamRow
+                      key={team.id}
+                      t={t}
+                      team={team}
+                      process={process}
+                      treeitems={treeitems}
+                      setSelectedTeam={setSelectedTeam}
+                      setSelectedTreeItem={setSelectedTreeItem}
+                    />
+                  ))}
+                </Grid>
+              </>
+            ) : (
+              <>
+                <Alert severity="warning">
+                  {t(
+                    "There are no teams working on the coproduction process yet"
+                  )}
+                </Alert>
+              </>
+            )}
+            <PermissionCreate
+              open={permissionCreatorOpen}
+              setOpen={setOpenPermissionCreator}
+              onCreate={update}
+              loading={creatingPermission}
+              setLoading={setCreatingPermission}
+              coproductionprocess={process}
+            />
+          </>
+        )}
 
-      <>
-        <Grid item xs={12} sx={{ textAlign: "center" }}>
-          <Card sx={{ p: 1 }}>
-            <Typography variant="h6" gutterBottom>
-              Interested Contributor Applications
-            </Typography>
-          </Card>
-          <Card sx={{ p: 1 }}>
-            <Grid item xs={12} md={9}>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell width="10%" align="center">
-                      {t("Date")}
-                    </TableCell>
-                    <TableCell width="45%" align="left">
-                      {t("Comment")}
-                    </TableCell>
-                    <TableCell width="15%" align="center">
-                      {t("Name")}
-                    </TableCell>
-                    <TableCell width="15%" align="center">
-                      {t("Email")}
-                    </TableCell>
+        {/* //Show the Requests Tab */}
+        {selectedTab === "1" && (
+          <>
+            <Grid item xs={12} sx={{ textAlign: "center" }}>
+              <Grid item sx={{ textAlign: "left", m: 2 }}>
+                <Typography
+                  color="textPrimary"
+                  variant="h5"
+                  data-cy="welcome-to-user"
+                >
+                  {t("Process Collaboration Requests")}
+                </Typography>
+                <Typography
+                  color="textSecondary"
+                  variant="subtitle2"
+                  data-cy={
+                    t("Here is the recent requests applied to the process") +
+                    "."
+                  }
+                >
+                  {t("Here is the recent requests applied to the process") +
+                    "."}
+                </Typography>
+              </Grid>
 
-                    <TableCell width="10%" align="center">
-                      {t("Archive")}
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>{listUserNotificationsContainer}</TableBody>
-              </Table>
+              <Grid item sx={{ textAlign: "right", m: 2 }}>
+                {!showHistory ? 
+                  <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => showArchivedRequests()}
+                >
+                  {t("Show All Requests")}
+                </Button>
+                
+                :
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => showRequests()}
+                >
+                  {t("Hide archived requests")}
+                </Button>
+                }
+                
+              </Grid>
+
+              <Card sx={{ p: 1 }}>
+                <Grid item xs={12} md={9}>
+                  <Table size="small">
+                    <TableHead>
+                      <TableRow>
+                        <TableCell width="10%" align="center">
+                          {t("Date")}
+                        </TableCell>
+                        <TableCell width="45%" align="left">
+                          {t("Comment")}
+                        </TableCell>
+                        <TableCell width="15%" align="center">
+                          {t("Name")}
+                        </TableCell>
+                        <TableCell width="15%" align="center">
+                          {t("Email")}
+                        </TableCell>
+
+                        <TableCell width="10%" align="center">
+                          {t("Archive")}
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>{listUserNotificationsContainer}</TableBody>
+                  </Table>
+                </Grid>
+              </Card>
             </Grid>
-          </Card>
-        </Grid>
-      </>
+          </>
+        )}
+      </Card>
     </>
   );
 }

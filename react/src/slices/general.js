@@ -194,6 +194,14 @@ export const getUserAplicationsbyCoproId = (search) => async (dispatch) => {
   dispatch(slice.actions.setLoadingUserNotifications(false));
 };
 
+export const getUserAplicationsHistorybyCoproId = (search) => async (dispatch) => {
+  dispatch(slice.actions.setLoadingUserNotifications(true));
+  const usernotifications_data =
+    await usernotificationsApi.getUserAplicationsHistorybyCoproId({ search });
+  dispatch(slice.actions.setUserNotifications(usernotifications_data));
+  dispatch(slice.actions.setLoadingUserNotifications(false));
+};
+
 export const getUnseenUserNotifications = (search) => async (dispatch) => {
   dispatch(slice.actions.setLoadingUnseenUserNotifications(true));
   const unseenusernotifications_data =
