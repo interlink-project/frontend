@@ -43,6 +43,7 @@ import SelectGovernanceModel from "./SelectGovernanceModel";
 import { REACT_APP_COMPLETE_DOMAIN } from "configuration";
 import { useDispatch, useSelector } from "react-redux";
 import useMounted from "hooks/useMounted";
+import UserSearch from "./UserSearch";
 
 export default function AssetsShare({
   open,
@@ -64,7 +65,15 @@ export default function AssetsShare({
   const [listTeams, setListTeams] = useState([]);
 
   const [checkboxValues, setCheckboxValues] = useState([]);
+  const [singleuser, setSingleuser] = useState(null);
   const mounted = useMounted();
+
+  const includedUsers = new Set(
+    process.enabled_teams
+      .map((team) => team.users.map((user) => user.id))
+      .flat()
+      .concat(process.administrators_ids)
+  );
 
   const handleCheckboxChange = (event) => {
     const value = event.target.value;
@@ -108,6 +117,7 @@ export default function AssetsShare({
     setCheckboxValues([]);
     setOpen(false);
     setLoading(false);
+    setSingleuser(null);
   };
 
   const handleCopyLink = () => {
@@ -122,6 +132,38 @@ export default function AssetsShare({
   };
 
   const handleNext = async () => {
+
+    if (singleuser) {
+    //Send the email to a single selected user
+    
+    const dataToSend = {
+      asset_id: asset.id,
+      link: assetLink,
+      asset_name: asset.internalData.name,
+      icon: asset.internalData.icon,
+      subject: subject,
+      instructions: instructions,
+      userTo: singleuser.id,
+      processId: process.id,
+    };
+    console.log(dataToSend);
+
+    assetsApi
+      .emailAskUserContribution(dataToSend)
+      .then((res) => {
+        console.log(res);
+        handleClose();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    
+    
+    
+    } else {
+    //Send an email to a team
+
+    
     const dataToSend = {
       asset_id: asset.id,
       link: assetLink,
@@ -143,6 +185,11 @@ export default function AssetsShare({
       .catch((err) => {
         console.log(err);
       });
+    
+    
+    }
+
+
   };
 
   useEffect(() => {
@@ -169,7 +216,7 @@ export default function AssetsShare({
       <Dialog open={open} onClose={handleClose} fullWidth>
         <DialogTitle sx={{ textAlign: "left", m: 1 }}>
           <Typography color="primary" variant="h5">
-            {t("Share Options")}
+            {t("Share or assign options")}
           </Typography>
         </DialogTitle>
         <DialogContent dividers>
@@ -211,9 +258,11 @@ export default function AssetsShare({
                 }
               />
             </FormControl>
+
             <Divider sx={{ my: 2 }} />
+
             <Typography sx={{ mb: 1, fontWeight: "bold" }} variant="body1">
-              {"2.- " + t("You may send and email to a team") + "."}
+              {"2.- " + t("You may send and email") + "."}
             </Typography>
             <FormControl fullWidth sx={{ m: 1 }} variant="standard">
               <TextField
@@ -235,11 +284,53 @@ export default function AssetsShare({
                 onChange={(e) => setInstructions(e.target.value)}
               />
 
+              {checkboxValues.length == 0 ? (
+                <>
+
+              {singleuser ? (
+                <Typography sx={{ mb: 1,mt:1, fontWeight: "bold" }} variant="body1" >
+                  {t("To")+': ' + singleuser.full_name} 
+                </Typography>
+              ) : (
+                <>
+                  <Typography
+                    sx={{ mt: 1, mb: 1, fontWeight: "bold" }}
+                    variant="body1"
+                  >
+                    {t("2.1 Select a single user") + ":"}
+                  </Typography>
+
+                  <UserSearch
+                    //error={Boolean(touched.user && errors.user)}
+                    alert={false}
+                    importCsv={false}
+                    include={Array.from(includedUsers)}
+                    onClick={(user) => {
+                      // setFieldValue("user", user);
+                      // setFieldTouched("user");
+                      setSingleuser(user);
+                    }}
+                  />
+                </>
+              )}
+              </>
+              ) : (
+                <></>
+              )}
+
+            {singleuser ? (
+                <></>
+            ):(
+              <>
+
+
+              <Divider sx={{ my: 2 }} />
+
               <Typography
                 sx={{ mt: 1, mb: 1, fontWeight: "bold" }}
                 variant="body1"
               >
-                {t("Select the Teams") + ":"}
+                {t("2.2 Select the Teams") + ":"}
               </Typography>
 
               <FormGroup>
@@ -270,7 +361,10 @@ export default function AssetsShare({
                     </>
                   ))}
               </FormGroup>
+              </>
+            )}
             </FormControl>
+            
 
             <Snackbar
               open={openSnakbar}
@@ -294,7 +388,7 @@ export default function AssetsShare({
             size="large"
             onClick={handleNext}
           >
-            {t("Send email to team members")}
+            {t("Send email")}
             <Email sx={{ ml: 2 }} />
           </LoadingButton>
         </DialogActions>

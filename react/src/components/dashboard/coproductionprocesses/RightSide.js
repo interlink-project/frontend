@@ -27,6 +27,7 @@ import {
   KeyboardArrowDown,
   OpenInNew,
   Share,
+  CoPresent,
 } from "@mui/icons-material";
 
 import { useMatomo } from "@datapunt/matomo-tracker-react";
@@ -371,8 +372,8 @@ const RightSide = ({ softwareInterlinkers }) => {
           handleShare(asset);
           closeMenuItem();
         },
-        text: t("Share"),
-        icon: <Share fontSize="small" />,
+        text: t("Assign/Share"),
+        icon: <CoPresent fontSize="small" />,
       });
 
       if (capabilities.edit) {

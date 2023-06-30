@@ -87,6 +87,10 @@ class AssetsApi extends GeneralApi {
     return axiosInstance.post(`/${this.url}/emailAskTeamContribution`, data);
   }
 
+  async emailAskUserContribution(data) {
+    return axiosInstance.post(`/${this.url}/emailAskUserContribution`, data);
+  }
+
 
   async getInternal(id) {
     if (id) {
