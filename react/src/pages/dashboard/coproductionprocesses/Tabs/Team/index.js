@@ -48,6 +48,7 @@ import { permissionsApi, usernotificationsApi } from "__api__";
 import { getUserAplicationsHistorybyCoproId, getUserAplicationsbyCoproId } from "slices/general";
 import useAuth from "hooks/useAuth";
 import moment from "moment";
+import { useLocation } from "react-router-dom";
 
 import { AppBar, LinearProgress, Tab, Tabs as MuiTabs } from "@mui/material";
 
@@ -268,6 +269,23 @@ export default function TeamsTab() {
   const { user, isAuthenticated } = useAuth();
   const [selectedTab, setSelectedTab] = React.useState("0");
   const [showHistory, setShowHistory] = React.useState(false);
+
+  const location = useLocation();
+
+  React.useEffect(() => {
+    if (mounted) {
+      const search = location.search;
+      const params = new URLSearchParams(search);
+      const selectedTabTemp = params.get('tab');
+      if (selectedTabTemp){
+        if (selectedTabTemp === "Requests"){
+          setSelectedTab("1");
+        }
+      } 
+
+    }
+  
+  }, []);
 
   const style = {
     minHeight: "90vh",
