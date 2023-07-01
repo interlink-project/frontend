@@ -144,6 +144,8 @@ export default function AssetsShare({
       subject: subject,
       instructions: instructions,
       userTo: singleuser.id,
+      resourceId: asset.id,
+      taskName: selectedTreeItem.name,
       processId: process.id,
     };
     console.log(dataToSend);
