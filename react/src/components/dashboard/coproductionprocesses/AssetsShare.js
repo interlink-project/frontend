@@ -173,12 +173,13 @@ export default function AssetsShare({
       icon: asset.internalData.icon,
       subject: subject,
       instructions: instructions,
-      listTeams: checkboxValues,
       resourceId: asset.id,
       taskName: selectedTreeItem.name,
+      listTeams: checkboxValues,
       processId: process.id,
     };
     console.log(dataToSend);
+
 
     assetsApi
       .emailAskTeamContribution(dataToSend)
