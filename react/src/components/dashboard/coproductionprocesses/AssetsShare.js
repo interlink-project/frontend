@@ -174,6 +174,8 @@ export default function AssetsShare({
       subject: subject,
       instructions: instructions,
       listTeams: checkboxValues,
+      resourceId: asset.id,
+      taskName: selectedTreeItem.name,
       processId: process.id,
     };
     console.log(dataToSend);
