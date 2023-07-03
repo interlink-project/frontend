@@ -6,6 +6,7 @@ import {
   coproductionProcessesApi,
   organizationsApi,
   usernotificationsApi,
+  participationrequestsApi,
   coproductionprocessnotificationsApi,
   teamsApi,
   tasksApi,
@@ -26,6 +27,9 @@ const initialState = {
 
   usernotifications: [],
   loadingUserNotifications: false,
+
+  participationrequests: [],
+  loadingParticipationRequests: false,
 
   coproductionprocessnotifications: [],
   loadingCoproductionProcessNotifications: false,
@@ -85,6 +89,12 @@ const slice = createSlice({
     },
     setLoadingUserNotifications(state, action) {
       state.loadingUserNotifications = action.payload;
+    },
+    setParticipationsRequests(state, action) {
+      state.participationrequests = action.payload;
+    },
+    setLoadingParticipationsRequests(state, action) {
+      state.loadingParticipationRequests = action.payload;
     },
     setCoproductionProcessNotifications(state, action) {
       state.coproductionprocessnotifications = action.payload;
@@ -193,6 +203,23 @@ export const getUserAplicationsbyCoproId = (search) => async (dispatch) => {
   dispatch(slice.actions.setUserNotifications(usernotifications_data));
   dispatch(slice.actions.setLoadingUserNotifications(false));
 };
+
+export const getInProgressParticipationsRequestsbyCoproId = (search) => async (dispatch) => {
+  dispatch(slice.actions.setLoadingParticipationsRequests(true));
+  const participationrequests_data =
+    await participationrequestsApi.getInProgressParticipationRequestsbyCoproId({ search });
+  dispatch(slice.actions.setParticipationsRequests(participationrequests_data));
+  dispatch(slice.actions.setLoadingParticipationsRequests(false));
+};
+
+export const getFullParticipationsRequestsbyCoproId = (search) => async (dispatch) => {
+  dispatch(slice.actions.setLoadingParticipationsRequests(true));
+  const participationrequests_data =
+    await participationrequestsApi.getFullParticipationRequestsbyCoproId({ search });
+  dispatch(slice.actions.setParticipationsRequests(participationrequests_data));
+  dispatch(slice.actions.setLoadingParticipationsRequests(false));
+};
+
 
 export const getUserAplicationsHistorybyCoproId = (search) => async (dispatch) => {
   dispatch(slice.actions.setLoadingUserNotifications(true));

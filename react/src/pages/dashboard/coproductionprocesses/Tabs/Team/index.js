@@ -44,8 +44,8 @@ import { getProcess, setSelectedTreeItem } from "slices/process";
 import PermissionCreate from "components/dashboard/coproductionprocesses/PermissionCreate";
 import ConfirmationButton from "components/ConfirmationButton";
 import { LoadingButton } from "@mui/lab";
-import { permissionsApi, usernotificationsApi } from "__api__";
-import { getUserAplicationsHistorybyCoproId, getUserAplicationsbyCoproId } from "slices/general";
+import { permissionsApi, participationrequestsApi } from "__api__";
+import { getFullParticipationsRequestsbyCoproId, getInProgressParticipationsRequestsbyCoproId, getUserAplicationsHistorybyCoproId, getUserAplicationsbyCoproId } from "slices/general";
 import useAuth from "hooks/useAuth";
 import moment from "moment";
 import { useLocation } from "react-router-dom";
@@ -256,7 +256,7 @@ export default function TeamsTab() {
     (state) => state.process
   );
 
-  const { usernotifications } = useSelector((state) => state.general);
+  const { participationrequests } = useSelector((state) => state.general);
 
   const dispatch = useDispatch();
   const mounted = useMounted();
@@ -282,6 +282,7 @@ export default function TeamsTab() {
           setSelectedTab("1");
         }
       } 
+      
 
     }
   
@@ -295,9 +296,7 @@ export default function TeamsTab() {
 
   React.useEffect(() => {
     if (mounted) {
-      dispatch(
-        getUserAplicationsbyCoproId({ coproductionprocess_id: process.id })
-      );
+      showRequests();
     }
   }, [mounted]);
 
@@ -310,18 +309,18 @@ export default function TeamsTab() {
     dispatch(getProcess(process.id, false));
   };
 
-  const listUserNotificationsContainer = usernotifications.map(
-    (notification) => {
-      console.log(notification);
-      const replacedString = notification.parameters.replace(/'/g, '"');
-      const parameters = JSON.parse(replacedString);
+  console.log("participationrequests");
+  console.log(participationrequests);
+  const listParticipationRequestsContainer = participationrequests.map(
+    (participationrequest) => {
+      console.log(participationrequest);
       
       function archiveRequest() {
-        usernotificationsApi.setArchiveUserNotification({
-          usernotificationId: notification.id,
+        participationrequestsApi.setArchiveParticipationRequest({
+          participationrequestId: participationrequest.id,
         });
         dispatch(
-          getUserAplicationsbyCoproId({ coproductionprocess_id: process.id })
+          getInProgressParticipationsRequestsbyCoproId({ coproductionprocess_id: process.id })
         );
 
       }
@@ -329,15 +328,15 @@ export default function TeamsTab() {
       return (
         <TableRow>
           <TableCell width="10%" align="center">
-            {moment(notification.created_at).fromNow()}
+            {moment(participationrequest.created_at).fromNow()}
           </TableCell>
           <TableCell align="left" component="th" scope="row">
-            {parameters.razon}
+            {participationrequest.razon}
           </TableCell>
-          <TableCell align="center">{parameters.userName}</TableCell>
-          <TableCell align="center">{parameters.userEmail}</TableCell>
+           <TableCell align="center">{participationrequest.user.full_name}</TableCell>
+          <TableCell align="center">{participationrequest.user.email}</TableCell> 
           <TableCell align="center">
-            {!notification.is_archived ? (
+            {!participationrequest.is_archived ? (
             <IconButton onClick={() => archiveRequest()}>
               <Archive />
             </IconButton>
@@ -361,18 +360,16 @@ export default function TeamsTab() {
 
   const showArchivedRequests = () => {
     dispatch(
-      getUserAplicationsHistorybyCoproId({ coproductionprocess_id: process.id })
+      getFullParticipationsRequestsbyCoproId({ coproductionprocess_id: process.id })
     );
     setShowHistory(true);
-
   };
 
   const showRequests= () => {
     dispatch(
-      getUserAplicationsbyCoproId({ coproductionprocess_id: process.id })
+      getInProgressParticipationsRequestsbyCoproId({ coproductionprocess_id: process.id })
     );
     setShowHistory(false);
-
   };
 
   return (
@@ -579,7 +576,7 @@ export default function TeamsTab() {
                         </TableCell>
                       </TableRow>
                     </TableHead>
-                    <TableBody>{listUserNotificationsContainer}</TableBody>
+                    <TableBody>{listParticipationRequestsContainer}</TableBody>
                   </Table>
                 </Grid>
               </Card>
