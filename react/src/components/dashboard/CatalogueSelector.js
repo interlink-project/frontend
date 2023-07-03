@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Catalogue from "pages/dashboard/interlinkers/Catalogue";
 import PublicCoproductionCatalogue from "pages/dashboard/publiccoproductions/PublicCoproductionCatalogue";
+import { useTranslation } from "react-i18next";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -37,6 +38,8 @@ function a11yProps(index) {
 
 export default function CatalogueSelector() {
 
+  const { t } = useTranslation();
+
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -59,8 +62,8 @@ export default function CatalogueSelector() {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <Tab label="Catalogue"  />
-          <Tab label="Process"  />
+          <Tab label={t("Interlinkers")}  />
+          <Tab label={t("Processes")}  />
         </Tabs>
       </AppBar>
       <SwipeableViews
