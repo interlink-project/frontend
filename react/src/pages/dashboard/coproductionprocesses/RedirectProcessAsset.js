@@ -37,7 +37,8 @@ const RedirectProcessAsset = () => {
       } catch (error) {
         if (error.response.status == 403) {
           //Add user to observers
-          alert('Agrego a observadores');
+          //alert('Agrego a observadores');
+         
           try {
             const res = await teamsApi.addObservers({
               users_ids: [user.id],
@@ -46,7 +47,7 @@ const RedirectProcessAsset = () => {
             });
             if (mounted.current) {
               //Try again to load resource
-              alert('Intento de nuevo acceder');
+              //alert('Intento de nuevo acceder');
               fetchAsset();
             }
           } catch (error) {
@@ -64,6 +65,7 @@ const RedirectProcessAsset = () => {
       <Helmet>
         <title>{t("dashboard-title")}</title>
       </Helmet>
+
     </>
   );
 };
