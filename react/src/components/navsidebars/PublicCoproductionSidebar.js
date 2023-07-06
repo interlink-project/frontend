@@ -42,7 +42,7 @@ import InterlinkAnimation from "components/home/InterlinkLoading";
 import { styled } from "@mui/material/styles";
 import { set } from "store";
 import ApplytoCoproductionDialog from "components/dashboard/publiccoproductions/profile/ApplytoCoproductionDialog";
-
+import useAuth from "hooks/useAuth";
 
 const PublicCoproductionSidebar = (props) => {
   const { onMobileClose, openMobile } = props;
@@ -61,6 +61,7 @@ const PublicCoproductionSidebar = (props) => {
     publiccoproductionId = selectedPubliccoproduction.id;
   }
   const { t } = useDependantTranslation();
+  const auth = useAuth();
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -79,7 +80,6 @@ const PublicCoproductionSidebar = (props) => {
         //   icon: <Balcony />,
         //   disabled: false,
         // },
-
         // {
         //   title: t("Resources"),
         //   path: `/publiccoproductions/${publiccoproductionId}/resources`,
@@ -97,20 +97,17 @@ const PublicCoproductionSidebar = (props) => {
   ];
 
   const onApply = () => {
+    if (!auth.isAuthenticated) {
+      alert(
+        t("You need to be logged in to apply to this coproduction process.")
+      );
+    }
+
     //alert("You have succefully apllied to this coproduction process.")
-    navigate("/publiccoproductions/"+selectedPubliccoproduction.id+"/apply");
+    navigate(
+      "/publiccoproductions/" + selectedPubliccoproduction.id + "/apply"
+    );
     setApplyDialogOpen(true);
-    // setLoadingDialogOpen(true);
-    // coproductionProcessesApi
-    //   .copy(
-    //     selectedPubliccoproduction.coproductionprocess_cloneforpub_id,
-    //     "Clone of_ ",
-    //     "publiccoproduction"
-    //   )
-    //   .then(() => {
-    //     setLoadingDialogOpen(false);
-    //     navigate("/dashboard");
-    //   });
   };
 
   const logoStyle = {
@@ -158,7 +155,7 @@ const PublicCoproductionSidebar = (props) => {
               <Avatar
                 variant="rounded"
                 sx={{ width: "80px", height: "80px" }}
-                src={'/coproduction'+selectedPubliccoproduction.logotype}
+                src={"/coproduction" + selectedPubliccoproduction.logotype}
               >
                 {/*               {(!selectedPubliccoproduction || !selectedPubliccoproduction.logo) && <Folder />}
               {' '} */}
@@ -177,10 +174,13 @@ const PublicCoproductionSidebar = (props) => {
                 {/*  {!loading && !updating && process ? process.name : <Skeleton />} */}
               </Typography>
 
-              <Rating readOnly size="small" value={selectedPubliccoproduction.rating || 0} />
+              <Rating
+                readOnly
+                size="small"
+                value={selectedPubliccoproduction.rating || 0}
+              />
             </Stack>
           )}
-      
 
           <Divider />
 
@@ -202,16 +202,15 @@ const PublicCoproductionSidebar = (props) => {
                     align="center"
                   >
                     {selectedPubliccoproduction.tags &&
-                      selectedPubliccoproduction.tags
-                        .map((el) => (
-                          <Chip
-                            label={el.name}
-                            key={el.id}
-                            size="small"
-                            variant="outlined"
-                            sx={{ mr: 1 }}
-                          />
-                        ))}
+                      selectedPubliccoproduction.tags.map((el) => (
+                        <Chip
+                          label={el.name}
+                          key={el.id}
+                          size="small"
+                          variant="outlined"
+                          sx={{ mr: 1 }}
+                        />
+                      ))}
                   </Typography>
                 </Grid>
               )}
@@ -236,8 +235,7 @@ const PublicCoproductionSidebar = (props) => {
 
           <Divider />
           <Box sx={{ p: 2 }}>
-            
-              <>
+            <>
               {sections.map((section) => (
                 <NavSection
                   key={section.id}
@@ -250,25 +248,21 @@ const PublicCoproductionSidebar = (props) => {
                   }}
                   {...section}
                 />
-                ))}
-                
+              ))}
 
-                <Box sx={{ textAlign: "center", width: "100%", mt: 3, mb: 3 }}>
-                  
-                      <Button
-                        variant="contained"
-                        //disabled={!isAdministrator}
-                        color="success"
-                        onClick={onApply}
-                        size="large"
-                        startIcon={<Hail />}
-                      >
-                        {t("Join this co-production process")}
-                      </Button>
-                   
-                </Box>
-              </>
-            
+              <Box sx={{ textAlign: "center", width: "100%", mt: 3, mb: 3 }}>
+                <Button
+                  variant="contained"
+                  //disabled={!isAdministrator}
+                  color="success"
+                  onClick={onApply}
+                  size="large"
+                  startIcon={<Hail />}
+                >
+                  {t("Join this co-production process")}
+                </Button>
+              </Box>
+            </>
           </Box>
         </Scrollbar>
       </Box>
@@ -307,8 +301,10 @@ const PublicCoproductionSidebar = (props) => {
         </DialogContent>
       </Dialog>
 
-    <ApplytoCoproductionDialog open={applyDialogOpen} handleClose={() => setApplyDialogOpen(false)} />
-
+      <ApplytoCoproductionDialog
+        open={applyDialogOpen}
+        handleClose={() => setApplyDialogOpen(false)}
+      />
     </>
   );
 

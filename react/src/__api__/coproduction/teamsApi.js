@@ -39,6 +39,14 @@ class TeamsApi extends GeneralApi {
     return res.data;
   }
 
+  async addObservers(observerdata) {
+    const res = await axiosInstance.post(
+      `/${this.url}/addtoobservers`,
+       observerdata
+    );
+    console.log('add observer team', res.data);
+    return res.data;
+  }
   // async getUsers(id) {
   //   const res = await axiosInstance.get(
   //     `/${this.url}/${id}`

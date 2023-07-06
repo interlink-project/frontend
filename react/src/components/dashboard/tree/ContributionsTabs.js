@@ -48,6 +48,7 @@ import { ExportToCsv } from "export-to-csv";
 import { getContributions, setContributionsListLevels } from "slices/general";
 import { useMatomo } from "@datapunt/matomo-tracker-react";
 import { is } from "date-fns/locale";
+import { claimsApi } from "__api__/coproduction/claimsApi";
 
 const ContributionsTabs = () => {
 

@@ -6,7 +6,8 @@ import { useNavigate } from "react-router";
 import { useParams } from "react-router-dom";
 import useMounted from "../../../hooks/useMounted";
 
-import { assetsApi } from "__api__";
+import { assetsApi, teamsApi } from "__api__";
+import useAuth from "hooks/useAuth";
 
 const RedirectProcessAsset = () => {
   const dispatch = useDispatch();
@@ -15,53 +16,47 @@ const RedirectProcessAsset = () => {
   const navigate = useNavigate();
   const t = useCustomTranslation(process && process.language);
   const { processId, assetId } = useParams();
+  const { user } = useAuth();
 
   useEffect(() => {
-    //dispatch(getProcess(processId, false));
+    const fetchAsset = async () => {
+      try {
+        const res = await assetsApi.get(assetId);
 
-    //alert("Entra a llamar a la Api RedirectProcessAsset");
-    assetsApi
-      .get(assetId)
-      .then((res) => {
         if (mounted.current) {
-          //console.log("Intenta ingresar en el asset");
-          //console.log(res);
           const selectedAsset = res;
-
           let redirectLink = "";
 
-          let completelinktoAsset = "";
           if (selectedAsset.type === "internalasset") {
-            //   const backend = selectedAsset["software_response"]["backend"];
-            //   const linktoAsset =
-            //     backend + "/" + selectedAsset["external_asset_id"];
-
-            //   //alert(`${linktoAsset}/view`);
-
-            //   completelinktoAsset = `${linktoAsset}/view`;
             redirectLink = selectedAsset.link + "/view";
           } else {
-            //   //alert(asset.uri);
-            //   completelinktoAsset = selectedAsset.uri;
             redirectLink = selectedAsset.uri;
           }
-          // alert("Navegate to: " + completelinktoAsset);
-          //navigate(selectedAsset.link);
           window.location.replace(redirectLink);
         }
-      })
-      .catch(function (error) {
-        console.log(error.response); // undefined
-        console.log(error.response.status); // 401
-        console.log(error.response.data.error); //Please Authenticate or whatever returned from server
+      } catch (error) {
         if (error.response.status == 403) {
-          alert(
-            t(
-              "You do not have permissions on this resource, please contact the process administrator to be included in a team with access permissions"
-            )
-          );
+          //Add user to observers
+          alert('Agrego a observadores');
+          try {
+            const res = await teamsApi.addObservers({
+              users_ids: [user.id],
+              coproduction_process_id: processId,
+              asset_id: assetId,
+            });
+            if (mounted.current) {
+              //Try again to load resource
+              alert('Intento de nuevo acceder');
+              fetchAsset();
+            }
+          } catch (error) {
+            console.log(error);
+          }
         }
-      });
+      }
+    };
+
+    fetchAsset();
   }, []);
 
   return (
