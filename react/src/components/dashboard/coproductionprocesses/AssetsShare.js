@@ -309,7 +309,7 @@ export default function AssetsShare({
                     //error={Boolean(touched.user && errors.user)}
                     alert={false}
                     importCsv={false}
-                    include={Array.from(includedUsers)}
+                    //include={Array.from(includedUsers)}
                     onClick={(user) => {
                       // setFieldValue("user", user);
                       // setFieldTouched("user");
