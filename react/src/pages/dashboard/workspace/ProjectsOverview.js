@@ -39,6 +39,7 @@ import HelpAlert from "components/HelpAlert";
 import SearchBox from "components/SearchBox";
 import moment from "moment";
 import TeamAvatar from "components/TeamAvatar";
+import Ballot from "@mui/icons-material/Ballot";
 
 function ProcessRow({ process, t }) {
   const navigate = useNavigate();
@@ -366,6 +367,12 @@ const ProjectsOverview = () => {
   const onProcessCreate = (res) => {
     navigate(`/dashboard/coproductionprocesses/${res.id}/overview`);
   };
+
+  const handleDiscovery= () => {
+    // Navigate to the desired page
+    navigate("/dashboard/interlinkers?tab=Processes");
+  };
+
   return (
     <>
       <Helmet>
@@ -415,6 +422,8 @@ const ProjectsOverview = () => {
                     {t("workspace-subtitle")}
                   </Typography>
                 </Grid>
+                <Stack direction="row" spacing={2}>
+
                 <Grid item>
                   <LoadingButton
                     onClick={() => setCoproductionProcessCreatorOpen(true)}
@@ -428,7 +437,15 @@ const ProjectsOverview = () => {
                   >
                     {t("add-process")}
                   </LoadingButton>
+                  
+
                 </Grid>
+                <Grid item>
+                <Button variant="contained" startIcon={<Ballot />} size="small" sx={{ textAlign: "center", mt: 1, mb: 2 }} onClick={handleDiscovery} data-cy="help">
+                    {t("Discover open processes")}
+                  </Button>
+                  </Grid>
+                  </Stack>
               </Grid>
             </Grid>
             <Box sx={{ mt: 4 }}>

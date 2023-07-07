@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import Catalogue from "pages/dashboard/interlinkers/Catalogue";
 import PublicCoproductionCatalogue from "pages/dashboard/publiccoproductions/PublicCoproductionCatalogue";
 import { useTranslation } from "react-i18next";
+import useMounted from "hooks/useMounted";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -41,6 +42,28 @@ export default function CatalogueSelector() {
   const { t } = useTranslation();
 
   const [value, setValue] = React.useState(0);
+
+  // The values are:
+  // 0: Interlinkers
+  // 1: Processes
+
+  const mounted = useMounted();
+
+  React.useEffect(() => {
+    if (mounted) {
+      const search = location.search;
+      const params = new URLSearchParams(search);
+      const selectedTabTemp = params.get('tab');
+      if (selectedTabTemp){
+        if (selectedTabTemp === "Processes"){
+          setValue(1);
+        }
+      } 
+
+    }
+  
+  }, []);
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
