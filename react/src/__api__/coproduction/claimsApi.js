@@ -140,7 +140,7 @@ class ClaimsApi extends GeneralApi {
     try {
         // You need to replace this URL with the appropriate endpoint on your server that accepts claim creation requests
         const res = await axiosInstance.post(
-            `/${this.url}/createlist`, // I've updated the URL to match your new endpoint
+            `/${this.url}/create_user_list`, // I've updated the URL to match your new endpoint
             claimData,  // The claim data here should be whatever data is required to create a claim
             {
                 headers: {
@@ -159,6 +159,34 @@ class ClaimsApi extends GeneralApi {
     }
 
     return responses;
+}
+
+
+async createClaimsForTeams(claimData = {}, language = getLanguage()) {
+  let responses = [];
+
+  try {
+      // You need to replace this URL with the appropriate endpoint on your server that accepts claim creation requests
+      const res = await axiosInstance.post(
+          `/${this.url}/create_team_list`, // I've updated the URL to match your new endpoint
+          claimData,  // The claim data here should be whatever data is required to create a claim
+          {
+              headers: {
+                  'Accept-Language': language
+              }
+          }
+      );
+
+      // Push each response to an array
+      responses.push(res.data);
+
+  } catch(error) {
+      console.error(`Error creating claims: `, error);
+      // If an error happens, you can decide whether to stop the whole process or continue with the next user
+      // In this case, we just log the error and continue with the next user
+  }
+
+  return responses;
 }
 
 

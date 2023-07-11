@@ -100,7 +100,86 @@ const ContributionsTabs = () => {
       .replace(/'/g, "&#39;");
   }
 
-  const createContributionUser = (
+  //Function to create a claim from a list
+  const createClaims_by_users =(
+    values,
+    user_ids
+    )=>{
+
+    const claimData = {
+      users_id: user_ids,
+      asset_id: values.asset.id,
+      task_id: selectedTreeItem.id,
+      coproductionprocess_id: process.id,
+      title: values.title,
+      description: values.description,
+      state: false,
+      claim_type: "Development",
+    };
+
+      claimsApi
+      .createClaimsForUsers(claimData)
+      .then((res) => {
+        const responseData = JSON.parse(res.data);
+        console.log(responseData);
+
+        if (responseData["excluded"].length > 0) {
+          alert(
+            t("We couldn't include") +
+              ": [" +
+              responseData["excluded"] +
+              "] " +
+              t(
+                "users because are not part of a team with permissions over this task. Please check the list of users and try again"
+              )
+          );
+        }
+
+      })
+  }
+
+  //Function to create a claims from a team
+  const createClaims_by_teams =(
+    values,
+    team_ids
+    )=>{
+
+      const claimData = {
+        teams_id: team_ids,
+        asset_id: values.asset.id,
+        task_id: selectedTreeItem.id,
+        coproductionprocess_id: process.id,
+        title: values.title,
+        description: values.description,
+        state: false,
+        claim_type: "Development",
+      };
+  
+        claimsApi
+        .createClaimsForTeams(claimData)
+        .then((res) => {
+          const responseData = JSON.parse(res.data);
+          console.log(responseData);
+  
+          if (responseData["excluded"].length > 0) {
+            alert(
+              t("We couldn't include") +
+                ": [" +
+                responseData["excluded"] +
+                "] " +
+                t(
+                  "users because are not part of a team with permissions over this task. Please check the list of users and try again"
+                )
+            );
+          }
+  
+        })
+  
+  }
+
+
+
+  const createNotificationsProcess = (
     values,
     user,
     isListUsers = false,
@@ -109,6 +188,8 @@ const ContributionsTabs = () => {
     setStatus,
     setSubmitting
   ) => {
+
+
     const selectedAsset = values.asset;
     //Defino el link del asset
     let selectedAssetLink = "";
@@ -596,7 +677,12 @@ const ContributionsTabs = () => {
                   if (userSelected || fileSelected || teamsSelected) {
                     if (userSelected) {
                       //alert("You have selected a user:" + values.user.id);
-                      createContributionUser(
+
+                      // Create a Claim for the user:
+                      createClaims_by_users(values, [values.user.id]);
+
+                      // Create a Notification per user:
+                      createNotificationsProcess(
                         values,
                         values.user,
                         false,
@@ -629,7 +715,12 @@ const ContributionsTabs = () => {
                         }
                       }
                       //alert("You have selected a file:" + listUsersIds)
-                      createContributionUser(
+
+                      // Create a claims for the users:
+                      createClaims_by_users(values, listUsersIds);
+                      
+                      // Create a Notification per user:
+                      createNotificationsProcess(
                         values,
                         listUsersIds,
                         true,
@@ -642,8 +733,12 @@ const ContributionsTabs = () => {
                       getContributionsData();
                     }
                     if (teamsSelected) {
+
+                      // Create a claims for a list of teams:
+                      createClaims_by_teams(values, checkboxValues);
+
                       //alert("You have selected a team:" + checkboxValues);
-                      createContributionUser(
+                      createNotificationsProcess(
                         values,
                         checkboxValues,
                         true,

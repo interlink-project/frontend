@@ -61,6 +61,7 @@ import useAuth from "hooks/useAuth";
 import { REACT_APP_COMPLETE_DOMAIN } from "configuration";
 import AssetsShare from "./AssetsShare";
 import { set } from "store";
+import { claimsApi } from "__api__/coproduction/claimsApi";
 
 
 const RightSide = ({ softwareInterlinkers }) => {
@@ -546,6 +547,15 @@ const RightSide = ({ softwareInterlinkers }) => {
    
   }, [selectedTreeItem]);
 
+  function escape(htmlStr) {
+    return htmlStr
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
   
   
 
@@ -876,6 +886,24 @@ const RightSide = ({ softwareInterlinkers }) => {
                             );
                           }
 
+
+                          //Creo el claim:
+                          const dataToSendClaim = {
+                            user_id: user.id,
+                            asset_id: selectedAsset.id,
+                            task_id: selectedTreeItem.id,
+                            coproductionprocess_id: process.id,
+                            title: escape(values.title),
+                            description: escape(values.description),
+                            state: false,
+                            claim_type: "Development",
+                         };
+
+
+                          claimsApi.create(dataToSendClaim).then((res) => {
+
+                          //Create the process notifications:
+
                           setSubmitting(true);
 
                           //Defino el link del asset
@@ -989,6 +1017,14 @@ const RightSide = ({ softwareInterlinkers }) => {
                               console.log(err);
                               setSubmitting(false);
                             });
+
+                          })
+                          .catch((err) => {
+                            setStatus({ success: false });
+                            setErrors({ submit: err });
+                            console.log(err);
+                            setSubmitting(false);
+                          });
                         }}
                       >
                         {({

@@ -37,7 +37,7 @@ import { LoadingButton } from "@mui/lab";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { getLanguage, LANGUAGES } from "translations/i18n";
-import { recommenderApi, assetsApi } from "__api__";
+import { recommenderApi, assetsApi, assignmentsApi } from "__api__";
 import { Done, Delete, Close, KeyboardArrowRight } from "@mui/icons-material";
 import SelectGovernanceModel from "./SelectGovernanceModel";
 import { REACT_APP_COMPLETE_DOMAIN } from "configuration";
@@ -131,10 +131,96 @@ export default function AssetsShare({
     event.preventDefault();
   };
 
+
+  //Function to create a assignment from a list
+  const createAssignments_by_users =(
+    user_ids,
+    asset_id,
+    title,
+    description
+    )=>{
+
+    const assignmentData = {
+      users_id: user_ids,
+      asset_id: asset_id,
+      task_id: selectedTreeItem.id,
+      coproductionprocess_id: process.id,
+      title: title,
+      description: description,
+      state: false
+    };
+
+      assignmentsApi
+      .createAssignmentsForUsers(assignmentData)
+      .then((res) => {
+        const responseData = JSON.parse(res.data);
+        console.log(responseData);
+
+        if (responseData["excluded"].length > 0) {
+          alert(
+            t("We couldn't include") +
+              ": [" +
+              responseData["excluded"] +
+              "] " +
+              t(
+                "users because are not part of a team with permissions over this task. Please check the list of users and try again"
+              )
+          );
+        }
+
+      })
+  }
+
+  //Function to create a assignments from a team
+  const createAssignments_by_teams =(
+    team_ids,
+    asset_id,
+    title,
+    description
+    )=>{
+
+      const assignmentData = {
+        teams_id: team_ids,
+        asset_id: asset_id,
+        task_id: selectedTreeItem.id,
+        coproductionprocess_id: process.id,
+        title: title,
+        description: description,
+        state: false
+      };
+  
+        assignmentsApi
+        .createAssignmentsForTeams(assignmentData)
+        .then((res) => {
+          const responseData = JSON.parse(res.data);
+          console.log(responseData);
+  
+          if (responseData["excluded"].length > 0) {
+            alert(
+              t("We couldn't include") +
+                ": [" +
+                responseData["excluded"] +
+                "] " +
+                t(
+                  "users because are not part of a team with permissions over this task. Please check the list of users and try again"
+                )
+            );
+          }
+  
+        })
+  
+  }
+
+
   const handleNext = async () => {
 
     if (singleuser) {
-    //Send the email to a single selected user
+    
+    //Register the assigment for a single user
+    createAssignments_by_users( [singleuser.id], asset.id, subject, instructions)
+    
+    
+    //Create the notification and send the email to a single selected user
     
     const dataToSend = {
       asset_id: asset.id,
@@ -163,7 +249,13 @@ export default function AssetsShare({
     
     
     } else {
-    //Send an email to a team
+
+
+    //Register the assigment for a single user
+    createAssignments_by_teams( checkboxValues, asset.id, subject, instructions)
+    
+
+    //Create a notification and send an email to a team
 
     
     const dataToSend = {
