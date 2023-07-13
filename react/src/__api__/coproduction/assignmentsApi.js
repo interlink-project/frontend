@@ -174,6 +174,22 @@ class AssignmentsApi extends GeneralApi {
     return datos;
   }
 
+   //Change as Approved of a notification to unseen
+   async setInProgressAssignment(params = {}){
+    let datos={};
+    ////console.log(`/${this.url}/${params.assignmentId}`);
+    //Put data of assignments
+
+    const res = await axiosInstance.put(
+      `/${this.url}/${params.assignmentId}/approve`, 
+      {
+        state:false
+      }
+    );
+    datos=res.data;
+    return datos;
+  }
+
 
   async createAssignmentsForUsers(assignmentData = {}, language = getLanguage()) {
     let responses = [];
