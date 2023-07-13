@@ -485,9 +485,20 @@ export default function AssetsShare({
             size="large"
             onClick={handleNext}
           >
-            {t("Send email")}
+            {t("Send direct Link to email")}
             <Email sx={{ ml: 2 }} />
           </LoadingButton>
+
+          {/* <LoadingButton
+            sx={{ my: 2 }}
+            loading={loading}
+            size="large"
+            onClick={handleNext}
+            color="warning"
+          >
+            {t("Ask for claim to email")}
+            <Email sx={{ ml: 2 }} />
+          </LoadingButton> */}
         </DialogActions>
       </Dialog>
     </>

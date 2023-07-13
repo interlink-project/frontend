@@ -116,7 +116,24 @@ class AssignmentsApi extends GeneralApi {
     }
 
     
+    //Obtain the list of assignments of a coproduction process
+    async getAssignmentbyId(params = {}, language = getLanguage()) {
 
+      let datos={};
+      
+      //Get data of assignments
+      const res = await axiosInstance.get(
+        `/${this.url}/${params['search']['assignment_id']}/view`, {
+          params: removeEmpty(params),
+          headers: {
+            'Accept-Language': language
+          }
+        }
+      );
+      
+      datos=res.data;
+      return datos;
+    }
 
 
     //Obtain the list of assignments of a coproduction process

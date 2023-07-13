@@ -41,7 +41,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { setSelectedTreeItemById } from "slices/process";
 import {
+  getAssignmentbyId,
   getFullAssignmentsbyCoproIdUserId,
+  getInPendingAssignmentsbyCoproIdAssigIdUserId,
   getInPendingAssignmentsbyCoproIdUserId,
 } from "slices/general";
 import { assignmentsApi, coproductionProcessesApi } from "__api__";
@@ -65,8 +67,12 @@ import {
   Undo,
   Inventory,
   Edit,
+  InsertLink,
+  Visibility,
 } from "@mui/icons-material";
 import { ClaimDialog } from "components/dashboard/coproductionprocesses/ClaimDialog";
+import LinkDialog from "./LinkDialog";
+import { REACT_APP_COMPLETE_DOMAIN } from "configuration";
 
 export default function Resources({}) {
   const { process, isAdministrator, tree } = useSelector(
@@ -90,6 +96,8 @@ export default function Resources({}) {
   const [claimDialogOpen, setClaimDialogOpen] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [selectedAssignment, setSelectedAssignment] = useState(null);
+  const [openLinkDialog, setOpenLinkDialog] = useState(false);
+  const [link_assignment, setLink_assignment] = useState(null);
 
   React.useEffect(() => {
     if (mounted) {
@@ -101,8 +109,16 @@ export default function Resources({}) {
           setSelectedTab("1");
         }
       }
+
+      const selectedTabAssignment_id = params.get("assignment");
+      if (selectedTabAssignment_id) {
+        setSelectedTab("1");
+        showAssignments(selectedTabAssignment_id);
+      } else {
+        showAssignments();
+      }
     }
-  }, []);
+  }, [mounted]);
 
   React.useEffect(() => {
     setLoading(true);
@@ -122,12 +138,6 @@ export default function Resources({}) {
     display: "flex",
     flexDirection: "column",
   };
-
-  React.useEffect(() => {
-    if (mounted) {
-      showAssignments();
-    }
-  }, [mounted]);
 
   const getAssetsActions = (asset) => {
     const actions = [];
@@ -160,12 +170,13 @@ export default function Resources({}) {
   }
 
   const listAssignmentsContainer2 = assignments.map((assignment) => {
-    
     function approveAssignment() {
       assignmentsApi.setApprovedAssignment({
         assignmentId: assignment.id,
       });
       setShowHistory(false);
+
+      
       dispatch(
         getInPendingAssignmentsbyCoproIdUserId({
           coproductionprocess_id: process.id,
@@ -178,11 +189,27 @@ export default function Resources({}) {
         assignmentId: assignment.id,
       });
       setShowHistory(false);
+
       dispatch(
         getInPendingAssignmentsbyCoproIdUserId({
           coproductionprocess_id: process.id,
         })
       );
+    }
+
+    function showLink() {
+      //Create the link to the claim dialog:
+      setSelectedAssignment(assignment);
+      setLink_assignment(
+        `${REACT_APP_COMPLETE_DOMAIN}/dashboard/coproductionprocesses/${process.id}/resources?tab=Assignments&assignment=${assignment.id}`
+      );
+      console.log(link_assignment);
+      setOpenLinkDialog(true);
+    }
+
+    function showResource() {
+      const linkToAsset = `${REACT_APP_COMPLETE_DOMAIN}/dashboard/coproductionprocesses/${process.id}/${assignment.asset.id}/view`;
+      window.open(linkToAsset, "_blank");
     }
 
     return (
@@ -192,20 +219,13 @@ export default function Resources({}) {
             {moment(assignment.created_at).fromNow()}
           </TableCell>
 
-          
-
           <TableCell align="center" width="10%">
             {!assignment.state ? (
-              
-            <Chip label="In Progress"  />
-            
-              
-
+              <Chip label="In Progress" />
             ) : (
               <Chip label="Archived" variant="outlined" color="warning" />
             )}
           </TableCell>
-
 
           <TableCell align="left" component="th" scope="row">
             {assignment.title}
@@ -214,12 +234,20 @@ export default function Resources({}) {
             {assignment.description}
           </TableCell>
           <TableCell align="center">
+            <IconButton onClick={() => showLink()}>
+              <InsertLink />
+            </IconButton>
+          </TableCell>
+          <TableCell align="center">
+            <IconButton onClick={() => showResource()}>
+              <Visibility />
+            </IconButton>
+          </TableCell>
+          <TableCell align="center">
             {!assignment.state ? (
               <IconButton onClick={() => approveAssignment()}>
-                <Archive /> 
+                <Archive />
               </IconButton>
-              
-
             ) : (
               <IconButton onClick={() => inprogressAssignment()}>
                 <Undo color="success" />
@@ -229,7 +257,7 @@ export default function Resources({}) {
         </TableRow>
         <TableRow>
           <TableCell colSpan={1}></TableCell>
-          <TableCell colSpan={4}>
+          <TableCell colSpan={6}>
             <Accordion
               style={{ width: "100%" }}
               sx={{
@@ -245,48 +273,67 @@ export default function Resources({}) {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Box display="flex" flexDirection="row" alignItems="center"  gap={2}>
-                <Fab color="primary" aria-label="add" size="small" 
-                  onClick={() => {
-                    setSelectedAssignment(assignment);
-                    console.log(assignment);
-                    handleClaim(assignment.asset);}} // <-- add your click event here
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  gap={2}
                 >
-                  <Add />
-                </Fab>
-                <Divider orientation="vertical" flexItem />
-                <Typography color="text.secondary">Claims ({assignment.claims.length})</Typography>
+
+                { !assignment.state && 
+                  <Fab
+                    color="primary"
+                    aria-label="add"
+                    size="small"
+                    onClick={() => {
+                      setSelectedAssignment(assignment);
+                      console.log(assignment);
+                      handleClaim(assignment.asset);
+                    }} // <-- add your click event here
+                  >
+                    <Add />
+                  </Fab>
+                  }
+                  <Divider orientation="vertical" flexItem />
+                  <Typography color="text.secondary">
+                    Claims ({assignment.claims.length})
+                  </Typography>
                 </Box>
               </AccordionSummary>
               <AccordionDetails>
-             
-         
-              {assignment.claims.map((claim) => {
-                return(
-                <Card sx={{ minWidth: 275 }} key={'card_'+claim.id} >
-                  <CardContent>
-                  <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                   {moment(claim.created_at).format('MMMM Do YYYY, h:mm:ss a')}
-                  </Typography>
-                    <Typography variant="h5" component="div">
-                      {claim.title}
-                    </Typography>
-                    
-                    <Typography>
-                      {claim.description}
-                    </Typography>
-                    
-                  </CardContent>
-                  <CardActions align="right" sx={{justifyContent: 'flex-end'}}>
-               
-                    <Button size="small" color='error' startIcon={<Delete />}>
-                      Delete
-                    </Button>
-            
-                  </CardActions>
-                  
-                </Card>
-                )
+                {assignment.claims.map((claim) => {
+                  return (
+                    <Card sx={{ minWidth: 275 }} key={"card_" + claim.id}>
+                      <CardContent>
+                        <Typography
+                          sx={{ fontSize: 14 }}
+                          color="text.secondary"
+                          gutterBottom
+                        >
+                          {moment(claim.created_at).format(
+                            "MMMM Do YYYY, h:mm:ss a"
+                          )}
+                        </Typography>
+                        <Typography variant="h5" component="div">
+                          {claim.title}
+                        </Typography>
+
+                        <Typography>{claim.description}</Typography>
+                      </CardContent>
+                      <CardActions
+                        align="right"
+                        sx={{ justifyContent: "flex-end" }}
+                      >
+                        <Button
+                          size="small"
+                          color="error"
+                          startIcon={<Delete />}
+                        >
+                          Delete
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  );
                 })}
               </AccordionDetails>
             </Accordion>
@@ -295,54 +342,6 @@ export default function Resources({}) {
       </>
     );
   });
-
-  // const listAssignmentsContainer = assignments.map((assignment) => {
-  //   console.log(assignment);
-
-  //   function approveAssignment() {
-  //     assignmentsApi.setApprovedAssignment({
-  //       assignmentId: assignment.id,
-  //     });
-  //     dispatch(
-  //       getInPendingAssignmentsbyCoproIdUserId({
-  //         coproductionprocess_id: process.id,
-  //       })
-  //     );
-  //   }
-
-  //   return (
-  //     <>
-  //       <TableRow>
-  //         <TableCell width="10%" align="center">
-  //           {moment(assignment.created_at).fromNow()}
-  //         </TableCell>
-  //         <TableCell align="left" component="th" scope="row">
-  //           {assignment.title}
-  //         </TableCell>
-  //         <TableCell align="left" component="th" scope="row">
-  //           {assignment.description}
-  //         </TableCell>
-  //         <TableCell align="center">
-  //           {!assignment.state ? (
-  //             <IconButton onClick={() => approveAssignment()}>
-  //               <Archive />
-  //             </IconButton>
-  //           ) : (
-  //             <IconButton>
-  //               <Inventory color="error" />
-  //             </IconButton>
-  //           )}
-  //         </TableCell>
-  //       </TableRow>
-  //     </>
-  //   );
-  // });
-
-  React.useEffect(() => {
-    if (mounted) {
-      showAssignments();
-    }
-  }, [mounted]);
 
   const onSelect = (value) => {
     if (mounted.current) {
@@ -357,12 +356,21 @@ export default function Resources({}) {
     setShowHistory(true);
   };
 
-  const showAssignments = () => {
-    dispatch(
-      getInPendingAssignmentsbyCoproIdUserId({
-        coproductionprocess_id: process.id,
-      })
-    );
+  const showAssignments = (selectedAssignment) => {
+    if (selectedAssignment != null) {
+
+      dispatch(
+        getAssignmentbyId({
+          assignment_id: selectedAssignment,
+        })
+      );
+    } else {
+      dispatch(
+        getInPendingAssignmentsbyCoproIdUserId({
+          coproductionprocess_id: process.id,
+        })
+      );
+    }
     setShowHistory(false);
   };
 
@@ -428,48 +436,48 @@ export default function Resources({}) {
         {selectedTab === "1" && (
           <>
             <Grid item xs={12} sx={{ textAlign: "center" }}>
-
-            <Grid container justifyContent="space-between">
-              <Grid item sx={{ textAlign: "left", m: 2 }}>
-              <Typography
-                  color="textPrimary"
-                  variant="h5"
-                  data-cy="welcome-to-user"
-                >
-                  {t("User Assignments")}
-                </Typography>
-                <Typography
-                  color="textSecondary"
-                  variant="subtitle2"
-                  data-cy={
-                    t("Here is the recent assignments you should work on") + "."
-                  }
-                >
-                  {t("Here is the recent assignments you should work on") + "."}
-                </Typography>
-              </Grid>
-
-              <Grid item sx={{ textAlign: "right", m: 2 }}>
-              {!showHistory ? (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => showAssigmentsApproved()}
+              <Grid container justifyContent="space-between">
+                <Grid item sx={{ textAlign: "left", m: 2 }}>
+                  <Typography
+                    color="textPrimary"
+                    variant="h5"
+                    data-cy="welcome-to-user"
                   >
-                    {t("Show All Assignments")}
-                  </Button>
-                ) : (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => showAssignments()}
+                    {t("User Assignments")}
+                  </Typography>
+                  <Typography
+                    color="textSecondary"
+                    variant="subtitle2"
+                    data-cy={
+                      t("Here is the recent assignments you should work on") +
+                      "."
+                    }
                   >
-                    {t("Show in progress assignments")}
-                  </Button>
-                )}
+                    {t("Here is the recent assignments you should work on") +
+                      "."}
+                  </Typography>
+                </Grid>
+
+                <Grid item sx={{ textAlign: "right", m: 2 }}>
+                  {!showHistory ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => showAssigmentsApproved()}
+                    >
+                      {t("Show All Assignments")}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => showAssignments()}
+                    >
+                      {t("Show in progress assignments")}
+                    </Button>
+                  )}
+                </Grid>
               </Grid>
-            </Grid>
-            
 
               <Card sx={{ p: 1 }}>
                 <Grid item xs={12} md={9}>
@@ -477,13 +485,13 @@ export default function Resources({}) {
                     <TableHead>
                       <TableRow>
                         <TableCell width="10%" align="center">
-                        <Typography variant="subtitle2" color="secundary">
-                          {t("Date")}
+                          <Typography variant="subtitle2" color="secundary">
+                            {t("Date")}
                           </Typography>
                         </TableCell>
                         <TableCell width="10%" align="center">
-                        <Typography variant="subtitle2" color="secundary">
-                          {t("State")}
+                          <Typography variant="subtitle2" color="secundary">
+                            {t("State")}
                           </Typography>
                         </TableCell>
                         <TableCell width="45%" align="left">
@@ -492,14 +500,26 @@ export default function Resources({}) {
                           </Typography>
                         </TableCell>
                         <TableCell width="45%" align="left">
-                        <Typography variant="subtitle2" color="secundary">
-                          {t("Instructions")}
+                          <Typography variant="subtitle2" color="secundary">
+                            {t("Instructions")}
                           </Typography>
                         </TableCell>
 
                         <TableCell width="10%" align="center">
-                        <Typography variant="subtitle2" color="secundary">
-                          {t("Archive")}
+                          <Typography variant="subtitle2" color="secundary">
+                            {t("Link")}
+                          </Typography>
+                        </TableCell>
+
+                        <TableCell width="10%" align="center">
+                          <Typography variant="subtitle2" color="secundary">
+                            {t("Resource")}
+                          </Typography>
+                        </TableCell>
+
+                        <TableCell width="10%" align="center">
+                          <Typography variant="subtitle2" color="secundary">
+                            {t("Archive")}
                           </Typography>
                         </TableCell>
                       </TableRow>
@@ -513,13 +533,26 @@ export default function Resources({}) {
         )}
       </Card>
 
-      <ClaimDialog claimDialogOpen={claimDialogOpen} setClaimDialogOpen={setClaimDialogOpen} 
-      selectedAsset={selectedAsset} 
-      selectedAssignment={selectedAssignment} 
-      afterRefreshEvent={getInPendingAssignmentsbyCoproIdUserId({
+      <ClaimDialog
+        claimDialogOpen={claimDialogOpen}
+        setClaimDialogOpen={setClaimDialogOpen}
+        selectedAsset={selectedAsset}
+        selectedAssignment={selectedAssignment}
+        afterRefreshEvent={getInPendingAssignmentsbyCoproIdUserId({
           coproductionprocess_id: process.id,
-        })} />
+        })}
+      />
 
+      <LinkDialog
+        open={openLinkDialog}
+        handleClose={() => setOpenLinkDialog(false)}
+        title={t("Link to the asset")}
+        sub_text={t(
+          "You can share this link with a collaborator to give them access to an assignment and ask them to make claims. The following link will be copied to your clipboard"
+        )}
+        imp_text={link_assignment}
+        submitText="Copy Link"
+      />
     </>
   );
 }

@@ -238,6 +238,14 @@ export const getInPendingAssignmentsbyCoproId = (search) => async (dispatch) => 
   dispatch(slice.actions.setLoadingAssignments(false));
 };
 
+export const getAssignmentbyId = (search) => async (dispatch) => {
+  dispatch(slice.actions.setLoadingAssignments(true));
+  const assignments_data =
+    await assignmentsApi.getAssignmentbyId({ search });
+  dispatch(slice.actions.setAssignments([assignments_data]));
+  dispatch(slice.actions.setLoadingAssignments(false));
+};
+
 export const getFullAssignmentsbyCoproId = (search) => async (dispatch) => {
   dispatch(slice.actions.setLoadingAssignments(true));
   const assignments_data =
