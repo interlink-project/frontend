@@ -9,6 +9,7 @@ import PublicCoproductionLayout from 'components/layouts/PublicCoproductionLayou
 import PublicCoproductionCatalogue from 'pages/dashboard/publiccoproductions/PublicCoproductionCatalogue';
 import PublicCoproductionProfile from 'pages/dashboard/publiccoproductions/PublicCoproductionProfile';
 import CatalogueSelector from 'components/dashboard/CatalogueSelector';
+import SucessfullClaimRegistration from 'pages/dashboard/assignments/sucessfullClaimRegistration';
 
 
 const CoproductionProcessProfile = Loadable(
@@ -33,6 +34,9 @@ const InterlinkerProfile = Loadable(
 );
 const Organizations = Loadable(
   lazy(() => import('../pages/dashboard/organizations/index'))
+);
+const AssignmentsClaim = Loadable(
+  lazy(() => import('../pages/dashboard/assignments/newassignationclaim'))
 );
 const OrganizationProfile = Loadable(
   lazy(() => import('../components/dashboard/organizations/OrganizationProfile'))
@@ -182,6 +186,20 @@ export const routes = [
           {
             path: ':organizationIdPage/:teamId',
             element: <OrganizationProfileSolo />,
+          }
+        ],
+      },
+      {
+      
+        path: 'assignments',
+        children: [
+          {
+            path: 'success',
+            element: <SucessfullClaimRegistration />,
+          },
+          {
+            path: 'registerclaim/:assignmentIdPage',
+            element: <AssignmentsClaim />,
           }
         ],
       }

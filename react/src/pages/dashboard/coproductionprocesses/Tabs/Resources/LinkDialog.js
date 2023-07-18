@@ -130,7 +130,7 @@ const LinkDialog = ({ open, handleClose, title, sub_text, imp_text, submitText="
               </InputLabel>
               <TextField
                 fullWidth
-                label="Type your answer here"
+                label="Link"
                 name="Value"
                 // onChange={(e) => {
                 //   setValue(e.target.value);
@@ -141,6 +141,8 @@ const LinkDialog = ({ open, handleClose, title, sub_text, imp_text, submitText="
                 multiline
                 rows={4}
                 sx={{ mt: 1 }}
+                disabled
+
               />
             </Grid>
           </Grid>

@@ -203,7 +203,7 @@ export default function Resources({}) {
       setLink_assignment(
         `${REACT_APP_COMPLETE_DOMAIN}/dashboard/coproductionprocesses/${process.id}/resources?tab=Assignments&assignment=${assignment.id}`
       );
-      console.log(link_assignment);
+      //console.log(link_assignment);
       setOpenLinkDialog(true);
     }
 
@@ -256,7 +256,23 @@ export default function Resources({}) {
           </TableCell>
         </TableRow>
         <TableRow>
-          <TableCell colSpan={1}></TableCell>
+          <TableCell align="center"  sx={{verticalAlign: "top", paddingTop: "16px"}} >
+          { !assignment.state && 
+                  <Fab
+                    color="primary"
+                    aria-label="add"
+                    size="small"
+                    onClick={() => {
+                      setSelectedAssignment(assignment);
+                      //console.log(assignment);
+                      handleClaim(assignment.asset);
+                    }} // <-- add your click event here
+                  >
+                    <Add />
+                  </Fab>
+                  }
+
+          </TableCell>
           <TableCell colSpan={6}>
             <Accordion
               style={{ width: "100%" }}
@@ -280,20 +296,7 @@ export default function Resources({}) {
                   gap={2}
                 >
 
-                { !assignment.state && 
-                  <Fab
-                    color="primary"
-                    aria-label="add"
-                    size="small"
-                    onClick={() => {
-                      setSelectedAssignment(assignment);
-                      console.log(assignment);
-                      handleClaim(assignment.asset);
-                    }} // <-- add your click event here
-                  >
-                    <Add />
-                  </Fab>
-                  }
+                
                   <Divider orientation="vertical" flexItem />
                   <Typography color="text.secondary">
                     Claims ({assignment.claims.length})
@@ -484,40 +487,40 @@ export default function Resources({}) {
                   <Table size="small">
                     <TableHead>
                       <TableRow>
-                        <TableCell width="10%" align="center">
+                        <TableCell width="5%" align="center">
                           <Typography variant="subtitle2" color="secundary">
                             {t("Date")}
                           </Typography>
                         </TableCell>
-                        <TableCell width="10%" align="center">
+                        <TableCell width="5%" align="center">
                           <Typography variant="subtitle2" color="secundary">
                             {t("State")}
                           </Typography>
                         </TableCell>
-                        <TableCell width="45%" align="left">
+                        <TableCell width="20%" align="left">
                           <Typography variant="subtitle2" color="secundary">
                             {t("Title")}
                           </Typography>
                         </TableCell>
-                        <TableCell width="45%" align="left">
+                        <TableCell width="50%" align="left">
                           <Typography variant="subtitle2" color="secundary">
                             {t("Instructions")}
                           </Typography>
                         </TableCell>
 
-                        <TableCell width="10%" align="center">
+                        <TableCell width="5%" align="center">
                           <Typography variant="subtitle2" color="secundary">
                             {t("Link")}
                           </Typography>
                         </TableCell>
 
-                        <TableCell width="10%" align="center">
+                        <TableCell width="5%" align="center">
                           <Typography variant="subtitle2" color="secundary">
                             {t("Resource")}
                           </Typography>
                         </TableCell>
 
-                        <TableCell width="10%" align="center">
+                        <TableCell width="5%" align="center">
                           <Typography variant="subtitle2" color="secundary">
                             {t("Archive")}
                           </Typography>
@@ -548,7 +551,7 @@ export default function Resources({}) {
         handleClose={() => setOpenLinkDialog(false)}
         title={t("Link to the asset")}
         sub_text={t(
-          "You can share this link with a collaborator to give them access to an assignment and ask them to make claims. The following link will be copied to your clipboard"
+          "This direct access link will take you to this specific assignment page"
         )}
         imp_text={link_assignment}
         submitText="Copy Link"

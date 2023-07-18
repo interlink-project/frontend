@@ -209,7 +209,7 @@ class AssignmentsApi extends GeneralApi {
 
 
   async createAssignmentsForUsers(assignmentData = {}, language = getLanguage()) {
-    let responses = [];
+    
 
     try {
         // You need to replace this URL with the appropriate endpoint on your server that accepts assignment creation requests
@@ -224,20 +224,18 @@ class AssignmentsApi extends GeneralApi {
         );
 
         // Push each response to an array
-        responses.push(res.data);
+        return res.data;
 
     } catch(error) {
         console.error(`Error creating assignments: `, error);
         // If an error happens, you can decide whether to stop the whole process or continue with the next user
         // In this case, we just log the error and continue with the next user
     }
-
-    return responses;
 }
 
 
 async createAssignmentsForTeams(assignmentData = {}, language = getLanguage()) {
-  let responses = [];
+
 
   try {
       // You need to replace this URL with the appropriate endpoint on your server that accepts assignment creation requests
@@ -252,7 +250,7 @@ async createAssignmentsForTeams(assignmentData = {}, language = getLanguage()) {
       );
 
       // Push each response to an array
-      responses.push(res.data);
+      return res.data;
 
   } catch(error) {
       console.error(`Error creating assignments: `, error);
@@ -260,7 +258,7 @@ async createAssignmentsForTeams(assignmentData = {}, language = getLanguage()) {
       // In this case, we just log the error and continue with the next user
   }
 
-  return responses;
+
 }
 
 
