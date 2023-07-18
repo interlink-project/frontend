@@ -333,6 +333,8 @@ export default function AssetsShare({
       };
       //console.log(dataToSend);
 
+      alert('You share this link: '+assetLinkOp);
+
       assetsApi
         .emailAskUserContribution(dataToSend)
         .then((res) => {
@@ -379,6 +381,8 @@ export default function AssetsShare({
         assigmentDict: assigmentDict,
       };
       console.log(dataToSend);
+
+      alert('You share this link: '+assetLinkOp);
 
       assetsApi
         .emailAskTeamContribution(dataToSend)
