@@ -11,6 +11,8 @@ import { getUserActivities } from "slices/general";
 import CoproNotifications from 'components/dashboard/coproductionprocesses/CoproNotifications';
 import { getAllChildren } from 'slices/process';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
+import { useNavigate } from 'react-router';
+import { setSelectedTreeItemById } from 'slices/process';
 
 
 const DEVELOPMENT_COMPLEXITY = {
@@ -42,13 +44,14 @@ const CONTRIBUTION_COLORS = {
 }
 
 const PersonalLeaderboard = ({ user, game, place, loading }) => {
-    
+
     const { process, tree, treeitems } = useSelector((state) => state.process);
     const [filteredGame, setFilteredGame] = useState({});
     const [phases, setPhases] = useState({});
     const [points, setPoints] = useState(0);
     const dispatch = useDispatch();
     const t = useCustomTranslation(process.language);
+    const navigate = useNavigate();
 
     const filterGame = () => {
         let tmpGame = {};
@@ -153,7 +156,12 @@ const PersonalLeaderboard = ({ user, game, place, loading }) => {
 
                                             </ListItemSecondaryAction>
                                             <ListItemText
-                                                primary={child.name}
+                                                primary={
+                                                    <Link
+                                                        onClick={dispatch(setSelectedTreeItemById(child.id, () => {
+                                                            navigate(`/dashboard/coproductionprocesses/${process.id}/guide`);
+                                                        }))} color="inherit">{child.name}</Link>
+                                                }
                                                 secondary={DEVELOPMENT_COMPLEXITY[child.development]}
                                                 sx={{
                                                     bgcolor: '',
@@ -161,11 +169,11 @@ const PersonalLeaderboard = ({ user, game, place, loading }) => {
                                                     p: 0,
                                                 }}
                                             />
-                                        </ListItem>
+                                        </ListItem >
                                     ))}
                                 </>
                             ))}
-                        </List>
+                        </List >
                     </>
                 ))}
             </Box >

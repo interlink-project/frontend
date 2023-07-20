@@ -35,7 +35,7 @@ const ContributionCard = ({ user_id, name, contribution_level }) => {
             <Typography variant="body1" sx={{ mt: 1 }}>
                 {t("Level of contribution")}
             </Typography>
-            <Chip label={contribution_level} sx={{ mt: 1 }} color={handleColor(contribution_level)} />
+            <Chip label={t(contribution_level)} sx={{ mt: 1 }} color={handleColor(contribution_level)} />
         </Card >
 
     );
