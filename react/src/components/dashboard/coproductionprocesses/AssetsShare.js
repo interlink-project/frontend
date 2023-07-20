@@ -333,7 +333,7 @@ export default function AssetsShare({
       };
       //console.log(dataToSend);
 
-      alert('You share this link: '+assetLinkOp);
+      //alert('You share this link: '+assetLinkOp);
 
       assetsApi
         .emailAskUserContribution(dataToSend)
@@ -382,7 +382,7 @@ export default function AssetsShare({
       };
       console.log(dataToSend);
 
-      alert('You share this link: '+assetLinkOp);
+      //alert('You share this link: '+assetLinkOp);
 
       assetsApi
         .emailAskTeamContribution(dataToSend)
