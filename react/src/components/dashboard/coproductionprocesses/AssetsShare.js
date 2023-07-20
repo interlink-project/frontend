@@ -707,7 +707,7 @@ export default function AssetsShare({
                       }
                       label={
                         t(
-                          "Send a link asking submit a claim."
+                          "Send a link to the claim submission form"
                         ) + "."
                       }
                     />

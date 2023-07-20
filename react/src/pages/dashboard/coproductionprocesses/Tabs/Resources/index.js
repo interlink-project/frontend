@@ -451,12 +451,9 @@ export default function Resources({}) {
                   <Typography
                     color="textSecondary"
                     variant="subtitle2"
-                    data-cy={
-                      t("Here is the recent assignments you should work on") +
-                      "."
-                    }
+                    
                   >
-                    {t("Here is the recent assignments you should work on") +
+                    {t("Here are the recent assignments where you may work") +
                       "."}
                   </Typography>
                 </Grid>
