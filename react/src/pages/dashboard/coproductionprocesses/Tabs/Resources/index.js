@@ -46,7 +46,7 @@ import {
   getInPendingAssignmentsbyCoproIdAssigIdUserId,
   getInPendingAssignmentsbyCoproIdUserId,
 } from "slices/general";
-import { assignmentsApi, coproductionProcessesApi } from "__api__";
+import { assignmentsApi, claimsApi, coproductionProcessesApi, coproductionprocessnotificationsApi, tasksApi } from "__api__";
 import TimeLine from "components/dashboard/coproductionprocesses/TimeLine";
 import CoproNotifications from "components/dashboard/coproductionprocesses/CoproNotifications";
 import {
@@ -207,6 +207,14 @@ export default function Resources({}) {
       setOpenLinkDialog(true);
     }
 
+    function goTask(selectedTaskId){
+      dispatch(
+        setSelectedTreeItemById(selectedTaskId, () => {
+          navigate(`/dashboard/coproductionprocesses/${process.id}/guide`);
+        })
+      );
+    }
+
     function showResource() {
       const linkToAsset = `${REACT_APP_COMPLETE_DOMAIN}/dashboard/coproductionprocesses/${process.id}/${assignment.asset.id}/view`;
       window.open(linkToAsset, "_blank");
@@ -234,8 +242,8 @@ export default function Resources({}) {
             {assignment.description}
           </TableCell>
           <TableCell align="center">
-            <IconButton onClick={() => showLink()}>
-              <InsertLink />
+            <IconButton onClick={() => goTask(assignment.task_id)}>
+              <AccountTree />
             </IconButton>
           </TableCell>
           <TableCell align="center">
@@ -305,6 +313,29 @@ export default function Resources({}) {
               </AccordionSummary>
               <AccordionDetails>
                 {assignment.claims.map((claim) => {
+
+                  const handleDeleteClaim = async (claim) => {
+                    //window.open(`${asset.link}/download`, '_blank');
+                    const selectedTask = await tasksApi.get(claim.task_id);
+                    // console.log("task:")
+                    // console.log(selectedTask)
+                    if (selectedTask.status === "finished") {
+                      alert(
+                        t("This task is already close! You can not delete this claim")+"."
+                      );
+                    } else {
+                      await coproductionprocessnotificationsApi.delete(
+                        claim.id
+                      );
+                      await claimsApi.delete(claim.id);
+                      dispatch(
+                        getInPendingAssignmentsbyCoproIdUserId({
+                          coproductionprocess_id: process.id,
+                        })
+                      );
+                    }
+                  };
+
                   return (
                     <Card sx={{ minWidth: 275 }} key={"card_" + claim.id}>
                       <CardContent>
@@ -328,9 +359,11 @@ export default function Resources({}) {
                         sx={{ justifyContent: "flex-end" }}
                       >
                         <Button
+                         key={"button_" + claim.id}
                           size="small"
                           color="error"
                           startIcon={<Delete />}
+                          onClick={() => handleDeleteClaim(claim)}
                         >
                           Delete
                         </Button>
@@ -507,7 +540,7 @@ export default function Resources({}) {
 
                         <TableCell width="5%" align="center">
                           <Typography variant="subtitle2" color="secundary">
-                            {t("Link")}
+                            {t("Task")}
                           </Typography>
                         </TableCell>
 
