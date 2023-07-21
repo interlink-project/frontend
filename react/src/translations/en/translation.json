@@ -437,5 +437,6 @@
     "Medium": "Medium",
     "Very low": "Very low",
     "Very high": "Very high",
-    "None": "None"
+    "None": "None",
+    " points possible": " points possible"
 }

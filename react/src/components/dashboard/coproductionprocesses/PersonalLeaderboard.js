@@ -53,6 +53,12 @@ const PersonalLeaderboard = ({ user, game, place, loading }) => {
     const t = useCustomTranslation(process.language);
     const navigate = useNavigate();
 
+    const redirect_to_task = (task_id) => {
+        dispatch(setSelectedTreeItemById(task_id, () => {
+            navigate(`/dashboard/coproductionprocesses/${process.id}/guide`);
+        }));
+    }
+
     const filterGame = () => {
         let tmpGame = {};
         let tmpPhases = {};
@@ -81,6 +87,7 @@ const PersonalLeaderboard = ({ user, game, place, loading }) => {
     }
 
     useEffect(() => {
+
         filterGame();
     }, []);
 
@@ -157,12 +164,9 @@ const PersonalLeaderboard = ({ user, game, place, loading }) => {
                                             </ListItemSecondaryAction>
                                             <ListItemText
                                                 primary={
-                                                    <Link
-                                                        onClick={dispatch(setSelectedTreeItemById(child.id, () => {
-                                                            navigate(`/dashboard/coproductionprocesses/${process.id}/guide`);
-                                                        }))} color="inherit">{child.name}</Link>
+                                                    <Link onClick={() => { redirect_to_task(child.id) }} color="inherit">{child.name}</Link>
                                                 }
-                                                secondary={DEVELOPMENT_COMPLEXITY[child.development]}
+                                                secondary={DEVELOPMENT_COMPLEXITY[child.development] + " - " + child.development*3 + t(" points possible")}
                                                 sx={{
                                                     bgcolor: '',
                                                     borderRadius: '5px',

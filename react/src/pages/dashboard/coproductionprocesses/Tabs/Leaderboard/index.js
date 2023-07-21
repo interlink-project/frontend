@@ -81,7 +81,7 @@ const LeaderboardTab = ({ }) => {
                 >
 
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                        <Tabs value={value} onChange={handleTabChange} aria-label="basic tabs example" sx={{
+                        <Tabs value={value} disabled={loading} onChange={handleTabChange} aria-label="basic tabs example" sx={{
                             '& .Mui-selected': {
                                 background: '#a4cbd8',
                                 color: 'black',
@@ -90,9 +90,11 @@ const LeaderboardTab = ({ }) => {
                                 'justify-content': 'center',
 
                             }
-                        }}>
+                        }
+                        
+                        }>
                             <Tab label={t("Leaderboard")} />
-                            <Tab label={t("My Profile")} />
+                            <Tab disabled={loading} label={t("My Profile")} />
                         </Tabs>
                     </Box>
 

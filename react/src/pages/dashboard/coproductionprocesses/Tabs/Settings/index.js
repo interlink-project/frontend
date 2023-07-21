@@ -55,6 +55,7 @@ import {
   storiesApi,
   gamesApi,
   tagsApi,
+  tasksApi
 } from "__api__";
 import { withStyles } from "@mui/styles";
 import { getSelectedStory, getTags } from "slices/general";
@@ -66,6 +67,7 @@ import CreateSchema from "components/dashboard/SchemaSelector";
 import RewardSettings from "./RewardSettings";
 import MakePublicDialog from "components/dashboard/coproductionprocesses/MakePublicDialog";
 import { set } from "store";
+
 
 const SettingsTab = () => {
   const [isCloning, setIsCloning] = useState(false);
@@ -253,6 +255,23 @@ const SettingsTab = () => {
           })
         );
       });
+
+      console.log("Delete game");
+      console.log(tree);
+
+      tree.forEach((phase) => {
+        phase.children.forEach((objective) => {
+          objective.children.forEach((task) => {
+            if (task.status === "finished"){
+              const updated_task = Object.assign({}, task);
+              updated_task.status = "in_progress";
+              tasksApi.update(task.id, updated_task).then((res) => {
+                console.log(res);
+              });
+            }
+          });
+        });
+      });
     }
 
     try {
@@ -331,7 +350,7 @@ const SettingsTab = () => {
       }
     } else {
       setOpenDialogPublic(true);
-      
+
     }
   };
 
