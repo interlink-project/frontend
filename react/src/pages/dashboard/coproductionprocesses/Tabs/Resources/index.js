@@ -354,7 +354,8 @@ export default function Resources({}) {
 
                         <Typography>{claim.description}</Typography>
                       </CardContent>
-                      <CardActions
+
+                      {/* <CardActions
                         align="right"
                         sx={{ justifyContent: "flex-end" }}
                       >
@@ -367,7 +368,8 @@ export default function Resources({}) {
                         >
                           Delete
                         </Button>
-                      </CardActions>
+                      </CardActions> */}
+
                     </Card>
                   );
                 })}
