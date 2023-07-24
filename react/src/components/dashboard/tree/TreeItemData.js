@@ -453,7 +453,7 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
       {isTask ? (
         <>
           <Typography variant="h6" sx={{ mt: 2 }}>
-            {t("Complexity Level")}{" - " + development*3 + " points"}  
+            {t("Complexity Level")}{" - " + development*3 + " "+t("points")}  
           </Typography>
 
           {editMode ? (

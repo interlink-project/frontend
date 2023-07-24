@@ -241,7 +241,8 @@ export const ClaimDialog = ({
                     .replace(/"/g, "&quot;")
                     .replace(/'/g, "&#39;");
                 }
-
+                //console.log(res.data);
+                //alert("Claim created successfully"+res.data.id);
                 const parametersList = {
                   assetId: selectedAsset.id,
                   assetName: "{assetid:" + selectedAsset.id + "}",
@@ -254,6 +255,7 @@ export const ClaimDialog = ({
                   copro_id: process.id,
                   showIcon: selectedShowIcon,
                   showLink: selectedShowLink,
+                  claim_id: res.data.id,
                 };
 
                 const paramListJson = JSON.stringify(parametersList);

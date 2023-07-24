@@ -184,17 +184,27 @@ export default function Resources({}) {
       );
     }
 
-    function inprogressAssignment() {
-      assignmentsApi.setInProgressAssignment({
-        assignmentId: assignment.id,
-      });
-      setShowHistory(false);
+    async function inprogressAssignment() {
+      const selectedTask = await tasksApi.get(assignment.task_id);
+      if (selectedTask.status === "finished") {
+        alert(
+          t(
+            "This assignment is already finished, you can not reopen this assignment"
+          ) + "."
+        );
+      }else
+      {
+        assignmentsApi.setInProgressAssignment({
+          assignmentId: assignment.id,
+        });
+        setShowHistory(false);
 
-      dispatch(
-        getInPendingAssignmentsbyCoproIdUserId({
-          coproductionprocess_id: process.id,
-        })
-      );
+        dispatch(
+          getInPendingAssignmentsbyCoproIdUserId({
+            coproductionprocess_id: process.id,
+          })
+        );
+      }
     }
 
     function showLink() {
@@ -316,6 +326,7 @@ export default function Resources({}) {
 
                   const handleDeleteClaim = async (claim) => {
                     //window.open(`${asset.link}/download`, '_blank');
+                    //alert("the task is"+claim.task_id);
                     const selectedTask = await tasksApi.get(claim.task_id);
                     // console.log("task:")
                     // console.log(selectedTask)
@@ -324,6 +335,7 @@ export default function Resources({}) {
                         t("This task is already close! You can not delete this claim")+"."
                       );
                     } else {
+                      //alert('The notification a borrar es: '+claim.id)
                       await coproductionprocessnotificationsApi.delete(
                         claim.id
                       );
@@ -355,7 +367,7 @@ export default function Resources({}) {
                         <Typography>{claim.description}</Typography>
                       </CardContent>
 
-                      {/* <CardActions
+                       <CardActions
                         align="right"
                         sx={{ justifyContent: "flex-end" }}
                       >
@@ -368,7 +380,7 @@ export default function Resources({}) {
                         >
                           Delete
                         </Button>
-                      </CardActions> */}
+                      </CardActions> 
 
                     </Card>
                   );
@@ -450,9 +462,8 @@ export default function Resources({}) {
                 }}
               >
                 <Tab key="1" label={t("Resources")} value="0"></Tab>
-                {isAdministrator && (
-                  <Tab key="2" label={t("Assignments")} value="1"></Tab>
-                )}
+                <Tab key="2" label={t("Assignments")} value="1"></Tab>
+          
               </MuiTabs>
               {/* {loading && <LinearProgress />} */}
             </AppBar>

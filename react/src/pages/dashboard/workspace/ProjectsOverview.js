@@ -441,7 +441,7 @@ const ProjectsOverview = () => {
 
                 </Grid>
                 <Grid item>
-                <Button variant="contained" startIcon={<Ballot />} size="small" sx={{ textAlign: "center", mt: 1, mb: 2 }} onClick={handleDiscovery} data-cy="help">
+                <Button variant="contained" color="primary" startIcon={<Ballot />} size="small" sx={{ textAlign: "center", mt: 1, mb: 2 }} onClick={handleDiscovery} data-cy="help">
                     {t("Discover open processes")}
                   </Button>
                   </Grid>

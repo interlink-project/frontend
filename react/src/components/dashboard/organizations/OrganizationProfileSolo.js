@@ -682,7 +682,7 @@ const OrganizationProfileSolo = ({ organizationId = null, onChanges = null, onTe
         sx={{ zIndex: 9000 }}
       >
         <DialogTitle id="alert-dialog-title">
-          {"User invitation"}
+          {t("User invitation")}
         </DialogTitle>
         <DialogContent>
           {invitationUser ? (
