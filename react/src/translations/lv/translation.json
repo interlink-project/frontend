@@ -253,7 +253,7 @@
     "interlinkers-catalogue": "INTERLINKERu katalogs",
     "organizations-title": "Organizācijas",
     "Organizations and teams present in the platform": "Organizācijas un komandas, kas atrodas platformā",
-    "Here you can find the different organizations that are working on the platform": "Šeit var atrast dažādas organizācijas, kas strādā uz platformas. Katrā organizācijā tiek izveidotas komandas lietotāju grupēšanai.",
+    "Here you can find the different organizations that are working on the platform": "Šeit ir norādītas platformā definētās dažādās organizācijas. Katrā organizācijā var definēt vairākas komandas, kas atbilst cilvēku grupām, kuras saistītas ar kādu lomu, piemēram, pilsonis, valsts ierēdnis, peļņas vai bezpeļņas organizācijas dalībnieks",
     "Create new organization": "Izveidot jaunu organizāciju",
     "settings": "iestatījumi",
     "Settings of the collaborative environment": "Sadarbības vides iestatījumi",
@@ -451,5 +451,13 @@
     "No tags": "Nav birku",
     "Task added to the incentivisation game successfully": "Motivācijas spēlei veiksmīgi pievienots uzdevums",
     "Load users from csv file": "Lietotāju ielāde no csv faila",
-    "This task does not have a complexity defined.": "Šim uzdevumam nav noteikta sarežģītība."
+    "This task does not have a complexity defined.": "Šim uzdevumam nav noteikta sarežģītība.",
+    "Add contributor": "Pievienot sadarbības partneri",
+    "Award points": "Piešķirt punktus",
+    "No contribution": "Nav ieguldījuma",
+    "Points": "Punkti",
+    "Very low": "Ļoti zems",
+    "Very high": "Ļoti augsts",
+    " points possible": " iespējamie punkti",
+    "Previous item": "Iepriekšējais punkts"
 }
