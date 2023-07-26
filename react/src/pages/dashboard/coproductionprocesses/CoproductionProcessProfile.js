@@ -76,6 +76,11 @@ const TabsMobile = ({ tabs, tab, process }) => {
       onChange={(event, value) => navigate(`/dashboard/coproductionprocesses/${process.id}/${value}`)}
       value={tab}
       aria-label='Coproduction tabs'
+
+      variant="scrollable"
+      scrollButtons="auto"
+      allowScrollButtonsMobile
+     
       centered
     >
       {tabs.map((tab) => (
@@ -84,6 +89,7 @@ const TabsMobile = ({ tabs, tab, process }) => {
           label={tab.label}
           value={tab.value}
           disabled={tab.disabled}
+          
         />
       ))}
     </Tabs>
