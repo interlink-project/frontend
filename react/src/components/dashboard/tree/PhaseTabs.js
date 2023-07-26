@@ -15,6 +15,8 @@ const PhaseTabs = ({ t, loading = false, selectedId, phases, onSelect, extra = n
                 value={selectedId || phases[0].id}
                 // centered
                 variant="scrollable"
+                scrollButtons="auto"
+                allowScrollButtonsMobile
                 textColor="inherit"
                 aria-label="Coproduction phases tabs"
 

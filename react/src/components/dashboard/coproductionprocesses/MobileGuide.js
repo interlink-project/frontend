@@ -44,6 +44,9 @@ const MobileRepository = () => {
         value={index}
         onChange={handleChange}
         style={styles.tabs}
+        variant="scrollable"
+        scrollButtons="auto"
+        allowScrollButtonsMobile
       >
         <Tab label='tab n°1' />
         <Tab label='tab n°2' />

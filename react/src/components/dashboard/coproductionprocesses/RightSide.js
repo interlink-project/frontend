@@ -572,6 +572,9 @@ const RightSide = ({ softwareInterlinkers }) => {
                 aria-label="guide-right-side-tabs"
                 sx={{ mb: 2 }}
                 centered
+                variant="scrollable"
+                scrollButtons="auto"
+                allowScrollButtonsMobile
               >
                 <Tab
                   wrapped
