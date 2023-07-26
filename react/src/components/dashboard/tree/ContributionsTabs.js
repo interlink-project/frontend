@@ -456,8 +456,19 @@ const ContributionsTabs = () => {
       );
     }
     console.log("Claims done ")
+
+    //Save user data and contribution in data object
+    const data = {};
+    for (let row of rows) {
+      const user = await usersApi.get(row.id);
+      data[row.id] = {
+        name: user.full_name,
+        email: user.email
+      };
+    }
+    console.log("Data", data);
     
-    gamesApi.completeTask(process.id, selectedTreeItem.id).then((res) => {
+    gamesApi.completeTask(process.id, selectedTreeItem.id, data).then((res) => {
       console.log(res);
       setClosedTask(true);
     });

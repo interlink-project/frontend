@@ -43,8 +43,10 @@ class GamesApi extends GeneralApi {
     return res.data;
   }
 
-  async completeTask(processId, taskId) {
-    const res = await axiosInstance.put(`/${this.url}/${processId}/${taskId}/complete`);
+  async completeTask(processId, taskId, data) {
+    const res = await axiosInstance.put(`/${this.url}/${processId}/${taskId}/complete`, {
+      data: data
+    });
     return res.data;
   }
 
