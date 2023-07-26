@@ -422,9 +422,9 @@ const ProjectsOverview = () => {
                     {t("workspace-subtitle")}
                   </Typography>
                 </Grid>
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row"  spacing={2} alignItems="center">
 
-                <Grid item>
+                <Grid sx={{m:2}} item>
                   <LoadingButton
                     onClick={() => setCoproductionProcessCreatorOpen(true)}
                     loading={loadingProcesses}
@@ -440,7 +440,7 @@ const ProjectsOverview = () => {
                   
 
                 </Grid>
-                <Grid item>
+                <Grid sx={{m:2}} item>
                 <Button variant="contained" color="primary" startIcon={<Ballot />} size="small" sx={{ textAlign: "center", mt: 1, mb: 2 }} onClick={handleDiscovery} data-cy="help">
                     {t("Discover open processes")}
                   </Button>
