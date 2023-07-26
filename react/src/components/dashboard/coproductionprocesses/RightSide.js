@@ -571,7 +571,7 @@ const RightSide = ({ softwareInterlinkers }) => {
                 onChange={handleTabChange}
                 aria-label="guide-right-side-tabs"
                 sx={{ mb: 2 }}
-                centered
+                
                 variant="scrollable"
                 scrollButtons="auto"
                 allowScrollButtonsMobile
