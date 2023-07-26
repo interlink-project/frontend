@@ -1,22 +1,13 @@
 import {
   AppBar,
   Box,
-  Paper,
   Tab,
-  Tabs,
   Typography,
   Divider,
-  Alert,
-  Avatar,
   Button,
   Card,
-  CardActionArea,
-  CardHeader,
   Grid,
   IconButton,
-  List,
-  ListItem,
-  Stack,
   Table,
   TableBody,
   TableCell,
@@ -43,31 +34,19 @@ import { setSelectedTreeItemById } from "slices/process";
 import {
   getAssignmentbyId,
   getFullAssignmentsbyCoproIdUserId,
-  getInPendingAssignmentsbyCoproIdAssigIdUserId,
   getInPendingAssignmentsbyCoproIdUserId,
 } from "slices/general";
-import { assignmentsApi, claimsApi, coproductionProcessesApi, coproductionprocessnotificationsApi, tasksApi } from "__api__";
-import TimeLine from "components/dashboard/coproductionprocesses/TimeLine";
-import CoproNotifications from "components/dashboard/coproductionprocesses/CoproNotifications";
+import { assignmentsApi, claimsApi, coproductionprocessnotificationsApi, tasksApi } from "__api__";
 import {
   getAssetsList_byCopro,
-  getCoproductionProcessNotifications,
 } from "slices/general";
 import useAuth from "hooks/useAuth";
-import { cleanProcess } from "slices/process";
-import { defaultReduceAnimations } from "@mui/lab/CalendarPicker/CalendarPicker";
 import moment from "moment";
 import {
   Add,
-  ArrowForward,
-  CheckOutlined,
-  Close,
   Delete,
   Archive,
   Undo,
-  Inventory,
-  Edit,
-  InsertLink,
   Visibility,
 } from "@mui/icons-material";
 import { ClaimDialog } from "components/dashboard/coproductionprocesses/ClaimDialog";
@@ -428,6 +407,7 @@ export default function Resources({}) {
     //window.open(`${asset.link}/download`, '_blank');
     setSelectedAsset(asset);
     setClaimDialogOpen(true);
+    dispatch(setSelectedTreeItemById(asset.task_id));
   };
 
   return (
