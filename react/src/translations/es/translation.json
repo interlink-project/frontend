@@ -254,7 +254,7 @@
     "interlinkers-success-catalogue": "Catálogo de Casos de Éxito",
     "organizations-title": "Organizaciones",
     "Organizations and teams present in the platform": "Organizaciones y equipos presentes en la plataforma",
-    "Here you can find the different organizations that are working on the platform": "Aquí puedes encontrar las diferentes organizaciones que están trabajando en la plataforma. En cada organización se crean equipos para agrupar a los usuarios.",
+    "Here you can find the different organizations that are working on the platform": "Aquí tienes las diferentes organizaciones definidas en la plataforma. Dentro de cada organización, se pueden definir varios equipos correspondientes a grupos de personas asociados a un rol, por ejemplo, ciudadano, funcionario público, miembro de una organización con o sin ánimo de lucro.",
     "Create new organization": "Crear una nueva organización",
     "settings": "ajustes",
     "Settings of the collaborative environment": "Ajustes del entorno de colaboración",
@@ -436,5 +436,13 @@
     "No coproduction processes found": "No se han encontrado procesos de coproducción",
     "No tags": "Sin tag",
     "Load users from csv file": "Cargar usaurios desde archivo CSV",
-    "This task does not have a complexity defined.": "Esta tarea no tiene una complejidad definida."
+    "This task does not have a complexity defined.": "Esta tarea no tiene una complejidad definida.",
+    "Award points": "Otorgar puntos",
+    "No contribution": "Ninguna contribución",
+    "Points": "Puntos",
+    "Very high": "Muy alta",
+    " points possible": " puntos posibles",
+    "Previous item": "Punto anterior",
+    "Add contributor": "Añadir colaborador",
+    "Very low": "Muy bajo"
 }
