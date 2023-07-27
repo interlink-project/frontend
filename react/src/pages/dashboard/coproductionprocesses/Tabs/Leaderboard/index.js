@@ -43,7 +43,9 @@ const LeaderboardTab = ({ }) => {
         const us = [];
         for (let player of game.content) {
             let user = await usersApi.get(player.playerId);
-            us.push({ id: player.playerId, name: user.full_name, score: player.score });
+            if (player.score > 0){
+                us.push({ id: player.playerId, name: user.full_name, score: player.score });
+            }
         }
         setUsers(us);
         setPlace(us.findIndex((user) => user.id === auth.user.id) + 1);

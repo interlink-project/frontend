@@ -15,7 +15,7 @@ const Treeview = ({ setSelectedTreeItem }) => {
   const mounted = useMounted();
   const [softwareInterlinkers, setSoftwareInterlinkers] = useState([]);
   const { process, tree, hasSchema, treeitems, selectedPhaseTab, selectedTreeItem, updatingTree } = useSelector((state) => state.process);
-  const t = useCustomTranslation('en');
+  const t = useCustomTranslation(process.language);
   const [showCoprod, setShowCoprod] = useState(false);
   const navigate = useNavigate()
 
