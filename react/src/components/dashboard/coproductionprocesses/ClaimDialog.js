@@ -53,7 +53,7 @@ export const ClaimDialog = ({
   afterRefreshEvent=null
 
 }) => {
-    console.log("selectedAssignment",selectedAssignment);
+    //console.log("selectedAssignment",selectedAssignment);
     const { process, isAdministrator, selectedTreeItem } = useSelector(
         (state) => state.process
     );
