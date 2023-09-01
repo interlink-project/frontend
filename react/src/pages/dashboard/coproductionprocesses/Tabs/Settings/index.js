@@ -24,6 +24,9 @@ import {
   Select,
   MenuItem,
   Typography,
+  AppBar,
+  Tab,
+  Tabs as MuiTabs,
 } from "@mui/material";
 import {
   ViewList,
@@ -37,6 +40,7 @@ import {
   ContentCopy,
   Edit,
   Save,
+  DownloadForOffline,
 } from "@mui/icons-material";
 import ConfirmationButton from "components/ConfirmationButton";
 import { LoadingButton } from "@mui/lab";
@@ -55,7 +59,7 @@ import {
   storiesApi,
   gamesApi,
   tagsApi,
-  tasksApi
+  tasksApi,
 } from "__api__";
 import { withStyles } from "@mui/styles";
 import { getSelectedStory, getTags } from "slices/general";
@@ -68,7 +72,6 @@ import RewardSettings from "./RewardSettings";
 import MakePublicDialog from "components/dashboard/coproductionprocesses/MakePublicDialog";
 import { set } from "store";
 
-
 const SettingsTab = () => {
   const [isCloning, setIsCloning] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
@@ -78,6 +81,7 @@ const SettingsTab = () => {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [openDialogSchema, setOpenDialogSchema] = useState(false);
   const [openDialogPublic, setOpenDialogPublic] = useState(false);
+  const [selectedTab, setSelectedTab] = useState("0");
 
   const handleCloseDialogSchema = () => {
     setOpenDialogSchema(false);
@@ -140,6 +144,21 @@ const SettingsTab = () => {
 
   const onPublish = () => {
     setPublishDialogOpen(true);
+    //coproductionProcessesApi.copy(process.id).then(() => navigate('/dashboard'));
+  };
+
+  const onDownload = () => {
+    //alert('Downloading the file');
+    coproductionProcessesApi.download(process.id).then((res) => {
+      if (mounted.current) {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "process.zip");
+        document.body.appendChild(link);
+        link.click();
+      }
+    });
     //coproductionProcessesApi.copy(process.id).then(() => navigate('/dashboard'));
   };
 
@@ -262,7 +281,7 @@ const SettingsTab = () => {
       tree.forEach((phase) => {
         phase.children.forEach((objective) => {
           objective.children.forEach((task) => {
-            if (task.status === "finished"){
+            if (task.status === "finished") {
               const updated_task = Object.assign({}, task);
               updated_task.status = "in_progress";
               tasksApi.update(task.id, updated_task).then((res) => {
@@ -327,7 +346,6 @@ const SettingsTab = () => {
   };
 
   const toggleIsPublic = async () => {
-
     if (isPublic) {
       setIsPublic(!isPublic);
       //Hide guide startup checklist
@@ -350,7 +368,6 @@ const SettingsTab = () => {
       }
     } else {
       setOpenDialogPublic(true);
-
     }
   };
 
@@ -429,791 +446,914 @@ const SettingsTab = () => {
     color: theme.palette.text.secondary,
   }));
 
+  const onSelect = (value) => {
+    if (mounted.current) {
+      setSelectedTab(value);
+    }
+  };
+
   return (
-    <Box style={{ minHeight: "87vh", backgroundColor: "background.default" }}>
-      <CardHeader
-        avatar={
-          editMode ? (
-            <label htmlFor="contained-button-file">
-              <Input
-                inputProps={{ accept: "image/*" }}
-                id="contained-button-file"
-                type="file"
-                sx={{ display: "none" }}
-                onChange={handleFileSelected}
-              />
-              <IconButton component="span" color="inherit">
-                <div
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    position: "relative",
-                  }}
-                >
-                  <Avatar
-                    src={logotype ? logotype.path : process.logotype_link}
-                    variant="rounded"
+    <>
+      <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+        <Grid container>
+          <Grid item xl={12} lg={12} md={12} xs={12}></Grid>
+
+          <AppBar
+            position="static"
+            sx={{
+              color: "white",
+            }}
+          >
+            <MuiTabs
+              indicatorColor="secondary"
+              onChange={(event, value) => onSelect(value)}
+              value={selectedTab}
+              // centered
+              variant="scrollable"
+              textColor="inherit"
+              aria-label="Coproduction phases tabs"
+              sx={{
+                "& .Mui-selected": {
+                  background: "#a4cbd8",
+                  color: "black",
+                },
+                "& .MuiTabs-flexContainer": {
+                  "justify-content": "center",
+                },
+              }}
+            >
+              <Tab key="1" label={t("Information")} value="0"></Tab>
+              <Tab key="2" label={t("Administration")} value="1"></Tab>
+              <Tab key="3" label={t("Process")} value="2"></Tab>
+              <Tab key="4" label={t("Options")} value="3"></Tab>
+            </MuiTabs>
+            {/* {loading && <LinearProgress />} */}
+          </AppBar>
+        </Grid>
+      </Box>
+      <Box style={{ minHeight: "87vh", backgroundColor: "background.default" }}>
+        <CardHeader
+          avatar={
+            editMode ? (
+              <label htmlFor="contained-button-file">
+                <Input
+                  inputProps={{ accept: "image/*" }}
+                  id="contained-button-file"
+                  type="file"
+                  sx={{ display: "none" }}
+                  onChange={handleFileSelected}
+                />
+                <IconButton component="span" color="inherit">
+                  <div
                     style={{
                       width: "100px",
                       height: "100px",
-                      position: "absolute",
+                      position: "relative",
                     }}
-                  />
-                  <Edit
-                    style={{
-                      width: "50%",
-                      height: "50%",
-                      position: "absolute",
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                    }}
-                  />
-                </div>
-              </IconButton>
-            </label>
-          ) : (
-            <Avatar
-              src={process.logotype_link}
-              variant="rounded"
-              style={{
-                margin: "10px",
-                width: "100px",
-                height: "100px",
-              }}
-            />
-          )
-        }
-        title={
-          <Stack justifyContent="center" spacing={1}>
-            <Typography variant="subtitle1">
-              <b>{t("Created")}:</b> {moment(process.created_at).format("LL")}
-            </Typography>
-            {process.updated_at && (
+                  >
+                    <Avatar
+                      src={logotype ? logotype.path : process.logotype_link}
+                      variant="rounded"
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        position: "absolute",
+                      }}
+                    />
+                    <Edit
+                      style={{
+                        width: "50%",
+                        height: "50%",
+                        position: "absolute",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                      }}
+                    />
+                  </div>
+                </IconButton>
+              </label>
+            ) : (
+              <Avatar
+                src={process.logotype_link}
+                variant="rounded"
+                style={{
+                  margin: "10px",
+                  width: "100px",
+                  height: "100px",
+                }}
+              />
+            )
+          }
+          title={
+            <Stack justifyContent="center" spacing={1}>
               <Typography variant="subtitle1">
-                <b>{t("Last update")}:</b>{" "}
-                {moment(process.updated_at).format("LLL")}
+                <b>{t("Created")}:</b> {moment(process.created_at).format("LL")}
               </Typography>
-            )}
-          </Stack>
-        }
-      />
+              {process.updated_at && (
+                <Typography variant="subtitle1">
+                  <b>{t("Last update")}:</b>{" "}
+                  {moment(process.updated_at).format("LLL")}
+                </Typography>
+              )}
+            </Stack>
+          }
+        />
 
-      <Box sx={{ mx: 4 }}>
-        <Grid container direction="row" justifyContent="right" spacing={2}>
-          {!editMode && isAdministrator && (
-            <Button
-              sx={{ mb: 3, justifyContent: "right", textAlign: "center" }}
-              variant="contained"
-              color="primary"
-              onClick={() => setEditMode(true)}
-              startIcon={<Edit />}
-            >
-              {t("Edit coproduction process")}
-            </Button>
-          )}
-        </Grid>
-
-        <Formik
-          initialValues={{
-            name: process.name || "",
-            status: process.status || "",
-            description: process.description || "",
-            organization_desc: process.organization_desc || "",
-            tags: process.tags || [],
-            aim: process.aim || "",
-            idea: process.idea || "",
-            challenges: process.challenges || "",
-            submit: null,
-          }}
-          validationSchema={Yup.object().shape({
-            name: Yup.string().required(t("Required")),
-            /* description: Yup.string().required('required'),
-                                aim: Yup.string().required('required'),
-                                organization: Yup.string().required('required'),
-                                idea: Yup.string().required('required'),
-                                challenges: Yup.string().required('required'), */
-          })}
-          onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-            //console.log(values);
-            for (let tag of values.tags) {
-              if (!tag.id) {
-                await tagsApi
-                  .createbyName({ name: tag })
-                  .then((res) => {
-                    if (res.status === 200) {
-                      values.tags.splice(values.tags.indexOf(tag), 1, res.data);
-                    }
-                  })
-                  .catch((err) => {
-                    console.error(err);
-                  });
-              }
-            }
-            try {
-              dispatch(
-                updateProcess({
-                  id: process.id,
-                  data: values,
-                  logotype,
-                  onSuccess: () => {
-                    if (mounted.current) {
-                      setEditMode(false);
-                      setStatus({ success: true });
-                      setSubmitting(false);
-                    }
-                  },
-                })
-              );
-            } catch (err) {
-              console.error(err);
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
-          }}
-        >
-          {({
-            errors,
-            handleBlur,
-            handleChange,
-            handleSubmit,
-            submitForm,
-            isSubmitting,
-            setFieldValue,
-            setFieldTouched,
-            resetForm,
-            touched,
-            isValid,
-            values,
-          }) => (
-            <Form>
+        <Box sx={{ mx: 4 }}>
+          {selectedTab === "0" && (
+            <>
               <Grid
                 container
                 direction="row"
                 justifyContent="right"
                 spacing={2}
               >
-                {editMode && (
-                  <Stack
-                    direction="row"
-                    spacing={2}
-                    sx={{ justifyContent: "right", mt: 3, mb: 2 }}
+                {!editMode && isAdministrator && (
+                  <Button
+                    sx={{ mb: 3, justifyContent: "right", textAlign: "center" }}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setEditMode(true)}
+                    startIcon={<Edit />}
                   >
-                    <Button
-                      variant="contained"
-                      disabled={isSubmitting}
-                      color="warning"
-                      size="medium"
-                      startIcon={<Delete />}
-                      onClick={() => {
-                        setEditMode(false);
-                        resetForm();
-                        setLogotype(null);
-                      }}
-                    >
-                      {t("Cancel")}
-                    </Button>
-                    <Button
-                      variant="contained"
-                      disabled={isSubmitting}
-                      color="success"
-                      size="large"
-                      startIcon={<Save />}
-                      onClick={submitForm}
-                      disabled={!isValid}
-                    >
-                      {t("Save")}
-                    </Button>
-                  </Stack>
+                    {t("Edit coproduction process")}
+                  </Button>
                 )}
               </Grid>
 
-              <Grid
-                container
-                direction="row"
-                justifyContent="center"
-                spacing={2}
-              >
-                <Grid item xs={4}>
-                  <TextField
-                    label={t("NAME OF THE PROJECT")}
-                    helperText={touched.name && errors.name}
-                    error={Boolean(touched.name && errors.name)}
-                    value={values.name}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    name="name"
-                  />
-                </Grid>
-                <Grid
-                  item
-                  xs={4}
-                  container
-                  direction="row"
-                  justifyContent="flex-start"
-                >
-                  <Typography variant="overline" sx={{ color: "primary.main" }}>
-                    {t("STATE OF THE PROYECT")}
-                  </Typography>
-                  <Select
-                    labelId="select-status-label"
-                    id="status"
-                    value={values.status}
-                    onChange={handleChange}
-                    fullWidth
-                    label={t("STATE OF THE PROYECT")}
-                    helperText={touched.status && errors.status}
-                    error={Boolean(touched.status && errors.status)}
-                    onBlur={handleBlur}
-                    name="status"
-                    variant={editMode ? "filled" : "standard"}
-                    inputProps={{ readOnly: !editMode }}
-                  >
-                    <MenuItem value="in_progress">{t("In progress")}</MenuItem>
-                    <MenuItem value="finished">{t("Finished")}</MenuItem>
-                  </Select>
-                </Grid>
-                <Grid
-                  item
-                  xs={4}
-                  container
-                  direction="row"
-                  justifyContent="flex-start"
-                >
-                  <Autocomplete
-                    multiple
-                    fullWidth
-                    selectOnFocus
-                    handleHomeEndKeys
-                    openOnFocus
-                    clearOnBlur
-                    freeSolo
-                    id="autocomplete-tags"
-                    readOnly={!editMode}
-                    value={values.tags}
-                    options={tags}
-                    noOptionsText="Enter to create a new option"
-                    getOptionLabel={(tag) => {
-                      // Value selected with enter, right from the input
-                      if (typeof tag === "string") {
-                        return tag;
-                      }
-                      // Add "xxx" option created dynamically
-                      if (tag.inputValue) {
-                        return tag.inputValue;
-                      }
-                      // Regular option
-                      return tag.name;
-                    }}
-                    onChange={(event, newValue) => {
-                      if (typeof newValue === "string") {
-                        setSelectedTags({
-                          name: newValue,
+              <Formik
+                initialValues={{
+                  name: process.name || "",
+                  status: process.status || "",
+                  description: process.description || "",
+                  organization_desc: process.organization_desc || "",
+                  tags: process.tags || [],
+                  aim: process.aim || "",
+                  idea: process.idea || "",
+                  challenges: process.challenges || "",
+                  submit: null,
+                }}
+                validationSchema={Yup.object().shape({
+                  name: Yup.string().required(t("Required")),
+                  /* description: Yup.string().required('required'),
+                                aim: Yup.string().required('required'),
+                                organization: Yup.string().required('required'),
+                                idea: Yup.string().required('required'),
+                                challenges: Yup.string().required('required'), */
+                })}
+                onSubmit={async (
+                  values,
+                  { setErrors, setStatus, setSubmitting }
+                ) => {
+                  //console.log(values);
+                  for (let tag of values.tags) {
+                    if (!tag.id) {
+                      await tagsApi
+                        .createbyName({ name: tag })
+                        .then((res) => {
+                          if (res.status === 200) {
+                            values.tags.splice(
+                              values.tags.indexOf(tag),
+                              1,
+                              res.data
+                            );
+                          }
+                        })
+                        .catch((err) => {
+                          console.error(err);
                         });
-                      } else if (newValue && newValue.inputValue) {
-                        // Create a new value from the user input
-                        setSelectedTags({
-                          name: newValue.inputValue,
-                        });
-                      } else {
-                        setSelectedTags(newValue);
-                      }
-                      //console.log("New Tags values:",newValue);
-                      setFieldValue("tags", newValue);
-                    }}
-                    renderOption={(props, tag) => (
-                      <li {...props}>{tag.name}</li>
-                    )}
-                    renderInput={(params) => (
-                      <TextField {...params} label={t("TAGS")} />
-                    )}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <TextField
-                    minRows={8}
-                    label={t("SHORT DESCRIPTION OF THE PROJECT")}
-                    multiline
-                    helperText={touched.description && errors.description}
-                    error={Boolean(touched.description && errors.description)}
-                    value={values.description}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    name="description"
-                  />
-                </Grid>
-                <Grid item xs={12} lg={6}>
-                  <TextField
-                    minRows={8}
-                    label={t("ACTUAL ORGANIZATION OF THE SERVICE")}
-                    multiline
-                    helperText={
-                      touched.organization_desc && errors.organization_desc
                     }
-                    error={Boolean(
-                      touched.organization_desc && errors.organization_desc
-                    )}
-                    value={values.organization_desc}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    name="organization_desc"
-                  />
-                </Grid>
-                <Grid item xs={12} lg={6}>
-                  <TextField
-                    minRows={8}
-                    label={t("AIM OF THE PROJECT")}
-                    multiline
-                    helperText={touched.aim && errors.aim}
-                    error={Boolean(touched.aim && errors.aim)}
-                    value={values.aim}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    name="aim"
-                  />
-                </Grid>
-                <Grid item xs={12} lg={6}>
-                  <TextField
-                    minRows={8}
-                    label={t("IDEA OF SERVICE TO BE CO-DELIVERED")}
-                    multiline
-                    helperText={touched.idea && errors.idea}
-                    error={Boolean(touched.idea && errors.idea)}
-                    value={values.idea}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    name="idea"
-                  />
-                </Grid>
-                <Grid item xs={12} lg={6}>
-                  <TextField
-                    minRows={8}
-                    label={t("CHALLENGES OF THE PROJECT")}
-                    multiline
-                    helperText={touched.challenges && errors.challenges}
-                    error={Boolean(touched.challenges && errors.challenges)}
-                    value={values.challenges}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    name="challenges"
-                  />
-                </Grid>
-              </Grid>
-            </Form>
-          )}
-        </Formik>
-
-        <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
-          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-            {t("Administrators of the coproduction process")}
-          </Typography>
-          <Alert severity="error" sx={{ my: 2 }}>
-            {t(
-              "Administrators of a coproduction process can edit the coproduction tree"
-            )}
-          </Alert>
-          <UsersList
-            size="small"
-            onSearchResultClick={isAdministrator && handleAdministratorAdd}
-            users={process.administrators}
-            getActions={(user) =>
-              isAdministrator && [
-                {
-                  id: `${user.id}-remove-action`,
-                  onClick: handleAdministratorRemove,
-                  text: t("Remove {{what}}"),
-                  icon: <Delete />,
-                  disabled: process.administrators_ids.length === 1,
-                },
-              ]
-            }
-          />
-        </Card>
-        <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
-          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-            {t("Clear coproduction process tree")}
-          </Typography>
-          <Alert
-            severity="error"
-            sx={{ mt: 2 }}
-            action={
-              <ConfirmationButton
-                Actionator={({ onClick }) => (
-                  <Button
-                    variant="contained"
-                    disabled={!isAdministrator || !hasSchema}
-                    color="error"
-                    onClick={onClick}
-                    startIcon={<CleaningServices />}
-                  >
-                    {t("Clear coproduction process tree")}
-                  </Button>
-                )}
-                ButtonComponent={({ onClick }) => (
-                  <Button
-                    sx={{ mt: 1 }}
-                    fullWidth
-                    variant="contained"
-                    color="error"
-                    onClick={onClick}
-                  >
-                    {t("Confirm deletion")}
-                  </Button>
-                )}
-                onClick={onCoproductionProcessClear}
-                text={t("Are you sure?")}
-              />
-            }
-          >
-            {t("The clearing of the co-production tree is irreversible")}
-          </Alert>
-
-          <Box sx={{ mt: 2 }} />
-        </Card>
-        <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
-          <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-            {t("Delete coproduction process")}
-          </Typography>
-          <Alert
-            severity="error"
-            sx={{ mt: 2 }}
-            action={
-              <ConfirmationButton
-                Actionator={({ onClick }) => (
-                  <Button
-                    variant="contained"
-                    disabled={!isAdministrator}
-                    color="error"
-                    onClick={onClick}
-                    startIcon={<Delete />}
-                  >
-                    {t("Remove coproduction process")}
-                  </Button>
-                )}
-                ButtonComponent={({ onClick }) => (
-                  <Button
-                    sx={{ mt: 1 }}
-                    fullWidth
-                    variant="contained"
-                    color="error"
-                    onClick={onClick}
-                  >
-                    {t("Confirm deletion")}
-                  </Button>
-                )}
-                onClick={onRemove}
-                text={t("Are you sure?")}
-              />
-            }
-          >
-            {t("The deletion of the coproduction process is irreversible")}
-          </Alert>
-        </Card>
-
-        {!process.is_part_of_publication && (
-          <>
-            {/* Cloning coprod */}
-            <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
-              <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-                {t("Clone coproduction process")}
-              </Typography>
-              <Alert
-                severity="warning"
-                sx={{ mt: 3 }}
-                action={
-                  <ConfirmationButton
-                    Actionator={({ onClick }) => (
-                      <LoadingButton
-                        variant="contained"
-                        disabled={!isAdministrator}
-                        loading={isCloning}
-                        color="warning"
-                        onClick={onClick}
-                        startIcon={<ContentCopy />}
-                      >
-                        {t("Clone coproduction process")}
-                      </LoadingButton>
-                    )}
-                    ButtonComponent={({ onClick }) => (
-                      <Button
-                        sx={{ mt: 1 }}
-                        fullWidth
-                        variant="contained"
-                        color="warning"
-                        onClick={onClick}
-                      >
-                        {t("Confirm clonation")}
-                      </Button>
-                    )}
-                    onClick={onCopy}
-                    text={t("Are you sure?")}
-                  />
-                }
+                  }
+                  try {
+                    dispatch(
+                      updateProcess({
+                        id: process.id,
+                        data: values,
+                        logotype,
+                        onSuccess: () => {
+                          if (mounted.current) {
+                            setEditMode(false);
+                            setStatus({ success: true });
+                            setSubmitting(false);
+                          }
+                        },
+                      })
+                    );
+                  } catch (err) {
+                    console.error(err);
+                    setStatus({ success: false });
+                    setErrors({ submit: err.message });
+                    setSubmitting(false);
+                  }
+                }}
               >
-                {t("The clonation of the coproduction process will create")}
-              </Alert>
-            </Card>
-
-            {/* Publish Coproduction Process */}
-            <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
-              <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-                {t("Publish coproduction process")}
-              </Typography>
-              <Alert
-                severity="warning"
-                sx={{ mt: 3 }}
-                action={
-                  <LoadingButton
-                    variant="contained"
-                    disabled={!isAdministrator}
-                    loading={isPublishing}
-                    color="warning"
-                    onClick={onPublish}
-                    startIcon={<Public />}
-                  >
-                    {t("Publish coproduction process")}
-                  </LoadingButton>
-                }
-              >
-                {t("The publication of the coproduction process will make")}
-              </Alert>
-            </Card>
-
-            {/* Reward */}
-            <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
-              <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-                {t("Reward system")}
-              </Typography>
-              <Alert
-                severity="info"
-                sx={{ mt: 2 }}
-                action={
-                  <>
-                    <Button
-                      disabled={!isAdministrator}
-                      variant="contained"
-                      color={process.game_id ? "error" : "success"}
-                      onClick={handleOpenLightbox}
+                {({
+                  errors,
+                  handleBlur,
+                  handleChange,
+                  handleSubmit,
+                  submitForm,
+                  isSubmitting,
+                  setFieldValue,
+                  setFieldTouched,
+                  resetForm,
+                  touched,
+                  isValid,
+                  values,
+                }) => (
+                  <Form>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="right"
+                      spacing={2}
                     >
-                      {process.game_id ? t("Deactivate") : t("Settings")}
-                    </Button>
-                  </>
-                }
-              >
-                {t(
-                  "If you disable the Reward system every data will be deleted"
-                )}
-              </Alert>
-              <div>
-                {isLightboxOpen && (
-                  <Lightbox onClose={handleCloseLightbox}>
-                    <RewardSettings
-                      onClose={handleCloseLightbox}
-                      activateReward={() => {
-                        changeRewarding(true);
-                      }}
-                    />
-                  </Lightbox>
-                )}
-              </div>
-            </Card>
+                      {editMode && (
+                        <Stack
+                          direction="row"
+                          spacing={2}
+                          sx={{ justifyContent: "right", mt: 3, mb: 2 }}
+                        >
+                          <Button
+                            variant="contained"
+                            disabled={isSubmitting}
+                            color="warning"
+                            size="medium"
+                            startIcon={<Delete />}
+                            onClick={() => {
+                              setEditMode(false);
+                              resetForm();
+                              setLogotype(null);
+                            }}
+                          >
+                            {t("Cancel")}
+                          </Button>
+                          <Button
+                            variant="contained"
+                            disabled={isSubmitting}
+                            color="success"
+                            size="large"
+                            startIcon={<Save />}
+                            onClick={submitForm}
+                            disabled={!isValid}
+                          >
+                            {t("Save")}
+                          </Button>
+                        </Stack>
+                      )}
+                    </Grid>
 
-            {/* Show Process Guide */}
-            <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
+                    <Grid
+                      container
+                      direction="row"
+                      justifyContent="center"
+                      spacing={2}
+                    >
+                      <Grid item xs={4}>
+                        <TextField
+                          label={t("NAME OF THE PROJECT")}
+                          helperText={touched.name && errors.name}
+                          error={Boolean(touched.name && errors.name)}
+                          value={values.name}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          name="name"
+                        />
+                      </Grid>
+                      <Grid
+                        item
+                        xs={4}
+                        container
+                        direction="row"
+                        justifyContent="flex-start"
+                      >
+                        <Typography
+                          variant="overline"
+                          sx={{ color: "primary.main" }}
+                        >
+                          {t("STATE OF THE PROYECT")}
+                        </Typography>
+                        <Select
+                          labelId="select-status-label"
+                          id="status"
+                          value={values.status}
+                          onChange={handleChange}
+                          fullWidth
+                          label={t("STATE OF THE PROYECT")}
+                          helperText={touched.status && errors.status}
+                          error={Boolean(touched.status && errors.status)}
+                          onBlur={handleBlur}
+                          name="status"
+                          variant={editMode ? "filled" : "standard"}
+                          inputProps={{ readOnly: !editMode }}
+                        >
+                          <MenuItem value="in_progress">
+                            {t("In progress")}
+                          </MenuItem>
+                          <MenuItem value="finished">{t("Finished")}</MenuItem>
+                        </Select>
+                      </Grid>
+                      <Grid
+                        item
+                        xs={4}
+                        container
+                        direction="row"
+                        justifyContent="flex-start"
+                      >
+                        <Autocomplete
+                          multiple
+                          fullWidth
+                          selectOnFocus
+                          handleHomeEndKeys
+                          openOnFocus
+                          clearOnBlur
+                          freeSolo
+                          id="autocomplete-tags"
+                          readOnly={!editMode}
+                          value={values.tags}
+                          options={tags}
+                          noOptionsText="Enter to create a new option"
+                          getOptionLabel={(tag) => {
+                            // Value selected with enter, right from the input
+                            if (typeof tag === "string") {
+                              return tag;
+                            }
+                            // Add "xxx" option created dynamically
+                            if (tag.inputValue) {
+                              return tag.inputValue;
+                            }
+                            // Regular option
+                            return tag.name;
+                          }}
+                          onChange={(event, newValue) => {
+                            if (typeof newValue === "string") {
+                              setSelectedTags({
+                                name: newValue,
+                              });
+                            } else if (newValue && newValue.inputValue) {
+                              // Create a new value from the user input
+                              setSelectedTags({
+                                name: newValue.inputValue,
+                              });
+                            } else {
+                              setSelectedTags(newValue);
+                            }
+                            //console.log("New Tags values:",newValue);
+                            setFieldValue("tags", newValue);
+                          }}
+                          renderOption={(props, tag) => (
+                            <li {...props}>{tag.name}</li>
+                          )}
+                          renderInput={(params) => (
+                            <TextField {...params} label={t("TAGS")} />
+                          )}
+                        />
+                      </Grid>
+
+                      <Grid item xs={12}>
+                        <TextField
+                          minRows={8}
+                          label={t("SHORT DESCRIPTION OF THE PROJECT")}
+                          multiline
+                          helperText={touched.description && errors.description}
+                          error={Boolean(
+                            touched.description && errors.description
+                          )}
+                          value={values.description}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          name="description"
+                        />
+                      </Grid>
+                      <Grid item xs={12} lg={6}>
+                        <TextField
+                          minRows={8}
+                          label={t("ACTUAL ORGANIZATION OF THE SERVICE")}
+                          multiline
+                          helperText={
+                            touched.organization_desc &&
+                            errors.organization_desc
+                          }
+                          error={Boolean(
+                            touched.organization_desc &&
+                              errors.organization_desc
+                          )}
+                          value={values.organization_desc}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          name="organization_desc"
+                        />
+                      </Grid>
+                      <Grid item xs={12} lg={6}>
+                        <TextField
+                          minRows={8}
+                          label={t("AIM OF THE PROJECT")}
+                          multiline
+                          helperText={touched.aim && errors.aim}
+                          error={Boolean(touched.aim && errors.aim)}
+                          value={values.aim}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          name="aim"
+                        />
+                      </Grid>
+                      <Grid item xs={12} lg={6}>
+                        <TextField
+                          minRows={8}
+                          label={t("IDEA OF SERVICE TO BE CO-DELIVERED")}
+                          multiline
+                          helperText={touched.idea && errors.idea}
+                          error={Boolean(touched.idea && errors.idea)}
+                          value={values.idea}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          name="idea"
+                        />
+                      </Grid>
+                      <Grid item xs={12} lg={6}>
+                        <TextField
+                          minRows={8}
+                          label={t("CHALLENGES OF THE PROJECT")}
+                          multiline
+                          helperText={touched.challenges && errors.challenges}
+                          error={Boolean(
+                            touched.challenges && errors.challenges
+                          )}
+                          value={values.challenges}
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          name="challenges"
+                        />
+                      </Grid>
+                    </Grid>
+                  </Form>
+                )}
+              </Formik>
+            </>
+          )}
+
+          {/* Show the Resources Tab */}
+          {selectedTab === "1" && (
+            <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
               <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-                {t("Show process startup guide")}
+                {t("Administrators of the coproduction process")}
               </Typography>
-              <Alert
-                severity="info"
-                sx={{ mt: 2 }}
-                action={
-                  <>
-                    <GoldSwitch
-                      checked={isGuideHidden}
-                      onChange={toggleGuideHide}
-                      name="guideSwitch"
-                      inputProps={{ "aria-label": "secondary checkbox" }}
-                      disabled={!isAdministrator}
-                      color="secondary"
-                    />
-                  </>
-                }
-              >
+              <Alert severity="error" sx={{ my: 2 }}>
                 {t(
-                  "This option will show the process startup guide to all users"
+                  "Administrators of a coproduction process can edit the coproduction tree"
                 )}
               </Alert>
-            </Card>
-
-            {/* Make it public to anyone to see information about the process */}
-            <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
-              <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-                {t("Open the process to new collaborators")}
-              </Typography>
-              <Alert
-                severity="info"
-                sx={{ mt: 2 }}
-                action={
-                  <>
-                    <GoldSwitch
-                      checked={isPublic}
-                      onChange={toggleIsPublic}
-                      name="publicSwitch"
-                      inputProps={{ "aria-label": "secondary checkbox" }}
-                      disabled={!isAdministrator}
-                      color="secondary"
-                    />
-                  </>
+              <UsersList
+                size="small"
+                onSearchResultClick={isAdministrator && handleAdministratorAdd}
+                users={process.administrators}
+                getActions={(user) =>
+                  isAdministrator && [
+                    {
+                      id: `${user.id}-remove-action`,
+                      onClick: handleAdministratorRemove,
+                      text: t("Remove {{what}}"),
+                      icon: <Delete />,
+                      disabled: process.administrators_ids.length === 1,
+                    },
+                  ]
                 }
-              >
-                {t(
-                  "This option will allow new collaborators to join the process"
-                )}
-              </Alert>
+              />
             </Card>
-          </>
-        )}
-      </Box>
+          )}
+          {selectedTab === "2" && (
+            <>
+              <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
+                <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+                  {t("Clear coproduction process tree")}
+                </Typography>
+                <Alert
+                  severity="error"
+                  sx={{ mt: 2 }}
+                  action={
+                    <ConfirmationButton
+                      Actionator={({ onClick }) => (
+                        <Button
+                          variant="contained"
+                          disabled={!isAdministrator || !hasSchema}
+                          color="error"
+                          onClick={onClick}
+                          startIcon={<CleaningServices />}
+                        >
+                          {t("Clear coproduction process tree")}
+                        </Button>
+                      )}
+                      ButtonComponent={({ onClick }) => (
+                        <Button
+                          sx={{ mt: 1 }}
+                          fullWidth
+                          variant="contained"
+                          color="error"
+                          onClick={onClick}
+                        >
+                          {t("Confirm deletion")}
+                        </Button>
+                      )}
+                      onClick={onCoproductionProcessClear}
+                      text={t("Are you sure?")}
+                    />
+                  }
+                >
+                  {t("The clearing of the co-production tree is irreversible")}
+                </Alert>
 
-      <Dialog
-        open={publishDialogOpen}
-        onClose={() => {
-          setPublishDialogOpen(false);
-          setIsPublishing(false);
-        }}
-      >
-        <IconButton
-          aria-label="close"
-          onClick={() => {
+                <Box sx={{ mt: 2 }} />
+              </Card>
+              <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
+                <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+                  {t("Delete coproduction process")}
+                </Typography>
+                <Alert
+                  severity="error"
+                  sx={{ mt: 2 }}
+                  action={
+                    <ConfirmationButton
+                      Actionator={({ onClick }) => (
+                        <Button
+                          variant="contained"
+                          disabled={!isAdministrator}
+                          color="error"
+                          onClick={onClick}
+                          startIcon={<Delete />}
+                        >
+                          {t("Remove coproduction process")}
+                        </Button>
+                      )}
+                      ButtonComponent={({ onClick }) => (
+                        <Button
+                          sx={{ mt: 1 }}
+                          fullWidth
+                          variant="contained"
+                          color="error"
+                          onClick={onClick}
+                        >
+                          {t("Confirm deletion")}
+                        </Button>
+                      )}
+                      onClick={onRemove}
+                      text={t("Are you sure?")}
+                    />
+                  }
+                >
+                  {t(
+                    "The deletion of the coproduction process is irreversible"
+                  )}
+                </Alert>
+              </Card>
+            </>
+          )}
+
+          {!process.is_part_of_publication && (
+            <>
+              {/* Cloning coprod */}
+              {selectedTab === "2" && (
+                <>
+                  <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
+                    <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+                      {t("Clone coproduction process")}
+                    </Typography>
+                    <Alert
+                      severity="warning"
+                      sx={{ mt: 3 }}
+                      action={
+                        <ConfirmationButton
+                          Actionator={({ onClick }) => (
+                            <LoadingButton
+                              variant="contained"
+                              disabled={!isAdministrator}
+                              loading={isCloning}
+                              color="warning"
+                              onClick={onClick}
+                              startIcon={<ContentCopy />}
+                            >
+                              {t("Clone coproduction process")}
+                            </LoadingButton>
+                          )}
+                          ButtonComponent={({ onClick }) => (
+                            <Button
+                              sx={{ mt: 1 }}
+                              fullWidth
+                              variant="contained"
+                              color="warning"
+                              onClick={onClick}
+                            >
+                              {t("Confirm clonation")}
+                            </Button>
+                          )}
+                          onClick={onCopy}
+                          text={t("Are you sure?")}
+                        />
+                      }
+                    >
+                      {t(
+                        "The clonation of the coproduction process will create"
+                      )}
+                    </Alert>
+                  </Card>
+
+                  {/* Publish Coproduction Process */}
+                  <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
+                    <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+                      {t("Publish coproduction process")}
+                    </Typography>
+                    <Alert
+                      severity="warning"
+                      sx={{ mt: 3 }}
+                      action={
+                        <LoadingButton
+                          variant="contained"
+                          disabled={!isAdministrator}
+                          loading={isPublishing}
+                          color="warning"
+                          onClick={onPublish}
+                          startIcon={<Public />}
+                        >
+                          {t("Publish coproduction process")}
+                        </LoadingButton>
+                      }
+                    >
+                      {t(
+                        "The publication of the coproduction process will make"
+                      )}
+                    </Alert>
+                  </Card>
+
+                  {/* Download Coproduction Process */}
+                  <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
+                    <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+                      {t("Download coproduction process")}
+                    </Typography>
+                    <Alert
+                      severity="warning"
+                      sx={{ mt: 3 }}
+                      action={
+                        <LoadingButton
+                          variant="contained"
+                          disabled={!isAdministrator}
+                          loading={isPublishing}
+                          color="info"
+                          onClick={onDownload}
+                          startIcon={<DownloadForOffline />}
+                        >
+                          {t("Download coproduction process")}
+                        </LoadingButton>
+                      }
+                    >
+                      {t(
+                        "This option allow to download the coproduction process"
+                      ) + "."}
+                    </Alert>
+                  </Card>
+                </>
+              )}
+
+              {selectedTab === "3" && (
+                <>
+                  {/* Reward */}
+                  <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
+                    <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+                      {t("Reward system")}
+                    </Typography>
+                    <Alert
+                      severity="info"
+                      sx={{ mt: 2 }}
+                      action={
+                        <>
+                          <Button
+                            disabled={!isAdministrator}
+                            variant="contained"
+                            color={process.game_id ? "error" : "success"}
+                            onClick={handleOpenLightbox}
+                          >
+                            {process.game_id ? t("Deactivate") : t("Settings")}
+                          </Button>
+                        </>
+                      }
+                    >
+                      {t(
+                        "If you disable the Reward system every data will be deleted"
+                      )}
+                    </Alert>
+                    <div>
+                      {isLightboxOpen && (
+                        <Lightbox onClose={handleCloseLightbox}>
+                          <RewardSettings
+                            onClose={handleCloseLightbox}
+                            activateReward={() => {
+                              changeRewarding(true);
+                            }}
+                          />
+                        </Lightbox>
+                      )}
+                    </div>
+                  </Card>
+
+                  {/* Show Process Guide */}
+                  <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
+                    <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+                      {t("Show process startup guide")}
+                    </Typography>
+                    <Alert
+                      severity="info"
+                      sx={{ mt: 2 }}
+                      action={
+                        <>
+                          <GoldSwitch
+                            checked={isGuideHidden}
+                            onChange={toggleGuideHide}
+                            name="guideSwitch"
+                            inputProps={{ "aria-label": "secondary checkbox" }}
+                            disabled={!isAdministrator}
+                            color="secondary"
+                          />
+                        </>
+                      }
+                    >
+                      {t(
+                        "This option will show the process startup guide to all users"
+                      )}
+                    </Alert>
+                  </Card>
+
+                  {/* Make it public to anyone to see information about the process */}
+                  <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
+                    <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+                      {t("Open the process to new collaborators")}
+                    </Typography>
+                    <Alert
+                      severity="info"
+                      sx={{ mt: 2 }}
+                      action={
+                        <>
+                          <GoldSwitch
+                            checked={isPublic}
+                            onChange={toggleIsPublic}
+                            name="publicSwitch"
+                            inputProps={{ "aria-label": "secondary checkbox" }}
+                            disabled={!isAdministrator}
+                            color="secondary"
+                          />
+                        </>
+                      }
+                    >
+                      {t(
+                        "This option will allow new collaborators to join the process"
+                      )}
+                    </Alert>
+                  </Card>
+                </>
+              )}
+            </>
+          )}
+        </Box>
+
+        <Dialog
+          open={publishDialogOpen}
+          onClose={() => {
             setPublishDialogOpen(false);
             setIsPublishing(false);
           }}
-          sx={{
-            position: "absolute",
-            right: 4,
-            top: 4,
-            color: (theme) => theme.palette.grey[500],
-          }}
         >
-          <Close />
-        </IconButton>
+          <IconButton
+            aria-label="close"
+            onClick={() => {
+              setPublishDialogOpen(false);
+              setIsPublishing(false);
+            }}
+            sx={{
+              position: "absolute",
+              right: 4,
+              top: 4,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <Close />
+          </IconButton>
 
-        <DialogContent sx={{ p: 3 }}>
-          {storiesList && (
-            <List>
+          <DialogContent sx={{ p: 3 }}>
+            {storiesList && (
+              <List>
+                <Typography variant="h6" sx={{ mt: 3 }}>
+                  {t("Publications")}:
+                </Typography>
+                {storiesList.map((story) => {
+                  const fechaStoryDate = new Date(story.created_at);
+                  let fechaStoryText = fechaStoryDate.toUTCString();
+
+                  return (
+                    <>
+                      <ListItem disablePadding>
+                        <ListItemButton
+                          onClick={(event) => {
+                            // storiesApi.getStoriesbyId(story.id).then((res) => {
+                            // res.data=JSON.parse(res.data_story)
+                            dispatch(getSelectedStory(story.id));
+
+                            navigate("/stories/" + story.id + "/overview");
+
+                            // });
+                          }}
+                        >
+                          <ListItemIcon>
+                            <AutoStories />
+                          </ListItemIcon>
+                          <ListItemText primary={fechaStoryText} />
+                        </ListItemButton>
+
+                        <ConfirmationButton
+                          Actionator={({ onClick }) => (
+                            <Button
+                              variant="outlined"
+                              disabled={!isAdministrator}
+                              color="error"
+                              onClick={onClick}
+                              startIcon={<Delete />}
+                            >
+                              {t("Delete")}
+                            </Button>
+                          )}
+                          ButtonComponent={({ onClick }) => (
+                            <Button
+                              sx={{ mt: 1 }}
+                              fullWidth
+                              variant="contained"
+                              color="error"
+                              onClick={onClick}
+                              value={story.id}
+                            >
+                              {t("Confirm deletion")}
+                            </Button>
+                          )}
+                          onClick={(e) => {
+                            handleDeleteStory(e, story.id);
+                          }}
+                          text={t("Are you sure?")}
+                        />
+                      </ListItem>
+
+                      <Divider />
+                    </>
+                  );
+                })}
+              </List>
+            )}
+
+            {/* {storiesList && ( */}
+            <>
               <Typography variant="h6" sx={{ mt: 3 }}>
-                {t("Publications")}:
+                {t("New Publication of a Success Story")}
               </Typography>
-              {storiesList.map((story) => {
-                const fechaStoryDate = new Date(story.created_at);
-                let fechaStoryText = fechaStoryDate.toUTCString();
+              <Grid container spacing={2}>
+                <Grid item xs={6} md={8}>
+                  <Typography variant="p" sx={{ mt: 3 }}>
+                    {t("Include the source file to publish information")}
+                  </Typography>
 
-                return (
-                  <>
-                    <ListItem disablePadding>
-                      <ListItemButton
-                        onClick={(event) => {
-                          // storiesApi.getStoriesbyId(story.id).then((res) => {
-                          // res.data=JSON.parse(res.data_story)
-                          dispatch(getSelectedStory(story.id));
+                  <Typography variant="p" sx={{ mt: 3 }}>
+                    {t("Example file:")}
+                  </Typography>
 
-                          navigate("/stories/" + story.id + "/overview");
-
-                          // });
-                        }}
-                      >
-                        <ListItemIcon>
-                          <AutoStories />
-                        </ListItemIcon>
-                        <ListItemText primary={fechaStoryText} />
-                      </ListItemButton>
-
-                      <ConfirmationButton
-                        Actionator={({ onClick }) => (
-                          <Button
-                            variant="outlined"
-                            disabled={!isAdministrator}
-                            color="error"
-                            onClick={onClick}
-                            startIcon={<Delete />}
-                          >
-                            {t("Delete")}
-                          </Button>
-                        )}
-                        ButtonComponent={({ onClick }) => (
-                          <Button
-                            sx={{ mt: 1 }}
-                            fullWidth
-                            variant="contained"
-                            color="error"
-                            onClick={onClick}
-                            value={story.id}
-                          >
-                            {t("Confirm deletion")}
-                          </Button>
-                        )}
-                        onClick={(e) => {
-                          handleDeleteStory(e, story.id);
-                        }}
-                        text={t("Are you sure?")}
-                      />
-                    </ListItem>
-
-                    <Divider />
-                  </>
-                );
-              })}
-            </List>
-          )}
-
-          {/* {storiesList && ( */}
-          <>
-            <Typography variant="h6" sx={{ mt: 3 }}>
-              {t("New Publication of a Success Story")}
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={6} md={8}>
-                <Typography variant="p" sx={{ mt: 3 }}>
-                  {t("Include the source file to publish information")}
-                </Typography>
-
-                <Typography variant="p" sx={{ mt: 3 }}>
-                  {t("Example file:")}
-                </Typography>
-
-                <Link
-                  to="/static/story/ExampleTemplate.json"
-                  target="_blank"
-                  download
-                >
-                  <Download sx={{ ml: 1 }} />{" "}
-                </Link>
-              </Grid>
-
-              <Grid item xs={6} md={4}>
-                <Stack direction="row" spacing={0}>
-                  <LoadingButton
-                    variant="contained"
-                    disabled={!isAdministrator}
-                    loading={isPublishing}
-                    //color="warning"
-                    //onClick={handleCapture}
-                    component="label"
-                    startIcon={<ViewList />}
-                    sx={{ mb: 3, justifyContent: "right", textAlign: "center" }}
+                  <Link
+                    to="/static/story/ExampleTemplate.json"
+                    target="_blank"
+                    download
                   >
-                    {t("Publish from file")}
-                    <input
-                      type="file"
-                      accept=".json"
-                      hidden
-                      onChange={handleCapture}
-                    />
-                  </LoadingButton>
-                </Stack>
+                    <Download sx={{ ml: 1 }} />{" "}
+                  </Link>
+                </Grid>
 
-                {/* <Button sx={{ mt: 2 }} variant="contained" component="label">
+                <Grid item xs={6} md={4}>
+                  <Stack direction="row" spacing={0}>
+                    <LoadingButton
+                      variant="contained"
+                      disabled={!isAdministrator}
+                      loading={isPublishing}
+                      //color="warning"
+                      //onClick={handleCapture}
+                      component="label"
+                      startIcon={<ViewList />}
+                      sx={{
+                        mb: 3,
+                        justifyContent: "right",
+                        textAlign: "center",
+                      }}
+                    >
+                      {t("Publish from file")}
+                      <input
+                        type="file"
+                        accept=".json"
+                        hidden
+                        onChange={handleCapture}
+                      />
+                    </LoadingButton>
+                  </Stack>
+
+                  {/* <Button sx={{ mt: 2 }} variant="contained" component="label">
                   {t("Publish from a File")}
                   <input
                     type="file"
@@ -1222,94 +1362,95 @@ const SettingsTab = () => {
                     onChange={handleCapture}
                   />
                 </Button> */}
+                </Grid>
               </Grid>
-            </Grid>
-          </>
-          {/* )} */}
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={isPublishing} onClose={() => setIsPublishing(false)}>
-        <IconButton
-          aria-label="close"
-          onClick={() => setIsPublishing(false)}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <Close />
-        </IconButton>
-
-        <DialogContent sx={{ p: 2 }}>
-          <Stack spacing={2}>
-            <Item>
-              <div style={logoStyle}>
-                <InterlinkAnimation />
-              </div>
-            </Item>
-            <Item>
-              <div>{t("Publishing the Story please wait.")}</div>
-            </Item>
-            <Item>
-              <div>{t("The process could last some minutes.")}</div>
-            </Item>
-          </Stack>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={isCloning} onClose={() => setIsCloning(false)}>
-        <IconButton
-          aria-label="close"
-          onClick={() => setIsCloning(false)}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <Close />
-        </IconButton>
-
-        <DialogContent sx={{ p: 2 }}>
-          <Stack spacing={2}>
-            <Item>
-              <div style={logoStyle}>
-                <InterlinkAnimation />
-              </div>
-            </Item>
-            <Item>
-              <div>{t("Cloning the project please wait.")}</div>
-            </Item>
-            <Item>
-              <div>{t("The process could last some minutes.")}</div>
-            </Item>
-          </Stack>
-        </DialogContent>
-      </Dialog>
-
-      {!hasSchema && (
-        <Dialog
-          open={openDialogSchema}
-          onClose={handleCloseDialogSchema}
-          fullWidth
-          maxWidth="xl"
-        >
-          <Box sx={{ minHeight: "93vh" }}>
-            <CreateSchema />
-          </Box>
+            </>
+            {/* )} */}
+          </DialogContent>
         </Dialog>
-      )}
 
-      <MakePublicDialog
-        open={openDialogPublic}
-        handleClose={handleCloseDialogPublic}
-        switchEvent={handleSwitchEvent}
-      />
-    </Box>
+        <Dialog open={isPublishing} onClose={() => setIsPublishing(false)}>
+          <IconButton
+            aria-label="close"
+            onClick={() => setIsPublishing(false)}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <Close />
+          </IconButton>
+
+          <DialogContent sx={{ p: 2 }}>
+            <Stack spacing={2}>
+              <Item>
+                <div style={logoStyle}>
+                  <InterlinkAnimation />
+                </div>
+              </Item>
+              <Item>
+                <div>{t("Publishing the Story please wait.")}</div>
+              </Item>
+              <Item>
+                <div>{t("The process could last some minutes.")}</div>
+              </Item>
+            </Stack>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={isCloning} onClose={() => setIsCloning(false)}>
+          <IconButton
+            aria-label="close"
+            onClick={() => setIsCloning(false)}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <Close />
+          </IconButton>
+
+          <DialogContent sx={{ p: 2 }}>
+            <Stack spacing={2}>
+              <Item>
+                <div style={logoStyle}>
+                  <InterlinkAnimation />
+                </div>
+              </Item>
+              <Item>
+                <div>{t("Cloning the project please wait.")}</div>
+              </Item>
+              <Item>
+                <div>{t("The process could last some minutes.")}</div>
+              </Item>
+            </Stack>
+          </DialogContent>
+        </Dialog>
+
+        {!hasSchema && (
+          <Dialog
+            open={openDialogSchema}
+            onClose={handleCloseDialogSchema}
+            fullWidth
+            maxWidth="xl"
+          >
+            <Box sx={{ minHeight: "93vh" }}>
+              <CreateSchema />
+            </Box>
+          </Dialog>
+        )}
+
+        <MakePublicDialog
+          open={openDialogPublic}
+          handleClose={handleCloseDialogPublic}
+          switchEvent={handleSwitchEvent}
+        />
+      </Box>
+    </>
   );
 };
 

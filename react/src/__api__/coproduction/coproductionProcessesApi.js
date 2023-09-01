@@ -9,6 +9,29 @@ class CoproductionProcessesApi extends GeneralApi {
   }
 
 
+  async download(id){
+    if (id) {
+      const res = await axiosInstance.get(`/${this.url}/${id}/download`, { responseType: 'blob' });
+      return res;
+    }
+  }
+
+  async importProcess(file) {
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      try {
+        const res = await axiosInstance.post(`/${this.url}/import`, formData);
+        console.log('the response of import is: ', res.data);
+        return res.data;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
+
+
   async getPublicProcesses(params = {}, language = getLanguage()) {
     //console.log(`/${this.url}` + params);
     //Get data of user_notifications

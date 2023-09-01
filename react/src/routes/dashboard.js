@@ -10,6 +10,7 @@ import PublicCoproductionCatalogue from 'pages/dashboard/publiccoproductions/Pub
 import PublicCoproductionProfile from 'pages/dashboard/publiccoproductions/PublicCoproductionProfile';
 import CatalogueSelector from 'components/dashboard/CatalogueSelector';
 import SucessfullClaimRegistration from 'pages/dashboard/assignments/sucessfullClaimRegistration';
+import CoproductionProcessDownload from 'pages/dashboard/coproductionprocesses/CoproductionProcessDownload';
 
 
 const CoproductionProcessProfile = Loadable(
@@ -132,6 +133,16 @@ export const routes = [
             path: ':tab',
             element: <AuthGuard><CoproductionProcessProfile /></AuthGuard>
           },
+        ]
+      },
+      {
+        path: 'coproductionprocesses/:processId/download',
+        children: [
+          {
+            path: '',
+            element: <AuthGuard><CoproductionProcessDownload /></AuthGuard>
+            ,
+          }
         ]
       },
       {
