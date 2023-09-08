@@ -52,7 +52,7 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { getProcess, updateProcess } from "slices/process";
+import { getProcess, setLeaderboard, updateProcess } from "slices/process";
 import * as Yup from "yup";
 import {
   coproductionProcessesApi,
@@ -836,7 +836,7 @@ const SettingsTab = () => {
                           }
                           error={Boolean(
                             touched.organization_desc &&
-                              errors.organization_desc
+                            errors.organization_desc
                           )}
                           value={values.organization_desc}
                           onBlur={handleBlur}
@@ -1144,7 +1144,13 @@ const SettingsTab = () => {
                         <Lightbox onClose={handleCloseLightbox}>
                           <RewardSettings
                             onClose={handleCloseLightbox}
-                            activateReward={() => {
+                            activateReward={(type) => {
+                              if (type) {
+                                dispatch(setLeaderboard(true));
+                              }
+                              else {
+                                dispatch(setLeaderboard(false));
+                              }
                               changeRewarding(true);
                             }}
                           />

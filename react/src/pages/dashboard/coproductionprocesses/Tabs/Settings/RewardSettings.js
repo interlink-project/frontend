@@ -355,7 +355,7 @@ const RewardSettings = (props) => {
             sx={{ minWidth: "200px", mr: 2 }}
             variant="outlined"
             onClick={() => {
-              activateReward();
+              activateReward(leaderboard);
               onClose();
             }}
           >
