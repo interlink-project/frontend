@@ -4,10 +4,14 @@ export function topologicalSort(treeitems) {
 
   function dfs(items) {
     for (const treeitem of items) {
-      if (!visited.has(treeitem.id)) {
-        dfs(treeitem.prerequisites_ids.map((id) => treeitemMap.get(id)));
-      }
+      if (treeitem === undefined) {
+      } else {
+        if (!visited.has(treeitem.id)) {
+          dfs(treeitem.prerequisites_ids.map((id) => treeitemMap.get(id)));
+        }
+      
       visited.add(treeitem);
+      }
     }
   }
 
