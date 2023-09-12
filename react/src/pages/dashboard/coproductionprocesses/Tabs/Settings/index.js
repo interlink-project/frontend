@@ -836,7 +836,7 @@ const SettingsTab = () => {
                           }
                           error={Boolean(
                             touched.organization_desc &&
-                              errors.organization_desc
+                            errors.organization_desc
                           )}
                           value={values.organization_desc}
                           onBlur={handleBlur}

@@ -39,17 +39,16 @@ const LeaderboardTab = ({ }) => {
 
 
     const handleLeaderboard = async (game) => {
-        setLoading(true);
         const us = [];
         for (let player of game.content) {
             let user = await usersApi.get(player.playerId);
-            if (player.score > 0){
+            if (player.score > 0) {
                 us.push({ id: player.playerId, name: user.full_name, score: player.score });
             }
         }
         setUsers(us);
         setPlace(us.findIndex((user) => user.id === auth.user.id) + 1);
-        setLoading(false);
+        
     };
 
     const handleTabChange = (event, newValue) => {
@@ -57,15 +56,15 @@ const LeaderboardTab = ({ }) => {
     };
 
 
-    useEffect(() => {
+    useEffect(async () => {
+        setLoading(true);
         gamesApi.getLeaderboard(process.id).then((res) => {
             handleLeaderboard(res);
         });
 
-        gamesApi.getGame(process.id).then((res) => {
-            setGame(res[0]);
-            console.log(res[0]);
-        });
+        let res = await gamesApi.getGame(process.id);
+        setGame(res[0]);
+        setLoading(false);
     }, []);
 
 
@@ -93,16 +92,40 @@ const LeaderboardTab = ({ }) => {
 
                             }
                         }
-                        
+
                         }>
-                            <Tab label={t("Leaderboard")} />
-                            <Tab disabled={loading} label={t("My Profile")} />
+                            <Tab label={process.leaderboard ? t("Leaderboard") : t("My Profile")} />
+                            {process.leaderboard ? (<Tab disabled={loading} label={t("My Profile")}/>) : (<></>)}
                         </Tabs>
                     </Box>
+                    
 
-
-
-                    <TabPanel value={value} index={0}>
+                    {
+                        process.leaderboard ? (<>
+                            <TabPanel value={value} index={0}>
+                                <OverallLeaderboard
+                                    users={users}
+                                    loading={loading} />
+                            </TabPanel>
+                            <TabPanel value={value} index={1}>
+                                <PersonalLeaderboard
+                                    user={auth.user}
+                                    game={game}
+                                    place={place}
+                                    loading={loading} />
+                            </TabPanel>
+                        </>) : (<>
+                            <TabPanel value={value} index={0}>
+                                <PersonalLeaderboard
+                                    user={auth.user}
+                                    game={game}
+                                    place={place}
+                                    loading={loading} />
+                            </TabPanel></>)
+                    }
+                    
+                    {/* <TabPanel value={value} index={0}
+                        disabled={!leaderboard}>
                         <OverallLeaderboard
                             users={users}
                             loading={loading} />
@@ -113,7 +136,7 @@ const LeaderboardTab = ({ }) => {
                             game={game}
                             place={place}
                             loading={loading} />
-                    </TabPanel>
+                    </TabPanel> */}
 
 
                 </Grid>
