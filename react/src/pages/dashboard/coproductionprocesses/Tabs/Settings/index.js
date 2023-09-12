@@ -52,7 +52,7 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { getProcess, setLeaderboard, updateProcess } from "slices/process";
+import { getProcess, updateProcess } from "slices/process";
 import * as Yup from "yup";
 import {
   coproductionProcessesApi,
@@ -1145,12 +1145,16 @@ const SettingsTab = () => {
                           <RewardSettings
                             onClose={handleCloseLightbox}
                             activateReward={(type) => {
-                              if (type) {
-                                dispatch(setLeaderboard(true));
-                              }
-                              else {
-                                dispatch(setLeaderboard(false));
-                              }
+                              dispatch(updateProcess({
+                                id: process.id,
+                                data: { leaderboard: type },
+                                logotype,
+                                onSuccess: () => {
+                                  if (mounted.current) {
+                                    console.log(process);
+                                  }
+                                },
+                              }));
                               changeRewarding(true);
                             }}
                           />

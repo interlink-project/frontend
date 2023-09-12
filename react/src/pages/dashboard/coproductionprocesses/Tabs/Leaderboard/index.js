@@ -28,7 +28,7 @@ function TabPanel(props) {
 }
 
 const LeaderboardTab = ({ }) => {
-    const { process, leaderboard } = useSelector((state) => state.process);
+    const { process } = useSelector((state) => state.process);
     const t = useCustomTranslation(process.language);
     const [value, setValue] = useState(0);
     const [game, setGame] = useState({});
@@ -94,14 +94,14 @@ const LeaderboardTab = ({ }) => {
                         }
 
                         }>
-                            <Tab label={leaderboard ? t("Leaderboard") : t("My Profile")} />
-                            {leaderboard ? (<Tab disabled={loading} label={t("My Profile")}/>) : (<></>)}
+                            <Tab label={process.leaderboard ? t("Leaderboard") : t("My Profile")} />
+                            {process.leaderboard ? (<Tab disabled={loading} label={t("My Profile")}/>) : (<></>)}
                         </Tabs>
                     </Box>
                     
 
                     {
-                        leaderboard ? (<>
+                        process.leaderboard ? (<>
                             <TabPanel value={value} index={0}>
                                 <OverallLeaderboard
                                     users={users}

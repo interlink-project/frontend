@@ -10,7 +10,6 @@ const initialState = {
   process: null,
   hasSchema: false,
   isAdministrator: false,
-  leaderboard: true,
   tree: [],
   treeitems: [],
   selectedPhaseTab: '',
@@ -130,9 +129,6 @@ const slice = createSlice({
     setUpdatingTree(state, action) {
       state.updatingTree = action.payload;
     },
-    setLeaderboard(state, action) {  
-      state.leaderboard = action.payload;
-    }
   }
 });
 
@@ -204,11 +200,6 @@ export const updateProcess = ({ id, data, logotype, onSuccess }) => async (dispa
   if (onSuccess) {
     onSuccess();
   }
-};
-
-export const setLeaderboard = (data, callback) => async (dispatch) => {
-  dispatch(slice.actions.setLeaderboard(data));
-  callback && callback();
 };
 
 export const setSelectedTreeItem = (data, callback) => async (dispatch) => {
