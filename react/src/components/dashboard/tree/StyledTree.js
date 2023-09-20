@@ -171,7 +171,7 @@ const StyledTree = ({
             setExpanded(nodeIds);
           }}
         >
-          {parent && !parent.is_disabled && (
+          {parent?.is_disabled === false && (
             <StyledTreeItem
               icon={showIcon && statusIcon(parent.status)}
               key={parent.id}
@@ -204,7 +204,7 @@ const StyledTree = ({
             >
               {parent.children.map(
                 (objective) =>
-                  !objective.is_disabled && (
+                  objective?.is_disabled === false && (
                     <StyledTreeItem
                       icon={showIcon && statusIcon(objective.status)}
                       key={objective.id}
@@ -250,7 +250,7 @@ const StyledTree = ({
                     >
                       {objective.children.map(
                         (task) =>
-                          !task.is_disabled && (
+                          task?.is_disabled === false && (
                             <StyledTreeItem
                               icon={
                                 showIcon &&

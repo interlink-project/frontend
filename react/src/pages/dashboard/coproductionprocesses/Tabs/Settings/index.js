@@ -482,10 +482,10 @@ const SettingsTab = () => {
                 },
               }}
             >
-              <Tab key="1" label={t("Information")} value="0"></Tab>
-              <Tab key="2" label={t("Administration")} value="1"></Tab>
-              <Tab key="3" label={t("Process")} value="2"></Tab>
-              <Tab key="4" label={t("Options")} value="3"></Tab>
+              <Tab key="1" label={t("Info")} value="0"></Tab>
+              <Tab key="2" label={t("Admins")} value="1"></Tab>
+              <Tab key="3" label={t("Actions")} value="2"></Tab>
+              <Tab key="4" label={t("Extra")} value="3"></Tab>
             </MuiTabs>
             {/* {loading && <LinearProgress />} */}
           </AppBar>
@@ -1086,7 +1086,7 @@ const SettingsTab = () => {
                   {/* Download Coproduction Process */}
                   <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
                     <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-                      {t("Download coproduction process")}
+                      {t("Download process")}
                     </Typography>
                     <Alert
                       severity="warning"
@@ -1100,7 +1100,7 @@ const SettingsTab = () => {
                           onClick={onDownload}
                           startIcon={<DownloadForOffline />}
                         >
-                          {t("Download coproduction process")}
+                          {t("Download")}
                         </LoadingButton>
                       }
                     >
@@ -1109,6 +1109,63 @@ const SettingsTab = () => {
                       ) + "."}
                     </Alert>
                   </Card>
+
+
+                  {/* Show Process Guide */}
+                  <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
+                    <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+                      {t("Show process startup guide")}
+                    </Typography>
+                    <Alert
+                      severity="info"
+                      sx={{ mt: 2 }}
+                      action={
+                        <>
+                          <GoldSwitch
+                            checked={isGuideHidden}
+                            onChange={toggleGuideHide}
+                            name="guideSwitch"
+                            inputProps={{ "aria-label": "secondary checkbox" }}
+                            disabled={!isAdministrator}
+                            color="secondary"
+                          />
+                        </>
+                      }
+                    >
+                      {t(
+                        "This option will show the process startup guide to all users"
+                      )}
+                    </Alert>
+                  </Card>
+
+                    {/* Make it public to anyone to see information about the process */}
+                    <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
+                    <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
+                      {t("Open the process to new collaborators")}
+                    </Typography>
+                    <Alert
+                      severity="info"
+                      sx={{ mt: 2 }}
+                      action={
+                        <>
+                          <GoldSwitch
+                            checked={isPublic}
+                            onChange={toggleIsPublic}
+                            name="publicSwitch"
+                            inputProps={{ "aria-label": "secondary checkbox" }}
+                            disabled={!isAdministrator}
+                            color="secondary"
+                          />
+                        </>
+                      }
+                    >
+                      {t(
+                        "This option will allow new collaborators to join the process"
+                      )}
+                    </Alert>
+                  </Card>
+
+
                 </>
               )}
 
@@ -1144,17 +1201,7 @@ const SettingsTab = () => {
                         <Lightbox onClose={handleCloseLightbox}>
                           <RewardSettings
                             onClose={handleCloseLightbox}
-                            activateReward={(type) => {
-                              dispatch(updateProcess({
-                                id: process.id,
-                                data: { leaderboard: type },
-                                logotype,
-                                onSuccess: () => {
-                                  if (mounted.current) {
-                                    console.log(process);
-                                  }
-                                },
-                              }));
+                            activateReward={() => {
                               changeRewarding(true);
                             }}
                           />
@@ -1163,59 +1210,9 @@ const SettingsTab = () => {
                     </div>
                   </Card>
 
-                  {/* Show Process Guide */}
-                  <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
-                    <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-                      {t("Show process startup guide")}
-                    </Typography>
-                    <Alert
-                      severity="info"
-                      sx={{ mt: 2 }}
-                      action={
-                        <>
-                          <GoldSwitch
-                            checked={isGuideHidden}
-                            onChange={toggleGuideHide}
-                            name="guideSwitch"
-                            inputProps={{ "aria-label": "secondary checkbox" }}
-                            disabled={!isAdministrator}
-                            color="secondary"
-                          />
-                        </>
-                      }
-                    >
-                      {t(
-                        "This option will show the process startup guide to all users"
-                      )}
-                    </Alert>
-                  </Card>
+                  
 
-                  {/* Make it public to anyone to see information about the process */}
-                  <Card sx={{ border: "1px solid #b2b200", p: 5, my: 4 }}>
-                    <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-                      {t("Open the process to new collaborators")}
-                    </Typography>
-                    <Alert
-                      severity="info"
-                      sx={{ mt: 2 }}
-                      action={
-                        <>
-                          <GoldSwitch
-                            checked={isPublic}
-                            onChange={toggleIsPublic}
-                            name="publicSwitch"
-                            inputProps={{ "aria-label": "secondary checkbox" }}
-                            disabled={!isAdministrator}
-                            color="secondary"
-                          />
-                        </>
-                      }
-                    >
-                      {t(
-                        "This option will allow new collaborators to join the process"
-                      )}
-                    </Alert>
-                  </Card>
+                
                 </>
               )}
             </>
