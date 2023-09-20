@@ -455,7 +455,7 @@ const ContributionsTabs = () => {
         CONTRIBUTION_LEVELS[row.contribution]
       );
     }
-    console.log("Claims done ")
+    console.log("Claims done")
 
     //Save user data and contribution in data object
     const data = {};
@@ -664,12 +664,12 @@ const ContributionsTabs = () => {
                 }}
                 validationSchema={Yup.object().shape({
                   title: Yup.string()
-                    .min(3, "Must be at least 3 characters")
+                    .min(3, t("Must be at least 3 characters"))
                     .max(255)
-                    .required("Required"),
+                    .required(t("Required")),
                   description: Yup.string()
-                    .min(3, "Must be at least 3 characters")
-                    .required("Required"),
+                    .min(3, t("Must be at least 3 characters"))
+                    .required(t("Required")),
 
                   asset: Yup.object().required("Required"),
                 })}
@@ -828,9 +828,7 @@ const ContributionsTabs = () => {
                                   variant="body2"
                                   color="text.secondary"
                                 >
-                                  {t(
-                                    "There are no teams assigned to this task"
-                                  )}
+                                  {t("There are no teams assigned to this task")}
                                 </Typography>
                               )}
 
@@ -1111,7 +1109,7 @@ const ContributionsTabs = () => {
                         error={Boolean(touched.title && errors.title)}
                         fullWidth
                         helperText={touched.title && errors.title}
-                        label={t("Title")}
+                        label={t("title")}
                         name="title"
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -1158,7 +1156,7 @@ const ContributionsTabs = () => {
 
             severity="warning"
             sx={{ m: 1.35, float: "right", alignItems: "center" }}
-          >{t("This task does not have a complexity defined.")}
+          >{t("This task does not have a complexity defined" + ".")}
           </Alert>
           }
         </>

@@ -459,5 +459,21 @@
     "Very low": "Ļoti zems",
     "Very high": "Ļoti augsts",
     " points possible": " iespējamie punkti",
-    "Previous item": "Iepriekšējais punkts"
+    "Previous item": "Iepriekšējais punkts",
+    "Complexity level": "Sarežģītības līmenis",
+    "Create Contributions for Users": "Izveidot ieguldījumus lietotājiem",
+    "Must be at least 3 characters": "Jābūt vismaz 3 rakstzīmēm",
+    "CSV option selected": "Izvēlēta CSV opcija",
+    "Select one of the following options": "Izvēlieties vienu no šādiem variantiem",
+    "Add contribution of a single user": "Pievienojiet viena lietotāja ieguldījumu",
+    "Add contribution of one or multiple teams": "Pievienojiet vienas vai vairāku komandu ieguldījumu",
+    "There are no teams assigned to this task": "Šim uzdevumam nav piešķirtu komandu",
+    "Add contribution from multiple users included in a file": "Pievienojiet ieguldījumu no vairākiem lietotājiem, kas iekļauti failā",
+    "An example of this file": "Šī faila piemērs",
+    "Single user selected": "Izvēlēts viens lietotājs",
+    "CSV option selected": "Izvēlēta CSV opcija",
+    "Team option selected": "Izvēlēta komandas opcija",
+    "Select the Resource": "Atlasiet resursu",
+    "Fill in contribution information": "Aizpildiet ieguldījumu informāciju",
+    "This task does not have a complexity defined": "Šim uzdevumam nav noteikta sarežģītība"
 }

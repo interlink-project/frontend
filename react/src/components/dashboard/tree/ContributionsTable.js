@@ -28,13 +28,13 @@ export default function ContributionsTable({ rows, closedTask }) {
   const [stateRows, setRows] = useState([]);
   const [pageSize, setPageSize] = useState(5);
   const [loading, setLoading] = useState(false);
-  const contribValues = ["Low", "Average", "High"];
-
+  
   const [activitiesDialogOpen, setactivitiesDialogOpen] = useState(false);
-
+  
   const dispatch = useDispatch();
   const { process, selectedTreeItem } = useSelector((state) => state.process);
   const t = useCustomTranslation(process.language);
+  const contribValues = [t("Low"), t("Average"), t("High")];
 
   const handleClickHistory = (userId) => {
     console.log("Selected user: " + userId);
@@ -89,9 +89,9 @@ export default function ContributionsTable({ rows, closedTask }) {
         }
 
         return clsx("super-app", {
-          low: params.value === "Low",
-          average: params.value === "Average",
-          high: params.value === "High",
+          low: params.value === t("Low"),
+          average: params.value === t("Average"),
+          high: params.value === t("High"),
         });
       },
     },
@@ -105,7 +105,9 @@ export default function ContributionsTable({ rows, closedTask }) {
       temporalRows = rows.map((row) => {
         let level = contributionslistlevels.find((obj) => obj.id === row.id);
         if (level) {
-          row.contribution = level.contribution;
+          row.contribution = t(level.contribution);
+        } else{
+          row.contribution = t(row.contribution);
         }
         return row;
       });

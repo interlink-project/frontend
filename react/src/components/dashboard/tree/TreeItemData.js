@@ -374,19 +374,19 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
   const complexityLevelsF = (status) => {
     switch (status) {
       case 0:
-        return "None";
+        return t("None");
       case 20:
-        return "Very low";
+        return t("Very low");
       case 40:
-        return "Low";
+        return t("Low");
       case 60:
-        return "Medium";
+        return t("Medium");
       case 80:
-        return "High";
+        return t("High");
       case 100:
-        return "Very high";
+        return t("Very high");
       default:
-        return "No defined";
+        return t("No defined");
     }
   };
 
@@ -453,7 +453,7 @@ const TreeItemData = ({ language, processId, element, assets,setOpenSnackbar,set
       {isTask ? (
         <>
           <Typography variant="h6" sx={{ mt: 2 }}>
-            {t("Complexity Level")}{" - " + development*3 + " "+t("points")}  
+            {t("Complexity level")}{" - " + development*3 + " "+t("points")}  
           </Typography>
 
           {editMode ? (

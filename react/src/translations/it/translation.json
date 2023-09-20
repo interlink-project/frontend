@@ -445,5 +445,21 @@
     "Very high": "Molto alto",
     " points possible": " punti possibili",
     "Add contributor": "Aggiungi un collaboratore",
-    "Previous item": "Articolo precedente"
+    "Previous item": "Articolo precedente",
+    "Complexity level": "Livello di complessità",
+    "Create Contributions for Users": "Creare contributi per gli utenti",
+    "Must be at least 3 characters": "Deve essere di almeno 3 caratteri",
+    "CSV option selected": "Opzione CSV selezionata",
+    "Select one of the following options": "Selezionare una delle seguenti opzioni",
+    "Add contribution of a single user": "Aggiungere il contributo di un singolo utente",
+    "Add contribution of one or multiple teams": "Aggiungere il contributo di uno o più team",
+    "There are no teams assigned to this task": "Non ci sono team assegnati a questo compito",
+    "Add contribution from multiple users included in a file": "Aggiungere il contributo di più utenti inclusi in un file",
+    "An example of this file": "Un esempio di questo file",
+    "Single user selected": "Utente singolo selezionato",
+    "CSV option selected": "Opzione CSV selezionata",
+    "Team option selected": "Opzione team selezionata",
+    "Select the Resource": "Selezionare la risorsa",
+    "Fill in contribution information": "Compilare le informazioni sul contributo",
+    "This task does not have a complexity defined": "Questo compito non ha una complessità definita"
 }
