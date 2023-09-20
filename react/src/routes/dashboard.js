@@ -44,6 +44,7 @@ const OrganizationProfile = Loadable(
 );
 const Workspace = Loadable(lazy(() => import('../pages/dashboard/workspace')));
 const WelcomeView = Loadable(lazy(() => import('../pages/dashboard/workspace/ProjectsOverview')));
+const TermsAndPrivacy = Loadable(lazy(() => import('../pages/dashboard/workspace/TermsAndPrivacy')));
 
 export const routes = [
   {
@@ -116,6 +117,10 @@ export const routes = [
       {
         path: 'projects',
         element: <WelcomeView />,
+      },
+      {
+        path: 'privacy',
+        element: <TermsAndPrivacy />,
       },
       {
         path: 'settings',

@@ -154,12 +154,11 @@ const SettingsTab = () => {
         const url = window.URL.createObjectURL(new Blob([res.data]));
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "process.zip");
+        link.setAttribute("download", process.name+".zip");
         document.body.appendChild(link);
         link.click();
       }
-    });
-    //coproductionProcessesApi.copy(process.id).then(() => navigate('/dashboard'));
+    }); 
   };
 
   const onRemove = () => {

@@ -399,6 +399,8 @@ const ProjectsOverview = () => {
       console.log('File Name: ', fileName);
       const response = await coproductionProcessesApi.importProcess(file);
       // handle the response
+      console.log(response)
+      navigate(`/dashboard/coproductionprocesses/${response.id}/overview`);
     }
   };
 
