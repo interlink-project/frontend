@@ -135,6 +135,7 @@ const Home = () => {
                     },
                     display: "flex", // Make the Alert a flex container
                     alignItems: "center", // Center children vertically
+                    justifyContent: "center",
                   }}
                 >
                   <Grid container spacing={2} alignItems="center">
