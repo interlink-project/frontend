@@ -14,6 +14,7 @@ import { cleanProcess } from "slices/process";
 import useAuth from "../../../hooks/useAuth";
 import CoproductionprocessCreate from "./CoproductionProcessCreate";
 import CookieConsentForm from "./CookieConsentForm";
+import { usersApi } from "__api__";
 
 const MyWorkspace = () => {
   const [coproductionProcessCreatorOpen, setCoproductionProcessCreatorOpen] =

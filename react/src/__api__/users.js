@@ -26,6 +26,36 @@ class UsersApi extends GeneralApi {
     console.log('get me call', me);
     return me;
   }
+
+  async agreeTerms(){
+
+    try {
+          const response = await axiosInstance.put('/coproduction/api/v1/users/agree-terms', {});
+          // handle the response if needed
+          console.log(response.data);
+          return response.data;
+    } catch (error) {
+      // handle error response
+      console.error('Error agreeing to terms:', error.response ? error.response.data : error.message);
+    }
+  }
+
+  async refuseTerms(){
+
+    try {
+          const response = await axiosInstance.put('/coproduction/api/v1/users/refuse-terms', {});
+          // handle the response if needed
+          console.log(response.data);
+          return response.data;
+    } catch (error) {
+      // handle error response
+      console.error('Error when refuse the terms:', error.response ? error.response.data : error.message);
+    }
+  }
+
+ 
+
+
 }
 
 export const usersApi = new UsersApi();
