@@ -46,6 +46,8 @@ import TeamAvatar from "components/TeamAvatar";
 import Ballot from "@mui/icons-material/Ballot";
 
 import { coproductionProcessesApi } from "__api__";
+import { styled } from "@mui/material/styles";
+import InterlinkAnimation from "components/home/InterlinkLoading";
 
 function ProcessRow({ process, t }) {
   const navigate = useNavigate();
@@ -135,7 +137,21 @@ const ProjectsOverview = () => {
   const [importDialogOpen, setImportDialogOpen] = React.useState(false);
 
   const [fileContent, setFileContent] = React.useState('');
+  
+  const [isImporting, setIsImporting] = React.useState(false);
 
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  }));
+
+  const logoStyle = {
+    width: "300px",
+    height: "auto",
+  };
   
 
   const QuickSearchToolbar = () => {
@@ -395,11 +411,13 @@ const ProjectsOverview = () => {
   const handleCapture = async ({ target }) => {
     const file = target.files[0];
     if (file) {
+      setIsImporting(true);
       const fileName = file.name;
       console.log('File Name: ', fileName);
       const response = await coproductionProcessesApi.importProcess(file);
       // handle the response
       console.log(response)
+      setIsImporting(false);
       navigate(`/dashboard/coproductionprocesses/${response.id}/overview`);
     }
   };
@@ -620,6 +638,26 @@ const ProjectsOverview = () => {
           </>
         </DialogContent>
       </Dialog>
+
+      <Dialog open={isImporting} >
+          
+
+          <DialogContent sx={{ p: 2 }}>
+            <Stack spacing={2}>
+              <Item>
+                <div style={logoStyle}>
+                  <InterlinkAnimation />
+                </div>
+              </Item>
+              <Item>
+                <div>{t("Importing the process please wait.")}</div>
+              </Item>
+              <Item>
+                <div>{t("The process could last some minutes.")}</div>
+              </Item>
+            </Stack>
+          </DialogContent>
+        </Dialog>
     </>
   );
 };
