@@ -135,6 +135,8 @@ const SettingsTab = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [isDownloading, setIsDownloading] = useState(false);
+
   const onCopy = () => {
     setIsCloning(true);
     coproductionProcessesApi
@@ -148,6 +150,8 @@ const SettingsTab = () => {
   };
 
   const onDownload = () => {
+
+    setIsDownloading(true);
     //alert('Downloading the file');
     coproductionProcessesApi.download(process.id).then((res) => {
       if (mounted.current) {
@@ -156,7 +160,12 @@ const SettingsTab = () => {
         link.href = url;
         link.setAttribute("download", process.name+".zip");
         document.body.appendChild(link);
+        
+        setIsDownloading(false);
+
         link.click();
+
+        
       }
     }); 
   };
@@ -1099,12 +1108,12 @@ const SettingsTab = () => {
                           onClick={onDownload}
                           startIcon={<DownloadForOffline />}
                         >
-                          {t("Download")}
+                          {t("Download coproduction process")}
                         </LoadingButton>
                       }
                     >
                       {t(
-                        "This option allow to download the coproduction process"
+                        "This option lets you download the structure of the co-production process and create a copy of the resources in portable document format. This enables you to replicate the co-production process in another collaborative setting. It's important to note that the files will be copies of the original documents"
                       ) + "."}
                     </Alert>
                   </Card>
@@ -1432,6 +1441,26 @@ const SettingsTab = () => {
               </Item>
               <Item>
                 <div>{t("The process could last some minutes.")}</div>
+              </Item>
+            </Stack>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={isDownloading} >
+          
+
+          <DialogContent sx={{ p: 2 }}>
+            <Stack spacing={2}>
+              <Item>
+                <div style={logoStyle}>
+                  <InterlinkAnimation />
+                </div>
+              </Item>
+              <Item>
+                <div>{t("Downloading the process please wait.")}</div>
+              </Item>
+              <Item>
+                <div>{t("This process could last some minutes.")}</div>
               </Item>
             </Stack>
           </DialogContent>
