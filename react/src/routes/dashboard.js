@@ -46,6 +46,7 @@ const Workspace = Loadable(lazy(() => import('../pages/dashboard/workspace')));
 const WelcomeView = Loadable(lazy(() => import('../pages/dashboard/workspace/ProjectsOverview')));
 const TermsAndPrivacy = Loadable(lazy(() => import('../pages/dashboard/workspace/TermsAndPrivacy')));
 const CookiePolicy = Loadable(lazy(() => import('../pages/dashboard/workspace/CookiePolicy')));
+const PrivacyPolicy = Loadable(lazy(() => import('../pages/dashboard/workspace/PrivacyPolicy')));
 
 export const routes = [
   {
@@ -85,9 +86,14 @@ export const routes = [
       element: <CookiePolicy />,
     },
     {
-      path: 'privacy',
+      path: 'terms',
       element: <TermsAndPrivacy />,
     },
+    {
+      path: 'privacy',
+      element: <PrivacyPolicy />,
+    },
+    
  
   {
     path: 'stories',

@@ -27,6 +27,7 @@ import { getContributions } from "slices/general";
 
 import CookieConsentContext from "CookieConsentContext";
 import CookieConsentForm from "pages/dashboard/workspace/CookieConsentForm";
+import Cookies from 'js-cookie';
 
 export const RemoveTrailingSlash = ({ ...rest }) => {
   const location = useLocation();
@@ -60,7 +61,7 @@ const App = () => {
   const location = useLocation();
   const getUuid = require("uuid-by-string");
 
-  const [cookieConsent, setCookieConsent] = useState({ essential: true, matomo: true });
+  const [cookieConsent, setCookieConsent] = useState({ essentialsOnly: true });
 
 
 
@@ -258,7 +259,17 @@ const App = () => {
   enableLinkTracking();
   useEffect(() => {
 
-    if (cookieConsent.matomo) {
+    const storedPopupValue = Cookies.get('cookiePreference');
+    
+    if (storedPopupValue=="accept-all") {
+        // If there's a value in the cookie, don't show the popup
+        setCookieConsent({ essentialsOnly: false });
+    }else{
+        setCookieConsent({ essentialsOnly: true });
+    }
+
+    //This will initialice the matomo tracking system.
+    if (!cookieConsent.essentialsOnly) {
   
     //If the user is logged in, send the user data to Matomo
     if (

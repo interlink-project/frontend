@@ -1,4 +1,4 @@
-import { Box, Container, Typography, Link } from "@mui/material";
+import { Box, Container, Typography, Link, Paper } from "@mui/material";
 
 import React from "react";
 import { Helmet } from "react-helmet-async";
@@ -22,13 +22,18 @@ const TermsAndPrivacy = () => {
         }}
       >
         <Container maxWidth="lg">
-        <HomeLogo style={{ width: "40%", height: "auto" }} />
+        <Paper elevation={3} style={{ padding: '20px' }}>
+        <HomeLogo style={{ width: "30%", height: "auto" }} />
+        <br/>
+        <br/>
+        
           
           
             <div>
               <Typography variant="h4" gutterBottom>
                 Terms of Use
               </Typography>
+              <br/>
 
               <Typography variant="h6" paragraph>
                 AGREEMENT TO OUR LEGAL TERMS
@@ -773,7 +778,7 @@ const TermsAndPrivacy = () => {
                 please contact XXXX
               </Typography>
             </div>
-        
+        </Paper>
         </Container>
       </Box>
     </>

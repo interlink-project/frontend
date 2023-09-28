@@ -1,46 +1,53 @@
-import { Box, Container, Typography, Link, Table, TableHead, TableCell, TableRow, TableBody  } from "@mui/material";
-import { makeStyles } from '@mui/styles';
+import {
+  Box,
+  Container,
+  Typography,
+  Link,
+  Table,
+  TableHead,
+  TableCell,
+  TableRow,
+  TableBody,
+  Paper,
+} from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { HomeLogo } from "components/Logo";
 
 import React from "react";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   table: {
-    borderCollapse: 'collapse',
-    border: '1px solid',  // Set the color of the outer border here.
+    borderCollapse: "collapse",
+    border: "1px solid", // Set the color of the outer border here.
     borderColor: theme.palette.divider,
   },
   tableCell: {
-    border: '1px solid',  // Set the color of the cell borders here.
+    border: "1px solid", // Set the color of the cell borders here.
     borderColor: theme.palette.divider,
-    textAlign: 'center'
+    textAlign: "center",
   },
   headerCell: {
     backgroundColor: theme.palette.primary.main,
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center'
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   firstColumnCell: {
     backgroundColor: theme.palette.primary.light,
     color: theme.palette.primary.contrastText,
-    textAlign: 'center'
+    textAlign: "center",
   },
   regularCell: {
-    textAlign: 'center'
-  }
+    textAlign: "center",
+  },
 }));
-
 
 const CookiePolicy = () => {
   const { t } = useTranslation();
-  
-  
 
   const classes = useStyles();
-  
 
   return (
     <>
@@ -56,14 +63,17 @@ const CookiePolicy = () => {
         }}
       >
         <Container maxWidth="lg">
-        <HomeLogo style={{ width: "40%", height: "auto" }} />
-        
+          <Paper elevation={3} style={{ padding: "20px" }}>
+            <HomeLogo style={{ width: "30%", height: "auto" }} />
+            <br />
+            <br />
+
             <div>
               <Typography variant="h4" gutterBottom>
                 Cookie Policy of interlink-project.eu
               </Typography>
+              <br />
 
-              
               <Typography variant="body1" paragraph>
                 In accordance with Article 13 of Regulation (EU) 2016/679 (GDPR)
                 and the Provision of the Italian Data Protection Authority
@@ -159,38 +169,44 @@ const CookiePolicy = () => {
               </Typography>
 
               <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell className={classes.headerCell}>CATEGORY</TableCell>
-          <TableCell className={classes.headerCell}>NAME</TableCell>
-          <TableCell className={classes.headerCell}>SUPPLIER</TableCell>
-          <TableCell className={classes.headerCell}>DEADLINE</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {[
-          ['Necessary', 'elementor', 'Elementor', 'Persistent'],
-          ['Statistical', '_ga', 'Google', '2 years'],
-          ['Statistical', '_gat', 'Google', '1 day'],
-          ['Statistical', '_gid', 'Google', '1 day']
-        ].map((row, rowIndex) => (
-          <TableRow key={rowIndex}>
-            {row.map((cell, cellIndex) => (
-              <TableCell 
-              key={cellIndex}
-              className={
-                cellIndex === 0 
-                ? `${classes.firstColumnCell} ${classes.tableCell}` 
-                : `${classes.tableCell}`
-              }
-            >
-              {cell}
-            </TableCell>
-            ))}
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell className={classes.headerCell}>
+                      CATEGORY
+                    </TableCell>
+                    <TableCell className={classes.headerCell}>NAME</TableCell>
+                    <TableCell className={classes.headerCell}>
+                      SUPPLIER
+                    </TableCell>
+                    <TableCell className={classes.headerCell}>
+                      DEADLINE
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {[
+                    ["Necessary", "elementor", "Elementor", "Persistent"],
+                    ["Statistical", "_ga", "Google", "2 years"],
+                    ["Statistical", "_gat", "Google", "1 day"],
+                    ["Statistical", "_gid", "Google", "1 day"],
+                  ].map((row, rowIndex) => (
+                    <TableRow key={rowIndex}>
+                      {row.map((cell, cellIndex) => (
+                        <TableCell
+                          key={cellIndex}
+                          className={
+                            cellIndex === 0
+                              ? `${classes.firstColumnCell} ${classes.tableCell}`
+                              : `${classes.tableCell}`
+                          }
+                        >
+                          {cell}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
 
               <Typography variant="h4" gutterBottom>
                 How to manage preferences and provide or withdraw consent?
@@ -279,41 +295,47 @@ const CookiePolicy = () => {
               </Box>
 
               <Typography variant="h6" paragraph>
-              Data Protection Officer (DPO)
+                Data Protection Officer (DPO)
               </Typography>
 
               <Box>
-                <Typography variant="body1">Mrs. Monica Perego: dpo@dedagroup.it</Typography>
-                
+                <Typography variant="body1">
+                  Mrs. Monica Perego: dpo@dedagroup.it
+                </Typography>
               </Box>
 
               <Typography variant="h6" paragraph>
-              Data Processor
+                Data Processor
               </Typography>
 
               <Box>
-                <Typography variant="body1">Smart Community Lab, FBK</Typography>
+                <Typography variant="body1">
+                  Smart Community Lab, FBK
+                </Typography>
                 <Typography variant="body1">via Sommarive 18</Typography>
                 <Typography variant="body1">
-                38123 Povo (Trento), Italy
+                  38123 Povo (Trento), Italy
                 </Typography>
-                <Typography variant="body1">Controller contact email: info@interlink-project.eu</Typography>
+                <Typography variant="body1">
+                  Controller contact email: info@interlink-project.eu
+                </Typography>
               </Box>
 
-
-
               <Typography variant="body1" paragraph>
-                Given the objective complexity surrounding tracking technologies, Users are encouraged to contact Dedagroup S.p.A. at info@interlink-project.eu should they wish to receive any further information on the use of such technologies by this website.
+                Given the objective complexity surrounding tracking
+                technologies, Users are encouraged to contact Dedagroup S.p.A.
+                at info@interlink-project.eu should they wish to receive any
+                further information on the use of such technologies by this
+                website.
               </Typography>
 
-              
               <Typography variant="body1" paragraph>
-              This project has received funding from the European Union’s Horizon 2020 research and Innovation programme under Grant Agreement 959201
+                This project has received funding from the European Union’s
+                Horizon 2020 research and Innovation programme under Grant
+                Agreement 959201
               </Typography>
-
-             
             </div>
-          
+          </Paper>
         </Container>
       </Box>
     </>

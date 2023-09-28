@@ -8,7 +8,7 @@ import {
   Grid,
   Snackbar,
   Stack,
-  Typography
+  Typography,
 } from "@mui/material";
 import { ChevronRight } from "@mui/icons-material";
 import { HomeRow } from "components/home";
@@ -16,20 +16,28 @@ import { HomeLogo } from "components/Logo";
 import { Helmet } from "react-helmet-async";
 import { useTranslation } from "react-i18next";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import HomeBottomRow from "components/home/HomeBottomRow";
 import i18n from "translations/i18n";
-
-
-
-
+import Cookies from "js-cookie";
 
 const Home = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(true);
+  const [showCookiePopup, setShowCookiePopup] = useState(true);
+
+  useEffect(() => {
+    // Check if the cookie has a value when the component mounts
+    const storedPopupValue = Cookies.get("cookiePreference");
+
+    if (storedPopupValue) {
+      // If there's a value in the cookie, don't show the popup
+      setOpen(false);
+    }
+  }, []);
 
   const handleClick = () => {
     setOpen(true);
@@ -44,15 +52,23 @@ const Home = () => {
   };
 
   const handleAcceptAll = () => {
-    console.log('Accepted all cookies');
+    console.log("Accepted all cookies");
     // Here, implement logic to accept all cookies
-    setOpen(false);  // close the Snackbar
+
+    // This cookie will expire in 365 days.
+    Cookies.set("cookiePreference", "accept-all", { expires: 365 });
+
+    setOpen(false); // close the Snackbar
   };
 
   const handleAcceptEssential = () => {
-    console.log('Accepted only essential cookies');
+    console.log("Accepted only essential cookies");
     // Here, implement logic to accept only essential cookies
-    setOpen(false);  // close the Snackbar
+
+    // This cookie will expire in 365 days.
+    Cookies.set("cookiePreference", "accept-essentials", { expires: 365 });
+
+    setOpen(false); // close the Snackbar
   };
 
   const links = [
@@ -141,23 +157,24 @@ const Home = () => {
                   <Grid container spacing={2} alignItems="center">
                     <Grid item xs={8}>
                       This site uses cookies to offer a better browsing
-                      experience. More information about <Link to="/cookie-policy">how we use cookies.</Link>
+                      experience. More information about{" "}
+                      <Link to="/cookie-policy">how we use cookies.</Link>
                     </Grid>
                     <Grid item xs={4} container justifyContent="flex-end">
                       <Stack direction="row" spacing={2}>
-                      <Button 
-                            variant="contained" 
-                            size="large"
-                            onClick={handleAcceptAll}
+                        <Button
+                          variant="contained"
+                          size="large"
+                          onClick={handleAcceptAll}
                         >
-                            Accept all cookies
+                          Accept all cookies
                         </Button>
-                        <Button 
-                            variant="contained" 
-                            size="large"
-                            onClick={handleAcceptEssential}
+                        <Button
+                          variant="contained"
+                          size="large"
+                          onClick={handleAcceptEssential}
                         >
-                            Accept only essential cookies
+                          Accept only essential cookies
                         </Button>
                       </Stack>
                     </Grid>
@@ -325,60 +342,64 @@ const Home = () => {
           }
         />
 
-
-
-
-        
         <HomeBottomRow
           light={false}
           graphic={
-            <HomeLogo style={{ width: "60%", height: "auto" }} />
+            <Box>
+              <img
+                decoding="async"
+                width="150"
+                height="99"
+                src="https://interlink-project.eu/wp-content/uploads/2021/01/flag_yellow_150x99.jpg"
+                className="attachment-large size-large wp-image-165"
+                alt="the European flag"
+              />
+
+              <p>
+                This project has received funding from the European Union’s
+                Horizon 2020 research and Innovation programme under Grant
+                Agreement 959201
+              </p>
+            </Box>
           }
           right={
             <>
-             
-
-             {links.map(link => (
-              <Typography
-                color="textSecondary"
-                sx={{ my: 3 }}
-                variant="subtitle1"
-                data-cy={`home-link-${link.path.slice(1)}`}
-              >
-               
-                <Link
-
-                  color={
-                    location.pathname === link.path ? "primary" : "textSecondary"
-                  }
-
-
-
-                  component={RouterLink}
-                  to={link.path}
-                  underline="none"
-                  variant="body1"
-
-
-                  sx={{
-                    color: location.pathname === link.path ? 'primary.main' : 'grey.600 !important', // Adjust the colors
-                    textDecoration: 'none !important',
-                    '&:hover': {
-                      textDecoration: 'underline !important' // Optional: Add an underline on hover
-                    },
-                    transition: 'color 0.3s ease'
-                  }}
-
-
-
-                
-                  data-cy={`landingPage_link_${i18n.t(link.label).replace(" ", "_")}`}
+              {links.map((link) => (
+                <Typography
+                  color="textSecondary"
+                  sx={{ my: 3 }}
+                  variant="subtitle1"
+                  data-cy={`home-link-${link.path.slice(1)}`}
                 >
-                  {i18n.t(link.label)}
-                </Link>
-             
-              </Typography>
-            ))}
+                  <Link
+                    color={
+                      location.pathname === link.path
+                        ? "primary"
+                        : "textSecondary"
+                    }
+                    component={RouterLink}
+                    to={link.path}
+                    underline="none"
+                    variant="body1"
+                    sx={{
+                      color:
+                        location.pathname === link.path
+                          ? "primary.main"
+                          : "grey.600 !important", // Adjust the colors
+                      textDecoration: "none !important",
+                      "&:hover": {
+                        textDecoration: "underline !important", // Optional: Add an underline on hover
+                      },
+                      transition: "color 0.3s ease",
+                    }}
+                    data-cy={`landingPage_link_${i18n
+                      .t(link.label)
+                      .replace(" ", "_")}`}
+                  >
+                    {i18n.t(link.label)}
+                  </Link>
+                </Typography>
+              ))}
 
               <Divider />
 
@@ -387,43 +408,72 @@ const Home = () => {
                   display: "flex",
                   flexWrap: "wrap",
                   m: -1,
-                  padding:2,
-                  gap:2,
-                  alignItems: 'center',  // centers items vertically
-                  justifyContent: 'center'  // centers items horizontally
+                  padding: 2,
+                  gap: 2,
+                  alignItems: "center", // centers items vertically
+                  justifyContent: "center", // centers items horizontally
                 }}
               >
+                <Typography
+                  color="textSecondary"
+                  sx={{ my: 3 }}
+                  variant="subtitle1"
+                >
+                  <Link
+                    color={
+                      location.pathname === "/cookie-policy"
+                        ? "primary"
+                        : "textSecondary"
+                    }
+                    component={RouterLink}
+                    to="/cookie-policy"
+                    underline="none"
+                    variant="body1"
+                  >
+                    Cookie Policy
+                  </Link>
+                </Typography>
 
-           
-            
+                <Typography
+                  color="textSecondary"
+                  sx={{ my: 3 }}
+                  variant="subtitle1"
+                >
+                  <Link
+                    color={
+                      location.pathname === "/privacy"
+                        ? "primary"
+                        : "textSecondary"
+                    }
+                    component={RouterLink}
+                    to="/privacy"
+                    underline="none"
+                    variant="body1"
+                  >
+                    Privacy Policy
+                  </Link>
+                </Typography>
 
-            <Typography color="textSecondary" sx={{ my: 3 }} variant="subtitle1" >
-              <Link
-                color={location.pathname === "/cookie-policy" ? "primary" : "textSecondary"}
-                component={RouterLink}
-                to="/cookie-policy"
-                underline="none"
-                variant="body1"
-              >
-                Cookie Policy
-              </Link>
-            </Typography>
-
-            <Typography color="textSecondary" sx={{ my: 3 }} variant="subtitle1" >
-              <Link
-                color={location.pathname === "/terms-of-use" ? "primary" : "textSecondary"}
-                component={RouterLink}
-                to="/privacy"
-                underline="none"
-                variant="body1"
-              >
-                Terms of Use
-              </Link>
-            </Typography>
-
+                <Typography
+                  color="textSecondary"
+                  sx={{ my: 3 }}
+                  variant="subtitle1"
+                >
+                  <Link
+                    color={
+                      location.pathname === "/terms-of-use"
+                        ? "primary"
+                        : "textSecondary"
+                    }
+                    component={RouterLink}
+                    to="/terms"
+                    underline="none"
+                    variant="body1"
+                  >
+                    Terms of Use
+                  </Link>
+                </Typography>
               </Box>
-
-              
             </>
           }
         />
