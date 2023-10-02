@@ -96,7 +96,7 @@ export const routes = [
     },
     {
       path:'certificatedownload',
-      element: <CertificateDownload/>
+      element: <AuthGuard><CertificateDownload/></AuthGuard>
     },
     
  
