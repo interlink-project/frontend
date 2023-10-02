@@ -11,6 +11,7 @@ import PublicCoproductionProfile from 'pages/dashboard/publiccoproductions/Publi
 import CatalogueSelector from 'components/dashboard/CatalogueSelector';
 import SucessfullClaimRegistration from 'pages/dashboard/assignments/sucessfullClaimRegistration';
 import CoproductionProcessDownload from 'pages/dashboard/coproductionprocesses/CoproductionProcessDownload';
+import CertificateDownload from 'pages/CertificateDownload';
 
 
 const CoproductionProcessProfile = Loadable(
@@ -92,6 +93,10 @@ export const routes = [
     {
       path: 'privacy',
       element: <PrivacyPolicy />,
+    },
+    {
+      path:'certificatedownload',
+      element: <CertificateDownload/>
     },
     
  
