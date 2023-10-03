@@ -28,6 +28,7 @@ import SettingsPopover from "./SettingsPopover";
 import React from "react";
 import useAuth from "../../hooks/useAuth";
 import UserNotificationsPopover from "./UserNotificationsPopover";
+import TermsPopover from "./TermsPopover";
 
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
@@ -140,6 +141,9 @@ const DashboardNavbar = (props) => {
         />
         <Box sx={{ ml: 1 }}>
           <HelpPopover />
+        </Box>
+        <Box sx={{ ml: 1 }}>
+          <TermsPopover />
         </Box>
         <Box sx={{ ml: 1 }}>
           <SettingsPopover />
