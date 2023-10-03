@@ -4,9 +4,11 @@ import {
     Typography,
     TextField,
     Paper,
-    CircularProgress
+    CircularProgress,
+    InputAdornment,
+    IconButton
 } from "@mui/material";
-import { Download } from "@mui/icons-material";
+import { Download,Visibility ,VisibilityOff  } from "@mui/icons-material";
 import { useState } from "react";
 import { usersApi } from "__api__";
 import { ArchiveOutlined } from "@mui/icons-material";
@@ -16,6 +18,12 @@ const CertificateDownload = () => {
     const [privateCode, setPrivateCode] = useState('');
     const [errorMessage, setErrorMessage] = useState(null);
     const [isDownloading, setIsDownloading] = useState(false);
+
+    const [showPassword, setShowPassword] = useState(false);
+  
+    const handleTogglePasswordVisibility = () => {
+      setShowPassword(!showPassword);
+    };
 
     const handleDownload = async () => {
         setIsDownloading(true);
@@ -68,9 +76,24 @@ const CertificateDownload = () => {
                 <TextField
                     label="Enter Private Code"
                     variant="outlined"
+                    type={showPassword ? 'text' : 'password'}
                     value={privateCode}
                     onChange={(e) => setPrivateCode(e.target.value)}
                     fullWidth
+
+                    InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              edge="end"
+                              onClick={handleTogglePasswordVisibility}
+                            >
+                              {showPassword ? <Visibility /> : <VisibilityOff />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                 />
                 <Box display="flex" justifyContent="center" marginTop={2}>
                     <Button
