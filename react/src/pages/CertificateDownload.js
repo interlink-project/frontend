@@ -74,7 +74,7 @@ const CertificateDownload = () => {
                 </Typography>
 
                 <TextField
-                    label="Enter Private Code"
+                    label="Ingrese el código privado"
                     variant="outlined"
                     type={showPassword ? 'text' : 'password'}
                     value={privateCode}
