@@ -66,11 +66,11 @@ const CertificateDownload = () => {
                         marginBottom: '20px'
                     }}
                 >
-                    Certificate Download Page
+                    Página de descarga de certificados
                 </Typography>
 
                 <Typography variant="body1" align="center" style={{ marginBottom: '15px' }}>
-                    Please enter your provided private code in the field below and click on the download button to retrieve your certificate.
+                Ingrese el código privado proporcionado en el campo a continuación y haga clic en el botón de descarga para recuperar su certificado.
                 </Typography>
 
                 <TextField
@@ -102,7 +102,7 @@ const CertificateDownload = () => {
                         onClick={handleDownload}
                         startIcon={isDownloading ? <CircularProgress size={24} /> : <Download />}
                     >
-                        Download Certificate
+                        Descargar Certificado
                     </Button>
                 </Box>
 
