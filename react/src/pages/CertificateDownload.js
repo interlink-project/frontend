@@ -34,7 +34,7 @@ const CertificateDownload = () => {
         } catch (error) {
             // Assuming your API might return a message in error.response.data.message
             // Adjust based on your actual error structure
-            setErrorMessage(error.response?.data?.message || "There was a problem with the download operation, make sure the code is valid.");
+            setErrorMessage(error.response?.data?.message || "Ha habido un problema con la descarga del certificado. Compruebe que el código es correcto");
         } finally {
             setIsDownloading(false);
         }
