@@ -71,6 +71,7 @@ import CreateSchema from "components/dashboard/SchemaSelector";
 import RewardSettings from "./RewardSettings";
 import MakePublicDialog from "components/dashboard/coproductionprocesses/MakePublicDialog";
 import { set } from "store";
+import DownloadDialog from "./DownloadDialog";
 
 const SettingsTab = () => {
   const [isCloning, setIsCloning] = useState(false);
@@ -82,6 +83,7 @@ const SettingsTab = () => {
   const [openDialogSchema, setOpenDialogSchema] = useState(false);
   const [openDialogPublic, setOpenDialogPublic] = useState(false);
   const [selectedTab, setSelectedTab] = useState("0");
+  const [showDownloadDialog,setShowDownloadDialog]= useState(false);
 
   const handleCloseDialogSchema = () => {
     setOpenDialogSchema(false);
@@ -151,23 +153,24 @@ const SettingsTab = () => {
 
   const onDownload = () => {
 
-    setIsDownloading(true);
+    setShowDownloadDialog(true)
+    // setIsDownloading(true);
     //alert('Downloading the file');
-    coproductionProcessesApi.download(process.id).then((res) => {
-      if (mounted.current) {
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("download", process.name+".zip");
-        document.body.appendChild(link);
+    // coproductionProcessesApi.download(process.id).then((res) => {
+    //   if (mounted.current) {
+    //     const url = window.URL.createObjectURL(new Blob([res.data]));
+    //     const link = document.createElement("a");
+    //     link.href = url;
+    //     link.setAttribute("download", process.name+".zip");
+    //     document.body.appendChild(link);
         
-        setIsDownloading(false);
+    //     setIsDownloading(false);
 
-        link.click();
+    //     link.click();
 
         
-      }
-    }); 
+    //   }
+    // }); 
   };
 
   const onRemove = () => {
@@ -1465,6 +1468,8 @@ const SettingsTab = () => {
             </Stack>
           </DialogContent>
         </Dialog>
+
+        <DownloadDialog open={showDownloadDialog} handleClose={() => setShowDownloadDialog(false)} title={t("Downloading Process")} />
 
         {!hasSchema && (
           <Dialog

@@ -75,7 +75,7 @@ import {
     return (
       <>
         {" "}
-        <Tooltip title={t("Policy")}>
+        <Tooltip title={t("Policies")}>
           <IconButton
             color="inherit"
             ref={anchorRef}

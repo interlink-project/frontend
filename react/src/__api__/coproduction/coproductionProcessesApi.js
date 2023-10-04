@@ -16,6 +16,13 @@ class CoproductionProcessesApi extends GeneralApi {
     }
   }
 
+  async last_created_zip(id){
+    if (id) {
+      const res = await axiosInstance.get(`/${this.url}/${id}/last_created_zip`, { responseType: 'blob' });
+      return res;
+    }
+  }
+
   async importProcess(file) {
     if (file) {
       const formData = new FormData();
