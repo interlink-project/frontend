@@ -520,6 +520,7 @@ const ContributionsTabs = () => {
         if (contributions.length === 0) {
           console.log("NO CONTRIBUTIONS");
           setClosedTask(task.completed);
+          setLoadingContributions(false);
           return;
         }
         let total_contribs = 0;
