@@ -87,6 +87,8 @@ const DownloadDialog = ({ open, handleClose, title }) => {
     fetchLastZipInfo();
     setIsLinkReady(false);
     setTimeoutExceeded(false);
+    setErrorMessage('');
+    setIsError(false);
   }, [open]);
 
   // Form submission handler
