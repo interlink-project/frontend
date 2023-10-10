@@ -38,7 +38,6 @@ const DownloadDialog = ({ open, handleClose, title }) => {
   const [timeoutExceeded, setTimeoutExceeded] = useState(false);
   const [lastZipInfo, setLastZipInfo] = useState("");
 
-
   function formatDate(dateTimeStr) {
     const year = dateTimeStr.substring(0, 4);
     const month = dateTimeStr.substring(4, 6);
@@ -47,14 +46,21 @@ const DownloadDialog = ({ open, handleClose, title }) => {
     const minute = dateTimeStr.substring(11, 13);
     const second = dateTimeStr.substring(13, 15);
 
-    const dateObj = new Date(year, month - 1, day, hour, minute, second);  // month is 0-indexed
+    const dateObj = new Date(year, month - 1, day, hour, minute, second); // month is 0-indexed
 
     // Use toLocaleDateString and toLocaleTimeString to format date and time
-    const formattedDate = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-    const formattedTime = dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    const formattedDate = dateObj.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+    const formattedTime = dateObj.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
     return `${formattedDate} ${formattedTime}`;
-}
+  }
 
   const fetchLastZipInfo = async () => {
     try {
@@ -64,13 +70,10 @@ const DownloadDialog = ({ open, handleClose, title }) => {
 
       // Assuming the response contains file name and datetime information
       if (response.data) {
-
         const last_url = window.URL.createObjectURL(new Blob([response.data]));
         setLastdownloadURL(last_url);
 
-
-
-        console.log(response)
+        console.log(response);
         const dateStr = response.headers["x-file-creation-datetime"];
         setLastZipInfo(formatDate(dateStr));
       }
@@ -97,7 +100,7 @@ const DownloadDialog = ({ open, handleClose, title }) => {
     const timeoutId = setTimeout(() => {
       setIsWorkingInLink(false); // Stop loading
       setTimeoutExceeded(true); // Indicate that the timeout has been exceeded
-    }, 10000); // e.g., wait for 10 seconds
+    }, 15000); // e.g., wait for 15 seconds
 
     coproductionProcessesApi
       .download(process.id)
@@ -141,38 +144,28 @@ const DownloadDialog = ({ open, handleClose, title }) => {
       <DialogTitle sx={{ mt: 1, fontWeight: "bold", minWidth: "400px" }}>
         {t(title)}
       </DialogTitle>
-      <IconButton
-        aria-label="close"
-        onClick={handleClose}
-        sx={{
-          position: "absolute",
-          right: 0,
-          top: 0,
-
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <Close />
-      </IconButton>
+      
+      {lastZipInfo && (
       <DialogContent dividers>
-      <Grid container spacing={3}>
-            <Grid item xs={12} style={{ textAlign: "center" }}>
-        {lastZipInfo && (
-          <>
-            <Typography sx={{ fontWeight: 'bold' }}>Last zip file created on:</Typography>
-
-            <Typography>{lastZipInfo}</Typography>
-
+        <Grid container spacing={3}>
+          <Grid item xs={12} style={{ textAlign: "center" }}>
             
+              <>
+                <Typography sx={{ fontWeight: "bold" }}>
+                  Last zip file created on:
+                </Typography>
 
-            <a href={lastdownloadURL} download={`${process.name}.zip`}>
-                    Download Last Created Zip
-                  </a>
-          </>
-        )}
-        </Grid>
+                <Typography>{lastZipInfo}</Typography>
+
+                <a href={lastdownloadURL} download={`${process.name}.zip`}>
+                  Download Last Created Zip
+                </a>
+              </>
+            
+          </Grid>
         </Grid>
       </DialogContent>
+      )}
       <DialogContent dividers>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={3}>
@@ -183,17 +176,22 @@ const DownloadDialog = ({ open, handleClose, title }) => {
                 variant="contained"
                 color="primary"
                 onClick={handleSubmit}
-                startIcon={isWorkingInLink ? <CircularProgress size={24} /> : <Download />}
+                startIcon={
+                  isWorkingInLink ? (
+                    <CircularProgress size={24}  color="secondary" />
+                  ) : (
+                    <Download />
+                  )
+                }
               >
                 {t("Create a new download zip file")}
               </Button>
-
-              <br/>
+              <br />
               {timeoutExceeded && !isLinkReady && (
                 <span>
                   {t(
-                    "The process of creating the zip file is taking longer than expected. You can choose to wait, or you can return later to check if the link has been generated."
-                  )}
+                    "The process of creating the ZIP file is a lengthy process. You can either wait or return later to check the most recently generated link once the export has been completed"
+                  )+""}
                 </span>
               )}
               {isLinkReady && (
@@ -213,7 +211,7 @@ const DownloadDialog = ({ open, handleClose, title }) => {
                   </InputLabel>
 
                   <a href={downloadURL} download={`${process.name}.zip`}>
-                    Download Link
+                    Newly created export zip download
                   </a>
                 </div>
               )}

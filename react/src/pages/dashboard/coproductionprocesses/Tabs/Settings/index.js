@@ -1094,7 +1094,7 @@ const SettingsTab = () => {
                     </Alert>
                   </Card>
 
-                  {/* Download Coproduction Process */}
+                  {/* Download co-production process */}
                   <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
                     <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
                       {t("Download process")}
