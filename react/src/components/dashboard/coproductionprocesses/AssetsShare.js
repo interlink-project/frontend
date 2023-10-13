@@ -564,15 +564,15 @@ export default function AssetsShare({
 
                       <Typography sx={{ mt: 1, mb: 1 }} variant="body1">
                         {t(
-                          "If a user is included in multiple teams, the user only will receive one email."
-                        ) + ":"}
+                          "If a user is included in multiple teams, the user only will receive one email"
+                        ) + "."}
                       </Typography>
 
                       <FormGroup>
                         {listTeams.length === 0 &&
                           t(
-                            "No teams assigned to this task. If you want to be able to share this task with your colleagues, please assign a team to it."
-                          )}
+                            "No teams assigned to this task please assign a team to it"
+                          )+"."}
                         {listTeams.length > 0 &&
                           listTeams.map((team) => (
                             <>
@@ -630,7 +630,7 @@ export default function AssetsShare({
                   <TextField
                     sx={{ mb: 3 }}
                     id="standard-basic"
-                    label="Subject"
+                    label={t("Subject")}
                     variant="standard"
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
@@ -638,7 +638,7 @@ export default function AssetsShare({
 
                   <TextField
                     id="outlined-multiline-static"
-                    label="Instructions"
+                    label={t("Instructions")}
                     multiline
                     rows={4}
                     defaultValue="Default Value"
@@ -652,11 +652,11 @@ export default function AssetsShare({
                     sx={{ mt: 1, mb: 1, fontWeight: "bold" }}
                     variant="body1"
                   >
-                    {"- " + t("Option to share") + ":"}
+                    {"- " + t("Options to share") + ":"}
                   </Typography>
                   <Typography sx={{ mt: 1, mb: 1 }} variant="body1">
                     {t(
-                      "You can choose to the follow options of the share link"
+                      "You can choose one of the follow ways to share the link"
                     ) + ":"}
                   </Typography>
 

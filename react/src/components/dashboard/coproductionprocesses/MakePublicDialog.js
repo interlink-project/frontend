@@ -148,14 +148,14 @@ const MakePublicDialog = ({ open, handleClose, switchEvent }) => {
               >
                 
 
-                {t("We want to identify possible new collaborators that can contribute with their knowledge and enthusiasm to realize this co-production process. Please outline skills, background knowledge and experience ideally sought by this collaborative process") + "?"}
+                {t("We want to identify possible new collaborators that can contribute with their knowledge and enthusiasm") + "?"}
                
                 
                 
               </InputLabel>
               <TextField
                 fullWidth
-                label="Type here"
+                label={t("Type here")}
                 name="Requirements"
                 onChange={(e) => {
                   setRequirements(e.target.value);

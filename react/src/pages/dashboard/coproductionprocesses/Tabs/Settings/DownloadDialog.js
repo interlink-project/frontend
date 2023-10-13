@@ -154,13 +154,13 @@ const DownloadDialog = ({ open, handleClose, title }) => {
             
               <>
                 <Typography sx={{ fontWeight: "bold" }}>
-                  Last zip file created on:
+                  {t("Last zip file created on")+":"}
                 </Typography>
 
                 <Typography>{lastZipInfo}</Typography>
 
                 <a href={lastdownloadURL} download={`${process.name}.zip`}>
-                  Download Last Created Zip
+                  {t("Download Last Created Zip")}
                 </a>
               </>
             
@@ -213,7 +213,7 @@ const DownloadDialog = ({ open, handleClose, title }) => {
                   </InputLabel>
 
                   <a href={downloadURL} download={`${process.name}.zip`}>
-                    Newly created export zip download
+                    {t("Newly created export zip download")}
                   </a>
                 </div>
               )}

@@ -371,14 +371,14 @@ const NewAssignationClaim = ({ assignmentId = null }) => {
                   <form onSubmit={handleSubmit}>
                     <Box sx={{ mt: 3 }}>
                       <Typography variant="h6" component="h2">
-                        Introduce the details of your contribution:
+                        {t("Introduce the details of your contribution")+":"}
                       </Typography>
                       <TextField
                         required
                         error={Boolean(touched.title && errors.title)}
                         fullWidth
                         helperText={touched.title && errors.title}
-                        label="Title"
+                        label={t("Title")}
                         name="title"
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -397,7 +397,7 @@ const NewAssignationClaim = ({ assignmentId = null }) => {
                         )}
                         fullWidth
                         helperText={touched.description && errors.description}
-                        label="Description"
+                        label={t("Description")}
                         name="description"
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -412,7 +412,7 @@ const NewAssignationClaim = ({ assignmentId = null }) => {
                           sx={{ mt: 2 }}
                           select
                           fullWidth
-                          label="Action Role"
+                          label={t("Action Role")}
                           name="action_role"
                           value={values.action_role}
                           onChange={handleChange}

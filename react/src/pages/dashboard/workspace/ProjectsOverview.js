@@ -492,7 +492,7 @@ const ProjectsOverview = () => {
 
                 <Grid sx={{m:2}}  item>
                 <Button variant="contained" color="primary" startIcon={<FileUpload />} size="small" sx={{ textAlign: "center", mt: 1, mb: 2 }} onClick={handleImportProcess} data-cy="help">
-                    {t("Import a processes")}
+                    {t("Import a process")}
                   </Button>
                   </Grid>
                 
@@ -586,7 +586,7 @@ const ProjectsOverview = () => {
             <Grid container spacing={2}>
               <Grid item xs={6} md={8}>
                 <Typography variant="p" sx={{ mt: 3 }}>
-                  {t("Set up a new collaborative coproduction process utilizing an already downloaded zip file"+".")}
+                  {t("Set up a new collaborative coproduction process utilizing an already downloaded zip file")+"."}
                 </Typography>
 
                 {/* <Typography variant="p" sx={{ mt: 3 }}>

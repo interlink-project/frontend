@@ -121,7 +121,7 @@ const PublicCoproductionResults = ({
           variant="h6"
           data-cy={`publiccoproductions-catalogue-total-${total}`}
         >
-          {t("Processes found", { total })}
+          {total !== undefined ? t(`Processes found`)+': '+`${total}` : t('No process found')}
         </Typography>
         <Box
           sx={{

@@ -188,7 +188,7 @@ const PublicCoproductionSidebar = (props) => {
             sx={{ textAlign: "center", width: "100%", mt: 3, mb: 3 }}
             variant="h6"
           >
-            Topics
+            {t("Topics")}
             {/*  {!loading && !updating && process ? process.name : <Skeleton />} */}
           </Typography>
 

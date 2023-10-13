@@ -296,7 +296,7 @@ export default function Resources({}) {
                 
                   <Divider orientation="vertical" flexItem />
                   <Typography color="text.secondary">
-                    Claims ({assignment.claims.length})
+                    {t("Claims")} ({assignment.claims.length})
                   </Typography>
                 </Box>
               </AccordionSummary>
@@ -471,15 +471,16 @@ export default function Resources({}) {
                     color="textPrimary"
                     variant="h5"
                     data-cy="welcome-to-user"
+                    sx={{m:2}}
                   >
                     {t("User Assignments")}
                   </Typography>
                   <Typography
                     color="textSecondary"
                     variant="subtitle2"
-                    
+                    sx={{ml:2,mb:1}}
                   >
-                    {t("Here are the recent assignments where you may work") +
+                    {t("These are the most recent assignments you can work on") +
                       "."}
                   </Typography>
                 </Grid>

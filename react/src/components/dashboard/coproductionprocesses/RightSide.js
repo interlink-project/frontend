@@ -374,7 +374,7 @@ const RightSide = ({ softwareInterlinkers }) => {
           handleShare(asset);
           closeMenuItem();
         },
-        text: t("Assign/Share"),
+        text: t("assign share"),
         icon: <CoPresent fontSize="small" />,
       });
 

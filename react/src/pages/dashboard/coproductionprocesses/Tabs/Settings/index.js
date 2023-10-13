@@ -1097,7 +1097,7 @@ const SettingsTab = () => {
                   {/* Download co-production process */}
                   <Card sx={{ border: "1px solid red", p: 5, my: 4 }}>
                     <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
-                      {t("Download process")}
+                      {t("Download the process")}
                     </Typography>
                     <Alert
                       severity="warning"
@@ -1116,7 +1116,7 @@ const SettingsTab = () => {
                       }
                     >
                       {t(
-                        "This option lets you download the structure of the co-production process and create a copy of the resources in portable document format. This enables you to replicate the co-production process in another collaborative setting. It's important to note that the files will be copies of the original documents"
+                        "This option lets you download the structure of the co"
                       ) + "."}
                     </Alert>
                   </Card>
@@ -1145,7 +1145,7 @@ const SettingsTab = () => {
                     >
                       {t(
                         "This option will show the process startup guide to all users"
-                      )}
+                      )+"."}
                     </Alert>
                   </Card>
 
@@ -1172,7 +1172,7 @@ const SettingsTab = () => {
                     >
                       {t(
                         "This option will allow new collaborators to join the process"
-                      )}
+                      )+"."}
                     </Alert>
                   </Card>
 

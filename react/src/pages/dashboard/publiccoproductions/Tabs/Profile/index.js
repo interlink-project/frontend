@@ -278,7 +278,7 @@ export default function Profile({}) {
 
     {tab === "reviews" ? (
       <Box sx={{ p: 3, justifyContent: "center" }}>
-        Review Tab
+        {t("Review Tab")}
         <PublicCoproductionReviews publiccoproduction={selectedPubliccoproduction} />
       </Box>
     ) : (

@@ -488,7 +488,7 @@ export default function OverviewStory({}) {
 
           {tab === "reviews" ? (
             <Box sx={{ p: 3, justifyContent: "center" }}>
-              Review Tab
+              {t("Review Tab")}
               <StoryReviews story={selectedStory} />
             </Box>
           ) : (
