@@ -357,7 +357,7 @@ export default function Resources({}) {
                           startIcon={<Delete />}
                           onClick={() => handleDeleteClaim(claim)}
                         >
-                          Delete
+                          {t("Delete")}
                         </Button>
                       </CardActions> 
 

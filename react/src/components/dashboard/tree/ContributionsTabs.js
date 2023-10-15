@@ -448,42 +448,97 @@ const ContributionsTabs = () => {
     setListUsers([]);
   };
 
+  // const handleCloseTask = async () => {
+  //   console.log("Closing task", rows);
+  //   for (let row of rows) {
+  //     await gamesApi.addClaim(
+  //       process.id,
+  //       selectedTreeItem.id,
+  //       row.id,
+  //       row.name,
+  //       CONTRIBUTION_LEVELS[row.contribution]
+  //     );
+  //   }
+  //   console.log("Claims done")
+
+  //   //Save user data and contribution in data object
+  //   const data = {};
+  //   for (let row of rows) {
+  //     const user = await usersApi.get(row.id);
+  //     data[row.id] = {
+  //       name: user.full_name,
+  //       email: user.email
+  //     };
+  //   }
+  //   console.log("Data", data);
+
+  //   gamesApi.completeTask(process.id, selectedTreeItem.id, data).then((res) => {
+  //     console.log(res);
+  //     setClosedTask(true);
+  //   });
+
+  //   tasksApi.update(selectedTreeItem.id, { status: "finished" }).then((res) => {
+  //     console.log(res);
+  //   });
+
+  //   setLoadingContributions(ture);
+  //   //Remove temporal list of contributions levels
+  //   dispatch(setContributionsListLevels([]));
+  // };
+
   const handleCloseTask = async () => {
-    console.log("Closing task", rows);
-    for (let row of rows) {
-      await gamesApi.addClaim(
-        process.id,
-        selectedTreeItem.id,
-        row.id,
-        row.name,
-        CONTRIBUTION_LEVELS[row.contribution]
-      );
-    }
-    console.log("Claims done")
-
-    //Save user data and contribution in data object
-    const data = {};
-    for (let row of rows) {
-      const user = await usersApi.get(row.id);
-      data[row.id] = {
-        name: user.full_name,
-        email: user.email
-      };
-    }
-    console.log("Data", data);
-
-    gamesApi.completeTask(process.id, selectedTreeItem.id, data).then((res) => {
-      console.log(res);
+    try {
+      console.log("Closing task", rows);
+      const claimPromises = rows.map(async (row) => {
+        await gamesApi.addClaim(
+          process.id,
+          selectedTreeItem.id,
+          row.id,
+          row.name,
+          CONTRIBUTION_LEVELS[row.contribution]
+        );
+      });
+  
+      await Promise.all(claimPromises);
+      console.log("Claims done");
+  
+      // Save user data and contribution in data object
+      const data = {};
+      const userDataPromises = rows.map(async (row) => {
+        try {
+          const user = await usersApi.get(row.id);
+          data[row.id] = {
+            name: user.full_name,
+            email: user.email
+          };
+        } catch (userError) {
+          console.error(`Error fetching user data for row ${row.id}:`, userError);
+          // Handle user data fetch error here
+        }
+      });
+  
+      await Promise.all(userDataPromises);
+      console.log("Data", data);
+  
+      // Use await for these API calls for clarity and error handling
+      const completeTaskResponse = await gamesApi.completeTask(process.id, selectedTreeItem.id, data);
+      console.log(completeTaskResponse);
       setClosedTask(true);
-    });
-
-    tasksApi.update(selectedTreeItem.id, { status: "finished" }).then((res) => {
-      console.log(res);
-    });
-
-    setLoadingContributions(ture);
-    //Remove temporal list of contributions levels
-    dispatch(setContributionsListLevels([]));
+  
+      const updateTaskResponse = await tasksApi.update(selectedTreeItem.id, { status: "finished" });
+      console.log(updateTaskResponse);
+  
+      setLoadingContributions(true);
+  
+      // Remove temporal list of contributions levels
+      dispatch(setContributionsListLevels([]));
+    } catch (error) {
+      console.error("An error occurred:");
+      console.error("Error Name:", error.name);
+      console.error("Error Message:", error.message);
+      console.error("Stack Trace:", error.stack);
+      // Handle other errors here
+    }
   };
 
   useEffect(() => {
@@ -1175,7 +1230,7 @@ const ContributionsTabs = () => {
 
                 severity="warning"
                 sx={{ m: 1.35, float: "right", alignItems: "center" }}
-              >{t("This task does not have a complexity defined" + ".")}
+              >{t("This task does not have a complexity defined") + "."}
               </Alert>
               }
             </>

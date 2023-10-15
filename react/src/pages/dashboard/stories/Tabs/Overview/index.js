@@ -252,10 +252,10 @@ export default function OverviewStory({}) {
                 sx={{ mt: 3,mb:3,ml:5 }}
               >
                 <Typography color="textSecondary" variant="subtitle2">
-                  Start: {selectedStory.data_story.start_at}
+                  {t("Started at")}: {selectedStory.data_story.start_at}
                 </Typography>
                 <Typography color="textSecondary" variant="subtitle2">
-                  End: {selectedStory.data_story.end_at}
+                {t("Ended at")}: {selectedStory.data_story.end_at}
                 </Typography>
               </Grid>
 
@@ -276,7 +276,7 @@ export default function OverviewStory({}) {
                     variant="h6"
                     sx={{ ml: 5, mt: 3 }}
                   >
-                    Objectives
+                    {t("Objectives")}
                   </Typography>
                   <TwoColumnsText
                     text={selectedStory.data_story.objectives}
@@ -295,7 +295,7 @@ export default function OverviewStory({}) {
                     variant="h6"
                     sx={{ ml: 5, mt: 3 }}
                   >
-                    Results
+                    {t("Results")}
                   </Typography>
                   <TwoColumnsText
                     text={selectedStory.data_story.results}
@@ -314,7 +314,7 @@ export default function OverviewStory({}) {
                     variant="h6"
                     sx={{ ml: 5, mt: 3 }}
                   >
-                    Lessons Learned
+                    {t("Lessons Learned")}
                   </Typography>
                   <TwoColumnsText
                     text={selectedStory.data_story.lessons_learned}
@@ -333,7 +333,7 @@ export default function OverviewStory({}) {
                     variant="h6"
                     sx={{ ml: 5, mt: 3 }}
                   >
-                    Incentives
+                    {t("Incentives")}
                   </Typography>
                   <TwoColumnsText
                     text={selectedStory.data_story.incentives}
@@ -346,7 +346,7 @@ export default function OverviewStory({}) {
 
               <Divider />
               <Typography color="textSecondary" variant="h6" sx={{ ml: 5,mt:3 }}>
-                Materials
+              {t("Materials")}
               </Typography>
 
               <Grid
@@ -375,7 +375,7 @@ export default function OverviewStory({}) {
 
                     <CardActions>
                       <Button href={material.link} size="small">
-                        View
+                      {t("View")}
                       </Button>
                     </CardActions>
                   </Card>
@@ -384,7 +384,7 @@ export default function OverviewStory({}) {
 
               <Divider />
               <Typography color="textSecondary" variant="h6" sx={{ ml: 5,mt:3 }}>
-                Owners
+              {t("Owners")}
               </Typography>
 
               <Grid
@@ -415,7 +415,7 @@ export default function OverviewStory({}) {
                     </CardContent> */}
                     <CardActions>
                       <Button href={owner.link} size="small">
-                        More
+                      {t("More")}
                       </Button>
                     </CardActions>
                   </Card>
@@ -429,7 +429,7 @@ export default function OverviewStory({}) {
 
               <Divider />
               <Typography color="textSecondary" variant="h6" sx={{ ml: 5,mt:3 }}>
-                Licenses
+              {t("Licenses")}
               </Typography>
               <Grid
                 container
@@ -454,7 +454,7 @@ export default function OverviewStory({}) {
 
               <Divider />
               <Typography color="textSecondary" variant="h6" sx={{ ml: 5,mt:3 }}>
-                Countries
+              {t("Countries")}
               </Typography>
 
               <Grid

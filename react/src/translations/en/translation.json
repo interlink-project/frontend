@@ -118,7 +118,6 @@
     "Type": "Type",
     "Members": "Members",
     "Your participation in the team": "Your participation in the team",
-    "None": "None",
     "No teams found in this organization": "No teams found in this organization",
     "Team number": "Team number",
     "Your participation in the organization": "Your participation in the organization",
@@ -422,7 +421,6 @@
     "Check the complexity of the task before closing it.": "Check the complexity of the task before closing it.",
     "The link has been copied to the clipboard": "The link has been copied to the clipboard",
     "No coproduction processes found": "No coproduction processes found",
-    "No assets found": "No assets found",
     "No tags": "No tags",
     "This task does not have a complexity defined." : "This task does not have a complexity defined.",
     "Load users from csv file": "Load users from csv file",
@@ -434,7 +432,6 @@
     "Award points": "Award points",
     "No contribution": "No contribution",
     "Points": "Points",
-    "Medium": "Medium",
     "Very low": "Very low",
     "Very high": "Very high",
     "None": "None",
@@ -452,7 +449,6 @@
     "Add contribution from multiple users included in a file": "Add contribution from multiple users included in a file",
     "An example of this file": "An example of this file",
     "Single user selected": "Single user selected",
-    "CSV option selected": "CSV option selected",
     "Team option selected": "Team option selected",
     "Select the Resource": "Select the Resource",
     "Fill in contribution information": "Fill in contribution information",
@@ -537,6 +533,25 @@
     "Import a process":"Import a process",
     "Import a Coproduction Process":"Import a Coproduction Process",
     "Set up a new collaborative coproduction process utilizing an already downloaded zip file":"Set up a new collaborative coproduction process utilizing an already downloaded zip file",
-    "Import from file":"Import from file"
+    "Import from file":"Import from file",
+    "Process Overview":"Process Overview",
+    "Clone the Process":"Clone the Process",
+    "Success Story Overview":"Success Story Overview",
+    "Showcase":"General Information",
+    "Started at":"Started at",
+    "Ended at":"Ended at",
+    "Objectives":"Objectives",
+    "Lessons Learned":"Lessons Learned",
+    "Materials":"Materials",
+    "Owners":"Owners",
+    "Licenses":"Licenses",
+    "Countries":"Countries",
+    "View":"View",
+    "More":"More",
+    "Rate this story":"Rate this story"
+
+
+
+
 
 }
