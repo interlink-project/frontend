@@ -82,6 +82,7 @@ const StyledTree = ({
   selectedTreeItem,
   setSelectedTreeItem,
   showIcon = false,
+  isCalledFromSelector = false,
 }) => {
   const { process } = useSelector((state) => state.process);
   const [all, setAll] = useState([]);
@@ -154,6 +155,7 @@ const StyledTree = ({
         )}
         </>
       ) : (
+        <>
         <TreeView
           aria-label="customized"
           expanded={expanded}
@@ -171,7 +173,7 @@ const StyledTree = ({
             setExpanded(nodeIds);
           }}
         >
-          {parent?.is_disabled === false && (
+            {(isCalledFromSelector === true || (isCalledFromSelector === false && parent?.is_disabled === false)) && (
             <StyledTreeItem
               icon={showIcon && statusIcon(parent.status)}
               key={parent.id}
@@ -204,7 +206,7 @@ const StyledTree = ({
             >
               {parent.children.map(
                 (objective) =>
-                  objective?.is_disabled === false && (
+                   (isCalledFromSelector === true || (isCalledFromSelector === false && objective?.is_disabled === false)) && ( 
                     <StyledTreeItem
                       icon={showIcon && statusIcon(objective.status)}
                       key={objective.id}
@@ -250,7 +252,7 @@ const StyledTree = ({
                     >
                       {objective.children.map(
                         (task) =>
-                          task?.is_disabled === false && (
+                            (isCalledFromSelector === true || (isCalledFromSelector === false && task?.is_disabled === false)) && ( 
                             <StyledTreeItem
                               icon={
                                 showIcon &&
@@ -309,8 +311,9 @@ const StyledTree = ({
                   )
               )}
             </StyledTreeItem>
-          )}
+           )} 
         </TreeView>
+        </>
       )}
     </>
   );

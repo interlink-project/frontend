@@ -272,6 +272,7 @@ const CreateSchema = () => {
                         parent={selectedParent}
                         selectedTreeItem={selectedTreeItem}
                         setSelectedTreeItem={setSelectedTreeItem}
+                        isCalledFromSelector={true}
                       />
                     </Grid>
                     <Grid
