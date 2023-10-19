@@ -1,4 +1,5 @@
 import {
+  Alert,
   Avatar,
   AvatarGroup,
   Box,
@@ -152,6 +153,8 @@ const ProjectsOverview = () => {
     width: "300px",
     height: "auto",
   };
+
+  const [showTakeLongMsn, setShowTakeLongMsn] = React.useState(false);
   
 
   const QuickSearchToolbar = () => {
@@ -411,16 +414,34 @@ const ProjectsOverview = () => {
   const handleCapture = async ({ target }) => {
     const file = target.files[0];
     if (file) {
-      setIsImporting(true);
-      const fileName = file.name;
-      console.log('File Name: ', fileName);
-      const response = await coproductionProcessesApi.importProcess(file);
-      // handle the response
-      console.log(response)
-      setIsImporting(false);
-      navigate(`/dashboard/coproductionprocesses/${response.id}/overview`);
+        setIsImporting(true);
+
+        // Prepare to show the modal after 10 seconds if the API call isn't done
+        const modalTimeout = setTimeout(() => {
+          setShowTakeLongMsn(true);
+        }, 10000);  // 10 seconds delay
+
+        try {
+            const fileName = file.name;
+            console.log('File Name: ', fileName);
+            const response = await coproductionProcessesApi.importProcess(file);
+
+            // Clear the timeout once the API call completes, if it's within 10 seconds.
+            // This will prevent the modal from showing.
+            clearTimeout(modalTimeout);
+
+            console.log(response);
+            setIsImporting(false);
+            navigate(`/dashboard/coproductionprocesses/${response.id}/overview`);
+        } catch (error) {
+            // Clear the timeout in case of an error as well, so the modal doesn't show if the error occurs within 10 seconds.
+            clearTimeout(modalTimeout);
+            setIsImporting(false);
+            console.error("Error during import:", error);
+            // Optionally, notify the user about the error
+        }
     }
-  };
+};
 
   return (
     <>
@@ -640,23 +661,39 @@ const ProjectsOverview = () => {
       </Dialog>
 
       <Dialog open={isImporting} >
-          
+      {showTakeLongMsn && (
+        <IconButton
+            aria-label="close"
+            onClick={() => setIsImporting(false)}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <Close />
+          </IconButton>
+        )}
 
-          <DialogContent sx={{ p: 2 }}>
-            <Stack spacing={2}>
-              <Item>
+        <DialogContent sx={{ 
+            p: 2, 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+            justifyContent: 'center' 
+        }}>
+            <Stack spacing={2} alignItems="center">
                 <div style={logoStyle}>
-                  <InterlinkAnimation />
+                    <InterlinkAnimation />
                 </div>
-              </Item>
-              <Item>
                 <div>{t("Importing the process please wait.")}</div>
-              </Item>
-              <Item>
                 <div>{t("The process could last some minutes.")}</div>
-              </Item>
+                {showTakeLongMsn && (
+                    <Alert severity="error">The process is taking longer than usual. You can wait here or close the window and check back later.</Alert>
+                )}
             </Stack>
-          </DialogContent>
+        </DialogContent>
         </Dialog>
     </>
   );

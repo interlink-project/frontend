@@ -25,18 +25,21 @@ class CoproductionProcessesApi extends GeneralApi {
 
   async importProcess(file) {
     if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-      
-      try {
-        const res = await axiosInstance.post(`/${this.url}/import`, formData);
-        console.log('the response of import is: ', res.data);
-        return res.data;
-      } catch (error) {
-        console.error(error);
-      }
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const res = await axiosInstance.post(`/${this.url}/import`, formData, {
+                timeout: 240000 // Set timeout to 4 min
+            });
+            console.log('the response of import is: ', res.data);
+            return res.data;
+        } catch (error) {
+            // If the request took longer than 24000 seconds, it will throw an error which you can catch here
+            console.error(error);
+        }
     }
-  }
+}
 
 
   async getPublicProcesses(params = {}, language = getLanguage()) {
