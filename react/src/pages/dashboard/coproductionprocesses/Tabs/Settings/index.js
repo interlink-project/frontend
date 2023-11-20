@@ -267,8 +267,8 @@ const SettingsTab = () => {
     </>
   );
 
-  const changeRewarding = async (status) => {
-    const values = { incentive_and_rewards_state: status };
+  const changeRewarding = async (status, leaderboard) => {
+    const values = { incentive_and_rewards_state: status, leaderboard: leaderboard };
     if (values.incentive_and_rewards_state) {
       const taskList = prepareGameTemplate(tree);
       let res = await gamesApi.setGame(process.id, taskList);
@@ -1212,8 +1212,8 @@ const SettingsTab = () => {
                         <Lightbox onClose={handleCloseLightbox}>
                           <RewardSettings
                             onClose={handleCloseLightbox}
-                            activateReward={() => {
-                              changeRewarding(true);
+                            activateReward={(leaderboard) => {
+                              changeRewarding(true, leaderboard);
                             }}
                           />
                         </Lightbox>

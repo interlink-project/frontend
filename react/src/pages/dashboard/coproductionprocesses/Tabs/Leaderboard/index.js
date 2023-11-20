@@ -65,6 +65,7 @@ const LeaderboardTab = ({ }) => {
         let res = await gamesApi.getGame(process.id);
         setGame(res[0]);
         setLoading(false);
+        console.log(process.leaderboard)
     }, []);
 
 
