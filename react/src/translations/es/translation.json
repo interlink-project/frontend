@@ -661,7 +661,15 @@
     "14GOVERNINGLAW": "14. LEY APLICABLE",
     "TheseLegalTermsaregoverned": "Estos Términos Legales están regidos e interpretados de acuerdo con las leyes de Bélgica.",
     "15CONTACTUS": "15. CONTÁCTANOS",
-    "Inordertoresolvea": "Para resolver una queja sobre los Servicios o para recibir más información sobre el uso de los Servicios, por favor contáctanos en "
+    "Inordertoresolvea": "Para resolver una queja sobre los Servicios o para recibir más información sobre el uso de los Servicios, por favor contáctanos en ",
+
+    "Error while clonning":"Se ha producido un error en el clonado",
+    "Error while publishing the story":"Se ha producido un error mientras se publicaba la historia",
+    "Publishing the Story please wait":"Publicando la historia por favor espere",
+    "The process could last some minutes":"El proceso puede durar algunos minutos",
+    "The process of publishing a story can take a long time":"El proceso de publicación de una historia puede llevar mucho tiempo. Puede esperar o volver más tarde para comprobar si el proceso se ha completado",
+    "Cloning the project please wait":"Clonando el proceso por favor espere",
+    "The process of creating a clone of an entire process can":"El proceso de creación de un clon de un proceso completo puede llevar mucho tiempo. Puede esperar o volver más tarde para comprobar si el proceso se ha completado"
 
 
 }

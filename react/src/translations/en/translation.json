@@ -653,8 +653,15 @@
     "14GOVERNINGLAW": "14. GOVERNING LAW",
     "TheseLegalTermsaregoverned": "These Legal Terms are governed by and interpreted following the laws of Belgium.",
     "15CONTACTUS": "15. CONTACT US",
-    "Inordertoresolvea": "In order to resolve a complaint regarding the Services or to receive further information regarding use of the Services, please contact "
-
+    "Inordertoresolvea": "In order to resolve a complaint regarding the Services or to receive further information regarding use of the Services, please contact ",
+  
+    "Error while clonning":"Error while clonning",
+    "Error while publishing the story":"Error while publishing the story",
+    "Publishing the Story please wait":"Publishing the Story please wait",
+    "The process could last some minutes":"The process could last some minutes",
+    "The process of publishing a story can take a long time":"The process of publishing a story can take a long time. You can either wait or return later to check if the process has been completed",
+    "Cloning the project please wait":"Cloning the process please wait",
+    "The process of creating a clone of an entire process can":"The process of creating a clone of an entire process can take a long time. You can either wait or return later to check if the process has been completed"
 
 
 

@@ -660,6 +660,18 @@
     "14GOVERNINGLAW": "14. LEGGE APPLICABILE",
     "TheseLegalTermsaregoverned": "Le presenti Condizioni legali sono disciplinate e interpretate in base alle leggi del Belgio.",
     "15CONTACTUS": "15. CONTATTACI",
-    "Inordertoresolvea": "Per risolvere un reclamo relativo ai Servizi o per ricevere ulteriori informazioni sull'utilizzo dei Servizi, si prega di contattare "
+    "Inordertoresolvea": "Per risolvere un reclamo relativo ai Servizi o per ricevere ulteriori informazioni sull'utilizzo dei Servizi, si prega di contattare ",
+
+    "Error while clonning":"Errore durante la clonazione",
+    "Error while publishing the story":"Errore durante la pubblicazione della storia",
+    "Publishing the Story please wait":"Pubblicare la storia per favore aspetta",
+    "The process could last some minutes":"Il processo potrebbe durare alcuni minuti",
+    "The process of publishing a story can take a long time":"Il processo di pubblicazione di una storia può richiedere molto tempo. Potete aspettare o tornare più tardi per controllare se il processo è stato completato",
+    "Cloning the project please wait":"Clonazione del processo, attendere",
+    "The process of creating a clone of an entire process can":"Il processo di creazione di un clone di un intero processo può richiedere molto tempo. È possibile attendere o tornare più tardi per verificare se il processo è stato completato"
+
+
+
+
 
 }

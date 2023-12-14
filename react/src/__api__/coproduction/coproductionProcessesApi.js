@@ -141,6 +141,32 @@ class CoproductionProcessesApi extends GeneralApi {
       return res.data;
     }
   }
+
+
+  // The timeout: 0 is needed to avoid the default timeout of 40s
+  async publish(id,label_name,from_view='settings',extractedData) {
+    console.log(`/${this.url}/${id}/publish_story?label_name=${label_name}&from_view=${from_view}`);
+
+  if (id) {
+    try {
+      const res = await axiosInstance.request({
+        method: 'post',
+        url: `/${this.url}/${id}/publish_story?label_name=${label_name}&from_view=${from_view}`,
+        data: extractedData, 
+        timeout: 0,
+      });
+      console.log('publish', res.data);
+      return res.data;
+    } catch (error) {
+      console.error('Error during publish:', error);
+      // Handle or throw the error based on your use case
+      throw error;
+    }
+  }
+  }
+
+
+
 }
 
 export const coproductionProcessesApi = new CoproductionProcessesApi();

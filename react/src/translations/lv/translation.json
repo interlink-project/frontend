@@ -675,6 +675,15 @@
     "14GOVERNINGLAW": "14. REGULĒJOŠIE TIESĪBU AKTI",
     "TheseLegalTermsaregoverned": "Šos Juridiskos noteikumus reglamentē un interpretē saskaņā ar Beļģijas tiesību aktiem.",
     "15CONTACTUS": "15. SAZINIETIES AR MUMS",
-    "Inordertoresolvea": "Lai atrisinātu sūdzību par Pakalpojumiem vai saņemtu papildu informāciju par Pakalpojumu izmantošanu, lūdzu, sazinieties ar Vides aizsardzības un reģionālās attīstības ministrijas pārstāvi Ilvu Krūmiņu, "
+    "Inordertoresolvea": "Lai atrisinātu sūdzību par Pakalpojumiem vai saņemtu papildu informāciju par Pakalpojumu izmantošanu, lūdzu, sazinieties ar Vides aizsardzības un reģionālās attīstības ministrijas pārstāvi Ilvu Krūmiņu",
+
+    "Error while clonning":"Kļūda klonēšanas laikā",
+    "Error while publishing the story":"Kļūda, publicējot stāstu",
+    "Publishing the Story please wait":"Publicējot stāstu, lūdzu, pagaidiet",
+    "The process could last some minutes":"Process varētu ilgt dažas minūtes",
+    "The process of publishing a story can take a long time":"Stāsta publicēšanas process var aizņemt ilgu laiku. Jūs varat nogaidīt vai atgriezties vēlāk, lai pārbaudītu, vai process ir pabeigts",
+    "Cloning the project please wait":"Klonēšanas procesu, lūdzu, pagaidiet",
+    "The process of creating a clone of an entire process can":"Visa procesa klona izveides process var aizņemt ilgu laiku"
+
 
 }

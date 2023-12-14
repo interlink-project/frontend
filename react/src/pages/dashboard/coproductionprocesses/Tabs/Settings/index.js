@@ -84,6 +84,9 @@ const SettingsTab = () => {
   const [openDialogPublic, setOpenDialogPublic] = useState(false);
   const [selectedTab, setSelectedTab] = useState("0");
   const [showDownloadDialog,setShowDownloadDialog]= useState(false);
+  const [timeoutExceeded, setTimeoutExceeded] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
 
   const handleCloseDialogSchema = () => {
     setOpenDialogSchema(false);
@@ -139,11 +142,29 @@ const SettingsTab = () => {
 
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const onCopy = () => {
+  const onCopy = async () => {
     setIsCloning(true);
+    setTimeoutExceeded(false);
+
+    // Initialize the timeout
+    const timeoutId = setTimeout(() => {
+      setTimeoutExceeded(true); // Indicate that the timeout has been exceeded
+    }, 15000); // e.g., wait for 15 seconds
+
     coproductionProcessesApi
       .copy(process.id, "Copy of ")
-      .then(() => navigate("/dashboard/projects"));
+      .then(() => navigate("/dashboard/projects"))
+      .catch((error) => {
+        clearTimeout(timeoutId); 
+        console.error(error);
+        setErrorMessage(t("Error while clonning")+".");
+        setIsError(true);
+      })
+      .finally(() => {
+        setIsCloning(false);
+      });
+  
+  
   };
 
   const onPublish = () => {
@@ -396,7 +417,8 @@ const SettingsTab = () => {
     track: {},
   })(Switch);
 
-  const handleCapture = ({ target }) => {
+  const handleCapture = async  ({ target }) => {
+    setTimeoutExceeded(false);
     const fileReader = new FileReader();
     fileReader.readAsText(target.files[0]);
     fileReader.onload = (e) => {
@@ -404,22 +426,33 @@ const SettingsTab = () => {
       //setJsonPropertiesFile( e.target.result);
       let extractedData1 = e.target.result;
       let extractedData = JSON.parse(extractedData1);
+      setJsonPropertiesFile(extractedData);
+
+      // Initialize the timeout
+      const timeoutId = setTimeout(() => {
+        setTimeoutExceeded(true); // Indicate that the timeout has been exceeded
+      }, 15000); // e.g., wait for 15 seconds
 
       //Create a clone of the process:
       coproductionProcessesApi
-        .copy(process.id, "Catalogue Publication of_", "for_publication")
+        .publish(process.id, "Catalogue Publication of_", "for_publication",extractedData)
         .then((res) => {
-          const clone_id = res;
-          setJsonPropertiesFile(extractedData);
 
-          // console.log(objJson);
-          storiesApi.create(extractedData, process, clone_id).then((res) => {
-            setStoriesList((storiesList) => [...storiesList, res.data]);
-            setIsPublishing(false);
-            navigate(
-              "/dashboard/coproductionprocesses/" + process.id + "/settings"
-            );
-          });
+              setIsPublishing(false);
+              navigate(
+                "/stories"
+              );
+
+          
+        })
+        .catch((error) => {
+          clearTimeout(timeoutId); // Clear the timeout in case of an error
+          console.error(error);
+          setErrorMessage(t("Error while publishing the story")+".");
+          setIsError(true);
+        })
+        .finally(() => {
+          setIsPublishing(false);
         });
     };
   };
@@ -1028,6 +1061,7 @@ const SettingsTab = () => {
                     <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
                       {t("Clone coproduction process")}
                     </Typography>
+                    
                     <Alert
                       severity="warning"
                       sx={{ mt: 3 }}
@@ -1065,6 +1099,11 @@ const SettingsTab = () => {
                         "The clonation of the coproduction process will create"
                       )}
                     </Alert>
+                    {isError && (
+                      <Alert variant="outlined" severity="error" sx={{ m: 1 }}>
+                        {errorMessage}
+                      </Alert>
+                    )}
                   </Card>
 
                   {/* Publish Coproduction Process */}
@@ -1072,6 +1111,8 @@ const SettingsTab = () => {
                     <Typography variant="h5" sx={{ fontWeight: "bold", mb: 0 }}>
                       {t("Publish coproduction process")}
                     </Typography>
+
+                    
                     <Alert
                       severity="warning"
                       sx={{ mt: 3 }}
@@ -1092,6 +1133,11 @@ const SettingsTab = () => {
                         "The publication of the coproduction process will make"
                       )}
                     </Alert>
+                    {isError && (
+                      <Alert variant="outlined" severity="error" sx={{ m: 1 }}>
+                        {errorMessage}
+                      </Alert>
+                    )}
                   </Card>
 
                   {/* Download co-production process */}
@@ -1401,21 +1447,30 @@ const SettingsTab = () => {
             <Close />
           </IconButton>
 
-          <DialogContent sx={{ p: 2 }}>
-            <Stack spacing={2}>
+          <DialogContent sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Stack spacing={2} sx={{ width: '100%', alignItems: 'center' }}>
+            <Item>
+              <div style={logoStyle}>
+                <InterlinkAnimation />
+              </div>
+            </Item>
+            <Item>
+              <div>{t("Publishing the Story please wait")+"."}</div>
+            </Item>
+            <Item>
+              <div>{t("The process could last some minutes")+"."}</div>
+            </Item>
+            {timeoutExceeded && (
               <Item>
-                <div style={logoStyle}>
-                  <InterlinkAnimation />
+                <div style={{ color: 'blue' }}>
+                  {t(
+                    "The process of publishing a story can take a long time"
+                  )+"."}
                 </div>
               </Item>
-              <Item>
-                <div>{t("Publishing the Story please wait.")}</div>
-              </Item>
-              <Item>
-                <div>{t("The process could last some minutes.")}</div>
-              </Item>
-            </Stack>
-          </DialogContent>
+            )}
+          </Stack>
+        </DialogContent>
         </Dialog>
 
         <Dialog open={isCloning} onClose={() => setIsCloning(false)}>
@@ -1432,21 +1487,31 @@ const SettingsTab = () => {
             <Close />
           </IconButton>
 
-          <DialogContent sx={{ p: 2 }}>
-            <Stack spacing={2}>
+          <DialogContent sx={{ p: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Stack spacing={2} sx={{ width: '100%', alignItems: 'center' }}>
+            <Item>
+              <div style={logoStyle}>
+                <InterlinkAnimation />
+              </div>
+            </Item>
+            <Item>
+              <div>{t("Cloning the project please wait")+"."}</div>
+            </Item>
+            <Item>
+              <div>{t("The process could last some minutes")+"."}</div>
+            </Item>
+            
+            {timeoutExceeded && (
               <Item>
-                <div style={logoStyle}>
-                  <InterlinkAnimation />
+                <div style={{ color: 'red' }}>
+                  {t(
+                    "The process of creating a clone of an entire process can"
+                  )+"."}
                 </div>
               </Item>
-              <Item>
-                <div>{t("Cloning the project please wait.")}</div>
-              </Item>
-              <Item>
-                <div>{t("The process could last some minutes.")}</div>
-              </Item>
-            </Stack>
-          </DialogContent>
+            )}
+          </Stack>
+        </DialogContent>
         </Dialog>
 
         <Dialog open={isDownloading} >
